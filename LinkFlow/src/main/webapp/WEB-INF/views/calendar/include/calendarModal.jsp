@@ -50,7 +50,6 @@
     /*상세 모달 스타일 */
     .schDetailModal_content, .modal-content{
       display: flex;
-      justify-content: center;
       text-align: center;
       margin: 0px 0px 20px 10px;
     }
@@ -67,7 +66,7 @@
     
     }
 
-    #detailBtn-modal-body{
+    #detailBtn-modal-body, #schWasteDetail-modal-body, #schWasteRemoval-modal-body{
       font-size: large;
       font-weight: bolder;
       display: flex;
@@ -784,73 +783,96 @@
     
     <!------휴지통 모달------------------------------------------------  -->
      <!-- 일정 상세 정보 모달 start -->
-      <div class="modal fade" id="schDetailModal" tabindex="-1" aria-labelledby="schDetailModal" aria-hidden="true">
+      <div class="modal fade" id="schWasteDetail" tabindex="-1" aria-labelledby="schDetailModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title font-weight-bolder" id="schDetailTitle">개발2팀 회식</h5>
+                    <h5 class="modal-title font-weight-bolder" id="schWasteDetailTitle"></h5>
                 </div>
                 <div class="modal-body">
                     <div>
                         <div class="schDetailModal_content justify-content-end mx-1">
                           중요일정&nbsp;
-                          <input type="checkbox" class="weste-modal" id="recipient-name">
+                          <input type="checkbox" class="weste-modal" id="schWasteImport" style="pointer-events: none;">
                         </div>
                         <div class="schDetailModal_content font-weight-bolder">
-                            <label for="recipient-name" class="col-form-label">캘린더</label>
-                            <p style="padding-right: 30px;">부서 캘린더</p> 
+                            <label for="recipient-name" class="col-form-label" >캘린더</label>
+                            <p style="padding-right: 30px;" id="wasteSubCode"></p> 
                         </div>
                         <div class="schDetailModal_content"> 
-                          <label for="recipient-name" class="col-form-label">일정</label> 
-                          <p>2024/04/26&nbsp; 오전 9:30 ~ 오전 10:00</p> 
-                        </div>
+                          <label for="recipient-name" class="col-form-label" >일정</label> 
+	                         <div class="wasteDate">
+			                      <spen id="wasteStartDate"></spen> 
+			                      <spen id="wasteEndDate"></spen> 
+		                     	 </div>
+                   		  </div>
                         <!--조건 걸어야함-->
                         <div class="schDetailModal_content">
                           <label for="recipient-name" class="col-form-label">장소</label>
-                          <div class="search">
-                            <div>서울시 서초구 방배동 939-949</div>
-                            <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
-                          </div>                          
+                         	<div class="search">
+		                        <div id="wasteAddress"></div>
+		                        <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
+                      		</div>                                                   
                         </div>
                         <!---->
                         <div class="schDetailModal_content">
                           <label for="recipient-name" class="col-form-label">알림</label>
                           <p>
                             30분 전 메일발송
-                            <input type="checkbox" class="weste-modal" id="recipient-name">
+                            <input type="checkbox" class="weste-modal" id="wasteNotifyYn" style="pointer-events: none; ">
                           </p>
                         </div>
                         <div class="schDetailModal_content">
                           <label for="message-text" class="col-form-label">내용</label>
-                          <p id="schDetailModal_content_text"> 
-                               서울시 서초구 방배동 939-949에 있는
-                              '떡봉솥뚜껑닭볶음탕찾아주셔서서감사
-                               합니다' 에서 부서 전체 회식
+                          <p id="schWasteDetail_content_text">    
                           </p>
                         </div>
                      </div>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn blue-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">복구</button>
-                    <button type="button" class="btn gray-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">삭제</button>
-                </div>
+                 <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary btn-sm" id="restoreBtn" data-bs-target="#wasteDetailBtn" data-bs-toggle="modal" style="color: white; margin-left:30px;">복구</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="removalBtn" data-bs-target="#wasteRemovalBtn" data-bs-toggle="modal" style="color: white;">삭제</button>
+            		 </div>
             </div>
-          </div>
-        </div>
+         </div>
+      </div>
+        
         <!--일정 상세 정보 모달 end-->
-        <!--상세 정보 모달_버튼 모달 start-->
-        <div class="modal fade" id="detailBtn" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
+        <!--상세 정보 모달_버튼 모달 (복구) start-->
+        <div class="modal fade" id="wasteDetailBtn" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-              <div class="modal-body" id="detailBtn-modal-body" > 
+             	<div>	
+             		<div class="modal-body" id="schWasteDetail-modal-body" > 
+              	</div>
               </div>
-              <div class="modal-checkBtn">
-                <i class="fa-solid fa-check fa-xl mb-5 mr-4" id="schDetailDeleteBtn" style="color: #055dd1;"></i>
-                <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" id="schDetailCencelBtn" style="color: #bcbdbd;"></i>
+              <div>         
+	             	 <div class="modal-checkBtn">
+	                <i class="fa-solid fa-check fa-xl mb-5 mr-4" id="schRestore" style="color: #055dd1;"></i>
+	                <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" id="schCencelBtn" style="color: #bcbdbd;"></i>
+	             	 </div>
+           		 </div>
+         		 </div>
+        		</div>
+        	</div>
+        <!--상세 정보 모달_버튼 모달 ends-->
+         <!--상세 정보 모달_버튼 모달 (삭제) start-->
+        <div class="modal fade" id="wasteRemovalBtn" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+             	<div>	
+             		<div class="modal-body" id="schWasteRemoval-modal-body" > 
+              	</div>
               </div>
-            </div>
-          </div>
-        </div>
+              <div>         
+	             	 <div class="modal-checkBtn">
+	                <i class="fa-solid fa-check fa-xl mb-5 mr-4" id="schComplete" style="color: #055dd1;"></i>
+	                <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" id="schCencelBtn" style="color: #bcbdbd;"></i>
+	             	 </div>
+           		 </div>
+         		 </div>
+        		</div>
+        	</div>
         <!--상세 정보 모달_버튼 모달 ends-->
         
     <script>
@@ -1071,7 +1093,6 @@ $('#kt_docs_jstree_basic').jstree({
       }
   });
 
-
       
         document.querySelector('.referenceIn').addEventListener('click', function() {
       var nameAreas = document.querySelectorAll('.NameArea');
@@ -1159,10 +1180,11 @@ $('#kt_docs_jstree_basic').jstree({
  //캘린더 일정등록 ajax
 			//일정등록 클릭시 모달 띄우기
 			 // 로그인 확인
-	    var login = '${loginUser.userId}';
+	    var mod = '${loginUser.userId}'; 
+        $('input[name="modId"]').val(mod); 
 	
 	    // 일정 등록 버튼 클릭 시 모달 띄우기
-	    if (login === '') {
+	    if (mod === '') {
 	        $('.schInsertModalBtn').click(function() {
 	            alert("일정을 등록하려면 로그인을 해 주세요.");
 	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
@@ -1185,8 +1207,7 @@ $('#kt_docs_jstree_basic').jstree({
 	        $('input[name="notifyYn"]').val(notify);
 	    });
 	    
-	    var mod = '${loginUser.userId}'; 
-        $('input[name="modId"]').val(mod); 
+
 
     	//등록 ajax
    		 $('#schInsertButton').click(function() {

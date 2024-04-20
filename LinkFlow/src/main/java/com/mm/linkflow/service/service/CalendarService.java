@@ -24,5 +24,18 @@ public interface CalendarService {
 	//캘린더 메인 - 일정삭제(상태변경)
 	int deleteSch(String schNo);
 
+	//휴지통 - 일정 전체조회
+	List<ScheduleDto> selectSchWasteList(String schCalSubCode);
+
+	//휴지통 - 일정 복구 
+	int wasteSchRestore(String schNo);
+
+	//휴지통- 30일 뒤 일정 완전삭제(스케줄러)
+	int wasteSchCompletely();
+
+	//휴지통= 일정완전삭제
+	int wasteSchRemoval(String schNo);
+
+
 }
   

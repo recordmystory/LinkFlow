@@ -21,6 +21,7 @@
      <result column="SCH_TITLE" property="schTitle"/>
  		 <result column="CAL_COLOR" property="calColor"/>
   	 <result column="CAL_SUB_CODE" property="schCalSubCode"/>
+  	 <result column="MOD_DATE" property="modDate"/>
  </resultMap>
 						
 		
@@ -105,24 +106,6 @@
             </when>
         </choose>
 </select>
-	    
-	<!-- 상세조회 -->
-	<select id="detailSch" resultMap="scheduleResult">
-	        SELECT 
-	        	SCH_NO,
-		        SCH_CONTENT,
-		        TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-	          TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
-		        ADDRESS,
-		        SCH_IMPORT,
-		        NOTIFY_YN,
-		        REG_DATE,
-		        MOD_DATE,
-		        DEL_YN,
-		        SCH_TITLE,
-	        FROM TB_SCHEDULE 
-	        WHERE schNo =  #{schNo}
-	    </select> 
 	 
 	<!-- 일정수정 -->
 	<update id="updateSch">
@@ -159,27 +142,39 @@
     </update> -->
     
  <!-- 휴지통 쿼리************************************* -->  
-   <!-- 휴지통 리스트 상세조회 -->
-   <select id="schWasteList" resultMap="scheduleResult">
+   <!-- 휴지통 리스트 조회 -->
+   <select id="selectSchWasteList" resultMap="scheduleResult">
        SELECT 
            S.SCH_NO,
            S.SCH_CONTENT,
-           TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-       		 TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
-           S.ADDRESS,
-           S.SCH_IMPORT,
-           S.NOTIFY_YN,
            S.SCH_TITLE,
-           C.CAL_COLOR,
            C.CAL_SUB_CODE,
-           C.CAL_NO
+           C.CAL_NO,
+           TO_DATE(S.MOD_DATE, 'YY-MM-DD') AS MOD_DATE
        FROM TB_SCHEDULE S
        JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
        WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
        AND S.DEL_YN = 'Y'
    </select> 
    
-  <!-- 휴지통 일정삭제(스케줄러) -->
+   	<!-- 상세조회 -->
+	<select id="detailSch" resultMap="scheduleResult">
+       SELECT 
+       	S.SCH_NO,
+        S.SCH_CONTENT,
+        TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+        TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+        S.ADDRESS,
+        S.SCH_IMPORT,
+        S.NOTIFY_YN,
+        S.SCH_TITLE,
+        C.CAL_SUB_CODE
+       FROM TB_SCHEDULE S
+       JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
+       WHERE S.SCH_NO =  #{schNo}
+	 </select> 
+  
+  <!-- 휴지통 일정삭제 -->
 	<delete id="deleteSchWaste">
 	 DELETE 
 	 		FROM TB_SCHEDULE
@@ -187,6 +182,22 @@
 	 AND DEL_YN = 'Y'
 	</delete>
 	
+	 <!-- 30일 뒤 휴지통 일정삭제(스케줄러) -->
+	<delete id="wasteSchCompletely">
+    <![CDATA[ 
+        DELETE FROM TB_SCHEDULE
+        WHERE DEL_YN = 'Y'
+        AND MOD_DATE < ADD_MONTHS(SYSDATE, -1) + 1 
+    ]]>
+	</delete>
+	<!-- 이 안에 있는 특수문자를 일반문자로 처리   --><!-- 30 +1일 째 삭제-->
+	
+	<!-- 휴지통 일정 복구(상태 변경) -->
+	<update id="wasteSchRestore">
+	 UPDATE TB_SCHEDULE
+	 SET DEL_YN = 'N'
+	 WHERE SCH_NO = ${schNo}
+	</update>
 	
 	<!-- 캘린더 insert *************************************** -->
 	<insert id="insertCal">

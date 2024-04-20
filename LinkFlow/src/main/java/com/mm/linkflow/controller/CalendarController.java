@@ -104,14 +104,7 @@ public class CalendarController {
 
     }
 	   
-	//휴지통 - 일정 상세
-	   @GetMapping("/schSelect.do")
-	   public String detailSch(String schNo, Model model) {
-	       ScheduleDto schedule = calendarService.detailSch(schNo);
-	       model.addAttribute("schedule", schedule);
-	       return "calendar/schWasteList";
-	   }
-	   
+
 	//캘린더 메인 - 일정 수정
 	   @ResponseBody
 	   @PostMapping(value="/updateSch.do", produces="application/json")
@@ -142,6 +135,41 @@ public class CalendarController {
 	   public String deleteSch(@RequestParam String schNo) {
 			return calendarService.deleteSch(schNo) == 1 ? "success" : "fail";	
 	   }
+	   
+	 //휴지통**************************** 
+	   
+	 //휴지통 - 일정 전체 조회
+		@ResponseBody
+	    @RequestMapping("/schWasteList.do")
+	    public List<ScheduleDto> selectSchWasteList(String schCalSubCode) {
+			List<ScheduleDto> schWaste = calendarService.selectSchWasteList(schCalSubCode);
+			return schWaste;   
+	    }
+
+	//휴지통 - 일정 상세
+	   @ResponseBody
+	   @GetMapping("/schSelect.do")
+	   public ScheduleDto detailSch(String schNo, Model model) {
+	       ScheduleDto schedule = calendarService.detailSch(schNo);
+	       model.addAttribute("schedule", schedule);
+	       log.debug("sch:{}", schedule);
+	       return schedule;
+	   }
+	   
+	  //휴지통 - 일정복구(상태변경)
+	    @ResponseBody
+	    @GetMapping(value="/wasteSchRestore.do")
+	    public String wasteSchRestore(@RequestParam String schNo) {
+			return calendarService.wasteSchRestore(schNo) == 1 ? "success" : "fail";	
+	    } 
+	    
+	    //휴지통 - 일정삭제
+	    @ResponseBody
+	    @GetMapping(value="/wasteSchRemoval.do")
+	    public String wasteSchRemoval(@RequestParam String schNo) {
+	    	log.debug(schNo);
+			return calendarService.wasteSchRemoval(schNo) == 1 ? "success" : "fail";	
+	    } 
 }
 	  
 

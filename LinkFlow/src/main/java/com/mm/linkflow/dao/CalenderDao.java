@@ -40,6 +40,27 @@ public class CalenderDao {
 		return sqlSessionTemplate.update("calendarMapper.deleteSch", schNo);
 	}
 
+	//휴지통 - 일정조회
+	public List<ScheduleDto> selectSchWasteList(String schCalSubCode) {
+		return sqlSessionTemplate.selectList("calendarMapper.selectSchWasteList", schCalSubCode);
+
+	}
+	
+	//휴지통 -일정복구
+	public int wasteSchRestore(String schNo) {
+		return sqlSessionTemplate.update("calendarMapper.wasteSchRestore", schNo);
+	}
+
+	//휴지통 -일정완전삭제(스케줄러)
+	public int wasteSchCompletely() {
+		return sqlSessionTemplate.delete("calendarMapper.wasteSchCompletely");
+	}
+	
+	//휴지통 -일정완전삭제
+	public int wasteSchRemoval(String schNo) {
+		return sqlSessionTemplate.delete("calendarMapper.deleteSchWaste", schNo);
+	}
+
 	/*
 	 * public int updateSchCalSubCode(Map<String, Object> map) { return
 	 * sqlSessionTemplate.update("calendarMapper.updateCalendarSubCode", map); }

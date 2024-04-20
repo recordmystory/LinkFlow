@@ -51,6 +51,32 @@ public class CalendarServiceImpl implements CalendarService {
 	public int deleteSch(String schNo) {
 		return calendarDao.deleteSch(schNo);
 	}
+	
+	//휴지통 - 일정조회
+	@Override
+	public List<ScheduleDto> selectSchWasteList(String schCalSubCode) {
+		log.debug(schCalSubCode);
+		return calendarDao.selectSchWasteList(schCalSubCode);
+	}
+	
+	//휴지통 - 일정복구
+	@Override
+	public int wasteSchRestore(String schNo) {
+		return calendarDao.wasteSchRestore(schNo);
+	}
+
+	//휴지통 - 30일 뒤 일정 완전 삭제 (스케줄러)
+	@Override
+	public int wasteSchCompletely() {
+		return calendarDao.wasteSchCompletely();	
+	}
+
+	//휴지통 - 일정 완전삭제
+	@Override
+	public int wasteSchRemoval(String schNo) {
+		return calendarDao.wasteSchRemoval(schNo);	
+		
+	}
 
 	/*
 	 * @Override public int updateSchCalSubCode(Map<String, Object> map) { return
