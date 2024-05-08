@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<package name="com.mm.linkflow.dto"/>
+		<!-- <typeAlias type="com.br.spring.dto.BoardDto" alias="BoardDto"/>
+		<typeAlias type="com.br.spring.dto.AttachDto" alias="AttachDto"/>
+		<typeAlias type="com.br.spring.dto.MemberDto" alias="MemberDto"/>
+		<typeAlias type="com.br.spring.dto.ReplyDto" alias="ReplyDto"/>
+		<typeAlias type="com.br.spring.dto.NoticeDto" alias="NoticeDto"/> -->
+	</typeAliases>
+</configuration>
