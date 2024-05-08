@@ -1,4 +1,4 @@
-package com.mm.linkflow.member;
+package com.mm.linkflow.dao;
 
 public interface MemberDao {
 
