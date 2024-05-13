@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
+	<resultMap type="MemberDto" id="memberResult">
+		<id column="USER_ID" property="userId"/>
+		<result column="USER_PWD" property="userPwd"/>
+		<result column="USER_PWD" property="userPwd"/>
+		<result column="DEPT_CODE" property="deptCode"/>
+		<result column="position" property="position"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="PHONE" property="phone"/>
+		<result column="BIRTH_DATE" property="birthDate"/>
+		<result column="EDUCATION" property="education"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="ZIP_CODE" property="zipCode"/>
+		<result column="DETAIL_ADD" property="detailAdd"/>
+		<result column="HIRE_DATE" property="hireDate"/>
+		<result column="RETIRE_DATE" property="retireDate"/>
+		<result column="SUPER_RIGHT" property="superRight"/>
+		<result column="HR_RIGHT" property="hrRight"/>
+		<result column="SP_RIGHT" property="spRight"/>
+		<result column="BOARD_RIGHT" property="boardRight"/>
+		<result column="DEPT_RIGHT" property="deptRight"/>
+		<result column="PROFILE_URL" property="profileUrl"/>
+		<result column="SIGN_URL" property="signUrl"/>
+		<result column="DAYOFF" property="dayOff"/>
+		<result column="SECONDARY_CODE" property="secondaryCode"/>
+		<result column="SECONDARY_USESE" property="secondaryUsese"/>
+		<result column="RANK_BCODE" property="rankBcode"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="MOD_DATE" property="modDate"/>
+		<result column="REG_ID" property="regId"/>
+		<result column="MOD_ID" property="modId"/>
+		<result column="DEL_YN" property="delYn"/>
+	</resultMap>	
+	
+<select id="loginMember" resultMap="memberResult">
+SELECT 
+    M.USER_ID,
+    M.USER_PWD,
+    D.DEPT_TITLE DEPT_CODE,
+    c.sub_name position,
+    M.USER_NAME,
+    M.PHONE,
+    M.BIRTH_DATE,
+    M.EDUCATION,
+    M.ADDRESS,
+    M.ZIP_CODE,
+    M.DETAIL_ADD,
+    M.HIRE_DATE,
+    M.RETIRE_DATE,
+    M.SUPER_RIGHT,
+    M.HR_RIGHT,
+    M.SP_RIGHT,
+    M.BOARD_RIGHT,
+    M.DEPT_RIGHT,
+    M.PROFILE_URL,
+    M.SIGN_URL,
+    M.DAYOFF,
+    M.SECONDARY_CODE,
+    M.SECONDARY_USESE,
+    M.RANK_BCODE,
+    M.REG_DATE,
+    M.MOD_DATE,
+    M.REG_ID,
+    M.MOD_ID,
+    M.DEL_YN
+FROM 
+    TB_MEMBER M
+JOIN 
+    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+JOIN 
+    tb_dept D ON M.DEPT_CODE = D.dept_code
+where m.user_id = #{userId}
+and m.user_pwd = #{userPwd}
+AND M.DEL_YN = 'N'
+</select>
+
+
+
+
 
 </mapper>

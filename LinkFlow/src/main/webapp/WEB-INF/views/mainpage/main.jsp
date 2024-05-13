@@ -13,5 +13,6 @@
 <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>
+<h1>여기는 메인</h1>
 </body>
 </html>
