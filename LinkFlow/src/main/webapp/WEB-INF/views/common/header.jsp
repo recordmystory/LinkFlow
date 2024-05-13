@@ -76,7 +76,7 @@
 	<div class="LinkFlowheader">
     <nav class="navbar navbar-expand navbar-white navbar-light" style="border-bottom: 2px solid #b4bac0;">
       <!-- Left navbar links -->
-      <a class="head_BannerImg" style="padding: 10px;"><img src="${contextPath }/resources/images/common/logo.png" alt="회사배너" style="height: 50px;"></a>
+      <a href="${contextPath}/main" class="head_BannerImg" style="padding: 10px;"><img src="${contextPath }/resources/images/common/logo.png" alt="회사배너" style="height: 50px;"></a>
       <ul class="navbar-nav">
         <li class="nav-item dropdown"> 
 
@@ -216,7 +216,7 @@
              
              <div class="dropdown-divider"></div>
 
-             <a href="#" class="dropdown-item">
+             <a href="${contextPath }/member/myinfo.page" class="dropdown-item">
                <i class="fa-solid fa-image-portrait mr-2"></i> 마이페이지
                
              </a>
