@@ -16,9 +16,9 @@
 	
 
 	<logger name="org.springframework" level="INFO"/>
-	<logger name="com.br.spring" level="debug"/>
+	<logger name="com.mm.linkflow" level="debug"/>
 	
-	<logger name="com.br.spring.handler" level="debug" additivity="false">
+	<logger name="com.mm.linkflow.handler" level="debug" additivity="false">
   	<appender-ref ref="websocketLog" />
   </logger>
 	
