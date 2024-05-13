@@ -53,7 +53,7 @@
 
      <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
      <div class="LinkFlowInsertBtnArea">
-       <a href="진행중인문서_작성하기.html" class="btn btn-block bg-primary btn-lg">+ 작성하기</a>
+       <a href="${ contextPath }/edsm/prog/apprEnrollForm.prog" class="btn btn-block bg-primary btn-lg">+ 작성하기</a>
    
      </div>
 
@@ -75,31 +75,31 @@
 
            <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
-               <a href="진행중인문서_전체_목록.html" class="nav-link">
+               <a href="${ contextPath }/edsm/prog/listAll.prog" class="nav-link">
                <i class="far fa-circle nav-icon"></i>
                <p>전체</p>
                </a>
            </li>
            <li class="nav-item">
-               <a href="진행중인문서_대기_목록.html" class="nav-link">
+               <a href="${ contextPath }/edsm/prog/listWait.prog" class="nav-link">
                <i class="far fa-circle nav-icon"></i>
                <p>대기</p>
                </a>
            </li>
            <li class="nav-item">
-             <a href="진행중인문서_예정_목록.html" class="nav-link">
+             <a href="${ contextPath }/edsm/prog/listPlan.prog" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
              <p>예정</p>
              </a>
          </li>
          <li class="nav-item">
-           <a href="진행중인문서_진행_목록.html" class="nav-link">
+           <a href="${ contextPath }/edsm/prog/listProg.prog" class="nav-link">
            <i class="far fa-circle nav-icon"></i>
            <p>진행</p>
            </a>
        </li>
        <li class="nav-item">
-         <a href="진행중인문서_확인_목록.html" class="nav-link">
+         <a href="${ contextPath }/edsm/prog/listCheck.prog" class="nav-link">
          <i class="far fa-circle nav-icon"></i>
          <p>확인</p>
          </a>
@@ -112,7 +112,7 @@
 
        <li class="nav-item">
 
-         <a href="문서함_전체_목록.html" class="nav-link middleName">
+         <a href="#" class="nav-link middleName">
          <i class="fa-solid fa-box-archive fa-lg"></i>&nbsp;&nbsp;
          
          <p>
@@ -124,35 +124,35 @@
 
          <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
-             <a href="#" class="nav-link">
+             <a href="${ contextPath }/edsm/docbox/listAll.docbox" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
              <p>전체</p>
              </a>
            </li>
 
            <li class="nav-item">
-             <a href="#" class="nav-link">
+             <a href="${ contextPath }/edsm/docbox/listDraft.docbox" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
              <p>기안</p>
              </a>
            </li>
 
            <li class="nav-item">
-             <a href="#" class="nav-link active">
+             <a href="${ contextPath }/edsm/docbox/listAppr.docbox" class="nav-link active">
              <i class="far fa-circle nav-icon"></i>
              <p>결재</p>
              </a>
            </li>
 
            <li class="nav-item">
-             <a href="#" class="nav-link">
+             <a href="${ contextPath }/edsm/docbox/listRef.docbox" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
              <p>참조</p>
              </a>
            </li>
 
            <li class="nav-item">
-             <a href="#" class="nav-link">
+             <a href="${ contextPath }/edsm/docbox/listReject.docbox" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
              <p>반려</p>
              </a>
@@ -162,7 +162,7 @@
 
      <li class="nav-item">
 
-       <a href="../ts/임시저장_목록.html" class="nav-link middleName">
+       <a href="${ contextPath }/edsm/tmpsave/list.tpsv" class="nav-link middleName">
        <i class="fa-solid fa-file-circle-check fa-lg"></i>&nbsp;&nbsp;
        
       
@@ -176,7 +176,7 @@
       
      <li class="nav-item">
 
-       <a href="../sign/서명설정.html" class="nav-link middleName">
+       <a href="${ contextPath }/edsm/sign/setting.sign" class="nav-link middleName">
          <i class="fa-solid fa-gear fa-lg"></i>&nbsp;&nbsp;
        
       
@@ -190,7 +190,7 @@
 
      <li class="nav-item">
 
-       <a href="../ct/양식생성_목록.html" class="nav-link middleName">
+       <a href="#" class="nav-link middleName">
          <i class="fa-solid fa-gear fa-lg"></i>&nbsp;&nbsp;
        
       
@@ -202,14 +202,14 @@
        
        <ul class="nav nav-treeview" style="padding-left: 20px;">
          <li class="nav-item">
-           <a href="#" class="nav-link">
+           <a href="${ contextPath }/edsm/crtemp/list.crtp" class="nav-link">
            <i class="far fa-circle nav-icon"></i>
            <p>양식 목록</p>
            </a>
          </li>
 
          <li class="nav-item">
-           <a href="#" class="nav-link">
+           <a href="${ contextPath }/edsm/crtemp/enrollForm.crtp" class="nav-link">
            <i class="far fa-circle nav-icon"></i>
            <p>양식 생성</p>
            </a>
