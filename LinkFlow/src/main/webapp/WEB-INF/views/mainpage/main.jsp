@@ -20,10 +20,6 @@
 		min-width: 1750px;
 	}
 	
-	.LinkFlowheader {
-		width: 100%;
-	}
-	
 	.LinkFlowMainSection {
 		width: 100%;
 		height: 100%;
@@ -37,10 +33,6 @@
 		min-height: 400px;
 		display: flex;
 		flex-direction: column;
-	}
-	
-	.userProfileIMG {
-		width: 25px;
 	}
 	
 	.mainContent_header {

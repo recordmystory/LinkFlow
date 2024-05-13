@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/booking")
+@RequestMapping("/edsm/sign")
 @Controller
 @RequiredArgsConstructor
-public class BookingController {
-
-	@GetMapping("/bk.room")
-	public String bookingPage() {
-		return "booking/bookingRoom.jsp";
+public class EdsmSignController {
+	
+	@GetMapping("/setting.sign")
+	public String listAll() {
+		return "/edsm/sign/setting";
 	}
 	
 }

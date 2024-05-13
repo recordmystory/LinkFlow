@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/booking")
+@RequestMapping("/edsm/tmpsave")
 @Controller
 @RequiredArgsConstructor
-public class BookingController {
-
-	@GetMapping("/bk.room")
-	public String bookingPage() {
-		return "booking/bookingRoom.jsp";
-	}
+public class EdsmTmpsaveController {
 	
+	@GetMapping("/list.tpsv")
+	public String listAll() {
+		return "/edsm/tmpsave/list";
+	}
 }

@@ -126,28 +126,28 @@
 						<br>
 
 						<li class="nav-item">
-							<a href="/facility-reservation" class="nav-link middleName"> 
+							<a href="${contextPath }/views/booking/room.bk" class="nav-link middleName"> 
 								<i class="nav-icon far-2xl fa-solid fa-book"></i>
 								<p>시설 예약</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="/equipment-reservation" class="nav-link middleName"> 
+							<a href="${contextPath }/views/booking/supplies.bk" class="nav-link middleName"> 
 								<i class="nav-icon fa-2xl fa-solid fa-book"></i>
 								<p>비품 예약</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="/my-reservations" class="nav-link middleName"> 
+							<a href="${contextPath }/views/booking/mylist.bk" class="nav-link middleName"> 
 								<i class="nav-icon far-2xl fa-solid fa-book-bookmark"></i>
 								<p>나의 예약 목록</p>
 							</a>
 						</li>
 
-						<!-- 관리자일 때만 보여지는 사이드바 -->
 						<br>
 						<br>
+						<c:if test=${ loginUser.spRight eq 'Y' }>
 						<li class="nav-item"><a href="#" class="nav-link middleName">
 								<i class="nav-icon far-2xl fa-solid fa-gear"></i>
 								<p>
@@ -175,6 +175,7 @@
 								<p>자산 관리</p>
 							</a>
 						</li>
+						</c:if>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
