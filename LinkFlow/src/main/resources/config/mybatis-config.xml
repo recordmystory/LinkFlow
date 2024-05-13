@@ -7,7 +7,7 @@
 	
 	<typeAliases>
 		<package name="com.mm.linkflow.dto"/>
-		<!-- <typeAlias type="com.br.spring.dto.BoardDto" alias="BoardDto"/>
+		<!-- <typeAlias type="com.br.spring.dto.BoardDto" ,/>
 		<typeAlias type="com.br.spring.dto.AttachDto" alias="AttachDto"/>
 		<typeAlias type="com.br.spring.dto.MemberDto" alias="MemberDto"/>
 		<typeAlias type="com.br.spring.dto.ReplyDto" alias="ReplyDto"/>

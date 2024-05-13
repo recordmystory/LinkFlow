@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
-	<resultMap type="MemberDto" id="memberResult">
+	<resultMap type="MemberDto" id="memberResult" extends="commonMapper.commonResult">
 		<id column="USER_ID" property="userId"/>
 		<result column="USER_PWD" property="userPwd"/>
 		<result column="USER_PWD" property="userPwd"/>
@@ -27,11 +27,6 @@
 		<result column="SECONDARY_CODE" property="secondaryCode"/>
 		<result column="SECONDARY_USESE" property="secondaryUsese"/>
 		<result column="RANK_BCODE" property="rankBcode"/>
-		<result column="REG_DATE" property="regDate"/>
-		<result column="MOD_DATE" property="modDate"/>
-		<result column="REG_ID" property="regId"/>
-		<result column="MOD_ID" property="modId"/>
-		<result column="DEL_YN" property="delYn"/>
 	</resultMap>	
 	
 <select id="loginMember" resultMap="memberResult">

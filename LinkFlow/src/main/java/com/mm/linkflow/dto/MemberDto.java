@@ -1,7 +1,6 @@
 package com.mm.linkflow.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @ToString
-
-public class MemberDto {
+public class MemberDto extends CommonDto {
 	private String userId; //아이디
 	private String userPwd; //비밀번호
 	private String deptCode; //부서코드
@@ -39,9 +36,4 @@ public class MemberDto {
 	private String secondaryUsese; //2차 인증 사용 여부 
 	private String rankBcode; // 직급대분류 코드 
 	private String rankScode; //직급소분류 코드 
-	private String regDate;
-	private String modDate;
-	private String regId;
-	private String modId;
-	private String delYn;
 }
