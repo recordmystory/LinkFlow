@@ -82,7 +82,7 @@
 
           <a class="nav-link" data-toggle="dropdown" href="#">
             
-            <span class="resultArea">게시판</span>
+            <span class="resultArea"></span>
             <i class="fa-solid fa-caret-down"></i>
           </a>
 
@@ -96,7 +96,7 @@
                 </a>
               </div>
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/booking/booking.room" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-user-clock fa-xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">예약하기</span></div>
                 </a>
@@ -195,7 +195,7 @@
             <span class="dropdown-item dropdown-header">페이지 이동하기</span>
             <div class="dropdown-divider"></div>
 
-            <a href="#" class="dropdown-item"><!--메인 페이지 부르는 contextpath 링크 거셈-->
+            <a href="${contextPath}/main" class="dropdown-item"><!--메인 페이지 부르는 contextpath 링크 거셈-->
               <i class="fa-solid fa-briefcase mr-2"></i> Office
             </a>
             <div class="dropdown-divider"></div>
@@ -221,7 +221,7 @@
                
              </a>
              <div class="dropdown-divider"></div>
-             <a href="#" class="dropdown-item">
+             <a href="${contextPath }/member/loginout.me" class="dropdown-item">
                <i class="fas fa-solid fa-right-from-bracket"></i> 로그아웃 
                
              </a>
