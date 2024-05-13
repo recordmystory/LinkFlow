@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookingController {
 
-	@GetMapping("/booking.room")
+	@GetMapping("/bk.room")
 	public String bookingPage() {
-		return "/booking/bookingRoom.jsp";
+		return "booking/bookingRoom.jsp";
 	}
 	
 }
