@@ -1,0 +1,15 @@
+package com.mm.linkflow.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/project")
+public class ProjectController {
+
+	@GetMapping("/list.page")
+	public String test() {
+		return "project/list";
+	}
+}
