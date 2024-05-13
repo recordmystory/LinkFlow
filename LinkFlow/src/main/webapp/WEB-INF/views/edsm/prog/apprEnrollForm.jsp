@@ -11,8 +11,6 @@
 
 <!-- ckedtior -->
 <script src="${contextPath}/resources/ckeditor5/build/ckeditor.js"></script>
-<!-- jstree CSS 파일 추가 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
 <style>
 	.wrapper{
@@ -157,10 +155,6 @@
         display: flex;
     }
 
-    .searchUser{
-        display: flex;
-        flex-direction: row;
-    }
 
     .approval-line-content{
         display: flex;
@@ -277,18 +271,20 @@
     }
 </style>
 
+<!-- jstree CSS 파일 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-
+	<div class="LinkFlowMainSection">
+	<jsp:include page="/WEB-INF/views/common/sidebar/edsm/edsmSidebar.jsp"/>
 	<!-- 이 위치에 script 태그가 꼭 위치해야함 다른곳에 넣으면 제대로 작동 안함 -->
 	<!-- jstree JavaScript 파일 추가 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
-	<div class="LinkFlowMainSection">
-		<jsp:include page="/WEB-INF/views/common/sidebar/edsm/edsmSidebar.jsp"/>
 	
         <div class="LinkFlowMainContent">
             
@@ -406,7 +402,6 @@
 	                    </div>
 	                  </div>
 	                </div>
-	                
                 </section>
                 <!-- /.content -->
             </div>
@@ -451,8 +446,9 @@
                          </div>
                        </div>
                      </div>
+                     </div>
                    </form>
-
+										
                    </div><!--searchUser 끝-->
 
                    <div class="row">

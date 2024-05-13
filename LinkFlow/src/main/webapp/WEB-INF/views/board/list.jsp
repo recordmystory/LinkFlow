@@ -17,8 +17,11 @@
     width: 100%;
     min-height: 1500px;
    
-
-
+    display: flex;
+}
+.LinkFlowMainContent{
+    width: 100%;
+    min-width: 1260px;
     background-color: #f4f6f9;
     min-height: 400px;
     padding: 30px;
