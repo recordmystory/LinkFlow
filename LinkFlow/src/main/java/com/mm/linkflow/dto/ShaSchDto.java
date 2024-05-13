@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class shaSchDto extends CommonDto{
+public class ShaSchDto extends CommonDto{
 	private String shareId;
 	private String schNo;
 }

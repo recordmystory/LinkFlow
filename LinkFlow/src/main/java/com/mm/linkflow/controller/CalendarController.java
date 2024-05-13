@@ -13,13 +13,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CalendarController {
 	
+	//calendarMain 띄우기
 	@GetMapping("/calMain.page")
 	public String calendarMain() {
 		return "calendar/calendarMain";
 	}
 	
+	//schWasteList 띄우기
 	@GetMapping("/wasteList.page")
 	public String schWasteList() {
 		return "calendar/schWasteList";
 	}
+	
+	//calMain - 일정 등록 
+	
+	
+	
+	
 }

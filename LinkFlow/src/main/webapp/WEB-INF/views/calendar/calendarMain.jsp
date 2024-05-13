@@ -461,7 +461,7 @@
                     </div>
               </div>
               <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn blue-button" style="color: white;">등록</button>
+                  <button type="button" id="schInsertButton" class="btn blue-button" style="color: white;">등록</button>
                   <button type="button" class="btn gray-button" style="color: white;">취소</button>
               </div>
           </div>
@@ -1037,6 +1037,26 @@
           // schInsertModal 닫힐 때
           $('#schInsertModal').on('hidden.bs.modal', function(e) {
               $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
+              
+          //등록 버튼 schInsertButton 클릭시 insert
+           $('.schInsertButton').click(function() {
+           	 var schInsert = {
+           			 //등록하기 폼 보고 다시 쓰기
+           			 title: $("#schContent").val, 
+                 start: $("#startDate").val, 
+                 end: $("#endDate").val, 
+                 address: $("#address").val,
+                 color: $("color").val,
+                 notifyYn: $("notifyYn").val,
+           	 };
+           	 //db에 넣기 addEvent사용
+           	 if()
+           		 
+           			 
+           	 
+           };
+          
+          
         });
       });
 
