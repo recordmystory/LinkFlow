@@ -38,44 +38,32 @@
 </style>
 </head>
 <body>
- <div class="LinkFlowSidebar">
-  <!-- Main Sidebar Container -->
-  <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
-
-  <!-- Sidebar -->
+<div class="LinkFlowSidebar">
+ <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
   <div class="sidebar">
-
-  <!-- Sidebar Menu -->
-  <nav class="linkfoiwsideMenu">
-
-    <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
-    <div class="LinkFlowInsertBtnArea">
-      <a href="#" class="btn btn-block bg-gradient-primary btn-lg" style="color:white">게시글 작성하기</a>
-  
-    </div>
+  	<nav class="linkfoiwsideMenu">
+    	<div class="LinkFlowInsertBtnArea">
+      	<a href="#" class="btn btn-block bg-gradient-primary btn-lg" style="color:white">게시글 작성하기</a>
+    	</div>
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-      <li class="sidebarName">
-        <span>게시판</span>
-      </li><br>
-  
-      <li class="nav-item">
-          <a href="#" class="nav-link middleName">
-            <i class="nav-icon far-2xl fa-solid fa-check"></i>
-            <p>사내공지</p>
-          </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="#" class="nav-link middleName">
-          <i class="nav-icon far fa-solid fa-user-group"></i>
-          <p>
+	      <li class="sidebarName">
+	        <span>게시판</span>
+	      </li><br>
+	      <li class="nav-item">
+	          <a href="#" class="nav-link middleName">
+	            <i class="nav-icon far-2xl fa-solid fa-check"></i>
+	            <p>사내공지</p>
+	          </a>
+	      </li>
+      	<li class="nav-item">
+        	<a href="#" class="nav-link middleName">
+          	<i class="nav-icon far fa-solid fa-user-group"></i>
+          	<p>
               부서게시판
               <i class="fas fa-angle-left right" ></i>
-          </p>
-        </a>
-
-        <ul class="nav nav-treeview" style="padding-left: 20px;">
+          	</p>
+        	</a>
+        	<ul class="nav nav-treeview" style="padding-left: 20px;">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>개발1팀 게시판</p>
@@ -84,8 +72,8 @@
               <i class="far fa-circle nav-icon"></i>
               <p>개발2팀 게시판</p>
             </a>
-        </ul>
-
+        	</ul>
+        </li>	
         <li class="nav-item">
           <a href="#" class="nav-link middleName">
             <i class="nav-icon far-2xl fa-solid fa-gear"></i>
@@ -94,8 +82,7 @@
                 <i class="fas fa-angle-left right" ></i>
             </p>
           </a>
-
-          <ul class="nav nav-treeview" style="padding-left: 20px;">
+         	<ul class="nav nav-treeview" style="padding-left: 20px;">
               <a href="#" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">임시저장</p>
@@ -108,15 +95,11 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">게시판 만들기</p>
               </a>
-          </ul>
-      </li>
-    </li>  
-  </nav>
-  <!-- /.sidebar-menu -->
-  </div>
-  <!-- /.sidebar -->
+       		</ul>
+      	</li>
+  		</nav>
+	  </div>
 	</aside>
-	<!--사이드바 끝-->
 </div>
 </body>
 </html>

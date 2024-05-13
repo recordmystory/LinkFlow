@@ -38,7 +38,6 @@
  .spanCss{
   margin: 10px;
  }
- 
  .mainMenuSelect{
   width: 90%;
   display: flex;
@@ -77,7 +76,7 @@
 	<div class="LinkFlowheader">
     <nav class="navbar navbar-expand navbar-white navbar-light" style="border-bottom: 2px solid #b4bac0;">
       <!-- Left navbar links -->
-      <a class="head_BannerImg" style="padding: 10px;"><img src="/공용디자인/resouse/KakaoTalk_20240426_153730164.png" alt="회사배너" style="height: 50px;"></a>
+      <a class="head_BannerImg" style="padding: 10px;"><img src="${contextPath }/resources/images/common/logo.png" alt="회사배너" style="height: 50px;"></a>
       <ul class="navbar-nav">
         <li class="nav-item dropdown"> 
 
