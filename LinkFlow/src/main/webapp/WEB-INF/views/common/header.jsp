@@ -128,7 +128,7 @@
               </div>
 
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/edsm/prog/listAll.prog" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-clipboard fa-2xl" style="margin-left: 5px;"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">전자결재</span></div>
                 </a>
