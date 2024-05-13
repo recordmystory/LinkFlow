@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="commonMapper">
+	<resultMap id="commonResult" type="CommonDto">
+      <result column="reg_date" property="regDate"/>
+      <result column="mod_date" property="modDate"/>
+      <result column="reg_id" property="regId"/>
+      <result column="mod_id" property="modId"/>
+      <result column="del_yn" property="delYN"/>
+   </resultMap>
+</mapper>
