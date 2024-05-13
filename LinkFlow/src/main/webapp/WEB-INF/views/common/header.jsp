@@ -96,7 +96,7 @@
                 </a>
               </div>
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/booking/booking.room" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-user-clock fa-xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">예약하기</span></div>
                 </a>
