@@ -23,14 +23,4 @@ public class CommonDto {
 	private String modId;
 	private String delYN;
 	
-	
-	
-	// 첨부파일 인서트시 필요한 매개변수 생성자 - 황민우
-	public CommonDto(String regId, String modId) {
-		super();
-		this.regId = regId;
-		this.modId = modId;
-	}
-
-	
 }
