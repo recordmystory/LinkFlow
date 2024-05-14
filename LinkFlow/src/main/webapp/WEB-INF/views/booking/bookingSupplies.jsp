@@ -68,8 +68,8 @@ input[type="checkbox"]:checked {
 						<div class="col-sm-6">
 							<h1 class="m-0">&nbsp;</h1>
 						</div>
-
 					</div>
+				</section>
 					<!-- /.container-fluid -->
 					<div class="bk-table">
 						<div class="card">
@@ -105,30 +105,23 @@ input[type="checkbox"]:checked {
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>10</td>
-											<td>John Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-success">Approved</span></td>
+									<c:choose>
+									<c:when test="${empty assList}">
+										<tr> 
+											<th colspan=4> 조회된 내역이 없습니다. </th>
 										</tr>
-										<tr>
-											<td>9</td>
-											<td>Alexander Pierce</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-warning">Pending</span></td>
-										</tr>
-										<tr>
-											<td>8</td>
-											<td>Bob Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-primary">Approved</span></td>
-										</tr>
-										<tr>
-											<td>7</td>
-											<td>Mike Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-danger">Denied</span></td>
-										</tr>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="ass" items="${ assList }">
+											<tr>
+												<td> </td>
+												<td>${ ass.subName }</td>
+												<td>${ ass.assetsName }</td>
+												<td>${ ass.useYN = 'Y' ? '예약 가능' : '사용중' }</td>
+											</tr>
+										</c:forEach>
+									</c:otherwise>
+									</c:choose>
 									</tbody>
 								</table>
 							</div>
@@ -147,9 +140,6 @@ input[type="checkbox"]:checked {
 					</div>
 			</div>
 			<!-- /.content-wrapper -->
-
-
-
 		</div>
 	</div>
 

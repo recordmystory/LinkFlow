@@ -9,5 +9,7 @@ public interface AttachTestService {
 	
 	int insertAttach(List<AttachDto> list);
 	
-	List<AttachDto> selectAttach(AttachDto at);
+	List<AttachDto> selectAttach(int refNo, String refCategory);
+	
+	int delete(String[] delFileNo);
 }

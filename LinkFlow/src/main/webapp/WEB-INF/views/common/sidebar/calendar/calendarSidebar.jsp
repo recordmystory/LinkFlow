@@ -14,15 +14,6 @@
  
 <style>
  /*캘린더 색지정 스타일*/
-    #detailBtn-modal-body{
-      font-size: large;
-      font-weight: bolder;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 350px;
-    }
     
     .calCheckbox {
     display: none; /* 기본 체크박스 숨기기 */
@@ -66,22 +57,7 @@
         background-color: #ea9979c3 ;
     }
 
- .blue-button, .gray-button{
-    display: flex;
-    text-align: center;
-    justify-content: center;
-  }
 
-  .blue-button{
-    background-color: rgba(5, 93, 209, 0.903); 
-    border: rgba(5, 93, 209, 0.903); 
-    
-   }
-
-   .gray-button{
-    background-color: gray; 
-    border: gray;
-   }
 	.LinkFlowSidebar{
     width: 15%;
     min-width: 300px;
@@ -128,6 +104,8 @@
 </head>
 <body>
 	<div class="LinkFlowSidebar">
+	
+	
     <!-- Main Sidebar Container -->
     <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
 

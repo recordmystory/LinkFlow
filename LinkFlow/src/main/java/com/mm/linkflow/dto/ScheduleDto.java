@@ -21,4 +21,5 @@ public class ScheduleDto extends CommonDto{
 	private Date endDate;
 	private String address;
 	private String notifyYn;
+	private String schImport;
 }

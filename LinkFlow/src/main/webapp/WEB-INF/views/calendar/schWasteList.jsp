@@ -292,14 +292,14 @@
         });
 
       // schDetailModals에서 detailBtn 클릭시
-        $('.blue-button').click(function() {
+        $('.btn-primary').click(function() {
           $('#schDetailModal').modal('hide'); 
           $('#detailBtn-modal-body').html('<div>일정을 복구하시겠습니까?</div>');
             $('#detailBtn').modal('show');
             $('body').addClass('overflow-hidden');   
         });
 
-        $('.gray-button').click(function() {
+        $('.btn-secondary').click(function() {
           $('#schDetailModal').modal('hide'); 
           $('#detailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 복구할 수 없습니다.</p></div>');
             $('#detailBtn').modal('show');

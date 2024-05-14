@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,5 +25,5 @@ public class BookingDto extends CommonDto {
 	private Date bkStartDt;
 	private Date bkEndDt;
 	private String rejContent;
-	private String Status;
+	private String status;
 }
