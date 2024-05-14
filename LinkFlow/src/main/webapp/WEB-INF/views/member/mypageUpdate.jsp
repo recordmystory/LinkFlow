@@ -101,7 +101,7 @@
           
                                     <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>
           
-                                    <p class="text-muted text-center">${loginUser.deptCode}</p><br><br>
+                                    <p class="text-muted text-center">${loginUser.deptName}</p><br><br>
           
                                     
                                     <table class="table text-nowrap">
@@ -210,7 +210,7 @@
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
-                            <form action="" method="post">
+                            <form action="${contextPath}/member/myPageUpdatePwd" method="post">
                             <div class="modal-body">
                               <p>본인 확인을 위해 비밀번호를 한번 더 입력해주세요.<p>
                                 <input type="hidden" name="" value="">

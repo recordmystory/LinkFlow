@@ -136,35 +136,38 @@
         </li>
         <!-- 푸쉬 알람 영역끝 -->
 
-        <!-- 관리자 급 or 인사 관리자만 보여질 버튼-->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fas fa-th-large"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">페이지 이동하기</span>
-            <div class="dropdown-divider"></div>
-
-            <a href="${contextPath}/main" class="dropdown-item"><!--메인 페이지 부르는 contextpath 링크 거셈-->
-              <i class="fa-solid fa-briefcase mr-2"></i> Office
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item"><!--인사관리 페이지 링크 거셈-->
-              <i class="fas fa-users mr-2"></i> HR 
-              
-            </a>
-          
-          </div>  
-         </li>
+       <c:if test="${loginUser.superRight == 'Y' || loginUser.hrRight == 'Y'}">
+				  <li class="nav-item dropdown">
+				    <a class="nav-link" data-toggle="dropdown" href="#">
+				      <i class="fas fa-th-large"></i>
+				    </a>
+				    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+				      <span class="dropdown-item dropdown-header">페이지 이동하기</span>
+				      <div class="dropdown-divider"></div>
+				      <a href="${contextPath}/main" class="dropdown-item">
+				        <i class="fa-solid fa-briefcase mr-2"></i> Office
+				      </a>
+				      <div class="dropdown-divider"></div>
+				      <a href="${contextPath}/hr/hrPage" class="dropdown-item">
+				        <i class="fas fa-users mr-2"></i> HR 
+				      </a>
+				    </div>
+				  </li>
+				</c:if>
+        
+        
+         
        <!--로그인 유저 프로필이 나오는곳-->
          <li class="nav-item dropdown">
            <a class="nav-link" data-toggle="dropdown" href="#">
-             <i class="fas fa-solid fa-user"></i>
-             
+             <img src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>" 
+             style="width: 30px;height: 30px;">
+            
            </a>
            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
              
              <div class="dropdown-divider"></div>
+             
 
              <a href="${contextPath }/member/myinfo.page" class="dropdown-item">
                <i class="fa-solid fa-image-portrait mr-2"></i> 마이페이지

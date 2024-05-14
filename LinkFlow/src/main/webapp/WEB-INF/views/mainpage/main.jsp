@@ -129,7 +129,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${ contextPath }/group/group.page"> 
 							<i class="fa-solid fa-user-group" style="font-size: 35px; padding-left: 10px; padding-top: 13px;"></i>
 							<p class="category_content" style="width: 100px; padding-left: 5.5px; padding-top: 29px;">조직도</p>
 						</a>
@@ -141,7 +141,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${contextPath}/member/myAttendance.page"> 
 							<i class="fa-solid fa-user-clock" style="font-size: 37px; padding-left: 13px; padding-top: 13px;"></i>
 							<p class="category_content" style="padding-left: 13.5px; padding-top: 25px;">근태</p>
 						</a>
