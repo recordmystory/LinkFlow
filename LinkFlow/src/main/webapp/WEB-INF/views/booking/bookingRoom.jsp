@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>my booking list</title>
+
 <!-- jQuery UI -->
 <script src="${contextPath }/resources/htmlTemplate/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- fullCalendar 2.2.5 -->
@@ -14,7 +15,31 @@
 <script src="${contextPath }/resources/htmlTemplate/plugins/fullcalendar/main.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath }/resources/htmlTemplate/dist/js/demo.js"></script>
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/plugins/fontawesome-free/css/all.min.css">
+<!-- fullCalendar -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/plugins/fullcalendar/main.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/dist/css/adminlte.min.css">
+
 <style>
+
+.LinkFlowMainSection {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+.LinkFlowMainContent {
+    width: 100%;
+    min-width: 1260px;
+    background-color: #f4f6f9;
+    min-height:900px;
+    padding: 30px;
+    border-radius: 5px;
+}
 
 /* 테이블 */
 .card-title, .card-tools {
@@ -77,9 +102,8 @@ input[type="checkbox"] {
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-		<jsp:include page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
-
 		<div class="LinkFlowMainSection">
+		<jsp:include page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
 			<div class="LinkFlowMainContent">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -266,8 +290,6 @@ input[type="checkbox"] {
                 })
             </script>
 
-        </div>
-		
 		</div>
 	</div>
 
