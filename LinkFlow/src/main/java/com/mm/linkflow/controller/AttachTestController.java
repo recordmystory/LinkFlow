@@ -40,7 +40,7 @@ public class AttachTestController {
 		for(MultipartFile uploadFile : uploadFiles) {
 			if(uploadFile != null && !uploadFile.isEmpty()) {
 				// 파일 업로드
-				Map<String, String> map = fileUtil.fileUpload(uploadFile, "test", request);
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, "test");
 				
 				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
 //				attachList.add(new AttachDto("user01", "user01", 1, "B", map.get("originName"), map.get("filesystemName"), map.get("filePath")));
