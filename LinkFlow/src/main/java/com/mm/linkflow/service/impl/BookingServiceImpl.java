@@ -21,7 +21,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public int selectBkCount() {
-		return 0;
+		return bkDao.selectBkCount();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<AssetsDto> selectSuppliesList(PageInfoDto pi) {
-		return null;
+		return bkDao.selectSuppliesList(pi);
 	}
 
 	@Override

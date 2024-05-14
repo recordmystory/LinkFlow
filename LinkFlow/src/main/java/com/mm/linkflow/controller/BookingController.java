@@ -29,14 +29,17 @@ public class BookingController {
 		return "booking/bookingRoom";
 	}
 	
-	@GetMapping("/supplies.bk") // 비품리스트조
+	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		int listCount = bkServiceImpl.selectBkCount();
 		
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
-		List<AssetsDto> asslist = bkServiceImpl.selectSuppliesList(pi);
+		List<AssetsDto> assList = bkServiceImpl.selectSuppliesList(pi);
 		
-		return null;
+		mv.addObject("pi",pi)
+		  .addObject("assList",assList)
+		  .setViewName("booking/bookingSupplies");
+		return mv;
 	}
 	
 	@GetMapping("/mylist.bk") // 나의 예약 리스트 

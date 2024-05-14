@@ -25,7 +25,7 @@ public interface BookingService {
     int selectBkUseCount(); // 사용가능 비품 페이징 
     List<AssetsDto> selectSupUse(PageInfoDto pi); // 사용가능 비품 리스트  
     
-    int searchBkCount(String type, String keyword); // 검색한 비품 페이징 
+    int searchBkCount(String type, String keyword); // 검색한 비품 페이징
     List<AssetsDto> selectSearchSup(PageInfoDto pi); // 검색한 비품 리스트 
     
     int insertBooking(BookingDto bk); // 예약하기 
@@ -33,7 +33,5 @@ public interface BookingService {
     int modBooking(BookingDto bk); // 예약 수정 
     
     BookingDto selectDetailBk(BookingDto bk); // 예약 상세보기
-    
-    
     
 }

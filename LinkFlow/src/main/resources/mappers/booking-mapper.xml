@@ -20,6 +20,7 @@
 	<result column="use_yn" property="useYN"/>
 	<result column="main_code" property="mainCode"/>
 	<result column="sub_code" property="subCode"/>
+	<result column="sub_name" property="subName"/>
 </resultMap>
  
 
@@ -28,6 +29,20 @@
 	  from tb_assets
 	 where main_code = '003-'
 	   and del_yn = 'N'
+</select>
+
+<select id="selectSuppliesList" resultMap="assResult">
+	select
+		   sub_name
+		  ,assets_name
+		  ,use_yn
+      from
+       	   tb_assets a 
+      join tb_common c using (main_code)
+     where del_yn ='N'
+       and main_code='003-'
+       and a.sub_code= c.sub_code
+     order by assets_no desc
 </select>
 
 
