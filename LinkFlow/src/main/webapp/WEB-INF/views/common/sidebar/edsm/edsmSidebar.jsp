@@ -9,6 +9,12 @@
 <meta charset="UTF-8">
 <title>전자결재 사이드바</title>
 
+<!-- jstree CSS 파일 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<!-- jstree JavaScript 파일 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
 <style>
 	.LinkFlowSidebar{
 	   width: 15%;
@@ -187,7 +193,8 @@
        </a>
      
      </li>
-
+		
+		<c:if test="${loginUser.superRight == 'Y' or loginUser.hrRight == 'Y'}">
      <li class="nav-item">
 
        <a href="#" class="nav-link middleName">
@@ -217,7 +224,8 @@
 
        </ul>
      </li>
-       
+    </c:if>
+     
    </nav>
    <!-- /.sidebar-menu -->
    </div>
