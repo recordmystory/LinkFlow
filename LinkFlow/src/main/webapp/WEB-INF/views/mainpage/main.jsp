@@ -117,7 +117,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${ contextPath }/board/list.do"> 
 							<i class="fa-regular fa-clipboard" style="font-size: 45px; padding-left: 15px; padding-top: 7px;"></i>
 							<p class="category_content" style="width: 100px; padding-left: 6px; padding-top: 27px;">게시판</p>
 						</a>
