@@ -84,7 +84,7 @@
     
     /* 항상 사용할 CSS 추가 */
     tbody{
-      background-color: white;
+      background-color: white !important;
     }
     
     /* 해당 페이지에서 사용할 CSS 추가 */
