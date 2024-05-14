@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,14 +32,15 @@ public class AttachTestController {
 	}
 	
 	@PostMapping("/insert.test")
-	public String insert(List<MultipartFile> uploadFiles) {
+	public String insert(List<MultipartFile> uploadFiles, HttpServletRequest request) {
+		
 		
 		List<AttachDto> attachList = new ArrayList<>();
 		
 		for(MultipartFile uploadFile : uploadFiles) {
 			if(uploadFile != null && !uploadFile.isEmpty()) {
 				// 파일 업로드
-				Map<String, String> map = fileUtil.fileUpload(uploadFile, "test");
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, "test", request);
 				
 				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
 //				attachList.add(new AttachDto("user01", "user01", 1, "B", map.get("originName"), map.get("filesystemName"), map.get("filePath")));
@@ -61,12 +64,7 @@ public class AttachTestController {
 	@GetMapping("/list.test")
 	public ModelAndView list(ModelAndView mav) {
 		
-		AttachDto at = AttachDto.builder()
-				                .refNo(1)
-				                .refCategory("B")
-				                .build();
-		
-		List<AttachDto> attachList = attachTestService.selectAttach(at);
+		List<AttachDto> attachList = attachTestService.selectAttach(1, "B");
 		
 		mav.addObject("attachList", attachList)
 		   .setViewName("test/attachListTest");

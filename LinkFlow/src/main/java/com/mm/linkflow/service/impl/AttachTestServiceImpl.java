@@ -18,21 +18,30 @@ public class AttachTestServiceImpl implements com.mm.linkflow.service.service.At
 
 	@Override
 	public int insertAttach(List<AttachDto> list) {
-		int result2 = 1;
+		int result = 0;
 		// attachment insert
 		if(!list.isEmpty()) {
-			result2 = 0;
 			for(AttachDto at : list) {
-				result2 += attachTestDao.insertAttach(at);
+				result += attachTestDao.insertAttach(at);
 			}
 		}
-		return result2;
+		return result;
 	}
 
 
 	@Override
-	public List<AttachDto> selectAttach(AttachDto at) {
+	public List<AttachDto> selectAttach(int refNo, String refCategory) {
+	 	AttachDto at = AttachDto.builder()
+		         				.refNo(refNo)
+		         				.refCategory(refCategory)
+		         				.build();
 		return attachTestDao.list(at);
+	}
+
+
+	@Override
+	public int delete(String[] delFileNo) {
+		return attachTestDao.delete(delFileNo);
 	}
 
 }

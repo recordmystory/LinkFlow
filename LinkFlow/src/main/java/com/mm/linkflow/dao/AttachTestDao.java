@@ -21,5 +21,9 @@ public class AttachTestDao {
 	public List<AttachDto> list(AttachDto at){
 		return sqlSession.selectList("attachMapper.selectAttach", at);
 	}
+	
+	public int delete(String[] delFileNo) {
+		return sqlSession.delete("attachMapper.deleteAttach", delFileNo);
+	}
 
 }

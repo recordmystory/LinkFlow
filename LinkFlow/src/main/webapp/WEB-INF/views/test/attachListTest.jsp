@@ -13,7 +13,7 @@
 		<tr>
 			<td>
 				<c:forEach var="at" items="${attachList}"> 
-					<p>${ at.originName }</p>
+					<a href="${ contextPath }${ at.filePath } + ${ at.filesystemName}" download="${ at.originName }">${ at.originName }</a>
 				</c:forEach>
 			</td>
 		</tr>
