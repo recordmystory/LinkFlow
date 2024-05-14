@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+
+	<resultMap id="categoryResult" type="BoardCategoryDto" extends="commonMapper.commonResult">
+		<id column="board_category" property="boardCategory" />
+		<result column="category_name" property="categoryName" />
+		<result column="dept_code" property="deptCode" />
+		<result column="category_type" property="categoryType" />
+	</resultMap>
+	
+	<select id="selectBoardCategory" resultMap="categoryResult">
+		select 
+				BOARD_CATEGORY
+			, CATEGORY_NAME
+			, DEPT_CODE
+			, CATEGORY_TYPE
+		from tb_category
+		<if test="loginUser.superRight != 'Y' and loginUser.board != 'Y'">
+			join tb_member using(dept_code);
+			where
+				dept_code = #{loginUser.deptCode};
+		</if>
+	</select>
+	
+		
+</mapper>

@@ -121,7 +121,7 @@
             <div class="row mainMenuSelect">
 
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/board/list.do" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-chalkboard fa-2xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">게시판</span></div>
                 </a>
