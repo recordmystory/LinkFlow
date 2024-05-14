@@ -164,7 +164,7 @@
 						</a>
 					</span> 
 						<span class="menubar_category"> 
-							<a href=""> 
+							<a href="${ contextPath }/edsm/prog/listAll.prog"> 
 								<i class="fa-solid fa-file-invoice" style="font-size: 42px; padding-left: 17px; padding-top: 11px;"></i>
 								<p class="category_content" style="width: 100px; padding-top: 24px; transform: translateX(-3px);">전자결재</p>
 						</a>
@@ -228,12 +228,12 @@
 							<div
 								style="width: 90%; height: 90%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
 								<div style="margin-bottom: 10px;">
-									<a class="btn btn-outline-secondary">대기</a> 
-									<a class="btn btn-outline-secondary">확인</a>
+									<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listWait.prog">대기</a> 
+									<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listCheck.prog">확인</a>
 								</div>
 								<div>
-									<a class="btn btn-outline-secondary">예정</a> 
-									<a class="btn btn-outline-secondary">진행</a>
+									<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listPlan.prog">예정</a> 
+									<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listProg.prog">진행</a>
 								</div>
 							</div>
 						</div>
