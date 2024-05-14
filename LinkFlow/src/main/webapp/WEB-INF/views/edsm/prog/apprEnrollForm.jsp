@@ -410,7 +410,7 @@
           </div>
           <div class="modal-body">
             <div class="row" style="min-width: 1400px;">
-              <div class="card-body">
+              <div class="card-body d-flex justify-content-center">
 
                   <form action="xxxxxxx" method="post">
                    <div class="searchUser">
@@ -884,238 +884,238 @@
 
           });
           
-          // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
-          $('#saveData').click(function(){
+         // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
+            $('#saveData').click(function(){
 
-            $('#approvalSelectedArea1').text($('.approvalName1').text());
-            $('#approvalSelectedArea2').text($('.approvalName2').text());
+              $('#approvalSelectedArea1').text($('.approvalName1').text());
+              $('#approvalSelectedArea2').text($('.approvalName2').text());
 
-            let $refUser = '';
-            let refNameCount = $('.referenceName').length;
+              let $refUser = '';
+              let refNameCount = $('.referenceName').length;
 
-            if(refNameCount >= 2){
-              $('.referenceName').each(function(index){
-                if(index > 0) {
-                  $refUser += ' / ';
+              if(refNameCount >= 2){
+                $('.referenceName').each(function(index){
+                  if(index > 0) {
+                    $refUser += ' / ';
+                  }
+
+                  $refUser += $(this).text();
+
+                });
+              } else if (refNameCount == 1){
+                $refUser = $('.referenceName').text();
+              } else {
+                $refUser = '';
+              }
+
+              $('#refSelectedArea').text($refUser);
+                  
+            });
+
+
+          });
+
+          // 결재선 설정 모달 스크립트
+          $('#kt_docs_jstree_basic').jstree({
+        "core" : {
+            "themes" : {
+                "responsive": false
+            }
+        },
+        "types" : {
+            "default" : {
+                "icon" : "fa fa-folder"
+            },
+            "group" : {
+                "icon" : "fa-solid fa-user-group"
+            },
+            "building" : {
+                "icon" : "fa-solid fa-building"
+            },
+            "person" : {
+                "icon" : "fa-solid fa-person"
+            }
+        },
+        "plugins": ["types"]
+    }).on('select_node.jstree', function (e, data) {
+        var node = data.node;
+        
+        if (node.type === "person") {
+            var personName = node.text;
+            
+            var isExistingName = $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').length > 0;
+            
+            if (!isExistingName) {
+                var html = '<div class="NameArea">' + personName +'<input type="checkBox"></div>';
+                
+                $('.resultNameArea').append(html);
+            } else {
+                // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
+                $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
+            }
+        }
+    });
+
+
+          document.querySelector('.approvalIn').addEventListener('click', function() {
+                var nameAreas = document.querySelectorAll('.NameArea');
+                var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
+                var maxApprovalCount = 2;
+
+            
+                if (existingApprovalCount >= maxApprovalCount) return;
+
+                var currentIndex = existingApprovalCount + 1;
+
+                nameAreas.forEach(function(nameArea) {
+                    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+                    if (checkbox && existingApprovalCount < maxApprovalCount) {
+                        var nameValue = nameArea.textContent.trim();
+
+                    
+                        var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
+                        if (existingElement) return;
+
+                        var className = 'approvalName' + currentIndex;
+
+                        var newElement = document.createElement('div');
+                        newElement.className = className;
+                        newElement.textContent = `${nameValue}`;
+
+                        document.querySelector('.approvalArea').appendChild(newElement);
+
+                        nameArea.remove();
+
+                        existingApprovalCount++;
+                        currentIndex++;
+                    }
+                });
+            });
+
+          document.querySelector('.approvalOut').addEventListener('click', function() {
+              var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
+              var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+
+              moveApprovalNames(approvalNames1);
+              moveApprovalNames(approvalNames2);
+          });
+
+          function moveApprovalNames(approvalNames) {
+              approvalNames.forEach(function(approvalName) {
+                  var nameText = approvalName.textContent.trim();
+
+                  var resultName = document.createElement('div');
+                  resultName.className = 'NameArea';
+                  resultName.textContent = nameText;
+
+                  var newCheckbox = document.createElement('input');
+                  newCheckbox.type = 'checkbox';
+                  resultName.appendChild(newCheckbox);
+
+                  document.querySelector('.resultNameArea').appendChild(resultName);
+
+                  approvalName.remove();
+              });
+          }
+
+          
+
+        document.querySelector('.referenceIn').addEventListener('click', function() {
+        var nameAreas = document.querySelectorAll('.NameArea');
+        
+        nameAreas.forEach(function(nameArea) {
+            var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+            if (checkbox) {
+                var nameValue = nameArea.textContent.trim();
+                
+               
+                var existingElement = document.querySelector('.referenceArea .referenceName');
+                if (existingElement && existingElement.textContent.trim() === nameValue) {
+                    return; 
                 }
 
-                $refUser += $(this).text();
-
-              });
-            } else if (refNameCount == 1){
-              $refUser = $('.referenceName').text();
-            } else {
-              $refUser = '';
-            }
-
-            $('#refSelectedArea').text($refUser);
+                var referenceName = document.createElement('div');
+                referenceName.className = 'referenceName';
+                referenceName.textContent = nameValue;
+                document.querySelector('.referenceArea').appendChild(referenceName);
                 
-          });
-
-
+                nameArea.remove();
+                }
+            });
         });
 
-        // 결재선 설정 모달 스크립트
-        $('#kt_docs_jstree_basic').jstree({
-      "core" : {
-          "themes" : {
-              "responsive": false
-          }
-      },
-      "types" : {
-          "default" : {
-              "icon" : "fa fa-folder"
-          },
-          "group" : {
-              "icon" : "fa-solid fa-user-group"
-          },
-          "building" : {
-              "icon" : "fa-solid fa-building"
-          },
-          "person" : {
-              "icon" : "fa-solid fa-person"
-          }
-      },
-      "plugins": ["types"]
-  }).on('select_node.jstree', function (e, data) {
-      var node = data.node;
-      
-      if (node.type === "person") {
-          var personName = node.text;
-          
-          var isExistingName = $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').length > 0;
-          
-          if (!isExistingName) {
-              var html = '<div class="NameArea">' + personName +'<input type="checkBox"></div>';
+        document.querySelector('.referenceOut').addEventListener('click', function() {
               
-              $('.resultNameArea').append(html);
-          } else {
-              // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
-              $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
-          }
-      }
-  });
+              var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
 
-
-        document.querySelector('.approvalIn').addEventListener('click', function() {
-              var nameAreas = document.querySelectorAll('.NameArea');
-              var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
-              var maxApprovalCount = 2;
-
-          
-              if (existingApprovalCount >= maxApprovalCount) return;
-
-              var currentIndex = existingApprovalCount + 1;
-
-              nameAreas.forEach(function(nameArea) {
-                  var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-                  if (checkbox && existingApprovalCount < maxApprovalCount) {
-                      var nameValue = nameArea.textContent.trim();
-
+              
+              approvalNames.forEach(function(referenceName) {
                   
-                      var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
-                      if (existingElement) return;
-
-                      var className = 'approvalName' + currentIndex;
-
-                      var newElement = document.createElement('div');
-                      newElement.className = className;
-                      newElement.textContent = `${nameValue}`;
-
-                      document.querySelector('.approvalArea').appendChild(newElement);
-
-                      nameArea.remove();
-
-                      existingApprovalCount++;
-                      currentIndex++;
-                  }
+                  var nameValue = referenceName.textContent.trim();
+                  
+                  var resultNameArea = document.querySelector('.resultNameArea');
+                 
+                  var nameArea = document.createElement('div');
+                  nameArea.className = 'NameArea';
+                  nameArea.textContent = nameValue;
+                  
+                  var checkbox = document.createElement('input');
+                  checkbox.type = 'checkbox';
+                  nameArea.appendChild(checkbox);
+                  
+                  resultNameArea.appendChild(nameArea);
+                  
+                  referenceName.remove();
               });
           });
 
-        document.querySelector('.approvalOut').addEventListener('click', function() {
-            var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
-            var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+          document.querySelector('.approvalUpBtn').addEventListener('click', function() {
+              var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+              var approvalName2 = document.querySelector('.approvalArea .approvalName2');
 
-            moveApprovalNames(approvalNames1);
-            moveApprovalNames(approvalNames2);
-        });
+              if (approvalName1 && approvalName2) {
+                  var tempText = approvalName1.textContent;
+                  approvalName1.textContent = approvalName2.textContent;
+                  approvalName2.textContent = tempText;
+              }
+          });
+          document.querySelector('.approvalDownBtn').addEventListener('click', function() {
+              var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+              var approvalName2 = document.querySelector('.approvalArea .approvalName2');
 
-        function moveApprovalNames(approvalNames) {
-            approvalNames.forEach(function(approvalName) {
-                var nameText = approvalName.textContent.trim();
-
-                var resultName = document.createElement('div');
-                resultName.className = 'NameArea';
-                resultName.textContent = nameText;
-
-                var newCheckbox = document.createElement('input');
-                newCheckbox.type = 'checkbox';
-                resultName.appendChild(newCheckbox);
-
-                document.querySelector('.resultNameArea').appendChild(resultName);
-
-                approvalName.remove();
-            });
-        }
+              if (approvalName1 && approvalName2) {
+                  var tempText = approvalName1.textContent;
+                  approvalName1.textContent = approvalName2.textContent;
+                  approvalName2.textContent = tempText;
+              }
+          });
+          document.getElementById('saveData').addEventListener('click', function() {
+            var approvalName1Element = document.querySelector('.approvalName1');
+            var approvalName2Element = document.querySelector('.approvalName2');
 
         
-
-      document.querySelector('.referenceIn').addEventListener('click', function() {
-      var nameAreas = document.querySelectorAll('.NameArea');
-      
-      nameAreas.forEach(function(nameArea) {
-          var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-          if (checkbox) {
-              var nameValue = nameArea.textContent.trim();
-              
-             
-              var existingElement = document.querySelector('.referenceArea .referenceName');
-              if (existingElement && existingElement.textContent.trim() === nameValue) {
-                  return; 
-              }
-
-              var referenceName = document.createElement('div');
-              referenceName.className = 'referenceName';
-              referenceName.textContent = nameValue;
-              document.querySelector('.referenceArea').appendChild(referenceName);
-              
-              nameArea.remove();
-              }
-          });
-      });
-
-      document.querySelector('.referenceOut').addEventListener('click', function() {
-            
-            var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+            var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
+            var frtApprovalElement = document.querySelector('.frtApproval');
+            frtApprovalElement.textContent = approvalName1Text;
 
             
-            approvalNames.forEach(function(referenceName) {
-                
-                var nameValue = referenceName.textContent.trim();
-                
-                var resultNameArea = document.querySelector('.resultNameArea');
-               
-                var nameArea = document.createElement('div');
-                nameArea.className = 'NameArea';
-                nameArea.textContent = nameValue;
-                
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                nameArea.appendChild(checkbox);
-                
-                resultNameArea.appendChild(nameArea);
-                
-                referenceName.remove();
+            var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
+            var scdApprovalElement = document.querySelector('.scdApproval');
+            scdApprovalElement.textContent = approvalName2Text;
+
+            var referenceNameElements = document.querySelectorAll('.referenceName');
+            var textToInsert = '';
+
+            referenceNameElements.forEach(function(referenceNameElement, index) {
+                var text = referenceNameElement.textContent.trim();
+                if (index > 0) {
+                    textToInsert += ', ';
+                }
+                textToInsert += text;
             });
+
+            document.getElementById('refMember').value = textToInsert;
         });
-
-        document.querySelector('.approvalUpBtn').addEventListener('click', function() {
-            var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-            var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-            if (approvalName1 && approvalName2) {
-                var tempText = approvalName1.textContent;
-                approvalName1.textContent = approvalName2.textContent;
-                approvalName2.textContent = tempText;
-            }
-        });
-        document.querySelector('.approvalDownBtn').addEventListener('click', function() {
-            var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-            var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-            if (approvalName1 && approvalName2) {
-                var tempText = approvalName1.textContent;
-                approvalName1.textContent = approvalName2.textContent;
-                approvalName2.textContent = tempText;
-            }
-        });
-        document.getElementById('saveData').addEventListener('click', function() {
-          var approvalName1Element = document.querySelector('.approvalName1');
-          var approvalName2Element = document.querySelector('.approvalName2');
-
-      
-          var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
-          var frtApprovalElement = document.querySelector('.frtApproval');
-          frtApprovalElement.textContent = approvalName1Text;
-
-          
-          var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
-          var scdApprovalElement = document.querySelector('.scdApproval');
-          scdApprovalElement.textContent = approvalName2Text;
-
-          var referenceNameElements = document.querySelectorAll('.referenceName');
-          var textToInsert = '';
-
-          referenceNameElements.forEach(function(referenceNameElement, index) {
-              var text = referenceNameElement.textContent.trim();
-              if (index > 0) {
-                  textToInsert += ', ';
-              }
-              textToInsert += text;
-          });
-
-          document.getElementById('refMember').value = textToInsert;
-      });
     </script>
 </body>
 </html>
