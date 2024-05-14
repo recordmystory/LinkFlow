@@ -31,7 +31,7 @@
 	.contentArea{ 
 	 width: 100%;
 	}
-	.contentInElement{justify-content: space-between; margin-bottom: 30px;}
+	.contentInElement{display: block !important; justify-content: space-between; margin-bottom: 30px;}
 	.dmovePage {
 	   padding: .0rem 0rem;
 	 }
@@ -187,7 +187,7 @@
 
     /* 인쇄  */
     @media print {
-      .LinkFlowSidebar, .btnArea, .document-comment, .draft-inquiry > h6, .document-header, .sign-img-area button, .security-level, .attachment-content > svg{
+      .LinkFlowSidebar, .btnArea, .draft-inquiry > h6, .document-header, .sign-img-area button, .security-level, .attachment-content > svg{
           display: none;
         }
     }
@@ -406,7 +406,7 @@
     
     // 인쇄
     function docPrint(){
-          let initBody = document.body.innerHTML;
+          /* let initBody = document.body.innerHTML;
           window.onbeforeprint = function(){
               printSelectedOptionValue();
               document.body.innerHTML = document.getElementById("draft-inquiry-content").innerHTML;
@@ -414,7 +414,18 @@
           window.onafterprint = function(){
               document.body.innerHTML = initBody;
           }
-          window.print();
+          window.print(); */
+          
+    	   const html = $('html');
+         const printContents =  $('#draft-inquiry-content').html();
+         const printDiv = $("<div class='print-page';></div>");
+
+         html.append(printDiv);
+         printDiv.html(printContents);
+         $('body').css('display','none');
+         window.print();
+         $('body').css('display','block');
+         printDiv.css('display','none');
         };
 
         // 선택된 옵션의 값을 출력하는 함수
