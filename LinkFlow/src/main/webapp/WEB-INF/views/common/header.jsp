@@ -20,57 +20,7 @@
 <script src="${contextPath }/resources/js/htmlTemp/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${contextPath }/resources/js/htmlTemp/adminlte.min.js"></script>
-<style>
-.LinkFlowheader{
-  width: 100%;
-  min-width: 1560px;
-}
-.resultArea{
-	margin-left: 10px;
-	font-weight: bold;
-	font-size: large;
-	color: black;
-}
- .userProfileIMG{
-   width: 25px;
-   margin-left: 20px;
- }
- .spanCss{
-  margin: 10px;
- }
- .mainMenuSelect{
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-  padding: 1%;
- }
- 
- .movePage{
-  min-width: 400px;
- }
- .slimMenu {
-   padding: .0rem 0rem;
- }
-
-.slimMenu {
-   display: flex; /* 아이템들을 수평으로 정렬하기 위해 Flexbox를 사용합니다. */
-   align-items: center; /* 수직 가운데 정렬을 위해 Flexbox를 사용합니다. */
-   width: 150px;
- } 
-
- .slimMenu i {
-   margin-right: 10px; /* 아이콘과 텍스트 사이의 간격을 조정합니다. */
-   font-size: 28px; /* 아이콘 크기를 20px로 설정합니다. */
- }
-
- .slimMenu .spanCss {
-   display: inline-block; /* 텍스트를 인라인 블록 요소로 변경하여 왼쪽 정렬을 할 수 있게 합니다. */
- }
- .slimMenuicon{
-   width: 32px;
- }
-</style>
+<link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 </head>
 <body>
 	<div class="LinkFlowheader">
@@ -121,7 +71,7 @@
             <div class="row mainMenuSelect">
 
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/board/list.do" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-chalkboard fa-2xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">게시판</span></div>
                 </a>

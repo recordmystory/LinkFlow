@@ -1,0 +1,102 @@
+    .wrapper{
+         min-height: 100%;
+         width: 100%;
+      }
+      .LinkFlowheader{
+         width: 100%;
+        min-width: 1560px;
+       
+      }
+     .LinkFlowMainSection{
+         width: 100%;
+         min-height: 1200px;
+        
+         display: flex;
+       
+     }
+     .LinkFlowSidebar{
+         width: 15%;
+         min-width: 300px;
+         min-height: 400px;
+     }
+     .LinkFlowMainContent{
+         width: 100%;
+         min-width: 1260px;
+         background-color: #f4f6f9;
+         min-height: 400px;
+         
+     }
+     .userProfileIMG{
+       width: 25px;
+       margin-left: 20px;
+     }
+     .spanCss{
+      margin: 10px;
+     }
+     .mainMenuSelect{
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      margin: auto;
+      padding: 1%;
+     }
+     .movePage{
+      min-width: 400px;
+     }
+     .resultArea{
+      margin-left: 10px;
+      font-weight: bold;
+      font-size: large;
+      color: black;
+     }
+     .sidebarName{
+      font-size: 32px;
+      font-weight: bold;
+      color: #d0d4db;
+     }
+     .middleName{
+      font-size: 20px;
+      font-weight: bold;
+     }
+     .linkfoiwsideMenu{
+      padding: 0px 20px 0px 20px;
+     
+      margin-top: 38px;
+
+     }
+     .LinkFlowInsertBtnArea{
+       margin-bottom: 20%;
+      
+     }
+     .sideSmall{
+      padding-left: 20px;
+     }
+     .contentInElement{display: flex; justify-content: space-between; margin-bottom: 30px;}
+     .contentArea{ 
+      width: 100%;
+     }
+     
+
+
+     .dmovePage .slimMenu {
+        padding: .0rem 0rem;
+      }
+
+     .slimMenu {
+        display: flex; 
+        align-items: center;
+        width: 150px;
+      } 
+
+      .slimMenu i {
+        margin-right: 10px; 
+        font-size: 28px;
+      }
+
+      .slimMenu .spanCss {
+        display: inline-block; 
+      }
+      .slimMenuicon{
+        width: 32px;
+      }
+ 

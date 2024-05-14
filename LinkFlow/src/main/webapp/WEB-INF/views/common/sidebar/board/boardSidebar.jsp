@@ -91,15 +91,42 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">휴지통</p>
               </a>
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p style="padding-left: 5px;">게시판 만들기</p>
-              </a>
+              <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y' }">
+	              <a href="#" class="nav-link">
+	                <i class="far fa-circle nav-icon"></i>
+	                <p style="padding-left: 5px;">게시판 만들기</p>
+	              </a>
+              </c:if>
        		</ul>
       	</li>
   		</nav>
 	  </div>
 	</aside>
+	
+	<script>
+		$(document).ready(function(){
+			
+			
+			console.log("실행?");
+			$.ajax({
+				url:"${contextPath}/board/selectBoardType.do",
+				type:"post",
+				success:function(result){
+					
+				},error:function(){
+					console.log("게시판 조회 ajax 통신 실패")
+				}
+			})
+			
+			function ajaxSelectBoardSiderbar() {
+				
+			
+			}
+			
+		})
+	
+	</script>
+	
 </div>
 </body>
 </html>

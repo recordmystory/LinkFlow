@@ -14,26 +14,9 @@
 <!-- echarts -->
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
-	.wrapper {
-		min-height: 100%;
-		width: 100%;
-		min-width: 1750px;
-	}
 	
-	.LinkFlowMainSection {
-		width: 100%;
-		height: 100%;
-		min-height: 1500px;
-		display: flex;
-	}
 	
-	.LinkFlowMainContent {
-		width: 100%;
-		background-color: #f4f6f9;
-		min-height: 400px;
-		display: flex;
-		flex-direction: column;
-	}
+	
 	
 	.mainContent_header {
 		height: 200px;
@@ -120,7 +103,7 @@
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<div class="LinkFlowMainSection">
+	<div class="LinkFlowMainSectionMain">
 		<div class="LinkFlowMainContent">
 			<!-- 상단 메뉴바 시작 -->
 			<div class="mainContent_header">
@@ -134,7 +117,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${ contextPath }/board/list.do"> 
 							<i class="fa-regular fa-clipboard" style="font-size: 45px; padding-left: 15px; padding-top: 7px;"></i>
 							<p class="category_content" style="width: 100px; padding-left: 6px; padding-top: 27px;">게시판</p>
 						</a>
