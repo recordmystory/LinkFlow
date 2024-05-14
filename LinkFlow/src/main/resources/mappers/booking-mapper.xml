@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="bkMapper">
+
+<resultMap id="bkResult" type="BookingDto" extends="commonMapper.commonResult">
+	<id column="booking_no" property="bookingNo"/>
+	<result column="booking_id" property="bookingId"/>
+	<result column="dept_code" property="deptCode"/>
+	<result column="assets_no" property="assetsNo"/>
+	<result column="bk_content" property="bkContent"/>
+	<result column="bk_start_dt" property="bkStartDt"/>
+	<result column="bk_end_dt" property="bkEndDt"/>
+	<result column="rej_content" property="rejContent"/>
+	<result column="status" property="status"/>
+</resultMap>
+
+<resultMap id="assResult" type="AssetsDto" extends="commonMapper.commonResult">
+	<id column="assets_no" property="assetsNo"/>
+	<result column="assets_name" property="assetsName"/>
+	<result column="use_yn" property="useYN"/>
+	<result column="main_code" property="mainCode"/>
+	<result column="sub_code" property="subCode"/>
+</resultMap>
+ 
+
+<select id="selectBkCount" resultType="_int">
+	select count(*)
+	  from tb_assets
+	 where main_code = '003-'
+	   and del_yn = 'N'
+</select>
+
+
+</mapper>
