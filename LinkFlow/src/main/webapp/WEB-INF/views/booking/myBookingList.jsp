@@ -10,6 +10,20 @@
 
 <style>
 
+.LinkFlowMainSection {
+	width: 100%;
+	display: flex;
+}
+
+.LinkFlowMainContent {
+	width: 100%;
+	min-width: 1260px;
+	background-color: #f4f6f9;
+	min-height:900px;
+	padding: 30px;
+	border-radius: 5px;
+}
+
 /* 예약관련게시판 */
 .card-title, .card-tools {
 	padding: 10px;
@@ -44,10 +58,8 @@ input[type="checkbox"]:checked {
 <body>
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
-		<jsp:include page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
-
 		<div class="LinkFlowMainSection">
+			<jsp:include page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
 		
 			<div class="LinkFlowMainContent">
 				<!-- Content Header (Page header) -->

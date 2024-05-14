@@ -126,20 +126,20 @@
 						<br>
 
 						<li class="nav-item">
-							<a href="${contextPath }/views/booking/room.bk" class="nav-link middleName"> 
+							<a href="${contextPath }/booking/room.bk" class="nav-link middleName"> 
 								<i class="nav-icon far-2xl fa-solid fa-book"></i>
 								<p>시설 예약</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="${contextPath }/views/booking/supplies.bk" class="nav-link middleName"> 
+							<a href="${contextPath }/booking/supplies.bk" class="nav-link middleName"> 
 								<i class="nav-icon fa-2xl fa-solid fa-book"></i>
 								<p>비품 예약</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="${contextPath }/views/booking/mylist.bk" class="nav-link middleName"> 
+							<a href="${contextPath }/booking/mylist.bk" class="nav-link middleName"> 
 								<i class="nav-icon far-2xl fa-solid fa-book-bookmark"></i>
 								<p>나의 예약 목록</p>
 							</a>
@@ -147,7 +147,7 @@
 
 						<br>
 						<br>
-						<c:if test=${ loginUser.spRight eq 'Y' }>
+						<c:if test="${ loginUser.spRight eq 'Y' }">
 						<li class="nav-item"><a href="#" class="nav-link middleName">
 								<i class="nav-icon far-2xl fa-solid fa-gear"></i>
 								<p>
