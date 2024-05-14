@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" id="userPassword" placeholder="비밀번호를 입력하세요" required oninput="checkIDs();" name="userPwd">
+          <input type="password" class="form-control" id="userPassword" placeholder="비밀번호를 입력하세요" required oninput="checkIDs();" name="userPwd" autocomplete="off">
           <div class="input-group-append">
             <div class="input-group-text">
               <i class="fa-solid fa-key"></i>
@@ -148,6 +148,7 @@ function setCookie(cookieName, value, exdays){
     exdate.setDate(exdate.getDate() + exdays);
     var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
     document.cookie = cookieName + "=" + cookieValue;
+   
 }
  
 function deleteCookie(cookieName){

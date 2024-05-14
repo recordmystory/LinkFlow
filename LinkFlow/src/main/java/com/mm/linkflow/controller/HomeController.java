@@ -32,8 +32,13 @@ public class HomeController {
 		return "login";
 	}
 	
+	@RequestMapping("/main")
+	public String mainfoward() {
+		return "mainpage/main";
+	}
 	
-	@PostMapping("main/mainpage")
+	
+	@PostMapping("/main/mainpage")
 	public void login(MemberDto m, HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		
 		MemberDto loginUser = mService.loginMember(m);
@@ -43,7 +48,7 @@ public class HomeController {
 			if (loginUser != null) {
 				req.getSession().setAttribute("loginUser", loginUser);
 				out.println("alert('" + loginUser.getUserName() +"님이 로그인 하였습니다.');");
-				out.println("location.href= '" + req.getContextPath() +"'/mainpage/main;"); 
+				out.println("location.href= '" + req.getContextPath() + "/main';");
 	        } else {
 	        	out.println("alert('로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.');");
 	        	out.println("history.back();");
