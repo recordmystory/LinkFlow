@@ -89,14 +89,14 @@
                                 <div class="col-12">
                                       
                               <!-- Profile Image -->
-                              <form action="" method="post" enctype="multipart/form-data">
+                              <form action="${contextPath}/member/updateInfo.do" method="post" enctype="multipart/form-data">
                                 <div class="card card-primary card-outline">
                                   <div class="card-body box-profile">
                                     <div class="text-center" style="margin-top: 50px;">
                                       <img class="profile-user-img img-fluid img-circle"
                                           src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
                                           alt="User profile picture" style="min-width: 300px; min-height: 300px;" onclick="$('#profileImgFile').click();">
-                                      <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="">    
+                                      <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="uploadFile">    
                                     </div>
           
                                     <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>
@@ -127,7 +127,7 @@
                                         <tr> 
                                           <td>입사일</td>
                                           <td class="text-right">${loginUser.hireDate}</td>  
-                                </tr></td>  
+                               
                                         </tr>
                                         <tr> 
                                           <td>생년월일</td>

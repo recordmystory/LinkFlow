@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mm.linkflow.dao.MemberDao;
 import com.mm.linkflow.dto.MemberDto;
@@ -18,11 +19,12 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mDao.loginMember(m);
 	}
-
 	@Override
 	public int updateMember(MemberDto m) {
-		
 		return 0;
 	}
 
+	
+
+	
 }
