@@ -57,7 +57,7 @@ public class MemberController {
 		loginUser.setProfileUrl(newProfileUrl);
 		m.setProfileUrl(newProfileUrl);
 		
-		int result = mService.updateMember(m);
+		int result = mService.updateMember(m); 
 		
 	}
 		

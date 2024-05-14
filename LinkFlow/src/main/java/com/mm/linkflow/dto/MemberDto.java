@@ -40,4 +40,5 @@ public class MemberDto extends CommonDto {
 	private String rankBcode; // 직급대분류 코드 
 	private String rankScode; //직급소분류 코드 
 	private int serviceYear; // 근속년수
+	private String deptName; // 부서이름
 }
