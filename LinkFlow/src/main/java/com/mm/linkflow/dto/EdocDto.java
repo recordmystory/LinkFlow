@@ -1,5 +1,7 @@
 package com.mm.linkflow.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,6 @@ public class EdocDto extends CommonDto {
 	private int presDate;
 	private String secCode;
 	private String status;
+	
+	private List<EdocHistDto> edocHistList;
 }
