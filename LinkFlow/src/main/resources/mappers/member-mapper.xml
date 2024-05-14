@@ -27,6 +27,8 @@
 		<result column="SECONDARY_CODE" property="secondaryCode"/>
 		<result column="SECONDARY_USESE" property="secondaryUsese"/>
 		<result column="RANK_BCODE" property="rankBcode"/>
+		<result column="SERVICEYEAR" property="serviceYear"/>
+		
 	</resultMap>	
 	
 <select id="loginMember" resultMap="memberResult">
@@ -37,13 +39,13 @@ SELECT
     c.sub_name position,
     M.USER_NAME,
     M.PHONE,
-    M.BIRTH_DATE,
+    TO_CHAR(M.BIRTH_DATE,'YYYY-MM-DD') BIRTH_DATE,
     M.EDUCATION,
     M.ADDRESS,
     M.ZIP_CODE,
     M.DETAIL_ADD,
-    M.HIRE_DATE,
-    M.RETIRE_DATE,
+    TO_CHAR(M.HIRE_DATE,'YYYY-MM-DD') HIRE_DATE,
+    TO_CHAR( M.RETIRE_DATE,'YYYY-MM-DD') RETIRE_DATE,
     M.SUPER_RIGHT,
     M.HR_RIGHT,
     M.SP_RIGHT,
@@ -59,7 +61,8 @@ SELECT
     M.MOD_DATE,
     M.REG_ID,
     M.MOD_ID,
-    M.DEL_YN
+    M.DEL_YN,
+    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) SERVICEYEAR
 FROM 
     TB_MEMBER M
 JOIN 

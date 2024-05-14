@@ -39,4 +39,5 @@ public class MemberDto extends CommonDto {
 	private String secondaryUsese; //2차 인증 사용 여부 
 	private String rankBcode; // 직급대분류 코드 
 	private String rankScode; //직급소분류 코드 
+	private int serviceYear; // 근속년수
 }

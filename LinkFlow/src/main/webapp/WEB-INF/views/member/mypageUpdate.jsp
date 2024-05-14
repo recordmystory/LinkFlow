@@ -94,14 +94,14 @@
                                   <div class="card-body box-profile">
                                     <div class="text-center" style="margin-top: 50px;">
                                       <img class="profile-user-img img-fluid img-circle"
-                                          src="${contextPath}/resources/images/common/defaultProfile.png"
+                                          src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
                                           alt="User profile picture" style="min-width: 300px; min-height: 300px;" onclick="$('#profileImgFile').click();">
                                       <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="">    
                                     </div>
           
-                                    <h3 class="profile-username text-center" style="margin-top: 30px;">김지우</h3>
+                                    <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>
           
-                                    <p class="text-muted text-center">개발 1팀</p><br><br>
+                                    <p class="text-muted text-center">${loginUser.deptCode}</p><br><br>
           
                                     
                                     <table class="table text-nowrap">
@@ -109,12 +109,12 @@
                                       <tbody>
                                         <tr> 
                                           <td>직책</td>
-                                          <td class="text-right">사원</td>  
+                                          <td class="text-right">${loginUser.position}</td>  
                                         </tr>
                                         <tr> 
                                           <td>휴대폰</td>
                                           <td class="text-right">
-                                              <input type="text" class="form-control-border" value="010-1111-2222" class="text-right" id="phone" name=""><br>
+                                              <input type="text" class="form-control-border" value="${loginUser.phone}" class="text-right" id="phone" name="phone"><br>
                                               <span style="font-size: 15px; color: red;" id="alretArea"></span>
                                           
                                           </td>
@@ -122,23 +122,24 @@
                                         </tr>
                                         <tr> 
                                           <td>E-Mail</td>
-                                          <td class="text-right">kimjiWoo@linkflow.com</td>  
+                                          <td class="text-right">${loginUser.userId}@linkflow.com</td>  
                                         </tr>
                                         <tr> 
                                           <td>입사일</td>
-                                          <td class="text-right">2021/02/13</td>  
+                                          <td class="text-right">${loginUser.hireDate}</td>  
+                                </tr></td>  
                                         </tr>
                                         <tr> 
                                           <td>생년월일</td>
-                                          <td class="text-right">1998/12/15</td>  
+                                          <td class="text-right">${loginUser.birthDate}</td>  
                                         </tr>
                                         <tr> 
                                           <td>근속년수</td>
-                                          <td class="text-right">2년</td>  
+                                          <td class="text-right">${loginUser.serviceYear}년</td>  
                                         </tr>
                                         <tr> 
                                           <td>최종학력</td>
-                                          <td class="text-right">대졸</td>  
+                                          <td class="text-right">${loginUser.education}</td>  
                                         </tr>
                                         <tr> 
                                           <td>주소</td>
@@ -152,15 +153,15 @@
                                                       <div class="col-12">
                                                   
                                                           <div class="input-group input-group">
-                                                              <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="">
+                                                              <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="zipCode" value="${loginUser.zipCode}">
                                                               <span class="input-group-append">
                                                                 <button type="button" class="btn btn-primary btn-flat" onclick="sample6_execDaumPostcode()">주소 찾기</button>
                                                               </span>
                                                           </div><br>
           
-                                                          <input class="form-control" type="text" id="sample6_address" placeholder="주소" name=""><br>
-                                                          <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"name=""><br>
-                                                          <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소" required name="">
+                                                          <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="address" value="${loginUser.address}"><br>
+                                                          <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목" name=""><br>
+                                                          <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소" required name="detailAdd" value="${loginUser.detailAdd}">
                                                       </div>
                                                     
                                                   </div>
