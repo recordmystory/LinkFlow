@@ -152,7 +152,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${ contextPath }/booking/room.bk"> 
 							<i class="fa-regular fa-clock" style="font-size: 45px; padding-left: 11px; padding-top: 9px;"></i>
 							<p class="category_content" style="padding-left: 13.5px; padding-top: 23.5px;">예약</p>
 						</a>
