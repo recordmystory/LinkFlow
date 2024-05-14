@@ -75,44 +75,44 @@
                                   alt="기본이미지" style="min-width: 300px; min-height: 300px;">
                             </div>
   
-                            <h3 class="profile-username text-center" style="margin-top: 30px;">김지우</h3>
+                            <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>
   
-                            <p class="text-muted text-center">개발 1팀</p><br><br>
+                            <p class="text-muted text-center">${loginUser.deptCode}</p><br><br>
   
                             <table class="table text-nowrap">
                              
                               <tbody>
                                 <tr> 
                                   <td>직책</td>
-                                  <td class="text-right">사원</td>  
+                                  <td class="text-right">${loginUser.position}</td>  
                                 </tr>
                                 <tr> 
                                   <td>휴대폰</td>
-                                  <td class="text-right">010-1111-2222</td>  
+                                  <td class="text-right">${loginUser.phone}</td>  
                                 </tr>
                                 <tr> 
                                   <td>E-Mail</td>
-                                  <td class="text-right">kimjiWoo@linkflow.com</td>  
+                                  <td class="text-right">${loginUser.userId}@linkflow.com</td>  
                                 </tr>
                                 <tr> 
                                   <td>입사일</td>
-                                  <td class="text-right">2021/02/13</td>  
+                                  <td class="text-right">${loginUser.hireDate}</td>  
                                 </tr>
                                 <tr> 
                                   <td>생년월일</td>
-                                  <td class="text-right">1998/12/15</td>  
+                                  <td class="text-right">${loginUser.birthDate}</td>  
                                 </tr>
                                 <tr> 
                                   <td>근속년수</td>
-                                  <td class="text-right">2년</td>  
+                                  <td class="text-right">${loginUser.serviceYear}년</td>  
                                 </tr>
                                 <tr> 
                                   <td>최종학력</td>
-                                  <td class="text-right">대졸</td>  
+                                  <td class="text-right">${loginUser.education}</td>  
                                 </tr>
                                 <tr> 
                                   <td>주소</td>
-                                  <td class="text-right">경기도 인천 어딘가</td>  
+                                  <td class="text-right">${loginUser.address} ${loginUser.detailAdd}</td>  
                                 </tr>
                                </tbody> 
                                </table>

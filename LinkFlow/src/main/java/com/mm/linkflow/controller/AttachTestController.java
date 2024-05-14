@@ -40,7 +40,16 @@ public class AttachTestController {
 				Map<String, String> map = fileUtil.fileUpload(uploadFile, "test");
 				
 				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
-				attachList.add(new AttachDto("user01", "user01", 1, "B", map.get("originName"), map.get("filesystemName"), map.get("filePath")));
+//				attachList.add(new AttachDto("user01", "user01", 1, "B", map.get("originName"), map.get("filesystemName"), map.get("filePath")));
+				attachList.add(AttachDto.builder()
+						                .regId("user01")
+						                .modId("user01")
+						                .refNo(1)
+						                .refCategory("B")
+						                .originName(map.get("originName"))
+						                .filesystemName(map.get("filesystemName"))
+						                .filePath(map.get("filePath"))
+						                .build());
 				
 			}
 		}
@@ -52,7 +61,10 @@ public class AttachTestController {
 	@GetMapping("/list.test")
 	public ModelAndView list(ModelAndView mav) {
 		
-		AttachDto at = new AttachDto(1, "B");
+		AttachDto at = AttachDto.builder()
+				                .refNo(1)
+				                .refCategory("B")
+				                .build();
 		
 		List<AttachDto> attachList = attachTestService.selectAttach(at);
 		

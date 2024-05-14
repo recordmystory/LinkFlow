@@ -3,7 +3,6 @@ package com.mm.linkflow.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.MemberService;
 
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class HomeController {
@@ -55,5 +55,4 @@ public class HomeController {
 	        }
 			out.println("</script>");
 	    }
-	
 }
