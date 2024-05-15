@@ -963,7 +963,7 @@
 
                         var newElement = document.createElement('div');
                         newElement.className = className;
-                        newElement.textContent = `${nameValue}`;
+                        newElement.textContent = nameValue;
 
                         document.querySelector('.approvalArea').appendChild(newElement);
 
