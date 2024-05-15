@@ -1,11 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="memberMapper">
-<resultMap type="calendarDto" id="calendarResult" extends="commonMapper.commonResult">
+<mapper namespace="calendarMapper">
+	<resultMap type="calendarDto" id="calendarResult" extends="commonMapper.commonResult">
 		<id column="CAL_NO" property="calNo"/>
 		<result column="DEPT_CODE" property="deptCode"/>
 		<result column="CAL_SUB_CODE" property="calSubCode"/>
+		<result column="CAL_COLOR" property="calColor"/>
+		<collection property="schedules" ofType="scheduleDto" resultMap="scheduleResult"/>
 	</resultMap>
 	
-		
+	<resultMap type="scheduleDto" id="scheduleResult" extends="commonMapper.commonResult">
+     <id column="SCH_NO" property="schNo"/>
+     <result column="SCH_CONTENT" property="schContent"/>
+     <result column="START_DATE" property="startDate"/>
+     <result column="END_DATE" property="endDate"/>
+     <result column="ADDRESS" property="address"/>
+     <result column="SCH_IMPORT" property="schImport"/>
+     <result column="NOTIFY_YN" property="notifyYn"/>
+     <result column="SCH_TITLE" property="schTitle"/>
+    </resultMap>
+						
+<!-- 일정등록 -->
+	 <insert id="insertSch">
+		  INSERT INTO TB_SCHEDULE
+        (
+            SCH_NO,
+            CAL_NO, <!-- 캘린더 생성하고 나면 이 전에 조회쿼리 두고 currval로 번호 가져오게 -->
+            SCH_CONTENT,
+            START_DATE,
+            END_DATE,
+            ADDRESS,
+            SCH_IMPORT,
+            NOTIFY_YN,
+            REG_DATE,
+            MOD_DATE,
+            MOD_ID,
+            DEL_YN,
+            SCH_TITLE
+        )
+        VALUES
+        (
+            SEQ_SCHNO.nextval,
+            '1',
+            #{schContent},
+            #{startDate},
+            #{endDate},
+            #{address},
+            #{schImport},
+            #{notifyYn},
+            SYSDATE,
+            SYSDATE,
+            'test01',
+            'N',
+            #{schTitle}  
+        )
+       
+	</insert>
 </mapper>

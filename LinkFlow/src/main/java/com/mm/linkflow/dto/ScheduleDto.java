@@ -22,4 +22,7 @@ public class ScheduleDto extends CommonDto{
 	private String address;
 	private String notifyYn;
 	private String schImport;
+	private String calColor;
+	private String schTitle;
+
 }

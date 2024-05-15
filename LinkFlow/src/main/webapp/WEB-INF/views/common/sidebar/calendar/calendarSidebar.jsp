@@ -91,13 +91,7 @@
 	.sideSmall{
 	 padding-left: 20px;
 	}
-	 /*일정 등록 모달 스타일*/
-    .schInsertModalBtn{
-      font-weight: bold;
-      font-size: medium;
-      color: rgba(255, 255, 255, 0.744);
-      background-color: #80ace5be;
-    }
+	
 /*여기까지 공용스타일*/
 
 </style>

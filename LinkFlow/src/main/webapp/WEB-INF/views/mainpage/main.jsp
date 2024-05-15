@@ -130,7 +130,7 @@
 						</a>
 					</span> 
 					<span class="menubar_category"> 
-						<a href=""> 
+						<a href="${contextPath}/calendar/calMain.page"> 
 							<i class="fa-regular fa-calendar" style="font-size: 43px; padding-left: 13px; padding-top: 9px;"></i>
 							<p class="category_content" style="padding-left: 13px; padding-top: 26px;">일정</p>
 						</a>

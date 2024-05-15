@@ -7,29 +7,36 @@
 <head>
 <meta charset="UTF-8">
 <title>calendarModal</title>
+<!-- 지도 api -->
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dffz3x1msk&submodules=geocoder"></script>
+	
 <style>
- /*휴지통 상세 정보 모달 스타일*/
- 
-    /*휴지통 스타일*/
-    
-   .blue-button{
-    background-color: rgba(5, 93, 209, 0.903) !important; 
-    border: rgba(5, 93, 209, 0.903); 
-    
+ .wrapper{
+      min-height: 100%;
+      width: 100%;
    }
-   
-   .gray-button{
-    background-color: gray !important; 
-    border: gray;
+  .LinkFlowMainSection{
+      width: 100%;
+      min-height: 1500px;
+      display: flex;
     
+  }
+  .LinkFlowMainContent{
+      width: 100%;
+      min-width: 1260px;
+      background-color: #f4f6f9;
+      min-height: 400px;
+      padding: 30px;
+  }
+  .contentInElement{display: flex; justify-content: space-between; margin-bottom: 30px;}
+  .contentArea{ 
+   width: 100%;
+  }
+  
+  .dmovePage .slimMenu {
+     padding: .0rem 0rem;
    }
-   
-   .blue-button, .gray-button{
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    color:white !important; 
-   }
+    /*여기까지 메인 영역 요소  공용 스타일임 */
      .bin_list_table td, .bin_list_table th{
       text-align: center;
       vertical-align: middle;
@@ -39,8 +46,38 @@
       float: right;
       margin-bottom: 5px;
     }
+    
+    /*상세 모달 스타일 */
+    .schDetailModal_content, .modal-content{
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      margin: 0px 0px 20px 10px;
+    }
 
+    .modal-title{
+      margin-left: 20px;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+    }
+    
+    #schDetailModal_content_text{
+      max-width: 300px;
+    
+    }
 
+    #detailBtn-modal-body{
+      font-size: large;
+      font-weight: bolder;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 350px;
+    }
+ 
+ 
     /*공유캘린더 목록 모달창 스타일*/
     #shareCalMoreModal-body{
       margin: 30px;
@@ -131,11 +168,14 @@
     .modal-title{
       font-size:120%;
     }
-
-
-
-   </style>
-
+     /*일정 등록 모달 스타일*/
+    .schInsertModalBtn{
+      font-weight: bold;
+      font-size: medium;
+      color: rgba(255, 255, 255, 0.744);
+      background-color: #80ace5be;
+    }
+ 
 </style>
 </head>
 <body>
@@ -275,73 +315,76 @@
     </div>
     <!--공유캘린더 더보기 클릭시 모달 shareCalMoreModal end-->
     
-    <!--일정 등록 모달-->
-      <div class="modal fade" id="schInsertModal" tabindex="-1" aria-labelledby="schInsertModal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-              <div class="modal-header justify-content-center">                 
-                <input type="text" class="schInsertModalTitle ml-4" placeholder="제목을 입력해주세요">
-              </div>
-               <div class="modal-body">
-                    <div>
-                      <div class="schDetailModal_content justify-content-end mx-1">
-                        중요일정&nbsp;
-                        <input type="checkbox" class="weste-modal" id="schImport">
-                      </div>
-                      <div class="schDetailModal_content font-weight-bolder">
-                          <label for="recipient-name" class="col-form-label">캘린더</label>
-                          <form method="" >
-                            <div class="form-group mt-1">
-                              <select class="form-select" id="calendarNo" name="calendar">
-                                <option value="01" selected>개인 캘린더</option>
-                                <option value="02">부서 캘린더</option>
-                                <option value="03">회사 캘린더</option>
-                              </select>
-                            </div>
-                      </div>
-                      <div class="schDetailModal_content"> 
-                        <label for="recipient-name" class="col-form-label">일정</label> 
-                          <div class="dateInput col-sm-5 text-sm">
-                            <label for="taskId" class="col-form-label">시작 날짜</label>
-                            <input type="date" class="form-select" id="startDate" name="calendar_start_date">
-                        
-                            <label for="taskId" class="col-form-label">종료 날짜</label>
-                            <input type="date" class="form-select" id="endDate" name="calendar_end_date">
-                          </div>
-                      </div>
-                      <!--조건 걸어야함-->
-                      <div class="schDetailModal_content">
-                        <label for="recipient-name" class="col-form-label">장소</label>
-                        <div class="search mt-1">
-                          <input id="address" type="text" >
-                      	  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
-                   		  </div>                          
-                      </div>
-                      <!---->
-                      <div class="schDetailModal_content">
-                        <label for="recipient-name" class="col-form-label">알림</label>
-                        <div>
-                          30분 전 메일발송
-                          <input type="checkbox" class="weste-modal" id="notifyYn">
-                        </div>
-                      </div>
-                      <div class="schDetailModal_content">
-                        <label for="message-text" class="col-form-label">내용</label>
-                        <textarea id="schContent" class="schInsertModal_content_text mt-2"></textarea>
-                      </div>
-                    </div>
-                    <div class="schDetailModal_content justify-content-start text-sm">
-                      <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
-                    </div>
-              </div>
-              <div class="modal-footer justify-content-center">
-                  <button type="button" id="schInsertButton" class="btn blue-button">등록</button>
-                  <button type="button" class="btn gray-button">취소</button>
-              </div>
-          </div>
-        </div>
-    </div>
-    <!--일정 등록 모달 end-->
+		<!-- 일정 등록 모달 -->
+		<div class="modal fade" id="schInsertModal" tabindex="-1" aria-labelledby="schInsertModal" aria-hidden="true">
+		    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		        <div class="modal-content">
+		            <div class="modal-body">
+		                <form id="scheduleForm">
+		                    <!-- 일정 제목 -->
+		                    <div class="modal-header justify-content-center">
+		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" placeholder="제목을 입력해주세요" required >
+		                    </div>
+		                    <!-- 중요일정 체크박스 -->
+		                    <div class="schDetailModal_content justify-content-end mx-1">
+		                        중요일정&nbsp;
+		                        <input type="checkbox" class="weste-modal" id="schImportBtn" name="schImport">
+		                    </div>
+		                    <!-- 캘린더 선택 -->
+		                    <div class="schDetailModal_content font-weight-bolder">
+		                        <label for="calendarNo" class="col-form-label">캘린더</label>
+		                        <div class="form-group mt-1">
+		                            <select class="form-select" name="calendar">
+		                                <option value="01" selected>개인 캘린더</option>
+		                                <option value="02">부서 캘린더</option>
+		                                <option value="03">회사 캘린더</option>
+		                            </select>
+		                        </div>
+		                    </div>
+		                    <!-- 시작 날짜와 종료 날짜 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="startDate" class="col-form-label">일정</label>
+		                        <div class="dateInput col-sm-5 text-sm">
+		                            <label for="startDate" class="col-form-label" >시작 날짜</label>
+		                            <input type="date" class="form-select" name="startDate" required >
+		                            <label for="endDate" class="col-form-label">종료 날짜</label>
+		                            <input type="date" class="form-select" name="endDate" required >
+		                        </div>
+		                    </div>
+		                    <!-- 장소 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="address" class="col-form-label">장소</label>
+		                        <div class="search mt-1">
+		                            <input type="text" name="address">
+		                            <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
+		                        </div>
+		                    </div>
+		                    <!-- 알림 설정 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="notifyYn" class="col-form-label" >알림</label>
+		                        <div>
+		                            30분 전 메일발송
+		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyBtn">
+		                        </div>
+		                    </div>
+		                    <!-- 일정 내용 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="schContent" class="col-form-label">내용</label>
+		                        <textarea class="schInsertModal_content_text mt-2" name="content" required ></textarea>
+		                    </div>
+		                    <!-- 수정자 아이디 -->
+		                   <input type="hidden" name="modId" id="modId">
+		                </form>
+		            </div>
+		            <div class="modal-footer justify-content-center">
+		                <button type="submit" id="schInsertButton" class="btn blue-button">등록</button>
+		                <button type="button" class="btn gray-button">취소</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<!-- 일정 등록 모달 끝 -->
+
     
     <!--일정 수정 모달 start-->
     <div class="modal fade" id="schUpdateModal" tabindex="-1" aria-labelledby="schUpdateModal" aria-hidden="true">
@@ -788,6 +831,458 @@
           </div>
         </div>
         <!--상세 정보 모달_버튼 모달 ends-->
+    <script>
+   
+  
+
+
+//공유일정 조직도 모달 schShareModal***********************************************
+  $(document).ready(function(){
+    //열기 
+    $('.schShareBtn').click(function(){
+      $('#schShareModal').modal('show');
+      $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+    }); 
+    //설정하기 버튼 클릭시
+    //닫기 클릭시
+  });
+
+//캘린더 모달 end
+
+
+//공유일정 조직도 script start***********************************************
+$('#kt_docs_jstree_basic').jstree({
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "group" : {
+            "icon" : "fa-solid fa-user-group"
+        },
+        "building" : {
+            "icon" : "fa-solid fa-building"
+        },
+        "person" : {
+            "icon" : "fa-solid fa-person"
+        }
+    },
+    "plugins": ["types"]
+}).on('select_node.jstree', function (e, data) {
+    var node = data.node;
     
+    if (node.type === "person") {
+        var personName = node.text;
+        
+        var isExistingName = $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').length > 0;
+        
+        if (!isExistingName) {
+            var html = '<div class="NameArea">' + personName +'<input type="checkBox"></div>';
+            
+            $('.resultNameArea').append(html);
+        } else {
+            // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
+            $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
+        }
+    }
+});
+
+
+    
+      document.querySelector('.referenceIn').addEventListener('click', function() {
+    var nameAreas = document.querySelectorAll('.NameArea');
+    
+    nameAreas.forEach(function(nameArea) {
+        var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+        if (checkbox) {
+            var nameValue = nameArea.textContent.trim();
+            
+          
+            var existingElement = document.querySelector('.referenceArea .referenceName');
+            if (existingElement && existingElement.textContent.trim() === nameValue) {
+                return; 
+            }
+
+            var referenceName = document.createElement('div');
+            referenceName.className = 'referenceName';
+            referenceName.textContent = nameValue;
+            document.querySelector('.referenceArea').appendChild(referenceName);
+            
+            nameArea.remove();
+            }
+        });
+    });
+
+    document.querySelector('.referenceOut').addEventListener('click', function() {
+          
+          var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+
+          
+          approvalNames.forEach(function(referenceName) {
+              
+              var nameValue = referenceName.textContent.trim();
+              
+              var resultNameArea = document.querySelector('.resultNameArea');
+            
+              var nameArea = document.createElement('div');
+              nameArea.className = 'NameArea';
+              nameArea.textContent = nameValue;
+              
+              var checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              nameArea.appendChild(checkbox);
+              
+              resultNameArea.appendChild(nameArea);
+              
+              referenceName.remove();
+          });
+      });
+
+  
+      document.getElementById('saveData').addEventListener('click', function() {
+        var approvalName1Element = document.querySelector('.approvalName1');
+        var approvalName2Element = document.querySelector('.approvalName2');
+
+    
+        var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
+        var frtApprovalElement = document.querySelector('.frtApproval');
+        frtApprovalElement.textContent = approvalName1Text;
+
+        
+        var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
+        var scdApprovalElement = document.querySelector('.scdApproval');
+        scdApprovalElement.textContent = approvalName2Text;
+
+        var referenceNameElements = document.querySelectorAll('.referenceName');
+        var textToInsert = '';
+
+        referenceNameElements.forEach(function(referenceNameElement, index) {
+            var text = referenceNameElement.textContent.trim();
+            if (index > 0) {
+                textToInsert += ', ';
+            }
+            textToInsert += text;
+        });
+
+        document.getElementById('refMember').value = textToInsert;
+   });
+
+
+//공유캘린더 조직도 end***********************************************
+    
+    
+    //공유캘린더 사이드바 더보기 모달*******************************
+      //공유캘린더 더보기 클릭시 목록 조회 모달
+      $(document).ready(function() {
+         //더보기 클릭시
+          $('.shareCalMoreBtn').click(function() {
+            $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+            $('#shareCalMoreModal').modal('show');
+          }); 
+
+         //삭제버튼 클릭시
+         $('.shareCalMoreModal_graybtn').click(function() {
+          $('#shareCalMoreModal').modal('hide'); 
+          $('#detailBtn-modal-body').html('<div>공유된 캘린더를 삭제하시겠습니까?</div>');
+            $('#detailBtn').modal('show');
+            $('body').addClass('overflow-hidden');
+        });
+
+          // shareCalMoreModal 닫힐 때
+          $('#shareCalMoreModal').on('hidden.bs.modal', function(e) {
+              $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
+            });
+
+          //삭제버튼 닫을 때
+          $('#detailBtn').on('hidden.bs.modal', function() {
+            $('body').removeClass('overflow-hidden');
+          });
+          
+          //공유캘린더 조직도 모달 shareCalModalBtn
+          //열기 
+          $('.shareCalModalBtn').click(function(){
+            $('#shareCalModal').modal('show');
+            $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+          }); 
+          //설정하기 버튼 클릭시
+          
+          //닫기 클릭시
+        });
+     //공유캘린더 사이드바 더보기_조직도 script*******************************
+//공유캘린더 start
+    $('#kt_docs_jstree_shareCal').jstree({
+      "core" : {
+          "themes" : {
+              "responsive": false
+          }
+      },
+      "types" : {
+          "default" : {
+              "icon" : "fa fa-folder"
+          },
+          "group" : {
+              "icon" : "fa-solid fa-user-group"
+          },
+          "building" : {
+              "icon" : "fa-solid fa-building"
+          },
+          "person" : {
+              "icon" : "fa-solid fa-person"
+          }
+      },
+      "plugins": ["types"]
+  }).on('select_node.jstree', function (e, data) {
+      var node = data.node;
+      
+      if (node.type === "person") {
+          var personName = node.text;
+          
+          var isExistingName = $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').length > 0;
+          
+          if (!isExistingName) {
+              var html = '<div class="NameArea">' + personName +'<input type="checkBox"></div>';
+              
+              $('.resultNameArea').append(html);
+          } else {
+              // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
+              $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
+          }
+      }
+  });
+
+
+      
+        document.querySelector('.referenceIn').addEventListener('click', function() {
+      var nameAreas = document.querySelectorAll('.NameArea');
+      
+      nameAreas.forEach(function(nameArea) {
+          var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+          if (checkbox) {
+              var nameValue = nameArea.textContent.trim();
+              
+            
+              var existingElement = document.querySelector('.referenceArea .referenceName');
+              if (existingElement && existingElement.textContent.trim() === nameValue) {
+                  return; 
+              }
+
+              var referenceName = document.createElement('div');
+              referenceName.className = 'referenceName';
+              referenceName.textContent = nameValue;
+              document.querySelector('.referenceArea').appendChild(referenceName);
+              
+              nameArea.remove();
+              }
+          });
+      });
+
+      document.querySelector('.referenceOut').addEventListener('click', function() {
+            
+            var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+
+            
+            approvalNames.forEach(function(referenceName) {
+                
+                var nameValue = referenceName.textContent.trim();
+                
+                var resultNameArea = document.querySelector('.resultNameArea');
+              
+                var nameArea = document.createElement('div');
+                nameArea.className = 'NameArea';
+                nameArea.textContent = nameValue;
+                
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                nameArea.appendChild(checkbox);
+                
+                resultNameArea.appendChild(nameArea);
+                
+                referenceName.remove();
+            });
+        });
+
+    
+        document.getElementById('saveData').addEventListener('click', function() {
+          var approvalName1Element = document.querySelector('.approvalName1');
+          var approvalName2Element = document.querySelector('.approvalName2');
+
+      
+          var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
+          var frtApprovalElement = document.querySelector('.frtApproval');
+          frtApprovalElement.textContent = approvalName1Text;
+
+          
+          var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
+          var scdApprovalElement = document.querySelector('.scdApproval');
+          scdApprovalElement.textContent = approvalName2Text;
+
+          var referenceNameElements = document.querySelectorAll('.referenceName');
+          var textToInsert = '';
+
+          referenceNameElements.forEach(function(referenceNameElement, index) {
+              var text = referenceNameElement.textContent.trim();
+              if (index > 0) {
+                  textToInsert += ', ';
+              }
+              textToInsert += text;
+          });
+
+          document.getElementById('refMember').value = textToInsert;
+     }); 
+//공유캘린더 end
+    
+
+ // 캘린더 등록하기 모달(schInsertModal)***********************************************
+    $(document).ready(function() {
+  	    $('.schInsertModalBtn').click(function() {
+  	        $('#schInsertModal').modal('show');
+  	        $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+  	    }); 
+
+  	    // schInsertModal 닫힐 때
+  	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
+  	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
+  	    }); 
+    });
+ //캘린더 일정등록 ajax start **************************************
+	$(document).ready(function() {
+		  // 중요일정 체크박스 클릭 시
+	    $('#schImportBtn').click(function() {
+	        var important = $(this).is(':checked') ? 'Y' : 'N';
+	        $('input[name="schImport"]').val(important);
+	    });
+		  
+	    $('#notifyBtn').click(function() {
+	        var notify = $(this).is(':checked') ? 'Y' : 'N';
+	        $('input[name="notifyYn"]').val(notify);
+	    });
+	    
+	    var mod = '${loginUser.userId}'; 
+        $('input[name="modId"]').val(mod); 
+	    
+   		 $('#schInsertButton').click(function() {
+    	//수정자 == 로그인 아이디
+
+        $.ajax({
+            type: "POST",
+            url: "${contextPath}/calendar/regist.do", // 일정 등록 컨트롤러의 엔드포인트
+            data: $('#scheduleForm').serialize(),
+            success: function(result) {
+            	if (result === "success") {
+                // 성공-  모달 닫기
+                console.log("일정 등록이 성공했습니다.");
+                $("#schInsertModal").text("일정 등록이 성공했습니다.");
+                alert("일정 등록이 성공했습니다."); 
+            	}
+            },
+            error: function(result) {
+                // 요청이 실패했을 때 
+                console.error("일정 등록에 실패했습니다.");
+                alert("일정 등록에 실패했습니다.");
+            }
+        });
+    });
+});
+ 
+ //캘린더 일정등록 ajax end **************************************  
+    
+ 
+  //네이버 지도 api start
+    selectMapList();
+
+//검색한 주소의 정보를 insertAddress 함수로 넘겨준다
+      function searchAddressToCoordinate(address) {
+        naver.maps.Service.geocode({
+            query: address
+        }, function(status, response) {
+            if (status === naver.maps.Service.Status.ERROR) {
+                return alert('Something Wrong!');
+            }
+            if (response.v2.meta.totalCount === 0) {
+                return alert('올바른 주소를 입력해주세요.');
+            }
+            var htmlAddresses = [],
+                item = response.v2.addresses[0],
+                point = new naver.maps.Point(item.x, item.y);
+            if (item.roadAddress) {
+                htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+            }
+            if (item.jibunAddress) {
+                htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+            }
+            if (item.englishAddress) {
+                htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+            }
+
+            insertAddress(item.roadAddress, item.x, item.y);
+            
+        });
+      }
+
+  //주소 검색의 이벤트
+      $('#address').on('keydown', function(e) {
+          var keyCode = e.which;
+          if (keyCode === 13) { // Enter Key
+              searchAddressToCoordinate($('#address').val());
+          }
+      });
+      $('#submit').on('click', function(e) {
+          e.preventDefault();
+          searchAddressToCoordinate($('#address').val());
+      });
+      naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+
+
+  //지도에 마커 찍기
+      function insertAddress(latitude, longitude) {
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(longitude, latitude),
+            zoom: 50,
+            scaleControl: false,
+            logoControl: false,
+            mapDataControl: false,
+            zoomControl: false,
+            zoomControlOptions: {
+              style: naver.maps.ZoomControlStyle.SMALL,
+              position: naver.maps.Position.TOP_LEFT
+            },
+            mapTypeControl: false
+        });
+          var marker = new naver.maps.Marker({
+              map: map,
+              position: new naver.maps.LatLng(longitude, latitude),
+          });
+      }
+  //지도를 그려주는 함수
+      function selectMapList() {
+        
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.3595704, 127.105399),
+            zoom: 10
+        });
+      }
+
+
+  // 지도를 이동하게 해주는 함수
+      function moveMap(len, lat) {
+        var mapOptions = {
+              center: new naver.maps.LatLng(len, lat),
+              zoom: 15
+          };
+          var map = new naver.maps.Map('map', mapOptions);
+          var marker = new naver.maps.Marker({
+              position: new naver.maps.LatLng(len, lat),
+              map: map
+          });
+      }
+//네이버 지도 api end
+</script>
+    
+    
+    </script>
 </body>
 </html>
