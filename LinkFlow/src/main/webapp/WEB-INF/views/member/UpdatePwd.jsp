@@ -78,7 +78,7 @@
 			              </div>
 			              <!-- /.card-header -->
 			              <!-- form start -->
-			              <form action="#" method="post">
+			              <form action="${contextPath}/member/updateUserPassWord" method="post">
 			                <div class="card-body">
 			                    <div class="ExArea">
 			                        <ul>
@@ -91,9 +91,9 @@
 			                   
 			
 			                    <div class="form-group col-5">
-			                
+			                				<input type="hidden" name="userId" value="${loginUser.userId}">
 			                        <label for="exampleInputEmail1">새로운 비밀번호</label>
-			                        <input type="password" class="form-control" id="exampleInputEmail1" placeholder="새로운 비밀번호를 입력하세요" oninput="checkIDs();">
+			                        <input type="password" class="form-control" id="exampleInputEmail1" placeholder="새로운 비밀번호를 입력하세요" oninput="checkIDs();" name="userPwd">
 			                        <span class="PwdCheckArea"></span>
 			                    </div>
 			
@@ -120,68 +120,36 @@
 			        </div>
 			        </section>
         </div>
-        <script>
-          $(document).ready(function() {
-              $('.dropdown-item').click(function() {
-                  var selectedText = $(this).find('.spanCss').text();
-                  $('.resultArea').text(selectedText);
-              });
 
-              
-          });
-          
-          
-        </script>
       <script>
-        function checkIDs() {
-          
-          var id1 = $("#exampleInputEmail1").val().trim();
-          var id2 = $("#exampleInputEmail2").val().trim();
-       
-          
-          if (id1 === id2) {
-            
-            $("#goPass").prop("disabled",false);
-          } else {
-            
-            document.getElementById("goPass").disabled = true;
-          }
-        }
+      $(document).ready(function(){
+    	    var RegExpPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[a-z0-9!@#$%^&*()_+]{10,16}$/;
 
-        $(document).ready(function(){
-            var RegExpPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[a-z0-9!@#$%^&*()_+]{10,16}$/;
-    
-            $("#exampleInputEmail1").on("keyup",function(){
-                var newPwd = $(this).val().trim(); 
-                console.log(newPwd);
-                if(!RegExpPassword.test(newPwd)){ 
-                    $(".PwdCheckArea").text("양식에 맞게 다시입력하세요");
-                } else { 
-                    $(".PwdCheckArea").text(""); 
-                }
-            });
-        });
+    	    $("#exampleInputEmail1, #exampleInputEmail2").on("input", function(){
+    	        var newPwd = $("#exampleInputEmail1").val().trim(); 
+    	        var newPwdcheck = $("#exampleInputEmail2").val().trim(); 
 
-            
-        
-      </script>
-      <script>
-        $(document).ready(function(){
-            
-    
-            $("#exampleInputEmail2").on("keyup",function(){
-                var newPwdcheck = $(this).val().trim(); 
-                var newPwd = $("#exampleInputEmail1").val().trim();
-                console.log(newPwdcheck);
-                console.log(newPwd);
-                if(newPwdcheck != newPwd){ 
-                    $(".PwdreCheckArea").text("비밀번호가 맞지 않습니다. 다시 입력해주세요.");
-                } else { 
-                    $(".PwdreCheckArea").text(""); 
-                }
-            });
-        });
+    	   
+    	        var isPasswordValid = RegExpPassword.test(newPwd);
+    	        
+    	       
+    	        var isMatch = newPwd === newPwdcheck;
 
+    	        
+    	        if (isPasswordValid && isMatch) {
+    	            $("#goPass").prop("disabled", false);
+    	            $(".PwdCheckArea, .PwdreCheckArea").text("");  
+    	        } else {
+    	            $("#goPass").prop("disabled", true);
+    	            
+    	            if (!isPasswordValid) {
+    	                $(".PwdCheckArea").text("비밀번호 형식에 맞게 입력하세요 (영문, 숫자, 특수문자 조합, 10-16자)");
+    	            } else if (!isMatch) {
+    	                $(".PwdreCheckArea").text("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+    	            }
+    	        }
+    	    });
+    	});
       </script>
    
 

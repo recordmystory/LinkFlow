@@ -210,7 +210,7 @@
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
-                            <form action="${contextPath}/member/myPageUpdatePwd" method="post">
+                            
                             <div class="modal-body">
                               <p>본인 확인을 위해 비밀번호를 한번 더 입력해주세요.<p>
                                 <input type="hidden" name="" value="${loginUser.userId}" id="userId">
@@ -219,10 +219,10 @@
                               	
                             </div>
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary left" data-dismiss="modal" id="goPass" disabled>변경하기</button>
+                              <button type="button" onclick="location.href='${contextPath}/member/myPageUpdatePwd'" class="btn btn-primary left" data-dismiss="modal" id="goPass" disabled>변경하기</button>
                               
                             </div>
-                          </form>
+                         
                           </div>
                           <!-- /.modal-content -->
                         </div>

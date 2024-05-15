@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.MemberService;
@@ -46,7 +47,8 @@ public class MemberController {
 		return "member/myAttendance";
 	}
 	
-	@PostMapping("/myPageUpdatePwd")
+	//비밀번호 변경 페이지 포워딩
+	@RequestMapping("/myPageUpdatePwd")
 	public String myPageUpdatePwd() {
 		return "member/UpdatePwd";
 	}
@@ -74,6 +76,20 @@ public class MemberController {
 		int result = mService.checkPassword(m);
 		return result > 0 ? "YYYYY" : "NNNNN";
 		
+	}
+	
+	@PostMapping("/updateUserPassWord")
+	public String updateUserPassWord(MemberDto m,HttpSession session
+			  , RedirectAttributes redirectAttributes) {
+		int result = mService.updatePwd(m);
+		
+		if (result>0) {
+			redirectAttributes.addFlashAttribute("alertMsg","비밀번호 변경이 완료되었습니다.");
+			session.setAttribute("loginUser", mService.loginMember(m));
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg","비밀번호 변경에 실패했습니다.");
+		}
+		return "redirect:/member/myinfo.page";
 	}
 		
 }
