@@ -14,8 +14,13 @@
 <!-- echarts -->
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
-	
-	
+	.LinkFlowMainPageSection{	
+		    width: 100%;
+         min-height: 1500px;
+        
+         display: flex;
+       
+	}
 	
 	
 	.mainContent_header {
@@ -101,9 +106,11 @@
 </style>
 </head>
 <body>
+	<div class="wrapper">
+	
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<div class="LinkFlowMainSectionMain">
+	<div class="LinkFlowMainPageSection">
 		<div class="LinkFlowMainContent">
 			<!-- 상단 메뉴바 시작 -->
 			<div class="mainContent_header">
@@ -409,5 +416,7 @@
         option && myChart.setOption(option);
         // 꺾은선 그래프 끝
     </script>
+	
+	</div>
 </body>
 </html>
