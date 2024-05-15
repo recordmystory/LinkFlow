@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -65,13 +66,13 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public int searchBkCount(String type, String keyword) {
-		return 0;
+	public int searchBkCount(Map<String,String> search) {
+		return bkDao.selectSearchBkCount(search);
 	}
 
 	@Override
-	public List<AssetsDto> selectSearchSup(PageInfoDto pi) {
-		return null;
+	public List<AssetsDto> selectSearchSupList(PageInfoDto pi, Map<String,String> search) {
+		return bkDao.selectSearchSupList(search,pi);
 	}
 
 	@Override

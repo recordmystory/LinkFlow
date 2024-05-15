@@ -45,5 +45,30 @@
      order by assets_no desc
 </select>
 
+<select id="selectSearchBkCount" resultType="_int">
+	select count(*)
+	  from tb_assets a 
+	  join tb_common c using (main_code)
+	 where main_code = '003-'
+       and a.sub_code= c.sub_code
+	   and del_yn = 'N'
+       and ${condition} like '%'|| #{keyword} ||'%'
+</select>
+
+<select id="selectSearchSupList" resultMap="assResult">
+	select
+		   sub_name
+		  ,assets_name
+		  ,use_yn
+      from
+       	   tb_assets a 
+      join tb_common c using (main_code)
+     where del_yn ='N'
+       and main_code='003-'
+       and a.sub_code= c.sub_code
+       and ${condition} like '%'|| #{keyword} ||'%'
+     order by assets_no desc
+</select>
+
 
 </mapper>
