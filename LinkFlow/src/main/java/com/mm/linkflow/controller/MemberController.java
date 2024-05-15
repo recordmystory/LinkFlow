@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,7 +44,14 @@ public class MemberController {
 	}
 	//마이페이지 유저 근태현황 조회 포워딩 
 	@RequestMapping("/myAttendance.page")
-	public String myAttendance() {
+	public String myAttendance(String UserId,Model model) {
+		
+		
+		
+		
+		
+		
+		
 		return "member/myAttendance";
 	}
 	
@@ -91,6 +99,8 @@ public class MemberController {
 		}
 		return "redirect:/member/myinfo.page";
 	}
+	
+	
 		
 }
 

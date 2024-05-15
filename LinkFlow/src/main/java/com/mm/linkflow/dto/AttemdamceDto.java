@@ -1,6 +1,5 @@
 package com.mm.linkflow.dto;
 
-import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +19,7 @@ public class AttemdamceDto extends CommonDto {
 	private String userId;
 	private String startDtime;
 	private String endDtime;
+	private int lateCount; //지각 횟수
+	private int absentCount; //결근 횟수
 }	
 

@@ -4,7 +4,6 @@
 	<resultMap type="MemberDto" id="memberResult" extends="commonMapper.commonResult">
 		<id column="USER_ID" property="userId"/>
 		<result column="USER_PWD" property="userPwd"/>
-		<result column="USER_PWD" property="userPwd"/>
 		<result column="DEPT_CODE" property="deptCode"/>
 		<result column="DEPT_NAME" property="deptName"/>
 		<result column="position" property="position"/>
@@ -41,13 +40,13 @@
 	    c.sub_name position,
 	    M.USER_NAME,
 	    M.PHONE,
-	    TO_CHAR(M.BIRTH_DATE,'YYYY-MM-DD') BIRTH_DATE,
+	    TO_CHAR(M.BIRTH_DATE,'YYYY-MM-DD') as BIRTH_DATE,
 	    M.EDUCATION,
 	    M.ADDRESS,
 	    M.ZIP_CODE,
 	    M.DETAIL_ADD,
 	    TO_CHAR(M.HIRE_DATE,'YYYY-MM-DD') HIRE_DATE,
-	    TO_CHAR( M.RETIRE_DATE,'YYYY-MM-DD') RETIRE_DATE,
+	    TO_CHAR( M.RETIRE_DATE,'YYYY-MM-DD') as RETIRE_DATE,
 	    M.SUPER_RIGHT,
 	    M.HR_RIGHT,
 	    M.SP_RIGHT,
@@ -64,7 +63,7 @@
 	    M.REG_ID,
 	    M.MOD_ID,
 	    M.DEL_YN,
-	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) SERVICEYEAR
+	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) as SERVICEYEAR
 	FROM 
 	    TB_MEMBER M
 	JOIN 
