@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	<resultMap type="AttemdamceDao" id="attemdamceResult" extends="commonMapper.commonResult">
+		<id column="ATTENDANCE_NO" property="attNo"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="START_DTIME" property="startDtime"/>
+		<result column="END_DTIME" property="endDtime"/>
+
+		
+	</resultMap>	
+	
+
+
+
+
+</mapper>

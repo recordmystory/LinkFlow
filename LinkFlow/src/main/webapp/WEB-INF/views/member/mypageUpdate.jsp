@@ -247,7 +247,7 @@
 				        $('#userPwd').on('keyup', function() {
 				            var userId = $('#userId').val(); 
 				            var userPwd = $(this).val(); 
-				            console.log(userId,userPwd);
+				           
 				            
 				            $.ajax({
 				                url: '${contextPath}/member/checkPassword', 
