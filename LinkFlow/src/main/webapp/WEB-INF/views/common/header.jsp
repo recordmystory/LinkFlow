@@ -23,6 +23,16 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 </head>
 <body>
+	<script>
+	    
+	    if("${alertMsg}" !== "") {
+	        
+	        alert("${alertMsg}");
+	        if("${historyBackYN}" === "Y") {
+	            history.back();
+	        }
+	    }
+	</script>
 	<div class="LinkFlowheader">
     <nav class="navbar navbar-expand navbar-white navbar-light" style="border-bottom: 2px solid #b4bac0;">
       <!-- Left navbar links -->

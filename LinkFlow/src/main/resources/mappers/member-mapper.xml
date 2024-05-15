@@ -82,6 +82,11 @@
     	WHERE user_Id = #{userId} AND user_pwd = #{userPwd}
 </select>
 
+<update id="updatePwd">
+UPDATE TB_MEMBER 
+SET USER_PWD =#{userPwd}
+WHERE USER_ID = #{userId}
+</update>
 
 
 

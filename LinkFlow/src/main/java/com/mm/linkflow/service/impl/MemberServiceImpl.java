@@ -28,6 +28,11 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mDao.checkPassword(m);
 	}
+	@Override
+	public int updatePwd(MemberDto m) {
+		
+		return mDao.updatePwd(m);
+	}
 
 	
 
