@@ -30,7 +30,7 @@
 	.contentArea{ 
 	 width: 100%;
 	}
-	.contentInElement{justify-content: space-between; margin-bottom: 30px;}
+	.contentInElement{display: block !important; justify-content: space-between; margin-bottom: 30px;}
 	.dmovePage {
 	   padding: .0rem 0rem;
 	 }
