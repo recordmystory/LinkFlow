@@ -351,18 +351,18 @@
                               <table class="table table-bordered" style="margin-top: 10px;">
                                 <tr>
                                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
-                                  <!-- <th class="table-active" style="text-align: center; vertical-align: middle;"></th> -->
+                                  <th class="table-active" style="text-align: center; vertical-align: middle;">기안서 작성자</th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
                                 </tr>
                                 <tr>
-                                  <!-- <td height="200" width="300"></td> -->
+                                  <td height="200" width="300"></td>
                                   <td height="200" width="300"></td>
                                   <td height="200" width="300"></td>
                                 </tr>
                                 <tr>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;">참조</th>
-                                  <td colspan="2" id="refSelectedArea"><!-- <input type="text" name="refMember" id="refMember" class="form-control" style="width: 300px;"> --></td>
+                                  <td colspan="3" id="refSelectedArea"><!-- <input type="text" name="refMember" id="refMember" class="form-control" style="width: 300px;"> --></td>
                                 </tr>
                               </table>
 
@@ -455,38 +455,32 @@
                                <li data-jstree='{ "type" : "buiding" }'>
                                    LinkFlow
                                    <ul>
-                                       <li data-jstree='{ "type" : "group" }'>
-                                           경영지원부서
-                                           <ul>
-                                               <li data-jstree='{ "selected" : false }'>
-                                                   경영지원팀
-                                                   <ul>
-                                                       <li data-jstree='{ "type" : "person" }'>
-                                                           김경영 대리
-                                                       </li>
-                                                       <li data-jstree='{ "type" : "person" }'>
-                                                           김가렌 사원
-                                                       </li>
-                                                       <li data-jstree='{ "type" : "person" }'>
-                                                           김지우 사원
-                                                       </li>
-                                                   </ul>
-                                               </li>
-                                               <li data-jstree='{ "selected" : false }'>
-                                                   개발부서
-                                                   <ul>
-                                                       <li data-jstree='{ "type" : "person" }'>
-                                                           김개발 대리
-                                                       </li>
-                                                       
-                                                   </ul>
-                                               </li>
-                                           </ul>
-                                       </li>
-                                   </ul>
-                               </li>
-                               
+	                                     <li data-jstree='{ "selected" : false }'>
+	                                         경영지원팀
+	                                         <ul>
+	                                             <li data-jstree='{ "type" : "person" }'>
+	                                                 김경영 대리
+	                                             </li>
+	                                             <li data-jstree='{ "type" : "person" }'>
+	                                                 김가렌 사원
+	                                             </li>
+	                                             <li data-jstree='{ "type" : "person" }'>
+	                                                 김지우 사원
+	                                             </li>
+	                                         </ul>
+	                                     </li>
+	                                     <li data-jstree='{ "selected" : false }'>
+	                                         개발부서
+	                                         <ul>
+	                                             <li data-jstree='{ "type" : "person" }'>
+	                                                 김개발 대리
+	                                             </li>
+	                                             
+	                                         </ul>
+	                                     </li>
+                                    </ul>
                            </ul>
+                               
                           
                          </div><!--jstree 끝-->
                          
@@ -583,6 +577,7 @@
               $('.documentType').change(function(){
               // 휴가신청서 폼 뿌려지게
                 if($(this).val() == 'dayoffForm'){
+                	$('.drafting-content').css('display', 'none');
                  $('.dayoff-table').append(`<h6>신청</h6>
                                             <table class="table table-bordered dayoff-table">
                                               <tbody>
@@ -612,6 +607,7 @@
                                               </tbody>`);
                 
               } else {
+            	  $('.drafting-content').css('display', 'block');
                 $('.dayoff-table').html('');
               }
 
