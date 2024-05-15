@@ -10,9 +10,11 @@ import com.mm.linkflow.dto.PageInfoDto;
 
 public interface BookingService {
 
-	int selectBkCount(); // 페이징 
-	List<BookingDto> selectMyBkList(PageInfoDto pi, MemberDto m); // 나의 예약 리스트
 	
+	int selectBkCount(String userId); //예약리스트 페이징 
+	List<BookingDto> selectMyBkList(PageInfoDto pi, String userId); // 나의 예약 리스트
+	
+	int selectSupCount(); // 비품페이징 
 	List<AssetsDto> selectSuppliesList(PageInfoDto pi); // 비품 리스트
 	
 	List<AssetsDto> selectAssetsList(PageInfoDto pi); // 자산 리스트 

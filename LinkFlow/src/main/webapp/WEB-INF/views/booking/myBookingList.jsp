@@ -82,6 +82,7 @@ input[type="checkbox"]:checked {
 							<div class="card-tools">
 								<div class="input-group input-group-sm" style="width: 120px;">
 									<select id="dropdownOptions" class="form-control">
+										<option value="">전체</option>
 										<option value="WAI">예약대기</option>
 										<option value="COM">예약완료</option>
 										<option value="USE">사용중</option>

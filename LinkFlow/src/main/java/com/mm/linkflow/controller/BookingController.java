@@ -4,6 +4,8 @@ package com.mm.linkflow.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mm.linkflow.dto.AssetsDto;
+import com.mm.linkflow.dto.BookingDto;
+import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.impl.BookingServiceImpl;
 import com.mm.linkflow.util.PagingUtil;
@@ -35,7 +39,7 @@ public class BookingController {
 	
 	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
-		int listCount = bkServiceImpl.selectBkCount();
+		int listCount = bkServiceImpl.selectSupCount();
 		
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<AssetsDto> assList = bkServiceImpl.selectSuppliesList(pi);
@@ -47,8 +51,20 @@ public class BookingController {
 	}
 	
 	@GetMapping("/mylist.bk") // 나의 예약 리스트 
-	public String myBookingPage() {
-		return "booking/myBookingList";
+	public ModelAndView myBookingPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv, HttpSession session) {
+		String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
+		
+		int listCount = bkServiceImpl.selectBkCount(userId);
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		
+		List<BookingDto> bkList = bkServiceImpl.selectMyBkList(pi, userId);
+		
+		mv.addObject("pi",pi)
+		  .addObject("bkList",bkList)
+		  .setViewName("booking/myBookingList");
+		
+		return null;
 	}
 	
 	@GetMapping("/supplies.use") //사용가능한비품 

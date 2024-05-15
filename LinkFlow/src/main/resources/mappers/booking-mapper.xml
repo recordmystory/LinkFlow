@@ -24,7 +24,7 @@
 </resultMap>
  
 
-<select id="selectBkCount" resultType="_int">
+<select id="selectSupCount" resultType="_int">
 	select count(*)
 	  from tb_assets
 	 where main_code = '003-'
@@ -68,6 +68,22 @@
        and a.sub_code= c.sub_code
        and ${condition} like '%'|| #{keyword} ||'%'
      order by assets_no desc
+</select>
+
+<select id="selectBkCount" resultType="_int">
+	select count(*)
+	  from tb_booking
+	 where booking_id = #{userId}
+	   and del_yn = 'N'
+</select>
+
+<select id="selectMyBkList" resultMap="bkResult">
+	select 
+		   main_name
+		  ,sub_name
+		  ,assets_name
+		  ,to_char()
+
 </select>
 
 

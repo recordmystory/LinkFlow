@@ -75,7 +75,7 @@ input[type="checkbox"]:checked {
 					<div class="card">
 						<div class="card-header">
 							<h6 class="card-title">
-								<input type="checkbox"> &nbsp; 예약 가능한 상품만 보기
+								<input type="checkbox" id="useYN"> &nbsp; 예약 가능한 상품만 보기
 							</h6>
 
 							<div class="card-tools">
@@ -155,8 +155,26 @@ input[type="checkbox"]:checked {
 		        			$("#searchForm").submit();
 		        			
 		        			return false; 
-		        		})
-		        	})
+		        		});
+		        		
+		        		/* $('#museYN').change(function(){
+		        			let useYN = $(this).is(':checked');
+		        		    let useResult = useYN ? 'checked' : 'unchecked';
+		        		        
+		        		    $.ajax({
+		        		    	url: '',
+	        		            method: 'GET',
+	        		            data: { use: useResult },
+	        		            success: function(result) {
+	        		                 
+	        		            },
+	        		            error: function() {
+	        		               
+	        		            }
+	        		        });
+	        		    }); */
+		        		 
+		        	});
 					
 				</script>
 			</c:if>

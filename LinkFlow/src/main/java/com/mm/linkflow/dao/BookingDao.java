@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.mm.linkflow.dto.AssetsDto;
+import com.mm.linkflow.dto.BookingDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class BookingDao {
 
 	private final SqlSessionTemplate sql;
 	
-	public int selectBkCount() {
-		return sql.selectOne("bkMapper.selectBkCount");
+	public int selectSupCount() {
+		return sql.selectOne("bkMapper.selectSupCount");
 	}
 
 	public List<AssetsDto> selectSuppliesList(PageInfoDto pi) {
@@ -40,6 +41,18 @@ public class BookingDao {
 		
 		RowBounds rowBounds = new RowBounds(offset , limit);
 		return sql.selectList("bkMapper.selectSearchSupList", search , rowBounds);
+	}
+
+	public int selectBkCount(String userId) {
+		return sql.selectOne("bkMapper.selectBkCount",userId);
+	}
+
+	public List<BookingDto> selectMyBkList(PageInfoDto pi, String userId) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() -1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset , limit);
+		return sql.selectList("bkMapper.selectMyBkList", userId , rowBounds);
 	}
 
 }

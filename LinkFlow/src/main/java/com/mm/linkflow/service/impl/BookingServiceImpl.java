@@ -21,13 +21,18 @@ public class BookingServiceImpl implements BookingService {
 	private final BookingDao bkDao;
 
 	@Override
-	public int selectBkCount() {
-		return bkDao.selectBkCount();
+	public int selectBkCount(String userId) {
+		return bkDao.selectBkCount(userId);
 	}
 
 	@Override
-	public List<BookingDto> selectMyBkList(PageInfoDto pi, MemberDto m) {
-		return null;
+	public List<BookingDto> selectMyBkList(PageInfoDto pi, String userId) {
+		return bkDao.selectMyBkList(pi,userId);
+	}
+	
+	@Override
+	public int selectSupCount() {
+		return bkDao.selectSupCount();
 	}
 
 	@Override
@@ -89,5 +94,9 @@ public class BookingServiceImpl implements BookingService {
 	public BookingDto selectDetailBk(BookingDto bk) {
 		return null;
 	}
+
+	
+
+	
 
 }
