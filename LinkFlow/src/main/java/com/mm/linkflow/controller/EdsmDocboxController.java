@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EdsmDocboxController {
 	
+	@GetMapping("/detail.docbox")
+	public String detail() {
+		return "/edsm/docbox/detail";
+	}
+	
 	@GetMapping("/listAll.docbox")
 	public String listAll() {
 		return "/edsm/docbox/listAll";

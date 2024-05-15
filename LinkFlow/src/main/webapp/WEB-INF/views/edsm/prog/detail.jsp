@@ -31,7 +31,7 @@
 	 width: 100%;
 	}
 	
-	.contentInElement{justify-content: space-between; margin-bottom: 30px;}
+	.contentInElement{display: block !important; justify-content: space-between; margin-bottom: 30px;}
 	.dmovePage {
 	   padding: .0rem 0rem;
 	 }
@@ -136,7 +136,11 @@
   #hoverfile{
     cursor: pointer;
   }
-
+	
+	tbody{
+      background-color: white !important;
+  }
+    
   /* 버튼 간격 조절 */
   button{
     margin-right: 6px !important;
@@ -418,7 +422,7 @@
 
         // 인쇄
         function docPrint(){
-          let initBody = document.body.innerHTML;
+          /*let initBody = document.body.innerHTML;
           window.onbeforeprint = function(){
               printSelectedOptionValue();
               document.body.innerHTML = document.getElementById("draft-inquiry-content").innerHTML;
@@ -426,7 +430,18 @@
           window.onafterprint = function(){
               document.body.innerHTML = initBody;
           }
+          window.print();*/
+          
+          const html = $('html');
+          const printContents =  $('#draft-inquiry-content').html();
+          const printDiv = $("<div class='print-page';></div>");
+
+          html.append(printDiv);
+          printDiv.html(printContents);
+          $('body').css('display','none');
           window.print();
+          $('body').css('display','block');
+          printDiv.css('display','none');
         };
 
         // 선택된 옵션의 값을 출력하는 함수
