@@ -33,7 +33,7 @@
 	.contentArea{ 
 	 width: 100%;
 	}
-	.contentInElement{justify-content: space-between; margin-bottom: 30px;}
+	.contentInElement{display: block !important; justify-content: space-between; margin-bottom: 30px;}
 	.dmovePage {
 	   padding: .0rem 0rem;
 	 }
@@ -262,7 +262,7 @@
       background-color: white;
     }
 
-    .modal-body{
+    .modal-body {
       padding: 0px 0px 0px 0px !important;
     }
     
@@ -351,10 +351,12 @@
                               <table class="table table-bordered" style="margin-top: 10px;">
                                 <tr>
                                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
+                                  <!-- <th class="table-active" style="text-align: center; vertical-align: middle;"></th> -->
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
                                 </tr>
                                 <tr>
+                                  <!-- <td height="200" width="300"></td> -->
                                   <td height="200" width="300"></td>
                                   <td height="200" width="300"></td>
                                 </tr>
@@ -398,7 +400,8 @@
             <!-- /.content-wrapper -->
     </div>
     
-     <!-- 모달 영역 -->
+      
+    <!-- 모달 영역 -->
     <div class="modal fade" id="modal-xl">
       <div class="modal-dialog modal-xl">
         <div class="modal-content" style="min-width: 1400px;">
@@ -410,7 +413,7 @@
           </div>
           <div class="modal-body">
             <div class="row" style="min-width: 1400px;">
-              <div class="card-body d-flex justify-content-center">
+              <div class="card-body">
 
                   <form action="xxxxxxx" method="post">
                    <div class="searchUser">
@@ -563,328 +566,308 @@
         <!-- /.modal-content -->
       </div>
       <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     	
         <script>
-     		// CKEditor
-        var editor;
-        
-        ClassicEditor
-          .create(document.querySelector('#editor'))
-          .then(newEditor => {
-              editor = newEditor;
-          })
-          .catch(error => {
-              console.error(error);
-          });
-        </script>
-
-      <script>
-      $(function(){
-          $('.dropdown-item').click(function() {
-              var selectedText = $(this).find('.spanCss').text();
-              $('.resultArea').text(selectedText);
-
-                
-              });
-
-
-            $('.documentType').change(function(){
-            // 휴가신청서 폼 뿌려지게
-              if($(this).val() == 'dayoffForm'){
-               $('.dayoff-table').append(`<h6>신청</h6>
-                                          <table class="table table-bordered dayoff-table">
-                                            <tbody>
-                                              <tr>
-                                                <th class="table-active dayoff-table-title">휴가종류</th>
-                                                <td>
-                                                  <select class="form-control" id="dayoff-table-type">
-                                                    <option value="">오전반차</option>
-                                                    <option value="">오후반차</option>
-                                                    <option value="">연차</option>
-                                                  </select>
-                                                </td>
-                                              </tr>
-                                              <tr>
-                                                <th class="table-active dayoff-table-title">휴가일자</th>
-                                                <td>
-                                                  <input type="date" name="startDate" id="startDate" class="form-control date">        
-                                                  <span style="margin: 0px 50px 0px 50px; font-weight: bold;">~</span>
-                                                  <input type="date" name="endDate" id="endDate" class="form-control date">
-                                                </td>
+        $(function(){
+              $('.documentType').change(function(){
+              // 휴가신청서 폼 뿌려지게
+                if($(this).val() == 'dayoffForm'){
+                 $('.dayoff-table').append(`<h6>신청</h6>
+                                            <table class="table table-bordered dayoff-table">
+                                              <tbody>
                                                 <tr>
-                                                  <th class="table-active dayoff-table-title">휴가사유</th>
+                                                  <th class="table-active dayoff-table-title">휴가종류</th>
                                                   <td>
-                                                    <textarea name="dayoffReason" id="dayoffReason" placeholder="휴가사유 입력" class="form-control"></textarea>
+                                                    <select class="form-control" id="dayoff-table-type">
+                                                      <option value="">오전반차</option>
+                                                      <option value="">오후반차</option>
+                                                      <option value="">연차</option>
+                                                    </select>
                                                   </td>
                                                 </tr>
-                                            </tbody>`);
-              
-            } else {
-              $('.dayoff-table').html('');
-            }
-
-            // 에디터 내에 문서 양식 뿌리기
-            if($(this).val() == 'letterOfApproval'){
-
-              editor.setData(`<h1>품의서</h1>
-                                  <p>&nbsp;</p>
-                                  <figure class="table" style="width:100%;">
-                                      <table class="ck-table-resized" style="border-style:ridge;">
-                                          <colgroup>
-                                              <col style="width:10.15%;">
-                                              <col style="width:43.98%;">
-                                              <col style="width:10.03%;">
-                                              <col style="width:35.84%;">
-                                          </colgroup>
-                                          <tbody>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                                  <td>&nbsp;</td>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직급</p></td>
-                                                  <td>&nbsp;</td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                                  <td>&nbsp;</td>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성일</p></td>
-                                                  <td>&nbsp;</td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">제목</p></td>
-                                                  <td colspan="3">&nbsp;</td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">품의 사유 및 상세 내역</p></td>
-                                                  <td colspan="3">
-                                                      <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+                                                <tr>
+                                                  <th class="table-active dayoff-table-title">휴가일자</th>
+                                                  <td>
+                                                    <input type="date" name="startDate" id="startDate" class="form-control date">        
+                                                    <span style="margin: 0px 50px 0px 50px; font-weight: bold;">~</span>
+                                                    <input type="date" name="endDate" id="endDate" class="form-control date">
                                                   </td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">예상 비용</p></td>
-                                                  <td colspan="3">&nbsp;</td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
-                                                  <td colspan="3">
-                                                      <p>&nbsp;</p><p>&nbsp;</p>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td colspan="4">
-                                                      <p>&nbsp;</p>
-                                                      <p>위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.</p>
-                                                      <p>&nbsp;</p><p>&nbsp;</p><p style="text-align:right;">년 월 일</p>
-                                                  </td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </figure>
-                                  <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>`);
+                                                  <tr>
+                                                    <th class="table-active dayoff-table-title">휴가사유</th>
+                                                    <td>
+                                                      <textarea name="dayoffReason" id="dayoffReason" placeholder="휴가사유 입력" class="form-control"></textarea>
+                                                    </td>
+                                                  </tr>
+                                              </tbody>`);
+                
+              } else {
+                $('.dayoff-table').html('');
+              }
 
-            } else if($(this).val() == 'certificateOfEmployment'){
+              // 에디터 내에 문서 양식 뿌리기
+              if($(this).val() == 'letterOfApproval'){
 
-              editor.setData(`<h1>재직증명서</h1>
-                        <p style="text-align:center;">&nbsp;</p>
-                        <figure class="table" style="width:100%;">
-                            <table class="ck-table-resized" style="background-color:hsl(0, 0%, 100%);">
-                                <colgroup>
-                                    <col style="width:8.21%;">
-                                    <col style="width:35.42%;">
-                                    <col style="width:9.9%;">
-                                    <col style="width:46.47%;">
-                                </colgroup>
-                                <tbody>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                        <td>&nbsp;</td>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주민등록번호</p></td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주소</p></td>
-                                        <td colspan="3">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">회사명</p></td>
-                                        <td>&nbsp;</td>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">사업자번호</p></td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                        <td>&nbsp;</td>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소재지</p></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">재직기간</p></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">
-                                            <p style="text-align:center;">&nbsp;</p>
-                                            <p style="text-align:center;">상기와 같이 재직하고 있음을 증명함</p>
-                                            <p style="text-align:center;">&nbsp;</p>
-                                            <p style="text-align:center;">&nbsp;</p>
-                                            <p style="text-align:center;">년 월 일</p>
-                                            <p>&nbsp;</p>
-                                            <p style="text-align:center;">주식회사 Linkflow</p>
-                                            <p style="text-align:center;">&nbsp;</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </figure>
-                        <p style="text-align:right;">&nbsp;</p>
-                        <p>&nbsp;</p>`);
+                editor.setData(`<h1>품의서</h1>
+                                    <p>&nbsp;</p>
+                                    <figure class="table" style="width:100%;">
+                                        <table class="ck-table-resized" style="border-style:ridge;">
+                                            <colgroup>
+                                                <col style="width:10.15%;">
+                                                <col style="width:43.98%;">
+                                                <col style="width:10.03%;">
+                                                <col style="width:35.84%;">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
+                                                    <td>&nbsp;</td>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직급</p></td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
+                                                    <td>&nbsp;</td>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성일</p></td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">제목</p></td>
+                                                    <td colspan="3">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">품의 사유 및 상세 내역</p></td>
+                                                    <td colspan="3">
+                                                        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">예상 비용</p></td>
+                                                    <td colspan="3">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
+                                                    <td colspan="3">
+                                                        <p>&nbsp;</p><p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <p>&nbsp;</p>
+                                                        <p>위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.</p>
+                                                        <p>&nbsp;</p><p>&nbsp;</p><p style="text-align:right;">년 월 일</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </figure>
+                                    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>`);
 
-            } else if($(this).val() == 'expenseResolustion'){
+              } else if($(this).val() == 'certificateOfEmployment'){
 
-              editor.setData(`<h1 style="text-align:center;">지출결의서</h1>
-                              <figure class="table" style="width:100%;">
-                                  <table class="ck-table-resized" style="background-color:hsl(0, 0%, 90%);">
-                                      <colgroup>
-                                        <col style="width:6.77%;">
-                                        <col style="width:41.36%;">
-                                        <col style="width:6.23%;">
-                                        <col style="width:45.64%;">
-                                        </colgroup>
-                                        <tbody>
-                                          <tr>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 제목</p></td>
-                                            <td>&nbsp;</td><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성 일자</p></td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">결제 일자</p></td>
-                                            <td>&nbsp;</td>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">부서 / 담당</p></td>
-                                            <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 금액</p></td>
-                                            <td colspan="3">&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="background-color:hsl(0, 0%, 90%);" rowspan="14"><p style="text-align:center;">지출 내역</p></td>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">항목</p></td>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">금액(원)</p></td>
-                                            <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                      <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                     <tr>
-                                      <td>&nbsp;</td>
-                                      <td>&nbsp;</td>
-                                      <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td>&nbsp;</td>
-                                      <td>&nbsp;</td>
-                                      <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">합계</p></td>
-                                      <td>&nbsp;</td><td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">입금 정보</p></td>
-                                      <td colspan="3">&nbsp;</td></tr><tr><td colspan="4"><p><br>위 금액을 청구하오니 결제해 주시기 바랍니다</p><p>&nbsp;</p><p style="text-align:center;">년 월 일</p><p style="text-align:center;">주식회사 Linkflow</p></td>
-                                    </tr>
-                                </tbody>
-                              </table>
-                            </figure>`);
-
-            } else if($(this).val() == 'dayoffForm'){
-
-              editor.setData(`<h1 style="text-align:center;">휴가신청서</h1>
-                              <p style="text-align:center;">&nbsp;</p>
-                              <figure class="table" style="width:100%;">
-                                <table class="ck-table-resized dayoffForm" style="background-color:hsl(0, 0%, 100%);">
+                editor.setData(`<h1>재직증명서</h1>
+                          <p style="text-align:center;">&nbsp;</p>
+                          <figure class="table" style="width:100%;">
+                              <table class="ck-table-resized" style="background-color:hsl(0, 0%, 100%);">
                                   <colgroup>
-                                    <col style="width:8.21%;">
-                                    <col style="width:91.79%;">
+                                      <col style="width:8.21%;">
+                                      <col style="width:35.42%;">
+                                      <col style="width:9.9%;">
+                                      <col style="width:46.47%;">
                                   </colgroup>
                                   <tbody>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                      <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                      <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
-                                      <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 종류</p></td>
-                                      <td id="dayoffType">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 사유</p></td>
-                                      <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 기간</p></td>
-                                      <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비상연락처</p></td>
-                                      <td>&nbsp;</td></tr><tr><td colspan="2"><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">년 월 일</p></td>
-                                    </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
+                                          <td>&nbsp;</td>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주민등록번호</p></td>
+                                          <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주소</p></td>
+                                          <td colspan="3">&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">회사명</p></td>
+                                          <td>&nbsp;</td>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">사업자번호</p></td>
+                                          <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
+                                          <td>&nbsp;</td>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
+                                          <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소재지</p></td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">재직기간</p></td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="4">
+                                              <p style="text-align:center;">&nbsp;</p>
+                                              <p style="text-align:center;">상기와 같이 재직하고 있음을 증명함</p>
+                                              <p style="text-align:center;">&nbsp;</p>
+                                              <p style="text-align:center;">&nbsp;</p>
+                                              <p style="text-align:center;">년 월 일</p>
+                                              <p>&nbsp;</p>
+                                              <p style="text-align:center;">주식회사 Linkflow</p>
+                                              <p style="text-align:center;">&nbsp;</p>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </figure>
+                          <p style="text-align:right;">&nbsp;</p>
+                          <p>&nbsp;</p>`);
+
+              } else if($(this).val() == 'expenseResolustion'){
+
+                editor.setData(`<h1 style="text-align:center;">지출결의서</h1>
+                                <figure class="table" style="width:100%;">
+                                    <table class="ck-table-resized" style="background-color:hsl(0, 0%, 90%);">
+                                        <colgroup>
+                                          <col style="width:6.77%;">
+                                          <col style="width:41.36%;">
+                                          <col style="width:6.23%;">
+                                          <col style="width:45.64%;">
+                                          </colgroup>
+                                          <tbody>
+                                            <tr>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 제목</p></td>
+                                              <td>&nbsp;</td><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성 일자</p></td>
+                                              <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">결제 일자</p></td>
+                                              <td>&nbsp;</td>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">부서 / 담당</p></td>
+                                              <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 금액</p></td>
+                                              <td colspan="3">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                              <td style="background-color:hsl(0, 0%, 90%);" rowspan="14"><p style="text-align:center;">지출 내역</p></td>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">항목</p></td>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">금액(원)</p></td>
+                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
+                                            </tr>
+                                            <tr>
+                                              <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                              <td>&nbsp;</td>
+                                              <td>&nbsp;</td>
+                                              <td>&nbsp;</td>
+                                            </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                       <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">합계</p></td>
+                                        <td>&nbsp;</td><td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">입금 정보</p></td>
+                                        <td colspan="3">&nbsp;</td></tr><tr><td colspan="4"><p><br>위 금액을 청구하오니 결제해 주시기 바랍니다</p><p>&nbsp;</p><p style="text-align:center;">년 월 일</p><p style="text-align:center;">주식회사 Linkflow</p></td>
+                                      </tr>
                                   </tbody>
                                 </table>
-                              </figure>
-                            <p style="text-align:right;">&nbsp;</p><p>&nbsp;</p>`);
-            }
+                              </figure>`);
 
-          });
-          
-         // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
+              } else if($(this).val() == 'dayoffForm'){
+
+                editor.setData(`<h1 style="text-align:center;">휴가신청서</h1>
+                                <p style="text-align:center;">&nbsp;</p>
+                                <figure class="table" style="width:100%;">
+                                  <table class="ck-table-resized dayoffForm" style="background-color:hsl(0, 0%, 100%);">
+                                    <colgroup>
+                                      <col style="width:8.21%;">
+                                      <col style="width:91.79%;">
+                                    </colgroup>
+                                    <tbody>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
+                                        <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
+                                        <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
+                                        <td>&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 종류</p></td>
+                                        <td id="dayoffType">&nbsp;</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 사유</p></td>
+                                        <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 기간</p></td>
+                                        <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비상연락처</p></td>
+                                        <td>&nbsp;</td></tr><tr><td colspan="2"><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">년 월 일</p></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </figure>
+                              <p style="text-align:right;">&nbsp;</p><p>&nbsp;</p>`);
+              }
+
+            });
+            
+            // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
             $('#saveData').click(function(){
 
               $('#approvalSelectedArea1').text($('.approvalName1').text());
