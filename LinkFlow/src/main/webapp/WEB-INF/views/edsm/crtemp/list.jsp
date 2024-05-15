@@ -71,7 +71,7 @@
             </div>
             <div class="search d-flex justify-content-end">
               <div class="input-group col-4" style="height: 100%;">
-                <input type="search" class="form-control" placeholder="문서 제목을 입력해주세요">
+                <input type="search" class="form-control" placeholder="양식명을 입력해주세요">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-search"></i>
@@ -98,35 +98,35 @@
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr>
-	                        <td>품의서</td>
-	                        <td>김과장</td>
-	                        <td>2024-04-29</td>
-	                        <td>A등급</td>
-	                      </tr>
-	                      <tr>
-	                          <td>품의서</td>
-	                          <td>김과장</td>
-	                          <td>2024-04-29</td>
-	                          <td>A등급</td>
-	                      </tr>
-	                      <tr>
-	                          <td>품의서</td>
-	                          <td>김과장</td>
-	                          <td>2024-04-29</td>
-	                          <td>A등급</td>
-	                        </tr>
+	                    	<c:choose>
+	                    		<c:when test="${empty list}">
+	                    			조회된 양식이 없습니다.
+	                    		</c:when>
+	                    		
+	                    		<c:otherwise>
+	                    			<c:forEach var="f" items="${list}">
+	                    				<tr onclick="location.href='${contextPath}/edsm/crtemp/detail.crtp'">
+	                    					<td>${f.edFrName}</td>
+	                    					<td>${f.regId}</td>
+	                    					<td>${f.regDate}</td>
+	                    					<td>${f.secCode}등급</td>
+	                    				</tr>
+	                    			</c:forEach>
+	                    		</c:otherwise>
+	                    	</c:choose>
 	                    </tbody>
 	                  </table>
 	
 	                  <ul class="pagination justify-content-center">
-	                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-	                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-	                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-	                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-	                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-	                  </ul>
-	                </div> 
+	                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/crtemp/list.crtp?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
+	                    
+	                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+	                    	<li class="page-item ${pi.currentPage == p ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/crtemp/list.crtp?page=${p}">${p}</a></li>
+	                    </c:forEach>
+	                    
+	                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/crtemp/list.crtp?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
+                		</ul>
+	            </div> 
            </div>
          </div>
        </div>
