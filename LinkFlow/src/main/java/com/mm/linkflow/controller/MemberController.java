@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mm.linkflow.dto.MemberDto;
@@ -45,6 +46,11 @@ public class MemberController {
 		return "member/myAttendance";
 	}
 	
+	@PostMapping("/myPageUpdatePwd")
+	public String myPageUpdatePwd() {
+		return "member/UpdatePwd";
+	}
+	
 	//마이페이지 정보 수정 
 	@PostMapping("/updateInfo.do")
 	public void update(MemberDto m, MultipartFile uploadFile,HttpSession session) {
@@ -58,6 +64,15 @@ public class MemberController {
 		m.setProfileUrl(newProfileUrl);
 		
 		int result = mService.updateMember(m); 
+		
+	}
+	
+	//비밀번호 확인 AJAX
+	@ResponseBody
+	@PostMapping("/checkPassword")
+	public String checkPassword(MemberDto m) {
+		int result = mService.checkPassword(m);
+		return result > 0 ? "YYYYY" : "NNNNN";
 		
 	}
 		

@@ -213,12 +213,13 @@
                             <form action="${contextPath}/member/myPageUpdatePwd" method="post">
                             <div class="modal-body">
                               <p>본인 확인을 위해 비밀번호를 한번 더 입력해주세요.<p>
-                                <input type="hidden" name="" value="">
-                                <input type="password" name="" class="form-control"> 
-                              
+                                <input type="hidden" name="" value="${loginUser.userId}" id="userId">
+                                <input type="password" name="" class="form-control" id="userPwd"> 
+                                <div id="resultArea"></div>
+                              	
                             </div>
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary left" data-dismiss="modal">확인</button>
+                              <button type="submit" class="btn btn-primary left" data-dismiss="modal" id="goPass" disabled>변경하기</button>
                               
                             </div>
                           </form>
@@ -228,7 +229,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+											
 
 
 
@@ -241,8 +242,38 @@
                 <!-- /.content-wrapper -->
             </div>
         </div>
-        
-        
+		    <script>
+				    $(document).ready(function() {
+				        $('#userPwd').on('keyup', function() {
+				            var userId = $('#userId').val(); 
+				            var userPwd = $(this).val(); 
+				            console.log(userId,userPwd);
+				            
+				            $.ajax({
+				                url: '${contextPath}/member/checkPassword', 
+				                type: 'POST',
+				              
+				                data: {
+				                    userId: userId,
+				                    userPwd: userPwd 
+				                },    
+				                success: function(response) {
+				                    if (response ==='YYYYY') {
+				                        $('#resultArea').text('비밀번호가 일치합니다.'); 
+				                        $('#goPass').prop('disabled', false); 
+				                    } else if(response ==='NNNNN') {
+				                        $('#resultArea').text('비밀번호가 일치하지 않습니다.'); 
+				                        $('#goPass').prop('disabled', true); 
+				                    }
+				                },
+				                error: function(xhr, status, error) {
+				                    console.error('AJAX 오류');
+				                }
+				            });
+				        });
+				    });
+				</script>
+				        
         <script>
           function sample6_execDaumPostcode() {
               new daum.Postcode({
