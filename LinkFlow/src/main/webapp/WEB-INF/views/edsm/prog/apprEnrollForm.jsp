@@ -385,7 +385,6 @@
 
                           <div class="drafting-content">
                             <h6>본문</h6>
-                            <script src="../../../ckeditor5/build/ckeditor.js"></script>
                             <div id="editor">제목</div>
                           </div>
                         </div>
@@ -570,6 +569,16 @@
     <!-- /.modal -->
     	
         <script>
+        var editor;
+        
+        ClassicEditor
+          .create(document.querySelector('#editor'))
+          .then(newEditor => {
+              editor = newEditor;
+          })
+          .catch(error => {
+              console.error(error);
+          });
         $(function(){
               $('.documentType').change(function(){
               // 휴가신청서 폼 뿌려지게
