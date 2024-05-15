@@ -22,4 +22,9 @@ public class MemberDao {
 		return sql.update("memberMapper.updateMember",m);
 	}
 
+	public int checkPassword(MemberDto m) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("memberMapper.checkPassword",m);
+	}
+
 }

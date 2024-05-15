@@ -76,6 +76,11 @@
 	AND M.DEL_YN = 'N'
 	</select>
 
+<select id="checkPassword" resultType="int" parameterType="map">
+    SELECT COUNT(*) AS count
+    	FROM tb_member
+    	WHERE user_Id = #{userId} AND user_pwd = #{userPwd}
+</select>
 
 
 
