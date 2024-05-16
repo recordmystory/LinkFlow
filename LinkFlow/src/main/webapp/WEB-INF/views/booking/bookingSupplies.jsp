@@ -81,7 +81,7 @@ input[type="checkbox"]:checked {
 						<div class="card-header">
 							<form id="searchForm" action="${contextPath }/booking/sup.search" method="get" align="center">
 							<h6 class="card-title">
-								<input type="checkbox" id="useYN" onclick="useCheck(this);"> &nbsp; 예약 가능한 상품만 보기
+								<input type="checkbox" id="useYN" onclick="useCheck(this);" ${ search.useYN == 'Y' ? 'checked' : '' }> &nbsp; 예약 가능한 상품만 보기
 								<input type="hidden" id="hiddenUse" name="useYN" value="N">
 							</h6>
 
@@ -153,12 +153,8 @@ input[type="checkbox"]:checked {
 			
 				<script>
 					$(document).ready(function(){
-						 /* $("#useYN").on("click", function() {
-						        useCheck(this);
-						    });*/
 						
-						
-		        		$("#searchForm select").val("${search.condition}");
+	        			$("#searchForm select").val("${search.condition}");
 		        		
 		        		$("#pageArea a").on("click", function(){
 		        			$("#searchForm input[name=page]").val($(this).text());
@@ -167,49 +163,24 @@ input[type="checkbox"]:checked {
 		        			return false; 	
 		        		});
 		        		
-						/* function useCheck(checkbox){
-							 if (checkbox.checked) {
-							        document.getElementById("hiddenUse").value = "Y";
-						    } else {
-						        document.getElementById("hiddenUse").value = "N";
-						    }
-							 
-		        			$.ajax({
-		        				url:'${contextPath}/booking/use.check',
-		        				method: 'GET',
-		        				data: {
-		        					page:page,
-		        					condition:condition,
-		        					keyword:keyword
-		        					useYN:useYN
-		        				},
-		        				success:function(result){
-		        					let body = "";
-		        					
-		        				},error:function(){
-		        					
-		        				}
-		        				
-		        			})
-			        			
-		        			
-						}  */
-			        		
+		        		$("#useYN").on("click", function() {
+					        useCheck(this);
+					    });
+		        	
 					});
 					
-	        		/* function useCheck(checkbox) {
+	        		function useCheck(checkbox) {
 					    // 체크박스의 체크 여부 확인
 					    if (checkbox.checked) {
 					        document.getElementById("hiddenUse").value = "Y";
 					        $("#searchForm").submit();
+					        
 					    } else {
 					        document.getElementById("hiddenUse").value = "N";
 					        $("#searchForm").submit();
 					    }
-	        		} */
+	        		}
 				</script>
-			
-			
 		</div>
 	</div>
 
