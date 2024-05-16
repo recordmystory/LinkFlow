@@ -334,12 +334,12 @@
 		                    <div class="schDetailModal_content font-weight-bolder">
 		                        <label for="calendarNo" class="col-form-label">캘린더</label>
 		                        <div class="form-group mt-1">
-		                            <select class="form-select" name="calendar">
+		                            <select class="form-select" name="schCalSubCode" >
 		                                <option value="01" selected>개인 캘린더</option>
 		                                <option value="02">부서 캘린더</option>
 		                                <option value="03">회사 캘린더</option>
 		                            </select>
-		                        </div>
+		                        </div>    
 		                    </div>
 		                    <!-- 시작 날짜와 종료 날짜 -->
 		                    <div class="schDetailModal_content">
@@ -370,7 +370,7 @@
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
-		                        <textarea class="schInsertModal_content_text mt-2" name="content" required ></textarea>
+		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" required ></textarea>
 		                    </div>
 		                    <!-- 수정자 아이디 -->
 		                   <input type="hidden" name="modId" id="modId">
@@ -1148,8 +1148,11 @@ $('#kt_docs_jstree_basic').jstree({
   	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
   	    }); 
     });
- //캘린더 일정등록 ajax start **************************************
+    
+//캘린더 ajax start **************************************
+
 	$(document).ready(function() {
+ //캘린더 일정등록 ajax start **************************************
 		  // 중요일정 체크박스 클릭 시
 	    $('#schImportBtn').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
@@ -1186,9 +1189,10 @@ $('#kt_docs_jstree_basic').jstree({
             }
         });
     });
+ //캘린더 일정등록 ajax end **************************************
+
 });
  
- //캘린더 일정등록 ajax end **************************************  
     
  
   //네이버 지도 api start

@@ -24,5 +24,6 @@ public class ScheduleDto extends CommonDto{
 	private String schImport;
 	private String calColor;
 	private String schTitle;
+	private String schCalSubCode; 
 
 }

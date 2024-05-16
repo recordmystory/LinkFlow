@@ -20,40 +20,63 @@
      <result column="SCH_TITLE" property="schTitle"/>
     </resultMap>
 						
-<!-- 일정등록 -->
-	 <insert id="insertSch">
-		  INSERT INTO TB_SCHEDULE
-        (
-            SCH_NO,
-            CAL_NO, <!-- 캘린더 생성하고 나면 이 전에 조회쿼리 두고 currval로 번호 가져오게 -->
-            SCH_CONTENT,
-            START_DATE,
-            END_DATE,
-            ADDRESS,
-            SCH_IMPORT,
-            NOTIFY_YN,
-            REG_DATE,
-            MOD_DATE,
-            MOD_ID,
-            DEL_YN,
-            SCH_TITLE
-        )
-        VALUES
-        (
-            SEQ_SCHNO.nextval,
-            '1',
-            #{schContent},
-            #{startDate},
-            #{endDate},
-            #{address},
-            #{schImport},
-            #{notifyYn},
-            SYSDATE,
-            SYSDATE,
-            'test01',
-            'N',
-            #{schTitle}  
-        )
-       
+		
+	<!-- 일정등록 -->
+	<insert id="insertSch">
+	    INSERT INTO TB_SCHEDULE
+	    (
+	        SCH_NO,
+	        CAL_NO, 
+	        SCH_CONTENT,
+	        START_DATE,
+	        END_DATE,
+	        ADDRESS,
+	        SCH_IMPORT,
+	        NOTIFY_YN,
+	        REG_DATE,
+	        MOD_DATE,
+	        MOD_ID,
+	        DEL_YN,
+	        SCH_TITLE
+	    )
+	    VALUES
+	    (
+	        SEQ_SCHNO.nextval,
+	        (
+	            SELECT CAL_NO
+	            FROM TB_CALENDAR
+	            WHERE CAL_SUB_CODE = #{schCalSubCode}
+	            AND REG_ID = #{modId}
+	        ),
+	        #{schContent},
+	        #{startDate},
+	        #{endDate},
+	        #{address},
+	        #{schImport},
+	        #{notifyYn},
+	        SYSDATE,
+	        SYSDATE,
+	        #{modId},
+	        'N',
+	        #{schTitle}  
+	    )
 	</insert>
+
+	<!-- 전체일정 조회(특정 캘린더)  -->
+	<select id="selectSchList" resultMap="scheduleResult">
+     SELECT 
+         S.SCH_NO,
+         C.CAL_NO,
+         S.SCH_CONTENT,
+         S.START_DATE,
+         S.END_DATE,
+         S.ADDRESS,
+         S.SCH_IMPORT,
+         S.NOTIFY_YN,
+         S.SCH_TITLE,
+         C.CAL_COLOR
+    FROM TB_SCHEDULE S
+    JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
+    WHERE C.CAL_SUB_CODE = #{schCalSubCode} 
+	</select> 
 </mapper>
