@@ -1,13 +1,13 @@
 package com.mm.linkflow.controller;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +76,14 @@ public class BookingController {
 		  .setViewName("booking/myBookingList");
 		
 		return mv;
+	}
+	
+	@GetMapping("/detail.bk")
+	public String selectDetailMyBk(String no, Model model) {
+		
+		model.addAttribute("booking", bkServiceImpl.selectDetailMyBk(no)));
+		
+		return "booking/myBookingDetail";
 	}
 	
 	@GetMapping("/supplies.use") //사용가능한비품 

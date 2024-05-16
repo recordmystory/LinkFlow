@@ -96,7 +96,8 @@
 
 <select id="selectMyBkList" resultMap="bkResult">
 	select 
-		   main_name
+		   booking_no
+		  ,main_name
 		  ,sub_name
 		  ,assets_name
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
