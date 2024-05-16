@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="EdsmFormMapper">
+<mapper namespace="edsmFormMapper">
 	<resultMap id="edocFormResult" type="EdocFormDto" extends="commonMapper.commonResult">
 		<id column="ED_FR_CODE" property="edFrCode"/>
 		<result column="ED_FR_NAME" property="edFrName"/>
@@ -55,6 +55,30 @@
 		FROM TB_EDOC_FORM EF
 		JOIN TB_MEMBER M ON M.USER_ID = EF.REG_ID
 		WHERE EF.DEL_YN = 'N'
+		ORDER BY EF.MOD_DATE DESC
+	</select>
+	
+	<select id="selectSearchListCnt" resultType="_int">
+		SELECT COUNT(*)
+		FROM TB_EDOC_FORM EF
+		JOIN TB_MEMBER M ON (M.USER_ID = EF.REG_ID)
+		WHERE EF.DEL_YN = 'N'
+	</select>
+	
+	<select id="selectSearchList" resultMap="edocFormResult">
+		SELECT EF.ED_FR_CODE
+         , EF.ED_FR_NAME
+         , EF.PRES_DATE
+         , EF.SEC_CODE
+	       , TO_CHAR(EF.REG_DATE, 'YYYY-MM-DD') REG_DATE
+	       , EF.MOD_DATE
+	       , M.USER_NAME REG_ID
+         , EF.MOD_ID
+         , EF.DEL_YN
+		FROM TB_EDOC_FORM EF
+		JOIN TB_MEMBER M ON M.USER_ID = EF.REG_ID
+		WHERE EF.DEL_YN = 'N'
+			AND ED_FR_NAME LIKE '%' || #{keyword} || '%'
 		ORDER BY EF.MOD_DATE DESC
 	</select>
 

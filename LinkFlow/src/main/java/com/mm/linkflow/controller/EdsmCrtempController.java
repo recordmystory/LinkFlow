@@ -3,6 +3,7 @@ package com.mm.linkflow.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -47,6 +48,28 @@ public class EdsmCrtempController {
 		return "/edsm/crtemp/detail";
 	}
 	
+	/** 양식명으로 검색
+	 * 
+	 * @param currentPage
+	 * @param search
+	 * @param mv
+	 * @return mv
+	 * 
+	 * @author 김지우
+	 */
+	@GetMapping("/search.crtp")
+	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage, @RequestParam Map<String, String> search, ModelAndView mv) {
+		log.debug("search : {}", search);
+		
+		int listCount = edsmCrTempService.selectSearchListCnt(search);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		List<EdocFormDto> list = edsmCrTempService.selectSearchList(search, pi);
+		
+		mv.addObject("pi", pi).addObject("list", list).addObject("search", search).setViewName("edsm/crtemp/list");
+		
+		return mv;
+	}
 	/** 양식 목록 조회 및 페이징
 	 * (한 페이지당 10개씩 나오도록 페이징)
 	 * 

@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,16 @@ public class EdsmCrTempImpl implements EdsmCrTempService {
 	@Override
 	public List<EdocFormDto> selectCrTempList(PageInfoDto pi) {
 		return edsmCrTempDao.selectCrTempList(pi);
+	}
+
+	@Override
+	public int selectSearchListCnt(Map<String, String> search) {
+		return edsmCrTempDao.selectSearchListCnt(search);
+	}
+
+	@Override
+	public List<EdocFormDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
+		return edsmCrTempDao.selectSearchList(search, pi);
 	}
 
 }
