@@ -22,8 +22,13 @@ public class BookingDto extends CommonDto {
 	private String deptCode;
 	private String assetsNo;
 	private String bkContent;
-	private Date bkStartDt;
-	private Date bkEndDt;
+	private String bkStartTime; // 시작 시간
+	private String bkEndTime; // 끝 시간
+	private String bkStartDate; // 시작 날짜
+	private String bkEndDate; // 끝 날짜
 	private String rejContent;
 	private String status;
+	private String assetsName;
+	private String mainName;
+	private String subName;
 }

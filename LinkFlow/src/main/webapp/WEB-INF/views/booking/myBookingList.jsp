@@ -71,7 +71,7 @@ input[type="checkbox"]:checked {
 					</div>
 				</section>
 				<!-- /.container-fluid -->
-				<div class="">
+				<div class="bk-table">
 					<div class="card">
 						<div class="card-header">
 							<h6 class="card-title">
@@ -108,84 +108,40 @@ input[type="checkbox"]:checked {
 									</tr>
 								</thead>
 								<tbody>
+								<c:choose>
+								<c:when test="${empty bkList}">
 									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
+										<td colspan='7'>조회된 내역이 없습니다.</td>
 									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>시설</td>
-										<td>회의실</td>
-										<td>A</td>
-										<th>2024-04-05</th>
-										<th>13:00 ~ 15:00</th>
-										<th>예약대기</th>
-									</tr>
-
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="bk" items="${bkList }">
+										<tr>
+											<td></td>
+											<td>${ bk.mainName }</td>
+											<td>${ bk.subName }</td>
+											<td>${ bk.assetsName }</td>
+											<th>${ bk.bkStartDate }</th>
+											<th>${ bk.bkStartTime } ~ ${ bk.bkEndTime }</th>
+											<th>${ bk.status }</th>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+								</c:choose>
 								</tbody>
 							</table>
 						</div>
 						<!-- /.card-body -->
 					</div>
-					<div class="pagination"
-						style="display: flex; justify-content: center;">
+					<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+							<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage -1}">&laquo;</a></li>
+							<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+								<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }><a class="page-link" href="${contextPath }/booking/mylist.bk?page=${p}">${p }</a></li>
+							</c:forEach>
+							<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage +1}">&raquo;</a></li>
 						</ul>
+					</div>
 					</div>
 					<!-- /.card -->
 				</div>
