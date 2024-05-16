@@ -86,9 +86,9 @@ input[type="checkbox"]:checked {
 							</h6>
 
 							<div class="card-tools">
-	                				<input type="hidden" name="page" value="1">
+	                <input type="hidden" name="page" value="1">
 									<div class="input-group input-group-sm select" style="width: 300px;">
-										<select name="condition" class="form-control ">
+										<select name="condition" class="form-control">
 											<option value="sub_name">상품종류</option>
 											<option value="assets_name">상품명</option>
 										</select> 
@@ -98,6 +98,7 @@ input[type="checkbox"]:checked {
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
+									
 									</div>
 								</form>
 							</div>
@@ -150,7 +151,7 @@ input[type="checkbox"]:checked {
 				</div>
 			</div>
 			<!-- /.content-wrapper -->
-			
+			<c:if test="${not empty search }">
 				<script>
 					$(document).ready(function(){
 						 /* $("#useYN").on("click", function() {
@@ -208,7 +209,7 @@ input[type="checkbox"]:checked {
 					    }
 	        		} */
 				</script>
-			
+			</c:if>
 			
 		</div>
 	</div>
