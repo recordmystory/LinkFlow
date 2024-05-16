@@ -58,7 +58,9 @@
 	 where main_code = '003-'
        and a.sub_code= c.sub_code
 	   and del_yn = 'N'
+	   <if test='condition != null and keyword != null'>
        and ${condition} like '%'|| #{keyword} ||'%'
+       </if>
        <if test='useYN == "Y"'>
        and use_yn = 'Y'
        </if>
@@ -75,7 +77,9 @@
      where del_yn ='N'
        and main_code='003-'
        and a.sub_code= c.sub_code
+       <if test='condition != null and keyword != null'>
        and ${condition} like '%'|| #{keyword} ||'%'
+       </if>
        <if test='useYN == "Y"'>
        and use_yn = 'Y'
        </if>
