@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mm.linkflow.dto.MemberDto;
+import com.mm.linkflow.service.service.AttemdamceService;
 import com.mm.linkflow.service.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class HomeController {
+	private final AttemdamceService attService;
 	private final MemberService mService;
 	/**
 	 * 테스트로 게시판리스트조회로함 나중에 로그인페이지로 하셈
@@ -40,11 +42,15 @@ public class HomeController {
 	@PostMapping("/main/mainpage")
 	public void login(MemberDto m, HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		
-		MemberDto loginUser = mService.loginMember(m);
+			MemberDto loginUser = mService.loginMember(m);
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			if (loginUser != null) {
+				int checkIn = attService.selectCheckIn(loginUser.getUserId());
+				if(checkIn == 0) {
+					attService.checkInAtt(loginUser.getUserId());
+				}
 				req.getSession().setAttribute("loginUser", loginUser);
 				out.println("alert('" + loginUser.getUserName() +"님이 로그인 하였습니다.');");
 				out.println("location.href= '" + req.getContextPath() + "/main';");

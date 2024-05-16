@@ -18,5 +18,13 @@ public class AttemdamceServiceIpml implements AttemdamceService {
 		
 		return null;
 	}
+	@Override
+	public int selectCheckIn(String userId) {
+		return attDao.selectCheckIn(userId);
+	}
+	@Override
+	public int checkInAtt(String userId) {
+		return attDao.checkInAtt(userId);
+	}
 
 }
