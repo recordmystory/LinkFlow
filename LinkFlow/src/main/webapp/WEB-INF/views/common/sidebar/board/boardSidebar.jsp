@@ -59,19 +59,18 @@
         	<a href="#" class="nav-link middleName">
           	<i class="nav-icon far fa-solid fa-user-group"></i>
           	<p>
-              부서게시판
+              게시판
               <i class="fas fa-angle-left right" ></i>
           	</p>
         	</a>
-        	<ul class="nav nav-treeview" style="padding-left: 20px;">
-            <a href="#" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>개발1팀 게시판</p>
-            </a>
-            <a href="#" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>개발2팀 게시판</p>
-            </a>
+        	<ul id="boardCategory" class="nav-item nav-treeview" style="padding-left: 20px;">
+        		
+        		<c:forEach var="c" items="${categoryList}">
+        			<a href="${contextPath }/board/list.do?type=${c.boardCategory}" class="nav-link">
+              	<i class="far fa-circle nav-icon"></i>
+              	<p>${c.categoryName }게시판</p>
+            	</a>
+        		</c:forEach>
         	</ul>
         </li>	
         <li class="nav-item">
@@ -82,7 +81,7 @@
                 <i class="fas fa-angle-left right" ></i>
             </p>
           </a>
-         	<ul class="nav nav-treeview" style="padding-left: 20px;">
+         	<ul class="nav-item nav-treeview" style="padding-left: 20px;">
               <a href="#" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">임시저장</p>
@@ -104,29 +103,9 @@
 	</aside>
 	
 	<script>
-		$(document).ready(function(){
-			
-			
-			console.log("실행?");
-			$.ajax({
-				url:"${contextPath}/board/selectBoardType.do",
-				type:"post",
-				success:function(result){
-					
-				},error:function(){
-					console.log("게시판 조회 ajax 통신 실패")
-				}
-			})
-			
-			function ajaxSelectBoardSiderbar() {
-				
-			
-			}
-			
-		})
-	
+		
 	</script>
-	
+
 </div>
 </body>
 </html>
