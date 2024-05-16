@@ -52,5 +52,8 @@ public class MemberDto extends CommonDto {
 	private String dayoffStartsearch; // 연차사용 검색 시작날
 	private String dayoffendsearch; // 연차사용 검색 끝날
 	private int dayOffCount; //휴가 일수
+	private int totalMember; //부서원 총합
+	private String deptCapName;
+	private String deptMember;
 	
 }

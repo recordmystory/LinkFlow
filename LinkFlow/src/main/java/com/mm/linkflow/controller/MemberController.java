@@ -43,6 +43,7 @@ public class MemberController {
 	public String mypageUpdate() {
 		return "member/mypageUpdate";
 	}
+	
 	//마이페이지 유저 근태현황 조회 포워딩 
 	@RequestMapping("/myAttendance.page")
 	public String myAttendance(Model model,HttpSession session) {
@@ -50,9 +51,7 @@ public class MemberController {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();
 		model.addAttribute("att",mService.myAttemdamce(userId));
-		
-		
-		
+
 		return "member/myAttendance";
 	}
 	

@@ -118,7 +118,7 @@
                     <section class="content-header">
                             <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">LinkFlow (0)</h1>
+                                <h1 class="m-0">LinkFlow</h1>
                             </div>
                         
                         </div>
@@ -155,21 +155,26 @@
                                               <th>부서원</th>
                                               
                                           </thead>
-                                          <tbody style="text-align: center;">
-                                              <tr>
-                                                  <td>CEO</td>
-                                                  <td>1명</td>
-                                                  <td data-toggle="modal" data-target="#modal-lg" style="cursor: pointer;">김사장</td>
-                                                  <td>
-                                                    <span class="groupName"></span>
-                                                  </td>
-                                              </tr>
-
-                                              
-                                              
-                                              
-                                            
+                                          <c:choose>
+                                          <c:when test="${empty g}">
+                                          	<tr> <td colspan="4">조회된 조직,부서가 없습니다. </td></tr>
+                                          </c:when>
+	                                          <c:otherwise>
+	                                          <c:forEach var="g" items="${g}">
+	                                          <tbody style="text-align: center;">
+	                                              <tr>
+	                                                  <td>${g.deptName}</td>
+	                                                  <td>${g.totalMember}</td>
+	                                                  <td data-toggle="modal" data-target="#modal-lg" style="cursor: pointer;">${g.deptCapName}</td>
+	                                                  
+	                                                  <td>
+	                                                    <span class="groupName">${g.deptMember}</span>
+	                                                  </td>
+	                                              </tr>
                                             </tbody>
+                                           	</c:forEach>
+                                           	</c:otherwise>
+                                            </c:choose>
                                         </table>
 
                                       </div>
