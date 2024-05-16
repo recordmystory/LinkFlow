@@ -10,6 +10,7 @@
 		<result column="FILE_PATH" property="filePath"/>
 	</resultMap>
 	
+	<!-- 첨부파일 인서트용 쿼리 -->
 	<insert id="insertAttach">
 		INSERT
 		  INTO TB_ATTACHMENT
@@ -36,6 +37,7 @@
 		  )
 	</insert>
 	
+	<!-- 첨부파일 조회용 쿼리 -->
 	<select id="selectAttach" resultMap="attachResult">
 		SELECT
 		       FILE_NO
@@ -48,6 +50,7 @@
 		   AND REF_NO = #{refNo}
 	</select>
 
+	<!-- 첨부파일 삭제용 쿼리 -->
 	<delete id="deleteAttach">
 		DELETE
 		  FROM TB_ATTACHMENT
