@@ -6,8 +6,39 @@
 		<result column="USER_ID" property="userId"/>
 		<result column="START_DTIME" property="startDtime"/>
 		<result column="END_DTIME" property="endDtime"/>
-	</resultMap>	
+	</resultMap>
 	
+	<select id="selectCheckIn" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_ATTENDANCE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<insert id="checkInAtt">
+		INSERT
+		  INTO TB_ATTENDANCE
+		  (
+		  	ATTENDANCE_NO
+		  , USER_ID
+		  , START_DTIME
+		  , END_DTIME
+		  , REG_ID
+		  , MOD_ID
+		  )
+		  VALUES
+		  (
+		  	SEQ_ATTENDANCE.NEXTVAL
+		  , #{userId}
+		  , SYSDATE
+		  , NULL
+		  , #{userId}
+		  , #{userId}
+		  )
+	</insert>
 
-
+	<insert id="checkOutAtt">
+	
+	</insert>
 </mapper>
