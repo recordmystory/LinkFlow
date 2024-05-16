@@ -6,22 +6,8 @@
 		<result column="USER_ID" property="userId"/>
 		<result column="START_DTIME" property="startDtime"/>
 		<result column="END_DTIME" property="endDtime"/>
-		<result column="LATE_COUNT" property="lateCount"/>
-		<result column="ABSENT_COUNT" property="absentCount"/>
-
-		
 	</resultMap>	
 	
-	<!-- 올해 출결 현황 알아내는 쿼리문 -->
-	
-	<!-- 올해 근무 일수 알아내는 쿼리문 -->
-		<select id="myYearWorkDay" resultMap="attemdamceResult">
-			SELECT SUM((END_DTIME - START_DTIME) * 24) AS YearWorkDay
-				FROM TB_ATTENDANCE
-				WHERE USER_ID = #{userId} 
-				
-				  AND TO_CHAR(START_DTIME, 'YYYY')  = TO_CAHR(SYSDATE, 'YYYY');
 
-		</select>
 
 </mapper>

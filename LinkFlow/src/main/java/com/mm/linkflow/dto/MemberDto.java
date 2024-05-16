@@ -41,4 +41,13 @@ public class MemberDto extends CommonDto {
 	private String rankScode; //직급소분류 코드 
 	private int serviceYear; // 근속년수
 	private String deptName; // 부서이름
+	private String yearWalkDay; // 올해 근무 일수 
+	private String yearWalktime; // 올해 근무시간 
+	private int yearlateCount; // 올해 지각횟수
+	private int yearAbsentCount; // 올해 결석횟수
+	private String monthWalkDay; //이번달 근무 일수 
+	private String monthWalktime; // 이번달 근무시간 
+	private int monthlateCount; // 이번달 지각횟수
+	private int monthAbsentCount; // 이번달 결석횟수
+	
 }

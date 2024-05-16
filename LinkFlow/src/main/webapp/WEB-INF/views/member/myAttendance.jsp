@@ -228,8 +228,8 @@
                                             </thead>
                                             <tbody style="text-align: center;">
                                                 <tr>
-                                                    <td>1회</td><!--여따가 지각 값 뿌리자-->
-                                                    <td>1회</td><!--여따가 결근 값 뿌리자-->
+                                                    <td>${att.yearlateCount}회</td><!--여따가 지각 값 뿌리자-->
+                                                    <td>${att.yearAbsentCount}회</td><!--여따가 결근 값 뿌리자-->
                                                 </tr>
                                             </tbody>
                                           </table>
@@ -261,7 +261,7 @@
                                             </thead>
                                             <tbody style="text-align: center;">
                                                 <tr>
-                                                    <td>12회</td><!--여따가 휴가 값 뿌리자-->
+                                                    <td>${loginUser.dayOff}</td><!--여따가 휴가 값 뿌리자-->
                                                     <td><a href ="" class="btn btn-sm btn-warning">연차 신청</a></td>
                                                 </tr>
                                             </tbody>
@@ -293,8 +293,8 @@
                                             </thead>
                                             <tbody style="text-align: center;">
                                                 <tr>
-                                                    <td>20회</td><!--여따가 휴가 값 뿌리자-->
-                                                    <td>120시간</td>
+                                                    <td>${att.yearWalkDay}회</td><!--여따가 휴가 값 뿌리자-->
+                                                    <td>${att.yearWalktime}시간</td>
                                                 </tr>
                                             </tbody>
                                           </table>
@@ -354,10 +354,10 @@
                                             </thead>
                                             <tbody style="text-align: center;">
                                                 <tr>
-                                                    <td>2회</td><!--여따가 지각 값 뿌리자-->
-                                                    <td>0회</td><!--여따가 결근 값 뿌리자-->
-                                                    <td>8일</td><!--여따가 지각 값 뿌리자-->
-                                                    <td>162시간</td><!--여따가 결근 값 뿌리자-->
+                                                    <td>${att.monthlateCount}회</td><!--여따가 지각 값 뿌리자-->
+                                                    <td>${att.monthAbsentCount}회</td><!--여따가 결근 값 뿌리자-->
+                                                    <td>${att.monthWalkDay}일</td><!--여따가 지각 값 뿌리자-->
+                                                    <td>${att.monthWalktime}시간</td><!--여따가 결근 값 뿌리자-->
                                                 </tr>
                                             </tbody>
                                           </table>

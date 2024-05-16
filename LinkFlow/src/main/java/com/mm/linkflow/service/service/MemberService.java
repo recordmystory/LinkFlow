@@ -17,4 +17,10 @@ public interface MemberService {
 	   
 	   //마이페이지 암호 변경하는 서비스 
 	   int updatePwd(MemberDto m);
+	   
+	   //올해,이번달 근무 상황 조회 하는 서비스 
+	   MemberDto myAttemdamce(String userId);
+	   
+	
+	   
 }

@@ -28,9 +28,18 @@
 		<result column="SECONDARY_USESE" property="secondaryUsese"/>
 		<result column="RANK_BCODE" property="rankBcode"/>
 		<result column="SERVICEYEAR" property="serviceYear"/>
+		<result column="year_walkDay" property="yearWalkDay"/>
+		<result column="year_walktime" property="yearWalktime"/>
+		<result column="year_lateCount" property="yearlateCount"/>
+		<result column="year_absentCount" property="yearAbsentCount"/>
+		<result column="month_walkDay" property="monthWalkDay"/>
+		<result column="month_walktime" property="monthWalktime"/>
+		<result column="month_lateCount" property="monthlateCount"/>
+		<result column="month_absentCount" property="monthAbsentCount"/>
 		
 	</resultMap>	
 	
+	<!-- 로그인 쿼리 아래 값 색션에 loginUser이름으로 담김 -->
 	<select id="loginMember" resultMap="memberResult">
 	SELECT 
 	    M.USER_ID,
@@ -75,17 +84,47 @@
 	AND M.DEL_YN = 'N'
 	</select>
 
-<select id="checkPassword" resultType="int" parameterType="map">
-    SELECT COUNT(*) AS count
-    	FROM tb_member
-    	WHERE user_Id = #{userId} AND user_pwd = #{userPwd}
-</select>
-
-<update id="updatePwd">
-UPDATE TB_MEMBER 
-SET USER_PWD =#{userPwd}
-WHERE USER_ID = #{userId}
-</update>
+	<select id="checkPassword" resultType="int" parameterType="map">
+	    SELECT COUNT(*) AS count
+	    	FROM tb_member
+	    	WHERE user_Id = #{userId} AND user_pwd = #{userPwd}
+	</select>
+	
+	
+	<!-- 마이페이지 비밀번호 업데이트 -->
+	<update id="updatePwd">
+	UPDATE TB_MEMBER 
+	SET USER_PWD =#{userPwd}
+	WHERE USER_ID = #{userId}
+	</update>
+	
+	
+	<!-- 나의 근태 조회용 -->
+	<select id="myAttemdamce" resultMap="memberResult">
+	SELECT
+    m.USER_ID,
+    m.USER_NAME,
+    
+    COUNT(DISTINCT CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) THEN TO_CHAR(a.START_DTIME, 'YYYY-MM-DD') ELSE NULL END) AS year_walkDay,
+    SUM(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND a.START_DTIME IS NOT NULL AND a.END_DTIME IS NOT NULL THEN (a.END_DTIME - a.START_DTIME) * 24 ELSE 0 END) AS year_walktime,
+    COUNT(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND a.START_DTIME IS NOT NULL AND TO_CHAR(a.START_DTIME, 'HH24:MI:SS') > '09:10:00' THEN 1 ELSE NULL END) AS year_lateCount,
+    COUNT(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND a.START_DTIME IS NULL THEN 1 ELSE NULL END) AS year_absentCount,
+    
+    COUNT(DISTINCT CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND EXTRACT(MONTH FROM a.START_DTIME) = EXTRACT(MONTH FROM SYSDATE) THEN TO_CHAR(a.START_DTIME, 'YYYY-MM-DD') ELSE NULL END) AS month_walkDay,
+    SUM(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND EXTRACT(MONTH FROM a.START_DTIME) = EXTRACT(MONTH FROM SYSDATE) AND a.START_DTIME IS NOT NULL AND a.END_DTIME IS NOT NULL THEN (a.END_DTIME - a.START_DTIME) * 24 ELSE 0 END) AS month_walktime,
+    COUNT(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND EXTRACT(MONTH FROM a.START_DTIME) = EXTRACT(MONTH FROM SYSDATE) AND a.START_DTIME IS NOT NULL AND TO_CHAR(a.START_DTIME, 'HH24:MI:SS') > '09:10:00' THEN 1 ELSE NULL END) AS month_lateCount,
+    COUNT(CASE WHEN EXTRACT(YEAR FROM a.START_DTIME) = EXTRACT(YEAR FROM SYSDATE) AND EXTRACT(MONTH FROM a.START_DTIME) = EXTRACT(MONTH FROM SYSDATE) AND a.START_DTIME IS NULL THEN 1 ELSE NULL END) AS month_absentCount
+		FROM
+		    TB_MEMBER m
+		    LEFT JOIN TB_ATTENDANCE a ON m.USER_ID = a.USER_ID
+		WHERE
+		    m.USER_ID = #{userId}
+		GROUP BY
+		    m.USER_ID, m.USER_NAME
+		ORDER BY
+		    m.USER_ID
+	
+	</select>
 
 
 

@@ -33,6 +33,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mDao.updatePwd(m);
 	}
+	@Override
+	public MemberDto myAttemdamce(String userId) {
+		return mDao.myAttemdamce(userId);
+	}
 
 	
 

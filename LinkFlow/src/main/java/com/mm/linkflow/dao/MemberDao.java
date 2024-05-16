@@ -32,4 +32,10 @@ public class MemberDao {
 		return sql.update("memberMapper.updatePwd",m);
 	}
 
+	public MemberDto myAttemdamce(String userId) {
+		return sql.selectOne("memberMapper.myAttemdamce",userId);
+	}
+
+
+
 }
