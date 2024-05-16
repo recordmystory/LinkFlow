@@ -1,5 +1,7 @@
 package com.mm.linkflow.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +38,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto myAttemdamce(String userId) {
 		return mDao.myAttemdamce(userId);
+	}
+	@Override
+	public List<MemberDto> searchDayoff(MemberDto m) {
+		return mDao.searchDayoff(m);
 	}
 
 	

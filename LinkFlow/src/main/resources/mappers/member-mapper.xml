@@ -36,6 +36,9 @@
 		<result column="month_walktime" property="monthWalktime"/>
 		<result column="month_lateCount" property="monthlateCount"/>
 		<result column="month_absentCount" property="monthAbsentCount"/>
+		<result column="searhstart_day" property="dayoffStartsearch"/>
+		<result column="searhend_day" property="dayoffendsearch"/>
+		<result column="dayoffCount" property="dayOffCount"/>
 		
 	</resultMap>	
 	
@@ -124,6 +127,22 @@
 		ORDER BY
 		    m.USER_ID
 	
+	</select>
+	
+	<!-- 연차 사용 검색 조회 -->
+	<select id="searchDayoff" resultMap="memberResult">
+		select
+	     m.user_id
+	    ,to_char(d.start_day,'YYYY-MM-DD') searhstart_day
+	    ,TO_CHAR(d.end_day,'YYYY-MM-DD') searhend_day
+	    ,c.sub_name position
+	    ,d.end_day-d.start_day dayoffCount
+		from tb_member m 
+		join TB_dayoff d on (m.user_id = d.user_id) 
+		JOIN 
+	    TB_COMMON C ON d.DAYOFF_BCODE = C.MAIN_CODE AND d.DAYOFF_SCODE = C.SUB_CODE
+		where m.user_id= #{userId}
+		and d.start_day BETWEEN to_date(#{dayoffStartsearch}, 'YYYY/MM/DD') and to_date(#{dayoffendsearch}, 'YYYY/MM/DD') 
 	</select>
 
 

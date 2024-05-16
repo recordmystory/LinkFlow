@@ -393,31 +393,31 @@
                                         <div class="col-3 AttendanceSmArea1">
                                             <div class="card card-default AttendanceSmBox1">
                                                 <div class="card-header" style="display: flex;">
-                                                    <form action="" method="get">
+                                                    
                                                         <div class="AttendanceSeachArea">
                                                             <div class="col-sm-6">
                                                               <!-- text input -->
                                                               <div class="form-group">
                                                                 <label>시작</label>
-                                                                <input type="date" class="form-control">
+                                                                <input type="date" class="form-control" id="startDay">
                                                               </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                               <div class="form-group">
                                                                 <label>종료</label>
-                                                                <input type="date" class="form-control">
+                                                                <input type="date" class="form-control" id="endDay">
                                                                 
                                                               </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                
-                                                                  <button class="btn btn-sm btn-primary col-8" type="submit" style="margin-top: 35px;">검색</button>
+                                                                	<input type="hidden" name="" value="${loginUser.userId}" id="userId">
+                                                                  <button class="btn btn-sm btn-primary col-8" type="button" style="margin-top: 35px;" id="searchDo">검색</button>
                                                                 </div>
                                                             </div>
                                                             
                                                           </div>  
-                                                    </form>
+                                                    
 
                                                   </div>
                                               <!-- /.card-header -->
@@ -430,7 +430,7 @@
                                                         <th>휴가일수</th>
                                                         
                                                     </thead>
-                                                    <tbody style="text-align: center;">
+                                                    <tbody style="text-align: center;" id="anwArea">
                                                         <tr>
                                                             <td></td>
                                                             <td></td>
@@ -468,14 +468,49 @@
                 </div>
         </div>
         <script>
-          $(document).ready(function() {
-              $('.dropdown-item').click(function() {
-                  var selectedText = $(this).find('.spanCss').text();
-                  $('.resultArea').text(selectedText);
-              });
-
-              
-          });
+				    $(document).ready(function() {
+				        $('#searchDo').click(function() {
+				            var userId = $("#userId").val(); 
+				            var dayoffStartsearch = $("#startDay").val(); 
+				            var dayoffendsearch = $("#endDay").val(); 
+				            
+				            $.ajax({
+				                url: '${contextPath}/member/serchDayoff', 
+				                type: 'POST',
+				                data: {
+				                    userId: userId,
+				                    dayoffStartsearch: dayoffStartsearch,
+				                    dayoffendsearch: dayoffendsearch
+				                },    
+				                success: function(response) {
+				                		let tbody = $("#anwArea");
+				                		tbody.empty(); 
+				                    if(response.length == 0){
+				                    	let tr = "<tr><td colspan='3'>조회된 결과가 없습니다.</td></tr>";
+				                        tbody.append(tr);
+				                        
+				                    } else {
+				                        let tbody = $("#anwArea");
+				                        tbody.empty(); 
+				                        for(let i=0; i<response.length; i++) {
+				                            let tr = "<tr>"
+				                                    + "<td>" + response[i].dayoffStartsearch + " ~ " + response[i].dayoffendsearch + "</td>"
+				                                    + "<td>" + response[i].position + "</td>"
+				                                    + "<td>" + response[i].dayOffCount + "</td>"
+				                                    + "</tr>";
+				                            tbody.append(tr);
+				                        }
+				                    }
+				                },
+				                error: function() {
+				                    console.error('AJAX 오류');
+				                }
+				            });
+				        });
+				    });
+				</script>
+        
+        <script>
             
             $(document).ready(function(){
                 const today = new Date();

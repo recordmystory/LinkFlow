@@ -49,5 +49,8 @@ public class MemberDto extends CommonDto {
 	private String monthWalktime; // 이번달 근무시간 
 	private int monthlateCount; // 이번달 지각횟수
 	private int monthAbsentCount; // 이번달 결석횟수
+	private String dayoffStartsearch; // 연차사용 검색 시작날
+	private String dayoffendsearch; // 연차사용 검색 끝날
+	private int dayOffCount; //휴가 일수
 	
 }
