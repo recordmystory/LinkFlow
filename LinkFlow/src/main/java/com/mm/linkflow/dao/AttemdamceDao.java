@@ -21,4 +21,21 @@ public class AttemdamceDao {
 		return sql.insert("attemdamceDaoMapper.checkInAtt", userId);
 	}
 	
+	// 퇴근 체크 확인용
+	public int selectCheckOut(String userId) {
+		return sql.selectOne("attemdamceDaoMapper.selectCheckOut", userId);
+				
+	}
+	
+	// 퇴근 update 용
+	public int checkOutAtt(String userId) {
+		return sql.update("attemdamceDaoMapper.checkOutAtt", userId);
+	}
+	
+	// 퇴근 자동 update 용
+	
+	public int autoCheckOut() {
+		return sql.update("attemdamceDaoMapper.autoCheckOut");
+	}
+	
 }

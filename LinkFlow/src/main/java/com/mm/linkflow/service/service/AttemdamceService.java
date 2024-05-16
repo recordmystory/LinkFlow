@@ -12,4 +12,13 @@ public interface AttemdamceService {
 	
 	// 출근 insert 용
 	int checkInAtt(String userId);
+	
+	// 퇴근 체크 확인용
+	int selectCheckOut(String userId);
+	
+	// 퇴근 update 용
+	int checkOutAtt(String userId);
+	
+	// 퇴근 자동 update 용
+	int autoCheckOut();
 }

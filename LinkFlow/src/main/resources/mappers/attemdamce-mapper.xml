@@ -38,7 +38,27 @@
 		  )
 	</insert>
 
-	<insert id="checkOutAtt">
+	<select id="selectCheckOut">
+		SELECT
+		       COUNT(*)
+		  FROM TB_ATTENDANCE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(END_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
 	
-	</insert>
+	<update id="checkOutAtt">
+		UPDATE
+		       TB_ATTENDANCE
+		   SET END_DTIME = SYSDATE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</update>
+	
+	<update id="autoCheckOut">
+		UPDATE
+		       TB_ATTENDANCE
+		   SET END_DTIME = SYSDATE
+		 WHERE END_DTIME IS NULL
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</update>
 </mapper>
