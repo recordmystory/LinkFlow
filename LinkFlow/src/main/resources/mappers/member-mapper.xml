@@ -171,5 +171,14 @@
 		ORDER BY D.DEPT_CODE
 	</select>
 
+	<!-- 전체 사원수 조회용 쿼리 -->
+	<select id="selectAllMember" resultType="_int">
+		<![CDATA[
+		SELECT COUNT(*)
+	 	  FROM TB_MEMBER
+	 	 WHERE RETIRE_DATE IS NULL
+	   	   AND TO_CHAR(HIRE_DATE, 'YYYY-MM') < #{month};
+		]]>
+	</select>
 
 </mapper>
