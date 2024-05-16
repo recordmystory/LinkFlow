@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Repository
-public class AttachTestDao {
+public class AttachDao {
 	private final SqlSessionTemplate sqlSession;
 	
 	public int insertAttach(AttachDto at) {
