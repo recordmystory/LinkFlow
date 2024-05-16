@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
 
+	<resultMap id="boardResult" type="BoardDto" extends="commonMapper.commonResult">
+		<id column="board_no" property="boardNo" />
+		<result column="board_category" property="boardCategory" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<result column="count" property="count" />
+		<result column="temp_save" property="tempSave" />
+		<result column="notice_yn" property="noticeYN" />
+		<result column="category_type" property="boardType" />
+	</resultMap>
+
 	<resultMap id="categoryResult" type="BoardCategoryDto" extends="commonMapper.commonResult">
 		<id column="board_category" property="boardCategory" />
 		<result column="category_name" property="categoryName" />
@@ -11,17 +22,56 @@
 	
 	<select id="selectBoardCategory" resultMap="categoryResult">
 		select 
-				BOARD_CATEGORY
-			, CATEGORY_NAME
-			, DEPT_CODE
-			, CATEGORY_TYPE
-		from tb_category
-		<if test="loginUser.superRight != 'Y' and loginUser.board != 'Y'">
-			join tb_member using(dept_code);
-			where
-				dept_code = #{loginUser.deptCode};
-		</if>
+      BOARD_CATEGORY
+    , CATEGORY_NAME
+    , DEPT_CODE
+    , CATEGORY_TYPE
+	from tb_category c
+	    where
+	    del_yn ='N'
+	    and CATEGORY_TYPE not in ('COMPANY')
+    <if test='superRight != "Y" and boardRight != "Y"'>
+	    and   (case 
+	            WHEN C.CATEGORY_TYPE = 'DEPT' AND c.dept_code = #{deptCode} THEN 'Y'
+	            WHEN C.CATEGORY_TYPE = 'NORMAL' 
+	                AND (SELECT COUNT(1) FROM BOD_AUTH a
+	                WHERE a.BOARD_CATEGORY = c.BOARD_CATEGORY
+	                AND USER_ID = #{userId}
+	                AND READ_YN = 'Y') > 0 THEN 'Y'
+	            ELSE 'N'
+	        END) = 'Y'
+    </if>
+    	order by board_category
 	</select>
 	
+	<select id="selectBoardListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_board
+  	 where 
+  	 			del_yn = 'N'
+  	  and board_category = #{boardType}
+  </select>
+	
+	<select id="selectBoardList" resultMap="boardResult">
+  	SELECT 
+    b.board_no,
+    b.board_category,
+    b.board_title,
+    b.reg_id,
+    b.count,
+    b.notice_yn,
+    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+    c.category_type
+FROM 
+    tb_board b
+JOIN 
+    tb_category c ON b.board_category = c.board_category
+WHERE 
+    b.del_yn = 'N'
+    AND b.temp_save = '02'
+    AND b.board_category = #{boardType}
+ORDER BY 
+    b.board_no DESC
+  </select>
 		
 </mapper>
