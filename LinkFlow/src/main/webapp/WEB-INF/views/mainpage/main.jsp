@@ -181,7 +181,7 @@
                                 <span id="toDayTime" style="font-size: 35px;"></span>
                                 <div style="display: flex; justify-content: center;">
                                     <div>
-                                        <button class="btn" style="width: 100px; margin-top: 30px; outline: none;" onclick="checkOutAtt(this);">
+                                        <button class="btn" id="checkOutbtn" style="width: 100px; margin-top: 30px; outline: none;" onclick="checkOutAtt('${loginUser.userId}');">
                                             <i class="fa-solid fa-circle-check fa-4x"></i>
                                             <p style="margin-top: 15px; margin-bottom: 5px;">퇴근하기</p>
                                         </button>
@@ -298,13 +298,17 @@
 	</div>
 	<script>
 		
-		// 근무체크 현재 시간 띄우기 스크립트 시작
+		// 근무체크 현재 시간 띄우기, 사원현황 시작
 		$(document).ready(function() {
 		    // 초기 시간 표시
 		    updateTime();
 	
 		    // 1초마다 시간 업데이트
 		    setInterval(updateTime, 1000);
+		    
+		    $.ajax({
+		    	url:"${contextPath}/member/"
+		    })
 		});
 	
 		function updateTime() {
@@ -316,11 +320,11 @@
             				 curDate.getSeconds().toString().padStart(2, '0');
 		    $("#toDay").text(dateString);
 		    $("#toDayTime").text(timeString);
-		}
-		// 근무체크 현재 시간 띄우기 끝
+		};
+		// 근무체크 현재 시간 띄우기, 사원현황 끝
 		
 		// 퇴근 스크립트 시작
-		function checkOutAtt(button) {
+		function checkOutAtt(userId) {
 			var curDate = new Date();
 			var timeString = curDate.getHours().toString().padStart(2, '0') + " : " +
 				 			 curDate.getMinutes().toString().padStart(2, '0') + " : " +
@@ -328,10 +332,19 @@
 			$("#checkOutTime").text(timeString);
 			$("#checkStatus").text("근무종료");
 			
-			$(button).css("opacity", "0.5");
-			$(button).css("cursor", "default");
-			$(button).attr("disabled", "true");
-			$("#checkOutTime").css("opacity", "0.5");
+			$.ajax({
+				url: "${contextPath}/Attemdamce/checkOut.do",
+				type: "post",
+				data: { userId: userId },
+				success: function(result) {
+					if(result == 'success'){
+						$("#checkOutbtn").css("opacity", "0.5");
+						$("#checkOutbtn").css("cursor", "default");
+						$("#checkOutbtn").attr("disabled", "true");
+						$("#checkOutTime").css("opacity", "0.5");
+					}
+				}
+			})
 		};
 		
 
@@ -373,6 +386,7 @@
             options: pieOptions
         });
         // 파이차트 끝
+        
 
          // echarts 버전
         // 꺾은선 그래프 시작
