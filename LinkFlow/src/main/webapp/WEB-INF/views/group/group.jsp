@@ -68,7 +68,49 @@
 
     <div class="LinkFlowMainSection">
 
-        <jsp:include page="/WEB-INF/views/common/sidebar/group/groupSidebar.jsp"/>
+        <div class="LinkFlowSidebar">
+           <!-- Main Sidebar Container -->
+				   <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
+				
+				   <!-- Sidebar -->
+				   <div class="sidebar">
+				
+				   <!-- Sidebar Menu -->
+				   <nav class="linkfoiwsideMenu">
+				
+				       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				
+				       <li class="sidebarName">조직도</li><br>
+				   
+				       <li class="nav-item menu-open">
+				
+				         <a href="#" class="nav-link middleName">
+				         <i class="nav-icon far fa-solid fa-people-line"></i>
+				         
+				         <p>
+				             부서별 보기
+				             <i class="fas fa-angle-left right"></i>
+				         </p>
+				         </a>
+				
+				         <ul class="nav nav-treeview" style="padding-left: 20px;">
+				         <li class="nav-item">
+				             <a href="#" class="nav-link">
+				             <i class="far fa-circle nav-icon"></i>
+				             <p>부서 1</p>
+				             </a>
+				         </li>
+				
+				         </ul>
+				     		</li>
+				     		</ul>
+				   </nav>
+				   <!-- /.sidebar-menu -->
+				   </div>
+				   <!-- /.sidebar -->
+				</aside>
+				<!--사이드바 끝-->
+				</div>
 
         <div class="LinkFlowMainContent" style="padding: 30px;">
         
@@ -123,28 +165,8 @@
                                                   </td>
                                               </tr>
 
-                                              <tr>
-                                                <td>개발팀</td>
-                                                <td>4명</td>
-                                                <td><span class="groupName">김개발</span></td>
-                                                <td>
-                                                  <span class="groupName">구성모</span>
-                                                  <span class="groupName">엄희강</span>
-                                                  <span class="groupName">이현아</span>
-                                                </td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>영업부</td>
-                                                <td>3명</td>
-                                                <td><span class="groupName">김영업</span></td>
-                                                <td>
-                                                  <span class="groupName">김영업2</span>
-                                                  <span class="groupName">김영업3</span>
-                                                 
-                                                </td>
-                                                
-                                              </tr>
+                                              
+                                              
                                               
                                             
                                             </tbody>

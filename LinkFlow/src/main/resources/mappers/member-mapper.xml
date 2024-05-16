@@ -144,7 +144,43 @@
 		where m.user_id= #{userId}
 		and d.start_day BETWEEN to_date(#{dayoffStartsearch}, 'YYYY/MM/DD') and to_date(#{dayoffendsearch}, 'YYYY/MM/DD') 
 	</select>
-
+	
+	<select id="groupList" resultMap="memberResult">
+		SELECT 
+	    M.USER_ID,
+	    M.DEPT_CODE,
+	    D.DEPT_TITLE AS DEPT_NAME,
+	    C.SUB_NAME AS POSITION,
+	    M.USER_NAME,
+	    M.PHONE,
+	    TO_CHAR(M.BIRTH_DATE,'YYYY/MM/DD') AS BIRTH_DATE,
+	    M.EDUCATION,
+	    M.ADDRESS,
+	    M.ZIP_CODE,
+	    M.DETAIL_ADD,
+	    TO_CHAR(M.HIRE_DATE,'YYYY/MM/DD') AS HIRE_DATE,
+	    TO_CHAR(M.RETIRE_DATE,'YYYY/MM/DD') AS RETIRE_DATE,
+	    M.PROFILE_URL,
+	    M.SIGN_URL,
+	    M.DAYOFF,
+	    M.SECONDARY_CODE,
+	    M.SECONDARY_USESE,
+	    M.RANK_BCODE,
+	    M.REG_DATE,
+	    M.MOD_DATE,
+	    M.REG_ID,
+	    M.MOD_ID,
+	    M.DEL_YN,
+	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) AS SERVICEYEAR
+	FROM 
+	    TB_MEMBER M
+	JOIN 
+	    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+	JOIN 
+	    TB_DEPT D ON M.DEPT_CODE = D.DEPT_CODE
+	WHERE 
+	    M.DEL_YN = 'N'
+	</select>
 
 
 </mapper>
