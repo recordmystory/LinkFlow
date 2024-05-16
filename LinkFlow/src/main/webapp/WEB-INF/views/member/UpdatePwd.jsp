@@ -125,28 +125,32 @@
       $(document).ready(function(){
     	    var RegExpPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[a-z0-9!@#$%^&*()_+]{10,16}$/;
 
-    	    $("#exampleInputEmail1, #exampleInputEmail2").on("input", function(){
+    	    $("#exampleInputEmail1, #exampleInputEmail2").on("keyup", function(){
     	        var newPwd = $("#exampleInputEmail1").val().trim(); 
     	        var newPwdcheck = $("#exampleInputEmail2").val().trim(); 
 
     	   
-    	        var isPasswordValid = RegExpPassword.test(newPwd);
-    	        
+    	        var isPasswordValue = RegExpPassword.test(newPwd);
+    	       
     	       
     	        var isMatch = newPwd === newPwdcheck;
-
     	        
-    	        if (isPasswordValid && isMatch) {
+    	        if (!isPasswordValue) {
+	                $(".PwdCheckArea").text("비밀번호 형식에 맞게 입력하세요 (영문, 숫자, 특수문자 조합, 10-16자)");
+	            }else{
+	            	$(".PwdCheckArea").text("");
+	            } 
+    	        if (!isMatch) {
+	                $(".PwdreCheckArea").text("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+	            }else{
+	            	$(".PwdreCheckArea").text("");
+	            }			
+    	        
+    	        if (isPasswordValue && isMatch) {
     	            $("#goPass").prop("disabled", false);
     	            $(".PwdCheckArea, .PwdreCheckArea").text("");  
     	        } else {
     	            $("#goPass").prop("disabled", true);
-    	            
-    	            if (!isPasswordValid) {
-    	                $(".PwdCheckArea").text("비밀번호 형식에 맞게 입력하세요 (영문, 숫자, 특수문자 조합, 10-16자)");
-    	            } else if (!isMatch) {
-    	                $(".PwdreCheckArea").text("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
-    	            }
     	        }
     	    });
     	});

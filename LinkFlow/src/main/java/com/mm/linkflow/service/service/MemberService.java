@@ -2,6 +2,8 @@ package com.mm.linkflow.service.service;
 
 
 
+import java.util.List;
+
 import com.mm.linkflow.dto.MemberDto;
 
 public interface MemberService {
@@ -21,6 +23,8 @@ public interface MemberService {
 	   //올해,이번달 근무 상황 조회 하는 서비스 
 	   MemberDto myAttemdamce(String userId);
 	   
+	   //사원 연차 사용 검색 조회 서비스
+	   List<MemberDto> searchDayoff(MemberDto m);
 	
 	   
 }

@@ -24,6 +24,11 @@
 	border-radius: 5px;
 }
 
+.card-tools {
+    display: flex;
+    justify-content: flex-end; /* 요소를 오른쪽으로 정렬합니다 */
+}
+
 /* 비품예약 */
 .card-title, .card-tools {
 	padding: 10px;
@@ -74,12 +79,13 @@ input[type="checkbox"]:checked {
 				<div class="bk-table">
 					<div class="card">
 						<div class="card-header">
+							<form id="searchForm" action="${contextPath }/booking/sup.search" method="get" align="center">
 							<h6 class="card-title">
-								<input type="checkbox" id="useYN"> &nbsp; 예약 가능한 상품만 보기
+								<input type="checkbox" id="useYN" onclick="useCheck(this);"> &nbsp; 예약 가능한 상품만 보기
+								<input type="hidden" id="hiddenUse" name="useYN" value="N">
 							</h6>
 
 							<div class="card-tools">
-								<form id="searchForm" action="${contextPath }/booking/sup.search" method="get" align="center">
 	                				<input type="hidden" name="page" value="1">
 									<div class="input-group input-group-sm select" style="width: 300px;">
 										<select name="condition" class="form-control ">
@@ -88,7 +94,7 @@ input[type="checkbox"]:checked {
 										</select> 
 										<input type="text" class="form-control float-right" placeholder="Search"  name="keyword" value="${search.keyword}">
 										<div class="input-group-append">
-											<button type="submit" class="btn btn-default">
+											<button type="submit" class="btn btn-default" onclick="submit();">
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
@@ -107,23 +113,23 @@ input[type="checkbox"]:checked {
 										<th style="width: 200px;">상태</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="searchBody">
 								<c:choose>
 								<c:when test="${empty assList}">
 									<tr> 
 										<th colspan=4> 조회된 내역이 없습니다. </th>
 									</tr>
 								</c:when>
-								<c:otherwise>
-									<c:forEach var="ass" items="${ assList }">
-										<tr>
-											<td> </td>
-											<td>${ ass.subName }</td>
-											<td>${ ass.assetsName }</td>
-											<td>${ ass.useYN == 'Y' ? '예약 가능' : '사용중' }</td>
-										</tr>
-									</c:forEach>
-								</c:otherwise>
+									<c:otherwise>
+										<c:forEach var="ass" items="${ assList }">
+											<tr>
+												<td></td>
+												<td>${ ass.subName }</td>
+												<td>${ ass.assetsName }</td>
+												<td>${ ass.useYN == 'Y' ? '예약 가능' : '사용중' }</td>
+											</tr>
+										</c:forEach>
+									</c:otherwise>
 								</c:choose>
 								</tbody>
 							</table>
@@ -144,40 +150,66 @@ input[type="checkbox"]:checked {
 				</div>
 			</div>
 			<!-- /.content-wrapper -->
-			<c:if test="${not empty search }">
+			
 				<script>
 					$(document).ready(function(){
+						 /* $("#useYN").on("click", function() {
+						        useCheck(this);
+						    });*/
+						
+						
 		        		$("#searchForm select").val("${search.condition}");
-		        		
 		        		
 		        		$("#pageArea a").on("click", function(){
 		        			$("#searchForm input[name=page]").val($(this).text());
 		        			$("#searchForm").submit();
 		        			
-		        			return false; 
+		        			return false; 	
 		        		});
 		        		
-		        		/* $('#museYN').change(function(){
-		        			let useYN = $(this).is(':checked');
-		        		    let useResult = useYN ? 'checked' : 'unchecked';
-		        		        
-		        		    $.ajax({
-		        		    	url: '',
-	        		            method: 'GET',
-	        		            data: { use: useResult },
-	        		            success: function(result) {
-	        		                 
-	        		            },
-	        		            error: function() {
-	        		               
-	        		            }
-	        		        });
-	        		    }); */
-		        		 
-		        	});
+						/* function useCheck(checkbox){
+							 if (checkbox.checked) {
+							        document.getElementById("hiddenUse").value = "Y";
+						    } else {
+						        document.getElementById("hiddenUse").value = "N";
+						    }
+							 
+		        			$.ajax({
+		        				url:'${contextPath}/booking/use.check',
+		        				method: 'GET',
+		        				data: {
+		        					page:page,
+		        					condition:condition,
+		        					keyword:keyword
+		        					useYN:useYN
+		        				},
+		        				success:function(result){
+		        					let body = "";
+		        					
+		        				},error:function(){
+		        					
+		        				}
+		        				
+		        			})
+			        			
+		        			
+						}  */
+			        		
+					});
 					
+	        		/* function useCheck(checkbox) {
+					    // 체크박스의 체크 여부 확인
+					    if (checkbox.checked) {
+					        document.getElementById("hiddenUse").value = "Y";
+					        $("#searchForm").submit();
+					    } else {
+					        document.getElementById("hiddenUse").value = "N";
+					        $("#searchForm").submit();
+					    }
+	        		} */
 				</script>
-			</c:if>
+			
+			
 		</div>
 	</div>
 

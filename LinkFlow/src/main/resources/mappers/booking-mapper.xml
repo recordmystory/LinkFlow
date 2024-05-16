@@ -8,10 +8,16 @@
 	<result column="dept_code" property="deptCode"/>
 	<result column="assets_no" property="assetsNo"/>
 	<result column="bk_content" property="bkContent"/>
-	<result column="bk_start_dt" property="bkStartDt"/>
-	<result column="bk_end_dt" property="bkEndDt"/>
+	<result column="bk_start_time" property="bkStartTime"/>
+	<result column="bk_end_time" property="bkEndTime"/>
+	<result column="bk_start_date" property="bkStartDate"/>
+	<result column="bk_end_date" property="bkEndDate"/>
 	<result column="rej_content" property="rejContent"/>
 	<result column="status" property="status"/>
+	<result column="assets_name" property="assetsName"/>
+	<result column="sub_name" property="subName"/>
+	<result column="main_name" property="mainName"/>
+	
 </resultMap>
 
 <resultMap id="assResult" type="AssetsDto" extends="commonMapper.commonResult">
@@ -53,6 +59,9 @@
        and a.sub_code= c.sub_code
 	   and del_yn = 'N'
        and ${condition} like '%'|| #{keyword} ||'%'
+       <if test='useYN == "Y"'>
+       and use_yn = 'Y'
+       </if>
 </select>
 
 <select id="selectSearchSupList" resultMap="assResult">
@@ -67,6 +76,9 @@
        and main_code='003-'
        and a.sub_code= c.sub_code
        and ${condition} like '%'|| #{keyword} ||'%'
+       <if test='useYN == "Y"'>
+       and use_yn = 'Y'
+       </if>
      order by assets_no desc
 </select>
 
@@ -75,6 +87,7 @@
 	  from tb_booking
 	 where booking_id = #{userId}
 	   and del_yn = 'N'
+	  
 </select>
 
 <select id="selectMyBkList" resultMap="bkResult">
@@ -82,7 +95,16 @@
 		   main_name
 		  ,sub_name
 		  ,assets_name
-		  ,to_char()
+		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
+		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
+		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
+		  ,status
+     from tb_booking b
+     join tb_assets a using (assets_no)
+     join tb_common c using (main_code)
+    where booking_id = #{userId}
+      and a.sub_code= c.sub_code
+      and b.del_yn = 'N'
 
 </select>
 

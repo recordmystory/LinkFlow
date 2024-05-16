@@ -1,5 +1,7 @@
 package com.mm.linkflow.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +36,10 @@ public class MemberDao {
 
 	public MemberDto myAttemdamce(String userId) {
 		return sql.selectOne("memberMapper.myAttemdamce",userId);
+	}
+
+	public List<MemberDto> searchDayoff(MemberDto m) {
+		return sql.selectList("memberMapper.searchDayoff",m);
 	}
 
 

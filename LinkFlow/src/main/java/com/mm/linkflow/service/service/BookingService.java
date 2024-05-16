@@ -1,11 +1,11 @@
 package com.mm.linkflow.service.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.mm.linkflow.dto.AssetsDto;
 import com.mm.linkflow.dto.BookingDto;
-import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 public interface BookingService {
@@ -28,8 +28,8 @@ public interface BookingService {
     int selectBkUseCount(); // 사용가능 비품 페이징 
     List<AssetsDto> selectSupUse(PageInfoDto pi); // 사용가능 비품 리스트  
     
-    int searchBkCount(Map<String ,String> search); // 검색한 비품 페이징
-    List<AssetsDto> selectSearchSupList(PageInfoDto pi, Map<String ,String> search); // 검색한 비품 리스트 
+    int searchBkCount(Map<String,String> search); // 검색한 비품 페이징
+    List<AssetsDto> selectSearchSupList(PageInfoDto pi,Map<String,String> search); // 검색한 비품 리스트 
     
     int insertBooking(BookingDto bk); // 예약하기 
     

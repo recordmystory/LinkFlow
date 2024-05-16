@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -100,7 +101,11 @@ public class MemberController {
 		return "redirect:/member/myinfo.page";
 	}
 	
-	
+	@ResponseBody
+	@PostMapping("/serchDayoff")
+	public List<MemberDto> serchDayoff(MemberDto m) {
+		return mService.searchDayoff(m);
+	}
 		
 }
 
