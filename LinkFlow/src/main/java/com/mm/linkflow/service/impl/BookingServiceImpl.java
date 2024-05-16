@@ -1,5 +1,6 @@
 package com.mm.linkflow.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.mm.linkflow.dao.BookingDao;
 import com.mm.linkflow.dto.AssetsDto;
 import com.mm.linkflow.dto.BookingDto;
-import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.BookingService;
 
@@ -30,6 +30,11 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.selectMyBkList(pi,userId);
 	}
 	
+	@Override
+	public BookingDto selectDetailMyBk(String no) {
+		return null;
+	}
+
 	@Override
 	public int selectSupCount() {
 		return bkDao.selectSupCount();
@@ -76,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<AssetsDto> selectSearchSupList(PageInfoDto pi, Map<String,String> search) {
+	public List<AssetsDto> selectSearchSupList(PageInfoDto pi,Map<String,String> search) {
 		return bkDao.selectSearchSupList(search,pi);
 	}
 
@@ -89,13 +94,6 @@ public class BookingServiceImpl implements BookingService {
 	public int modBooking(BookingDto bk) {
 		return 0;
 	}
-
-	@Override
-	public BookingDto selectDetailBk(BookingDto bk) {
-		return null;
-	}
-
-	
 
 	
 

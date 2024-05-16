@@ -1,5 +1,6 @@
 package com.mm.linkflow.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,11 +32,11 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectSuppliesList", null , rowBounds);
 	}
 
-	public int selectSearchBkCount(Map<String, String> search) {
+	public int selectSearchBkCount(Map<String,String> search) {
 		return sql.selectOne("bkMapper.selectSearchBkCount",search);
 	}
 
-	public List<AssetsDto> selectSearchSupList(Map<String, String> search, PageInfoDto pi) {
+	public List<AssetsDto> selectSearchSupList(Map<String,String> search, PageInfoDto pi) {
 		int limit = pi.getBoardLimit();
 		int offset = (pi.getCurrentPage() -1) * limit;
 		

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시판 리스트</title>
 
 <style>
 .wrapper{
@@ -57,7 +57,7 @@
             <section class="content-header">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">게시판</h1>
+                        <h1 id="boardName" class="m-0">${map.boardName}</h1>
                     </div>
                 </div>
             </section>
@@ -68,6 +68,7 @@
                     <div class="contentArea">
                         <div class="contentInElement">
                             <div class="btnArea">
+                           		<c:if test="${(loginUser.superRight == 'Y' or loginUser.boardRight == 'Y') and map.normalYN == 'NORMAL'}">
                                 <ul class="navbar-nav">
                                     <li class="nav-item dropdown" style="display: flex; flex-direction: row;">
                                         <a class="nav-link btn btn-lg btn-secondary readUser" data-toggle="dropdown" href="#" style="width: 70px;"><i class="fa-solid fa-book fa-lg"></i></a>
@@ -132,6 +133,7 @@
                                         </div>
                                     </li>
                                 </ul>
+                           		</c:if>
                             </div>
 
                             <div class="form-inline">
@@ -168,15 +170,37 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th>1</th>
-                                                <th>공지</th>
-                                                <th>내부 고발합니다</th>
-                                                <th>김과장</th>
-                                                <th>2024-04-05</th>
-                                                <th>0</th>
-                                            </tr>
-                                            <!-- Additional rows here -->
+                                        	<c:choose>
+                                        		<c:when test="${empty boardList }">
+                                        			<tr>
+											                					<td colspan="6">조회된 게시글이 없습니다. </td>
+											                				<tr>
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<c:forEach var="b" items="${boardList}">
+	                                            	<tr onclick="location.href='${contextPath}/board/detail.do?type=${b.boardCategory}';">
+	                                                <c:choose>
+	                                                	<c:when test="${b.noticeYN == 'Y' }">
+	                                                		<th>${b.boardNo }</th>
+			                                                <th>공지</th>
+			                                                <th>${b.boardTitle}</th>
+			                                                <th>${b.regId }</th>
+			                                                <th>${b.modDate }</th>
+			                                                <th>${b.count }</th>
+	                                                	</c:when>
+			                                              <c:otherwise>
+			                                              	<td>${b.boardNo }</td>
+			                                                <td>일반</td>
+			                                                <td>${b.boardTitle}</td>
+			                                                <td>${b.regId }</td>
+			                                                <td>${b.modDate }</td>
+			                                                <td>${b.count }</td>
+			                                              </c:otherwise>
+	                                                </c:choose>
+	                                            	</tr>
+                                            	</c:forEach>
+                                            </c:otherwise>
+                                        	</c:choose>
                                         </tbody>
                                     </table>
                                     <hr style="margin-top: 0px;">

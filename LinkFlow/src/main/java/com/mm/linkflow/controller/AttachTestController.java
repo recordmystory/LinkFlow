@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mm.linkflow.dto.AttachDto;
-import com.mm.linkflow.service.impl.AttachTestServiceImpl;
+import com.mm.linkflow.service.impl.AttachServiceImpl;
 import com.mm.linkflow.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class AttachTestController {
-	private final AttachTestServiceImpl attachTestService;
+	private final AttachServiceImpl attachTestService;
 	private final FileUtil fileUtil;
 	
 	@GetMapping("/insertForm.test")

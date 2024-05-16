@@ -1,6 +1,7 @@
 package com.mm.linkflow.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -17,11 +18,11 @@ public class EdsmCrTempDao {
 	private final SqlSessionTemplate sqlSessionTemplate;
 
 	public int insertForm(EdocFormDto edsmForm) {
-		return sqlSessionTemplate.insert("EdsmFormMapper.insertForm", edsmForm);
+		return sqlSessionTemplate.insert("edsmFormMapper.insertForm", edsmForm);
 	}
 
 	public int selectCrTempListCnt() {
-		return sqlSessionTemplate.selectOne("EdsmFormMapper.selectCrTempListCnt");
+		return sqlSessionTemplate.selectOne("edsmFormMapper.selectCrTempListCnt");
 	}
 
 	public List<EdocFormDto> selectCrTempList(PageInfoDto pi) {
@@ -30,6 +31,15 @@ public class EdsmCrTempDao {
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return sqlSessionTemplate.selectList("EdsmFormMapper.selectCrTempList", null, rowBounds);
+		return sqlSessionTemplate.selectList("edsmFormMapper.selectCrTempList", null, rowBounds);
+	}
+
+	public int selectSearchListCnt(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("edsmFormMapper.selectSearchListCnt", search);
+	}
+
+	public List<EdocFormDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("edsmFormMapper.selectSearchList", search, rowBounds);
 	}
 }

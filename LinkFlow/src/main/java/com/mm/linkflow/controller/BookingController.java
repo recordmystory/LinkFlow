@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,14 +58,32 @@ public class BookingController {
 		int listCount = bkServiceImpl.selectBkCount(userId);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		
-		
 		List<BookingDto> bkList = bkServiceImpl.selectMyBkList(pi, userId);
+		
+		for(int i = 0; i<bkList.size(); i++) {
+			switch(bkList.get(i).getStatus()) {
+				case "WAI" : bkList.get(i).setStatus("예약대기"); break;
+				case "COM" : bkList.get(i).setStatus("예약완료"); break;
+				case "USE" : bkList.get(i).setStatus("사용중"); break;
+				case "END" : bkList.get(i).setStatus("사용완료"); break;
+				case "REJ" : bkList.get(i).setStatus("반려"); break;
+				case "CAN" : bkList.get(i).setStatus("취소"); break;
+			}
+		}
 		
 		mv.addObject("pi",pi)
 		  .addObject("bkList",bkList)
 		  .setViewName("booking/myBookingList");
 		
-		return null;
+		return mv;
+	}
+	
+	@GetMapping("/detail.bk")
+	public String selectDetailMyBk(String no, Model model) {
+		
+		model.addAttribute("booking", bkServiceImpl.selectDetailMyBk(no)));
+		
+		return "booking/myBookingDetail";
 	}
 	
 	@GetMapping("/supplies.use") //사용가능한비품 
@@ -73,7 +92,9 @@ public class BookingController {
 	}
 	
 	@GetMapping("/sup.search") // 비품검색 
-	public ModelAndView selectSupSearch(@RequestParam Map<String, String> search , @RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
+	public ModelAndView selectSupSearch(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
+		
+		log.debug("search:{}",search);
 		int listCount = bkServiceImpl.searchBkCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		

@@ -4,18 +4,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mm.linkflow.dao.AttachTestDao;
+import com.mm.linkflow.dao.AttachDao;
 import com.mm.linkflow.dto.AttachDto;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class AttachTestServiceImpl implements com.mm.linkflow.service.service.AttachTestService {
+public class AttachServiceImpl implements com.mm.linkflow.service.service.AttachService {
 	
-	private final AttachTestDao attachTestDao;
+	private final AttachDao attachTestDao;
 	
-
+	
+	// insert할 첨부파일 리스트 넘겨주기
 	@Override
 	public int insertAttach(List<AttachDto> list) {
 		int result = 0;
@@ -28,7 +29,8 @@ public class AttachTestServiceImpl implements com.mm.linkflow.service.service.At
 		return result;
 	}
 
-
+	
+	// 조회할 첨부파일의 참조번호, 참조타입 넘겨주기
 	@Override
 	public List<AttachDto> selectAttach(int refNo, String refCategory) {
 	 	AttachDto at = AttachDto.builder()
@@ -38,7 +40,8 @@ public class AttachTestServiceImpl implements com.mm.linkflow.service.service.At
 		return attachTestDao.list(at);
 	}
 
-
+	
+	// 삭제할 첨부파일의 파일번호 넘겨주기
 	@Override
 	public int delete(String[] delFileNo) {
 		return attachTestDao.delete(delFileNo);
