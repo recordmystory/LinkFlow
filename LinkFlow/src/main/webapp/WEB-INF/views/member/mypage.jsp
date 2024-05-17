@@ -71,8 +71,8 @@
                           <div class="card-body box-profile">
                             <div class="text-center" style="margin-top: 50px;">
                               <img class="profile-user-img img-fluid img-circle"
-                                  src="${contextPath}/resources/images/common/defaultProfile.png"
-                                  alt="기본이미지" style="min-width: 300px; min-height: 300px;">
+                                  src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
+                                  alt="기본이미지" style="width: 300px; height: 300px;">
                             </div>
   
                             <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>

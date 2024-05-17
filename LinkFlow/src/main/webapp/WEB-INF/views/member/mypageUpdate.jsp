@@ -95,7 +95,7 @@
                                     <div class="text-center" style="margin-top: 50px;">
                                       <img class="profile-user-img img-fluid img-circle"
                                           src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
-                                          alt="User profile picture" style="min-width: 300px; min-height: 300px;" onclick="$('#profileImgFile').click();">
+                                          alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
                                       <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="uploadFile">    
                                     </div>
           
@@ -160,13 +160,15 @@
                                                           </div><br>
           
                                                           <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="address" value="${loginUser.address}"><br>
-                                                          <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목" name=""><br>
+                                                          <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"><br>
                                                           <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소" required name="detailAdd" value="${loginUser.detailAdd}">
                                                       </div>
-                                                    
+                                                    			<input type="hidden" class="form-control-border" value="${loginUser.userId}" class="text-right" id="userId" name="userId">
+                                                    			<input type="hidden" class="form-control-border" value="${loginUser.userPwd}" class="text-right" id="userId" name="userPwd">
                                                   </div>
                                           
                                           </td>
+                                          
                                             
                                         </tr>
                                         <tr> 
