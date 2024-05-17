@@ -17,6 +17,10 @@ public class GroupDao {
 	public List<MemberDto> groupList() {
 		return sql.selectList("memberMapper.groupList");
 	}
+
+	public MemberDto groupinfoMember(String userId) {
+		return sql.selectOne("memberMapper.groupinfoMember",userId);
+	}
 	
 	
 }

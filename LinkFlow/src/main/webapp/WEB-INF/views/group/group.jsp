@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,27 +85,7 @@
 				
 				       <li class="sidebarName">조직도</li><br>
 				   
-				       <li class="nav-item menu-open">
-				
-				         <a href="#" class="nav-link middleName">
-				         <i class="nav-icon far fa-solid fa-people-line"></i>
-				         
-				         <p>
-				             부서별 보기
-				             <i class="fas fa-angle-left right"></i>
-				         </p>
-				         </a>
-				
-				         <ul class="nav nav-treeview" style="padding-left: 20px;">
-				         <li class="nav-item">
-				             <a href="#" class="nav-link">
-				             <i class="far fa-circle nav-icon"></i>
-				             <p>부서 1</p>
-				             </a>
-				         </li>
-				
-				         </ul>
-				     		</li>
+				       
 				     		</ul>
 				   </nav>
 				   <!-- /.sidebar-menu -->
@@ -155,26 +138,29 @@
                                               <th>부서원</th>
                                               
                                           </thead>
+                                          <tbody >
                                           <c:choose>
                                           <c:when test="${empty g}">
                                           	<tr> <td colspan="4">조회된 조직,부서가 없습니다. </td></tr>
                                           </c:when>
 	                                          <c:otherwise>
 	                                          <c:forEach var="g" items="${g}">
-	                                          <tbody style="text-align: center;">
-	                                              <tr>
-	                                                  <td>${g.deptName}</td>
-	                                                  <td>${g.totalMember}</td>
-	                                                  <td data-toggle="modal" data-target="#modal-lg" style="cursor: pointer;">${g.deptCapName}</td>
-	                                                  
-	                                                  <td>
-	                                                    <span class="groupName">${g.deptMember}</span>
-	                                                  </td>
-	                                              </tr>
-                                            </tbody>
-                                           	</c:forEach>
+														                    <tr>
+														                        <td style="text-align: center;">${g.deptName}</td>
+														                        <td style="text-align: center;">${g.totalMember}</td>
+														                        <td style="text-align: center;">${g.deptCapName}</td>
+														                    
+														                        <td data-toggle="modal" data-target="#modal-lg" style="cursor: pointer;">
+														                           <c:forTokens var="nameuserId" items="${g.deptMember}" delims=",">
+													                                	 <span class="groupName" data-userid="${fn:split(nameuserId, '|')[1]}">${fn:split(nameuserId, '|')[0]}</span>
+											
+												                           		 </c:forTokens>
+														                        </td>
+														                    </tr>
+														                </c:forEach>
                                            	</c:otherwise>
                                             </c:choose>
+                                            </tbody>
                                         </table>
 
                                       </div>
@@ -213,14 +199,14 @@
                     <div class="userInfoAera">
                       <div class="ImgInfoAera">
                       <img class="profile-user-img img-fluid img-circle"
-                          src="../공용디자인/resouse/defaultProfile.png"
+                          src=""
                           alt="User profile picture">
                       </div>  
                       <div class="userInfosmAera">
                           <ul>
-                              <li>성함: 김대표</li>
-                              <li>소속: CEO</li>
-                              <li>직책: 대표이사</li>
+                              <li>성함: </li>
+                              <li>소속: </li>
+                              <li>직책: </li>
                           </ul>
                       </div>
 
@@ -230,19 +216,19 @@
                               
                               <tr>
                                   <th>이메일</th>
-                                  <td>heekang93@linkflow.com</td>
+                                  <td></td>
                               </tr>
                               <tr>
                                   <th>휴대전화</th>
-                                  <td>010-1111-2222</td>
+                                  <td></td>
                               </tr>
                               <tr>
                                   <th>입사일</th>
-                                  <td>1988-02-19</td>
+                                  <td></td>
                               </tr>
                               <tr>
                                   <th>주소</th>
-                                  <td>서울 강서구 강서로 231</td>
+                                  <td></td>
                               </tr>
 
                       </table>
@@ -260,7 +246,39 @@
           <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
-
+					<script>
+				    $(document).ready(function() {
+				        $('.groupName').click(function() {
+				            var userId = $(this).data('userid'); 
+				            console.log(userId);
+				            $.ajax({
+				                url: '${contextPath}/group/groupPageInfo', 
+				                type: 'POST',
+				              
+				                data: {
+				                    userId: userId,
+				                },    
+				                success: function(response) {
+					                	if (response.profileUrl === null) {
+					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/resources/images/common/defaultProfile.png');
+					                	} else {
+					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', response.profileUrl);
+					                	}
+				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(1)').text('성함: ' + response.userName);
+				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(2)').text('소속: ' + response.deptName);
+				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(3)').text('직책: ' + response.position);
+				                    $('.modal-body .infoTableArea tr:nth-child(1) td').text(response.userId + '@linkflow.com');
+				                    $('.modal-body .infoTableArea tr:nth-child(2) td').text(response.phone);
+				                    $('.modal-body .infoTableArea tr:nth-child(3) td').text(response.hireDate);
+				                    $('.modal-body .infoTableArea tr:nth-child(4) td').text(response.address);			
+				                },
+				                error: function(xhr, status, error) {
+				                    console.error('AJAX 오류');
+				                }
+				            });
+				        });
+				    });
+				</script>
 
    
         

@@ -6,4 +6,6 @@ import com.mm.linkflow.dto.MemberDto;
 
 public interface GroupService {
 	List<MemberDto> groupList(); 
+	
+	MemberDto groupinfoMember(String userId);
 }

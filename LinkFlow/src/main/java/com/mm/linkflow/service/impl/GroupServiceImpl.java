@@ -19,4 +19,9 @@ public class GroupServiceImpl implements GroupService {
 		return gDao.groupList();
 	}
 
+	@Override
+	public MemberDto groupinfoMember(String userId) {
+		return gDao.groupinfoMember(userId);
+	}
+
 }

@@ -130,5 +130,7 @@ public class MemberController {
         String formattedSixMonth = sixMonth.format(formatter);
         
 	}
+	
+	
 }
 

@@ -156,7 +156,7 @@
 		    ,D.DEPT_TITLE AS DEPT_NAME
 		    ,COUNT(*) AS TOTAL_MEMBERS
 		    ,MAX(CASE WHEN C.SUB_CODE >= '004' THEN M.USER_NAME END) AS DEPT_CAPNAME
-		    ,LISTAGG(M.USER_NAME, ', ') WITHIN GROUP (ORDER BY M.USER_ID) AS DEPT_MEMBERS
+		    ,LISTAGG(M.USER_NAME || '|' || M.USER_ID, ', ') WITHIN GROUP (ORDER BY M.USER_ID) AS DEPT_MEMBERS
 		FROM 
 		    TB_MEMBER M
 		JOIN 
@@ -166,7 +166,7 @@
 		WHERE 
 		    M.DEL_YN = 'N'
 		GROUP BY
-	       D.DEPT_CODE
+             D.DEPT_CODE
 		    ,D.DEPT_TITLE
 		ORDER BY D.DEPT_CODE
 	</select>
@@ -179,6 +179,27 @@
 	 	 WHERE RETIRE_DATE IS NULL
 	   	   AND TO_CHAR(HIRE_DATE, 'YYYY-MM') < #{month};
 		]]>
+	</select>
+	<select id="groupinfoMember" resultMap="memberResult">
+		SELECT 
+	    M.USER_ID,
+	    D.DEPT_TITLE DEPT_NAME,
+	    c.sub_name position,
+	    M.USER_NAME,
+	    M.PHONE,
+	    M.ADDRESS,
+	    TO_CHAR(M.HIRE_DATE,'YYYY-MM-DD') HIRE_DATE,
+	    M.PROFILE_URL
+	
+		FROM 
+		    TB_MEMBER M
+		JOIN 
+		    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+		JOIN 
+		    tb_dept D ON M.DEPT_CODE = D.dept_code
+		where m.user_id = #{userId}
+		AND M.DEL_YN = 'N'
+
 	</select>
 
 </mapper>
