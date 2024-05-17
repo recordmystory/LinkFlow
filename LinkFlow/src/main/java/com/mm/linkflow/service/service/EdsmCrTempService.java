@@ -26,4 +26,7 @@ public interface EdsmCrTempService {
 
 	// 양식 수정
 	int updateCrTemp(EdocFormDto edsmForm);
+
+	// 양식 삭제
+	int deleteCrTemp(String edFrCode);
 }

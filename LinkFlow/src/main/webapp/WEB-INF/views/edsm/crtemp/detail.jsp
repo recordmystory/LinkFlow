@@ -192,7 +192,7 @@
 	<script>
 		function frSubmit(num){
 			$('#fr').attr("action", num == 1 ? "${contextPath}/edsm/crtemp/modifyForm.crtp" 
-						: "${contextPath}/edsm/crtp/remove.crtp");
+						: "${contextPath}/edsm/crtemp/remove.crtp");
 		}
 	</script>
 </body>

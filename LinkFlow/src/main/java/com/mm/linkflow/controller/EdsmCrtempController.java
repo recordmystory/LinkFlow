@@ -44,7 +44,28 @@ public class EdsmCrtempController {
 		return "/edsm/crtemp/enrollForm";
 	}
 	
-	
+	/** 양식 삭제 
+	 * @param edFrCode
+	 * @param redirectAttributes
+	 * @return redirect:/edsm/crtemp/list.crtp 목록 조회 페이지로 이동
+	 * 
+	 * @author 김지우
+	 */
+	@PostMapping("/remove.crtp")
+	public String remove(String edFrCode, RedirectAttributes redirectAttributes) {
+		int result = edsmCrTempService.deleteCrTemp(edFrCode);
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 삭제가 완료되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 삭제에 실패했습니다.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		
+		return "redirect:/edsm/crtemp/list.crtp";
+		
+		
+	}
 	/** 양식 수정 
 	 * 
 	 * @param edsmForm

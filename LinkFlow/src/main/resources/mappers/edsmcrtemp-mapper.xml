@@ -111,4 +111,12 @@
 		    MOD_DATE = SYSDATE
 		WHERE ED_FR_CODE = #{edFrCode}
 	</update>
+	
+	<!-- 양식 삭제 ( DEL_YN값 변경 및 MOD_DATE를 SYSDATE로 변경 ) -->
+	<update id="deleteCrTemp">
+		UPDATE TB_EDOC_FORM
+		SET DEL_YN = 'Y'
+			, MOD_DATE = SYSDATE
+		WHERE ED_FR_CODE = #{edFrCode}
+	</update>
 </mapper>

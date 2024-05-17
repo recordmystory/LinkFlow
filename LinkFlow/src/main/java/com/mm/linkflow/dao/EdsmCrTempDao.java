@@ -50,4 +50,8 @@ public class EdsmCrTempDao {
 	public int updateCrTemp(EdocFormDto edsmForm) {
 		return sqlSessionTemplate.update("edsmFormMapper.updateCrTemp", edsmForm);
 	}
+
+	public int deleteCrTemp(String edFrCode) {
+		return sqlSessionTemplate.update("edsmFormMapper.deleteCrTemp", edFrCode);
+	}
 }

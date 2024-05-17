@@ -53,4 +53,9 @@ public class EdsmCrTempImpl implements EdsmCrTempService {
 		return edsmCrTempDao.updateCrTemp(edsmForm);
 	}
 
+	@Override
+	public int deleteCrTemp(String edFrCode) {
+		return edsmCrTempDao.deleteCrTemp(edFrCode);
+	}
+
 }
