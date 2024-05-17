@@ -148,7 +148,7 @@
 														                    <tr>
 														                        <td style="text-align: center;">${g.deptName}</td>
 														                        <td style="text-align: center;">${g.totalMember}</td>
-														                        <td style="text-align: center;">${g.capName}</td>
+														                        <td style="text-align: center;">${g.deptCapName}</td>
 														                    
 														                        <td data-toggle="modal" data-target="#modal-lg" style="cursor: pointer;">
 														                           <c:forTokens var="nameuserId" items="${g.deptMember}" delims=",">
@@ -262,7 +262,7 @@
 					                	if (response.profileUrl === null) {
 					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/resources/images/common/defaultProfile.png');
 					                	} else {
-					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/' +response.profileUrl);
+					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/'+response.profileUrl);
 					                	}
 				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(1)').text('성함: ' + response.userName);
 				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(2)').text('소속: ' + response.deptName);
