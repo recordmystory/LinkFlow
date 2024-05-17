@@ -20,7 +20,9 @@ import com.mm.linkflow.service.service.MemberService;
 import com.mm.linkflow.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -65,17 +67,26 @@ public class MemberController {
 	
 	//마이페이지 정보 수정 
 	@PostMapping("/updateInfo.do")
-	public void update(MemberDto m, MultipartFile uploadFile,HttpSession session) {
+	public String update(MemberDto m, MultipartFile uploadFile,HttpSession session,RedirectAttributes redirectAttributes) {
 		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-		String originUrl = loginUser.getProfileUrl();
+		
+		
+		
 		Map<String,String> map = fileUtil.fileUpload(uploadFile, "profile");
 		
 		String newProfileUrl = map.get("filePath") + "/" + map.get("filesystemName");
 		loginUser.setProfileUrl(newProfileUrl);
 		m.setProfileUrl(newProfileUrl);
-		
 		int result = mService.updateMember(m); 
+		log.debug("result : {}", result);
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
+			session.setAttribute("loginUser", mService.loginMember(m));
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
+		}
+		return "redirect:/member/myinfo.page";
 		
 	}
 	
@@ -89,7 +100,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updateUserPassWord")
-	public String updateUserPassWord(MemberDto m,HttpSession session
+	public String updateUserPassWord(MemberDto m, HttpSession session
 			  , RedirectAttributes redirectAttributes) {
 		int result = mService.updatePwd(m);
 		

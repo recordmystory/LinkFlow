@@ -42,8 +42,7 @@
 		<result column="TOTAL_MEMBERS" property="totalMember"/>
 		<result column="DEPT_CAPNAME" property="deptCapName"/>
 		<result column="DEPT_MEMBERS" property="deptMember"/>
-		
-		
+
 		
 	</resultMap>	
 	
@@ -201,5 +200,17 @@
 		AND M.DEL_YN = 'N'
 
 	</select>
+	
+	<update id="updateMember">
+		UPDATE TB_MEMBER 
+			SET 
+			     phone = #{phone}
+			    ,ADDRESS = #{address}
+			    ,ZIP_CODE =#{zipCode}
+			    ,DETAIL_ADD=#{detailAdd}
+			    ,PROFILE_URL=#{profileUrl}
+			WHERE USER_ID = #{userId}
+			and user_pwd = #{userPwd}	
+	</update>
 
 </mapper>
