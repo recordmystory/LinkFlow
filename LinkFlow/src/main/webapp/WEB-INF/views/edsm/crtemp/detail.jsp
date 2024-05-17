@@ -98,6 +98,9 @@
     .btnArea{
       margin-bottom: 40px;
     }
+    
+    /* 문서 영역 스타일 */
+    .drafting-content-document { border: 1px solid black; padding: 10px; }
 </style>
 </head>
 <body>
@@ -122,10 +125,15 @@
              <div class="contentArea">
 
                <div class="contentInElement">
-                 <div class="btnArea"> 
-                   <button class="btn btn-secondary btn-sm">수정</button>
-                   <button class="btn btn-danger btn-sm">삭제</button>
-                 </div>
+               	<c:if test="${loginUser.userId eq crtp.regId}">
+	                 <form id="fr" action="" method="post">
+	                 	 <input type="hidden" name="edFrCode" value="${crtp.edFrCode}">
+		                 <div class="btnArea"> 
+		                   <button type="submit" class="btn btn-primary btn-sm" onclick="frSubmit(1);">수정</button>
+		                   <button type="submit" class="btn btn-danger btn-sm" onclick="frSubmit(2);">삭제</button>
+		                 </div>
+	                 </form>
+                 </c:if>
 
                  <!-- 기본 설정-->
                  <div class="default-setting">
@@ -135,17 +143,24 @@
                          <tr>
                            <th class="table-active">양식명</th>
                            <td colspan="4">
-                             품의서 
+                             ${crtp.edFrName} 
                            </td>
                          </tr>
                          <tr>
                            <th class="table-active">보존 연한</th>
                            <td>
-                             1년
+                               <c:choose>
+						                    <c:when test="${crtp.presDate == 0}">
+						                        영구
+						                    </c:when>
+						                    <c:otherwise>
+						                        ${crtp.presDate}년
+						                    </c:otherwise>
+						                	</c:choose>
                            </td>
                            <th class="table-active">보안 등급</th>
                            <td>
-                             B등급
+                             ${crtp.secCode}등급
                            </td>
                          </tr>
                        </tbody>
@@ -160,9 +175,11 @@
 
                  <div class="drafting-content">
                    <h6>본문</h6>
-                   <img src="${contextPath}/resources/images/common/edsm_document.png" alt="">
+                   <div class="drafting-content-document">
+                   	${crtp.edFrContent}
+                   </div>
                  </div>
-               
+               	
              </div>
            </div>
          </div>
@@ -172,5 +189,11 @@
    </div>
 </div>
 
+	<script>
+		function frSubmit(num){
+			$('#fr').attr("action", num == 1 ? "${contextPath}/edsm/crtemp/modifyForm.crtp" 
+						: "${contextPath}/edsm/crtp/remove.crtp");
+		}
+	</script>
 </body>
 </html>

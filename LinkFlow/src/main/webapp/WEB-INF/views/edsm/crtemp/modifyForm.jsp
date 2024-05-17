@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>양식 등록</title>
+<title>양식 수정</title>
 
 <!-- ckedtior -->
 <script src="${contextPath}/resources/ckeditor5/edsm/build/ckeditor.js"></script>
@@ -110,7 +110,7 @@
           <section class="content-header content">
 		        <div class="row mb-2">
               <div class="col-sm-6">
-                <h1 class="m-0">양식 등록</h1>
+                <h1 class="m-0">양식 수정</h1>
               </div>
             </div>
           </section>
@@ -120,11 +120,11 @@
            <div class="container-fluid" style="display: flex; justify-content: center;"> 
              <div class="contentArea">
 
+               <form id="templateForm" action="${contextPath}/edsm/crtemp/modify.crtp" method="post">
                <div class="contentInElement">
-               	<form method="post" action="${contextPath}/edsm/crtemp/registTemplate.crtp">
-               
+                 <input type="hidden" name="edFrCode" value="${crtp.edFrCode}">
                  <div class="btnArea">
-                          <button type="submit" id="crtTmplBtn" class="btn btn-primary btn-sm">양식 생성</button>    
+                          <button type="submit" id="crtTmplBtn" class="btn btn-primary btn-sm">수정</button>    
                         </div>
 
                         <!-- 기본 설정-->
@@ -135,45 +135,44 @@
                                 <tr>
                                   <th class="table-active">양식명</th>
                                   <td colspan="4">
-                                    <input type="text" name="edFrName" class="form-control" placeholder="양식명을 입력해주세요" style="width: 300px;" required>
+                                    <input type="text" name="edFrName" class="form-control" value="${crtp.edFrName}" style="width: 300px;" required>
                                   </td>
                                 </tr>
                                 <tr>
                                   <th class="table-active">보존 연한</th>
                                   <td>
                                     <select class="form-control" name="presDate">
-                                      <option value="1">1년</option>
-                                      <option value="3">3년</option>
-                                      <option value="5">5년</option>
-                                      <option value="10">10년</option>
-                                      <option value="0" selected>영구</option>
+                                      <option value="1" ${crtp.presDate == 1 ? 'selected="selected"' : ''}>1년</option>
+                                      <option value="3" ${crtp.presDate == 3 ? 'selected="selected"' : ''}>3년</option>
+                                      <option value="5" ${crtp.presDate == 5 ? 'selected="selected"' : ''}>5년</option>
+                                      <option value="10" ${crtp.presDate == 10 ? 'selected="selected"' : ''}>10년</option>
+                                      <option value="0" ${crtp.presDate == 0 ? 'selected="selected"' : ''}>영구</option>
                                     </select>
                                   </td>
                                   <th class="table-active">보안 등급</th>
                                   <td>
                                     <select class="form-control" name="secCode">
-                                      <option value="S">S등급</option>
-                                      <option value="A">A등급</option>
-                                      <option value="B">B등급</option>
-                                      <option value="C" selected>C등급</option>
+                                      <option value="S" ${crtp.secCode == 'S' ? 'selected="selected"' : ''}>S등급</option>
+                                      <option value="A" ${crtp.secCode == 'A' ? 'selected="selected"' : ''}>A등급</option>
+                                      <option value="B" ${crtp.secCode == 'B' ? 'selected="selected"' : ''}>B등급</option>
+                                      <option value="C" ${crtp.secCode == 'C' ? 'selected="selected"' : ''}>C등급</option>
                                   </select>
                                   </td>
                                 </tr>
                               </tbody>
                             </table> 
-													</form>
-                        <!-- 결재선 -->
                         <div class="approval-line">
 
                         <div class="drafting-content">
                           <h6>본문</h6>
                           <input type="hidden" id="editorContent" name="edFrContent">
-                          <div id="editor" name="frContent"></div>
+                          <div id="editor" name="edFrContent"></div>
                         </div>
                       </div>
                       
                     </div>
                       <!-- /.card-body -->
+							   </form>
                </div>
              </div>
            </div>
@@ -192,6 +191,9 @@
       .create(document.querySelector('#editor'))
       .then(newEditor => {
           editor = newEditor;
+          
+          // 에디터 내에 기존 내용 설정
+          editor.setData('${crtp.edFrContent}');
       })
       .catch(error => {
           console.error(error);
@@ -206,7 +208,7 @@
 	        let edFrContent = editor.getData(); // 에디터 내용 필드
 	
 	        // 필수 입력 필드가 비어 있는지 확인
-	         if (edFrName == '') {
+	          if (edFrName == '') {
 		        alert('양식명을 입력해주세요.');
 		        event.preventDefault();
 			    } else if (edFrContent.length == 0) {
@@ -215,7 +217,7 @@
 			    } else {
 			        $('#editorContent').val(edFrContent); // 에디터 내용을 hidden input에 설정
 			        $('#templateForm').submit(); // form 제출
-			      }
+			      } 
 	    });
     	
     });

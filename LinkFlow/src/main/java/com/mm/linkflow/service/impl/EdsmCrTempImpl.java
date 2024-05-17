@@ -43,4 +43,14 @@ public class EdsmCrTempImpl implements EdsmCrTempService {
 		return edsmCrTempDao.selectSearchList(search, pi);
 	}
 
+	@Override
+	public EdocFormDto selectCrTemp(String no) {
+		return edsmCrTempDao.selectCrTemp(no);
+	}
+
+	@Override
+	public int updateCrTemp(EdocFormDto edsmForm) {
+		return edsmCrTempDao.updateCrTemp(edsmForm);
+	}
+
 }

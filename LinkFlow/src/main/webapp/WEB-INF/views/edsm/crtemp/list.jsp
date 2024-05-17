@@ -109,7 +109,7 @@
 	                    		
 	                    		<c:otherwise>
 	                    			<c:forEach var="f" items="${list}">
-	                    				<tr onclick="location.href='${contextPath}/edsm/crtemp/detail.crtp'">
+	                    				<tr onclick="location.href='${contextPath}/edsm/crtemp/detail.crtp?no=${f.edFrCode}';">
 	                    					<td>${f.edFrName}</td>
 	                    					<td>${f.regId}</td>
 	                    					<td>${f.regDate}</td>

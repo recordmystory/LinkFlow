@@ -18,6 +18,12 @@ public interface EdsmCrTempService {
 	
 	// 양식명으로 검색 
 	int selectSearchListCnt(Map<String, String> search);
-
+	
 	List<EdocFormDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
+	
+	// 양식 상세 조회
+	EdocFormDto selectCrTemp(String no);
+
+	// 양식 수정
+	int updateCrTemp(EdocFormDto edsmForm);
 }
