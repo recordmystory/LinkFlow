@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,72 @@ public class EdsmCrtempController {
 		return "/edsm/crtemp/enrollForm";
 	}
 	
+	/** 양식 삭제 
+	 * @param edFrCode
+	 * @param redirectAttributes
+	 * @return redirect:/edsm/crtemp/list.crtp 목록 조회 페이지로 이동
+	 * 
+	 * @author 김지우
+	 */
+	@PostMapping("/remove.crtp")
+	public String remove(String edFrCode, RedirectAttributes redirectAttributes) {
+		int result = edsmCrTempService.deleteCrTemp(edFrCode);
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 삭제가 완료되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 삭제에 실패했습니다.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		
+		return "redirect:/edsm/crtemp/list.crtp";
+		
+		
+	}
+	/** 양식 수정 
+	 * 
+	 * @param edsmForm
+	 * @param redirectAttributes
+	 * @return redirect:/edsm/crtemp/detail.crtp?no=수정할 글 번호
+	 * 
+	 * @author 김지우
+	 */
+	@PostMapping("/modify.crtp")
+	public String modify(EdocFormDto edsmForm, RedirectAttributes redirectAttributes) {
+		int result = edsmCrTempService.updateCrTemp(edsmForm);
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 수정이 완료되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "양식 수정에 실패했습니다.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		
+		return "redirect:/edsm/crtemp/detail.crtp?no=" + edsmForm.getEdFrCode();
+		
+		
+	}
+	
+	@PostMapping("/modifyForm.crtp")
+	public String modifyForm(String edFrCode, Model model) {
+//		log.debug("edsmForm : {}", edFrCode);
+		model.addAttribute("crtp", edsmCrTempService.selectCrTemp(edFrCode));
+		
+		return "edsm/crtemp/modifyForm";
+		
+	}
+	
+	/** 양식 상세 조회
+	 * @param no
+	 * @param model
+	 * @return /edsm/crtemp/detail
+	 * 
+	 * @author 김지우
+	 */
 	@GetMapping("/detail.crtp")
-	public String detail() {
+	public String detail(String no, Model model) {
+		model.addAttribute("crtp", edsmCrTempService.selectCrTemp(no));
+		
 		return "/edsm/crtemp/detail";
 	}
 	

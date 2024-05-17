@@ -58,6 +58,7 @@
 		ORDER BY EF.MOD_DATE DESC
 	</select>
 	
+	<!-- 양식명으로 검색 -->
 	<select id="selectSearchListCnt" resultType="_int">
 		SELECT COUNT(*)
 		FROM TB_EDOC_FORM EF
@@ -81,5 +82,41 @@
 			AND ED_FR_NAME LIKE '%' || #{keyword} || '%'
 		ORDER BY EF.MOD_DATE DESC
 	</select>
-
+	
+	<!-- 양식 상세 조회 -->
+	<select id="selectCrTemp" resultMap="edocFormResult">
+		SELECT EF.ED_FR_CODE
+          , EF.ED_FR_NAME
+          , EF.PRES_DATE
+          , EF.SEC_CODE
+          , EF.ED_FR_CONTENT
+		      , TO_CHAR(EF.REG_DATE, 'YYYY-MM-DD') REG_DATE
+		      , EF.MOD_DATE
+		      , EF.REG_ID
+          , EF.MOD_ID
+          , EF.DEL_YN
+		FROM TB_EDOC_FORM EF
+		JOIN TB_MEMBER M ON M.USER_ID = EF.REG_ID
+		WHERE EF.DEL_YN = 'N'
+			AND EF.ED_FR_CODE = #{no}
+	</select>
+	
+	<!-- 양식 수정 -->
+	<update id="updateCrTemp">
+		UPDATE TB_EDOC_FORM
+		SET ED_FR_NAME = #{edFrName},
+		    PRES_DATE = #{presDate},
+		    SEC_CODE = #{secCode},
+		    ED_FR_CONTENT = #{edFrContent},
+		    MOD_DATE = SYSDATE
+		WHERE ED_FR_CODE = #{edFrCode}
+	</update>
+	
+	<!-- 양식 삭제 ( DEL_YN값 변경 및 MOD_DATE를 SYSDATE로 변경 ) -->
+	<update id="deleteCrTemp">
+		UPDATE TB_EDOC_FORM
+		SET DEL_YN = 'Y'
+			, MOD_DATE = SYSDATE
+		WHERE ED_FR_CODE = #{edFrCode}
+	</update>
 </mapper>

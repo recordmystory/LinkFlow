@@ -42,4 +42,16 @@ public class EdsmCrTempDao {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
 		return sqlSessionTemplate.selectList("edsmFormMapper.selectSearchList", search, rowBounds);
 	}
+
+	public EdocFormDto selectCrTemp(String no) {
+		return sqlSessionTemplate.selectOne("edsmFormMapper.selectCrTemp", no);
+	}
+
+	public int updateCrTemp(EdocFormDto edsmForm) {
+		return sqlSessionTemplate.update("edsmFormMapper.updateCrTemp", edsmForm);
+	}
+
+	public int deleteCrTemp(String edFrCode) {
+		return sqlSessionTemplate.update("edsmFormMapper.deleteCrTemp", edFrCode);
+	}
 }

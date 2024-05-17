@@ -170,8 +170,9 @@
        <!--로그인 유저 프로필이 나오는곳-->
          <li class="nav-item dropdown">
            <a class="nav-link" data-toggle="dropdown" href="#">
+           
              <img src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>" 
-             style="width: 30px;height: 30px;">
+             style="width: 30px;height: 30px; border-radius: 50%;">
             
            </a>
            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
