@@ -31,6 +31,11 @@ public class BookingServiceImpl implements BookingService {
 	}
 	
 	@Override
+	public BookingDto selectDetailMyBk(String no) {
+		return null;
+	}
+
+	@Override
 	public int selectSupCount() {
 		return bkDao.selectSupCount();
 	}
@@ -89,13 +94,6 @@ public class BookingServiceImpl implements BookingService {
 	public int modBooking(BookingDto bk) {
 		return 0;
 	}
-
-	@Override
-	public BookingDto selectDetailBk(BookingDto bk) {
-		return null;
-	}
-
-	
 
 	
 

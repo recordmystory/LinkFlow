@@ -6,8 +6,59 @@
 		<result column="USER_ID" property="userId"/>
 		<result column="START_DTIME" property="startDtime"/>
 		<result column="END_DTIME" property="endDtime"/>
-	</resultMap>	
+	</resultMap>
 	
+	<select id="selectCheckIn" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_ATTENDANCE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<insert id="checkInAtt">
+		INSERT
+		  INTO TB_ATTENDANCE
+		  (
+		  	ATTENDANCE_NO
+		  , USER_ID
+		  , START_DTIME
+		  , END_DTIME
+		  , REG_ID
+		  , MOD_ID
+		  )
+		  VALUES
+		  (
+		  	SEQ_ATTENDANCE.NEXTVAL
+		  , #{userId}
+		  , SYSDATE
+		  , NULL
+		  , #{userId}
+		  , #{userId}
+		  )
+	</insert>
 
-
+	<select id="selectCheckOut">
+		SELECT
+		       COUNT(*)
+		  FROM TB_ATTENDANCE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(END_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<update id="checkOutAtt">
+		UPDATE
+		       TB_ATTENDANCE
+		   SET END_DTIME = SYSDATE
+		 WHERE USER_ID = #{userId}
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</update>
+	
+	<update id="autoCheckOut">
+		UPDATE
+		       TB_ATTENDANCE
+		   SET END_DTIME = SYSDATE
+		 WHERE END_DTIME IS NULL
+		   AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</update>
 </mapper>

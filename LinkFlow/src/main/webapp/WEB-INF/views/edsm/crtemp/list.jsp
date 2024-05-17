@@ -69,16 +69,20 @@
                   <h1 class="m-0" id="header-title">양식 생성 목록</h1>
               </div>
             </div>
-            <div class="search d-flex justify-content-end">
-              <div class="input-group col-4" style="height: 100%;">
-                <input type="search" class="form-control" placeholder="양식명을 입력해주세요">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-              </div>
-            </div>
+            <form id="searchForm" action="${contextPath}/edsm/crtemp/search.crtp" method="get">
+	             <input type="hidden" name="page" value="1">
+	             <div class="search d-flex justify-content-end">
+	              <div class="input-group col-4" style="height: 100%;">
+	                <input type="search" name="keyword" class="form-control" placeholder="양식명을 입력해주세요">
+	                <div class="input-group-append">
+	                    <button type="submit" class="btn btn-primary">
+	                        <i class="fa fa-search"></i>
+	                    </button>
+	                </div>
+	              </div>
+	            </div>
+            </form>            
+           
           </section>
                
           <!-- Main content -->
@@ -116,7 +120,8 @@
 	                    	</c:choose>
 	                    </tbody>
 	                  </table>
-	
+	                  
+									<div id="pagingArea">
 	                  <ul class="pagination justify-content-center">
 	                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/crtemp/list.crtp?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
 	                    
@@ -126,6 +131,8 @@
 	                    
 	                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/crtemp/list.crtp?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
                 		</ul>
+                	</div>
+                	
 	            </div> 
            </div>
          </div>
@@ -133,5 +140,18 @@
      </section>
    	</div>
 	</div>
+	
+	<c:if test="${not empty search}">
+		<script>
+			$(function(){
+				$('#pagingArea a').on('click', function(){
+					$('#searchForm input[name=page]').val($(this).text());
+					$('#searchForm').submit();
+					return false;
+				});
+			});
+			
+		</script>
+	</c:if>
 </body>
 </html>

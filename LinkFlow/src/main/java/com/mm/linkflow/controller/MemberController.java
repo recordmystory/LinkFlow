@@ -1,5 +1,7 @@
 package com.mm.linkflow.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,7 @@ public class MemberController {
 	public String mypageUpdate() {
 		return "member/mypageUpdate";
 	}
+	
 	//마이페이지 유저 근태현황 조회 포워딩 
 	@RequestMapping("/myAttendance.page")
 	public String myAttendance(Model model,HttpSession session) {
@@ -50,9 +53,7 @@ public class MemberController {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();
 		model.addAttribute("att",mService.myAttemdamce(userId));
-		
-		
-		
+
 		return "member/myAttendance";
 	}
 	
@@ -106,6 +107,28 @@ public class MemberController {
 	public List<MemberDto> serchDayoff(MemberDto m) {
 		return mService.searchDayoff(m);
 	}
-		
+	
+	// 사원현황 ajax
+	@ResponseBody
+	@PostMapping("/selectAllMember.do")
+	public void selectAllMember() {
+		LocalDate currentDate = LocalDate.now();
+        
+        LocalDate oneMonth = currentDate.minusMonths(1);
+        LocalDate twoMonth = currentDate.minusMonths(2);
+        LocalDate threeMonth = currentDate.minusMonths(3);
+        LocalDate fourMonth = currentDate.minusMonths(4);
+        LocalDate fiveMonth = currentDate.minusMonths(5);
+        LocalDate sixMonth = currentDate.minusMonths(6);
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        String formattedOneMonth = oneMonth.format(formatter);
+        String formattedTwoMonth = twoMonth.format(formatter);
+        String formattedThreeMonth = threeMonth.format(formatter);
+        String formattedFourMonth = fourMonth.format(formatter);
+        String formattedFiveMonth = fiveMonth.format(formatter);
+        String formattedSixMonth = sixMonth.format(formatter);
+        
+	}
 }
 

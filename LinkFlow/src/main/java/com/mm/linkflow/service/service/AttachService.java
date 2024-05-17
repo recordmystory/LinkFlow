@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.mm.linkflow.dto.AttachDto;
 
-public interface AttachTestService {
+public interface AttachService {
 	
 	int insertAttach(List<AttachDto> list);
 	

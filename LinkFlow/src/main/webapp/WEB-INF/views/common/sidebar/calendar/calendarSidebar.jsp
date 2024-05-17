@@ -127,25 +127,25 @@
             <ul class="nav nav-treeview" style="padding-left: 20px;">
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <input type="checkbox" id="personalCalCheckbox" class="calCheckbox personalCal-checkbox">
+                    <input type="checkbox" id="personalCalCheckbox" class="calCheckbox personalCal-checkbox" value="03">
                     <label for="personalCalCheckbox">개인 캘린더</label>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <input type="checkbox" id="departCalCheckbox" class="calCheckbox departCal-checkbox">
+                    <input type="checkbox" id="departCalCheckbox" class="calCheckbox departCal-checkbox" value="02">
                     <label for="departCalCheckbox">부서 캘린더</label>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <input type="checkbox" id="companyCalCheckbox" class="calCheckbox companyCal-checkbox">
+                    <input type="checkbox" id="companyCalCheckbox" class="calCheckbox companyCal-checkbox" value="01">
                     <label for="companyCalCheckbox">전사 캘린더</label>
                 </a>
             </li>
             </ul>
         </li>
-
+        
 
         <li class="nav-item">
 

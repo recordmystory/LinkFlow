@@ -133,132 +133,108 @@
     <script>
 
   //풀캘린더 script start
-      document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-          },
-          //부트스트랩 more팝오버 
-          initialView: 'dayGridMonth', //월간뷰 기본값
-          moreLinkClick: "popover",
-          //구글api로 공휴일 가져오기
-          googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
-          timeZone: 'Asia/Seoul', //시간대 -확인
-          dayMaxEvents: true, 
-          initialDate: '2023-01-12', //기준일
-          navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동할 수 있음
-          editable: true, // 이벤트를 드래그하여 이동할 수 있음
-          selectable: true, // 날짜를 클릭하여 이벤트를 생성할 수 있음
-          //more 갯수 제한
-          views: {
-            timeGrid: {
-              dayMaxEventRows: 5 // adjust to 6 only for timeGridWeek/timeGridDay
-            }
-          },
-          eventClick: function(info) {
-              // prevent browser from following the link
-              info.jsEvent.preventDefault();
-          },
-          eventSources: [
-      //공휴일 이벤트
-            
-            {
-              googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
-              //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
-              //borderColor: 'black'
-              //className지정가능 ->알아보기
-              classNames: 'holiday',
-              textColor: 'rgba(190, 0, 50, 0.5)',
-              constraint: 'availableForMeeting' 
-                
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
-            {
-        //일정 이벤트
-              events: [
-                {
-                  title: '개발2팀 부서회식',
-                  start: '2023-01-03T13:00:00',
-                  //constraint: 'businessHours' 무슨 속성인지 알아보기
-                  color: '#104fa1c3' //부서 캘린더
-                },
-                {
-                  title: '개발2팀 부서회식',
-                  start: '2023-01-03T13:00:00',
-                  //constraint: 'businessHours' 무슨 속성인지 알아보기
-                  color: '#104fa1c3' //부서 캘린더
-                },
-                {
-                  title: '개발2팀 부서회식',
-                  start: '2023-01-03T13:00:00',
-                  //constraint: 'businessHours' 무슨 속성인지 알아보기
-                  color: '#104fa1c3' //부서 캘린더
-                },
-                {
-                  title: '개발2팀 부서회식',
-                  start: '2023-01-03T13:00:00',
-                  //constraint: 'businessHours' 무슨 속성인지 알아보기
-                  color: '#104fa1c3' //부서 캘린더
-                },
-                {
-                  title: '개발2팀 부서회식',
-                  start: '2023-01-03T13:00:00',
-                  //constraint: 'businessHours' 무슨 속성인지 알아보기
-                  color: '#104fa1c3' //부서 캘린더
-                },
-                {
-                  title: 'Meeting',
-                  start: '2023-01-13T11:00:00',
-                  constraint: 'availableForMeeting', // defined below
-                  color: '#358657c3' //개인 캘린더 
-                },
-                {
-                  title: '창립기념일',
-                  start: '2023-01-13T11:00:00',
-                  constraint: 'availableForMeeting', // 일정 옮기기 불가 -전사
-                  color: '#a82626c3' //전사 캘린더
-                },
-                {
-                  title: '출장',
-                  start: '2023-01-18',
-                  end: '2023-01-20',
-                  color: '#358657c3' //개인 
-                },
-                {
-                  title: 'B사 프로젝트',
-                  start: '2023-01-03T13:00:00',
-                  end: '2023-01-09',
-                  color: '#104fa1c3' //부서 
-                },
-                {
-                  title: '워크숍',
-                  start: '2023-01-13T11:00:00',
-                  end: '2023-01-20',
-                  constraint: 'availableForMeeting', // defined below
-                  color: '#a82626c3' //전사
-                },
-                {
-                  title: 'Party',
-                  start: '2023-01-29T20:00:00'
+            //부트스트랩 more팝오버 
+            initialView: 'dayGridMonth', //월간뷰 기본값
+            moreLinkClick: "popover",
+            //구글api로 공휴일 가져오기
+            googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
+            timeZone: 'Asia/Seoul', //시간대 -확인
+            dayMaxEvents: true, 
+            initialDate: '2023-01-12', //기준일
+            navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동할 수 있음
+            editable: true, // 이벤트를 드래그하여 이동할 수 있음
+            selectable: true, // 날짜를 클릭하여 이벤트를 생성할 수 있음
+            //more 갯수 제한
+            views: {
+                timeGrid: {
+                    dayMaxEventRows: 5 // adjust to 6 only for timeGridWeek/timeGridDay
                 }
-              ]
-            }
-          ]
-      });
-      calendar.render();
-    });
-//풀캘린더 script start
+            },
+            eventClick: function(info) {
+                // prevent browser from following the link
+                info.jsEvent.preventDefault();
+            },
+            eventSources: [
+                //공휴일 이벤트
+                {
+                    googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
+                    //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
+                    //borderColor: 'black'
+                    //className지정가능 ->알아보기
+                    classNames: 'holiday',
+                    textColor: 'rgba(190, 0, 50, 0.5)',
+                    constraint: 'availableForMeeting' 
+                },
+                {
+                     //일정 이벤트
+                    events: function(info, successCallback, failureCallback) {
+                        var checkedCalendars = []; 
+                        
+                     // 개인 
+                        if ($("#personalCalCheckbox").is(":checked")) {
+                            checkedCalendars.push($("#personalCalCheckbox").val());
+                        }
 
+                        // 부서 
+                        if ($("#departCalCheckbox").is(":checked")) {
+                            checkedCalendars.push($("#departCalCheckbox").val());
+                        }
+
+                        // 회사 
+                        if ($("#companyCalCheckbox").is(":checked")) {
+                            checkedCalendars.push($("#companyCalCheckbox").val());
+                        }
+
+                        $.ajax({
+                            url: "${contextPath}/calendar/schList.do", 
+                            type: "get",
+                            data: {
+                            		schCalSubCode: checkedCalendars.join(",")// 배열을 콤마로 구분된 문자열로 변환하여 전달  
+                            },                          
+                            success: function(result) {
+                                var events = [];
+                                for (var i = 0; i < result.length; i++) {
+                                    var eventData = {
+                                        title: result[i].schTitle,
+                                        start: result[i].startDate,
+                                        end: result[i].endDate,
+                                        color: result[i].calColor
+                                    };
+                                    events.push(eventData);
+                                }
+                                successCallback(events);
+                            },
+                            error: function(result) {
+                                console.error("일정 조회 오류"); 
+                                failureCallback(result);
+                            }
+                        });
+                    } 
+                }
+            ]
+        });
+        calendar.render();
+    });
+    //풀캘린더 
+
+	 
+	 
+	 
 
  
 //캘린더 모달 이벤트 start
       $(document).ready(function() {
 		    // 상세 모달
 		    $('.fc-daygrid-day-events').click(function(event) {
-		    		debugger;
 		        	/* if (!$(this).hasClass('div.fc-event-title-container')) {
 		        	// 장기 일정
 		            $('#schDetailModal').modal('show');

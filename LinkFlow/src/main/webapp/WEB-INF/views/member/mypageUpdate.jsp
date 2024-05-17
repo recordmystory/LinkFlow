@@ -89,7 +89,7 @@
                                 <div class="col-12">
                                       
                               <!-- Profile Image -->
-                              <form action="${contextPath}/member/updateInfo.do" method="post" enctype="multipart/form-data">
+                              <form action="${contextPath}/member/updateInfo.do" method="post" enctype="multipart/form-data" id="profillArea">
                                 <div class="card card-primary card-outline">
                                   <div class="card-body box-profile">
                                     <div class="text-center" style="margin-top: 50px;">
@@ -178,6 +178,8 @@
                                           </td>  
                                         </tr>
                                        </tbody> 
+                                       </table>
+                                       </form>
                                   </div>
                                   <!-- /.card-body -->
                                   </div>
@@ -353,6 +355,7 @@
               
           })
       </script>
+  
 
     </div>
 </body>
