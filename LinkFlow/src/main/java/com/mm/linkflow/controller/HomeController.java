@@ -2,6 +2,7 @@ package com.mm.linkflow.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.AttemdamceService;
+import com.mm.linkflow.service.service.BoardService;
 import com.mm.linkflow.service.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 	private final AttemdamceService attService;
 	private final MemberService mService;
+	private final BoardService boardService;
 	/**
 	 * 테스트로 게시판리스트조회로함 나중에 로그인페이지로 하셈
 	 * @return
@@ -51,6 +55,9 @@ public class HomeController {
 				if(checkIn == 0) {
 					attService.checkInAtt(loginUser.getUserId());
 				}
+				List<BoardDto> list = boardService.selectNewNoticeList();
+				log.debug("list {}", list);
+				req.getSession().setAttribute("list", list);
 				req.getSession().setAttribute("loginUser", loginUser);
 				out.println("alert('" + loginUser.getUserName() +"님이 로그인 하였습니다.');");
 				out.println("location.href= '" + req.getContextPath() + "/main';");
@@ -60,5 +67,7 @@ public class HomeController {
 	        	
 	        }
 			out.println("</script>");
-	    }
+	}
+	
+	
 }

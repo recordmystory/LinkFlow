@@ -35,5 +35,11 @@ public class BoardDao {
 		
 		return sqlSession.selectList("boardMapper.selectBoardList", boardType, rowBounds);
 	}
-
+	public List<BoardDto> selectNewNoticeList() {
+		
+		RowBounds rowBounds= new RowBounds( 0, 5 );
+		
+		return sqlSession.selectList("boardMapper.selectBoardList", "CATEGORY-8", rowBounds);
+	}
+	
 }

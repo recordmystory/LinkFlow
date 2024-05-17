@@ -233,31 +233,13 @@
 							<div class="card-body">
 								<table id="example2" class="table table-bordered table-hover">
 									<tbody style="text-align: center;">
+										<c:forEach var="n" items="${list}">
 										<tr>
-											<td style="width: 10%;">30</td>
-											<td style="width: 70%;"><a href="dd">공지사항 30</a></td>
-											<td style="width: 20%;">2024-05-08</td>
+											<td style="width: 10%;">${ n.boardNo }</td>
+											<td style="width: 70%;"><a href="dd">${ n.boardTitle }</a></td>
+											<td style="width: 20%;">${ m.modDate }</td>
 										</tr>
-										<tr>
-											<td>29</td>
-											<td><a href="dd">공지사항 29</a></td>
-											<td>2024-05-08</td>
-										</tr>
-										<tr>
-											<td>28</td>
-											<td><a href="dd">공지사항 28</a></td>
-											<td>2024-05-08</td>
-										</tr>
-										<tr>
-											<td>27</td>
-											<td><a href="dd">공지사항 27</a></td>
-											<td>2024-05-08</td>
-										</tr>
-										<tr>
-											<td>26</td>
-											<td><a href="dd">공지사항 26</a></td>
-											<td>2024-05-08</td>
-										</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

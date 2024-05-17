@@ -34,4 +34,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectBoardList(pi, boardType);
 	}
 
+	// 공지사항 조회용 - 황민우
+	@Override
+	public List<BoardDto> selectNewNoticeList() {
+		return boardDao.selectNewNoticeList();
+	}
+
 }
