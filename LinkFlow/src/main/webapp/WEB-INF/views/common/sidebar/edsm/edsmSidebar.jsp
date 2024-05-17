@@ -234,10 +234,5 @@
 <!--사이드바 끝-->
 </div>
 
-	<script>
-		if('${alertMsg}' != ''){ // alert 메시지가 있을 경우
-			  alert('${alertMsg}');
-		}
-	</script>
 </body>
 </html>
