@@ -44,4 +44,9 @@ public class AttemdamceServiceIpml implements AttemdamceService {
 		return attDao.autoCheckOut();
 	}
 
+	@Override
+	public String selectCheckOutTime(String userId) {
+		return attDao.selectCheckOutTime(userId);
+	}
+
 }
