@@ -1,6 +1,7 @@
 package com.mm.linkflow.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,8 +27,7 @@ public class CalenderDao {
 	 */  
 	
 	//특정 캘린더 전체 일정 조회 
-	public List<ScheduleDto> selectSchList(String[] schCalSubCode) {
-		return sqlSessionTemplate.selectList("calendarMapper.selectSchList", schCalSubCode);
+	public List<ScheduleDto> selectSchList(String schCalSubCode) {
+        return sqlSessionTemplate.selectList("calendarMapper.selectScheduleList", schCalSubCode);
 	}
-	
 }

@@ -11,9 +11,10 @@ public interface CalendarService {
 	int insertSch(ScheduleDto schedule);
 	
 	//한 캘린더의 모든 일정 조회
-	List<ScheduleDto> selectSchList(String[] schCalSubCode);
+	List<ScheduleDto> selectSchList(String schCalSubCode);
 
 	/*
 	 * //일정둥록 -calNo조회 String getSelectCalNo(Map<String, String> selectCalNo);
 	 */
 }
+  

@@ -1,6 +1,8 @@
 package com.mm.linkflow.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -65,12 +67,18 @@ public class CalendarController {
 	}
   
 	//일정 전체 조회(특정 캘린더)
-	@ResponseBody
-	@GetMapping(value="/schList.do", produces="application/json")
-	public List<ScheduleDto> selectSchList(@RequestParam("schCalSubCode") String[] schCalSubCode) { 
+	   @ResponseBody
+	    @GetMapping("/schList.do")
+	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
+	        Map<String, List<ScheduleDto>> result = new HashMap<>();
 
-		List<ScheduleDto> result = calendarService.selectSchList(schCalSubCode);
-		return result;
+	        for (String schCalSubCode : schCalSubCodes) {
+	            List<ScheduleDto> events = calendarService.selectSchList(schCalSubCode);
+	            result.put(schCalSubCode, events);
+	        }
+
+	        return result;
+	    }
 	}
 	  
-}
+

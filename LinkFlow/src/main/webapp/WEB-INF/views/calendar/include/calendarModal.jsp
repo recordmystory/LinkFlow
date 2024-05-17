@@ -335,9 +335,9 @@
 		                        <label for="calendarNo" class="col-form-label">캘린더</label>
 		                        <div class="form-group mt-1">
 		                            <select class="form-select" name="schCalSubCode" >
-		                                <option value="01" selected>개인 캘린더</option>
+		                                <option value="03" selected>개인 캘린더</option>
 		                                <option value="02">부서 캘린더</option>
-		                                <option value="03">회사 캘린더</option>
+		                                <option value="01">전사 캘린더</option>
 		                            </select>
 		                        </div>    
 		                    </div>

@@ -123,11 +123,6 @@
     </div>
     
 
-    
-    
-    
-    
-    
         	<jsp:include page="/WEB-INF/views/calendar/include/calendarModal.jsp"/>
     
     <script>
@@ -156,7 +151,8 @@
             //more 갯수 제한
             views: {
                 timeGrid: {
-                    dayMaxEventRows: 5 // adjust to 6 only for timeGridWeek/timeGridDay
+                     dayMaxEventRows: 5 // adjust to 6 only for timeGridWeek/timeGridDay
+                
                 }
             },
             eventClick: function(info) {
@@ -176,49 +172,50 @@
                 },
                 {
                      //일정 이벤트
-                    events: function(info, successCallback, failureCallback) {
-                        var checkedCalendars = []; 
-                        
-                     // 개인 
+                	events: function(info, successCallback, failureCallback) {
+                        var schCalSubCode = [];
+
                         if ($("#personalCalCheckbox").is(":checked")) {
-                            checkedCalendars.push($("#personalCalCheckbox").val());
+                            schCalSubCode.push($("#personalCalCheckbox").val());
                         }
-
-                        // 부서 
                         if ($("#departCalCheckbox").is(":checked")) {
-                            checkedCalendars.push($("#departCalCheckbox").val());
+                        	schCalSubCode.push($("#departCalCheckbox").val());
                         }
-
-                        // 회사 
                         if ($("#companyCalCheckbox").is(":checked")) {
-                            checkedCalendars.push($("#companyCalCheckbox").val());
+                        	schCalSubCode.push($("#companyCalCheckbox").val());
                         }
 
                         $.ajax({
-                            url: "${contextPath}/calendar/schList.do", 
+                            url: "${contextPath}/calendar/	.do",
                             type: "get",
+                            traditional: true,
                             data: {
-                            		schCalSubCode: checkedCalendars.join(",")// 배열을 콤마로 구분된 문자열로 변환하여 전달  
-                            },                          
+                                schCalSubCodes: schCalSubCode
+                            },
                             success: function(result) {
                                 var events = [];
-                                for (var i = 0; i < result.length; i++) {
-                                    var eventData = {
-                                        title: result[i].schTitle,
-                                        start: result[i].startDate,
-                                        end: result[i].endDate,
-                                        color: result[i].calColor
-                                    };
-                                    events.push(eventData);
+                                for (var schCalSubCode in result) {
+                                    if (result.hasOwnProperty(schCalSubCode)) {
+                                        var calendarEvents = result[schCalSubCode];
+                                        for (var i = 0; i < calendarEvents.length; i++) {
+                                            var eventData = {
+                                                title: calendarEvents[i].schTitle,
+                                                start: calendarEvents[i].startDate,
+                                                end: calendarEvents[i].endDate,
+                                                color: calendarEvents[i].calColor
+                                            };
+                                            events.push(eventData);
+                                        }
+                                    }
                                 }
                                 successCallback(events);
                             },
                             error: function(result) {
-                                console.error("일정 조회 오류"); 
+                                console.error("일정 조회 오류");
                                 failureCallback(result);
                             }
                         });
-                    } 
+                    }
                 }
             ]
         });
