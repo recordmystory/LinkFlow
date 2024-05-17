@@ -43,8 +43,8 @@ public class AttachServiceImpl implements com.mm.linkflow.service.service.Attach
 	
 	// 삭제할 첨부파일의 파일번호 넘겨주기
 	@Override
-	public int delete(String[] delFileNo) {
-		return attachTestDao.delete(delFileNo);
+	public int deleteAttach(String[] delFileNo) {
+		return attachTestDao.deleteAttach(delFileNo);
 	}
 
 }

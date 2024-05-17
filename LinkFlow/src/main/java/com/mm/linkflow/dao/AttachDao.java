@@ -22,7 +22,7 @@ public class AttachDao {
 		return sqlSession.selectList("attachMapper.selectAttach", at);
 	}
 	
-	public int delete(String[] delFileNo) {
+	public int deleteAttach(String[] delFileNo) {
 		return sqlSession.delete("attachMapper.deleteAttach", delFileNo);
 	}
 

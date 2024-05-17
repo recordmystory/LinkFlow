@@ -11,5 +11,5 @@ public interface AttachService {
 	
 	List<AttachDto> selectAttach(int refNo, String refCategory);
 	
-	int delete(String[] delFileNo);
+	int deleteAttach(String[] delFileNo);
 }
