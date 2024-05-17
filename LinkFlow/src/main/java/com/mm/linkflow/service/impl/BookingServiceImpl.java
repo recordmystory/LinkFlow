@@ -31,8 +31,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 	
 	@Override
-	public BookingDto selectDetailMyBk(String no) {
-		return null;
+	public BookingDto selectDetailMyBk(String bkNo) {
+		return bkDao.selectDetailMyBk(bkNo);
 	}
 
 	@Override

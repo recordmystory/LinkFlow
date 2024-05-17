@@ -27,6 +27,11 @@ public class AttemdamceDao {
 				
 	}
 	
+	// 퇴근 시간 가져오기 용
+	public String selectCheckOutTime(String userId) {
+		return sql.selectOne("attemdamceDaoMapper.selectCheckOutTime", userId);
+	}
+	
 	// 퇴근 update 용
 	public int checkOutAtt(String userId) {
 		return sql.update("attemdamceDaoMapper.checkOutAtt", userId);

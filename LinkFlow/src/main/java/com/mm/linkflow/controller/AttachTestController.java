@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class AttachTestController {
 	}
 	
 	@PostMapping("/insert.test")
-	public String insert(List<MultipartFile> uploadFiles, HttpServletRequest request) {
+	public String insert(List<MultipartFile> uploadFiles, HttpServletRequest request) throws IOException {
 		
 		
 		List<AttachDto> attachList = new ArrayList<>();

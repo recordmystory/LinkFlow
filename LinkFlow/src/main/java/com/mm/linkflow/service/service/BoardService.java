@@ -14,4 +14,7 @@ public interface BoardService {
 	int selectBoardListCount(String boardType);
 
 	List<BoardDto> selectBoardList(PageInfoDto pi, String boardType);
+	
+	// 공지사항 조회용 - 황민우
+	List<BoardDto> selectNewNoticeList();
 }

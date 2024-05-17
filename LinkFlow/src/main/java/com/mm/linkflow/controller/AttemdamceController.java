@@ -21,4 +21,16 @@ public class AttemdamceController {
 	public String checkOutAtt(String userId) {
 		return attService.checkOutAtt(userId) > 0 ? "success" : "fail";
 	}
+	
+	@ResponseBody
+	@PostMapping("/selectCheckOut.do")
+	public String selectCheckOut(String userId) {
+		return attService.selectCheckOut(userId) > 0 ? "success" : "fail";
+	}
+	
+	@ResponseBody
+	@PostMapping("selectCheckOutTime.do")
+	public String selectCheckOutTime(String userId) {
+		return attService.selectCheckOutTime(userId);
+	}
 }

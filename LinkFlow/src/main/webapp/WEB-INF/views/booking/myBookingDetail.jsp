@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -114,17 +116,36 @@
 								<button class="btn bg-gradient-secondary">목록으로</button>
 							</div>
 						</div>
+						<%--
+						 <%
+						    java.util.Date now = new java.util.Date();
+						    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd");
+						    String today = sdf.format(now);
+						%>
+						
+						<!-- 문자열을 '/'로 나누어 배열로 변환 -->
+						<c:set var="todayArr" value="${fn:split(today, '/')}"/> --%>
+					    
 						<div class="bk-detail">
 							<div class="bk-detailArea">
 								<div class="ymd" sytle="height:30px;">
 									<div class="ymd">
+									<c:set var="ymd" value="${bk.bkStartDate}" />
+   									<c:set var="ymdArr" value="${fn:split(ymd, '/')}"/>
 										<select id="year" class="form-control" style="width: 100px;">
-											<option>2024</option>
-											<option>2025</option>
+											<option>${ ymdArr[0] }</option>
+											<option>${ ymdArr[0] + 1}</option>
 										</select>&nbsp; <select id="month" class="form-control"
 											style="width: 80px;">
-											<option>04</option>
-										<option>05</option>
+											<option>${ ymdArr[1] }</option>
+											<c:choose>
+												<c:when test="${ymdArr[1] == todayArr[1]}">
+													<option>${ ymdArr[1] +1}</option>
+												</c:when>
+												<c:otherwise>
+													<option>${ ymdArr[1] -1}</option>
+												</c:otherwise>
+											</c:choose>
 										<!-- 해당 월과 +1 월만 나오게 하기-->
 										</select>&nbsp; <select id="day" class="form-control"
 											style="width: 80px;">
@@ -149,7 +170,7 @@
 										</select>&nbsp;
 									</div>
 									<div>
-										<h5 style="margin-right: 20px;">예약상태</h5>
+										<h5 style="margin-right: 20px;">예약 대기</h5>
 									</div>
 								</div>
 								<hr>
@@ -172,13 +193,17 @@
 								<hr>
 								<div style="margin: 40px;">
 									<h4>사유</h4>
-									<div class="coment" style="height: 150px;"></div>
+									<div class="coment" style="height: 150px;">
+										${ bk.bkContent }
+									</div>
 								</div>
 								<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
 								<hr>
 								<div style="margin: 40px;">
 									<h4>비고</h4>
-									<div class="coment" style="height: 100px;"></div>
+									<div class="coment" style="height: 100px;" disabled>
+										${ bk.rejContent }<c:out value="${todayArr}" />
+									</div>
 								</div>
 
 							</div>

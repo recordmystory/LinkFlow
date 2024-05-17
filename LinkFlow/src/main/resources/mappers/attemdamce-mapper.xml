@@ -38,12 +38,21 @@
 		  )
 	</insert>
 
-	<select id="selectCheckOut">
+	<select id="selectCheckOut" resultType="_int">
 		SELECT
 		       COUNT(*)
 		  FROM TB_ATTENDANCE
 		 WHERE USER_ID = #{userId}
 		   AND TO_CHAR(END_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="selectCheckOutTime" resultType="string">
+		SELECT
+		       TO_CHAR(END_DTIME, 'HH24 : MI : SS')
+		  FROM TB_ATTENDANCE
+		 WHERE USER_ID = #{userId}
+		   AND END_DTIME IS NOT NULL
+           AND TO_CHAR(START_DTIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	</select>
 	
 	<update id="checkOutAtt">

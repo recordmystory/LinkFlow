@@ -1,6 +1,5 @@
 package com.mm.linkflow.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,9 @@ import com.mm.linkflow.dto.BookingDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class BookingDao {
@@ -54,6 +55,12 @@ public class BookingDao {
 		
 		RowBounds rowBounds = new RowBounds(offset , limit);
 		return sql.selectList("bkMapper.selectMyBkList", userId , rowBounds);
+	}
+
+	public BookingDto selectDetailMyBk(String bkNo) {
+		BookingDto bk = sql.selectOne("bkMapper.selectDetailMyBk",bkNo);
+		System.out.println(bk);
+		return sql.selectOne("bkMapper.selectDetailMyBk",bkNo);
 	}
 
 }

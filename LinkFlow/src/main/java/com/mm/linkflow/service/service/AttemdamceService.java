@@ -16,6 +16,9 @@ public interface AttemdamceService {
 	// 퇴근 체크 확인용
 	int selectCheckOut(String userId);
 	
+	// 퇴근 시간 가져오기 용
+	String selectCheckOutTime(String userId);
+	
 	// 퇴근 update 용
 	int checkOutAtt(String userId);
 	
