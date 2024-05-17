@@ -14,7 +14,7 @@ public interface BookingService {
 	int selectBkCount(String userId); //예약리스트 페이징 
 	List<BookingDto> selectMyBkList(PageInfoDto pi, String userId); // 나의 예약 리스트
 	
-	BookingDto selectDetailMyBk(String no); // 나의 예약 상세보기
+	BookingDto selectDetailMyBk(String bkNo); // 나의 예약 상세보기
 	
 	int selectSupCount(); // 비품페이징 
 	List<AssetsDto> selectSuppliesList(PageInfoDto pi); // 비품 리스트

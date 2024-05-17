@@ -113,5 +113,22 @@
 
 </select>
 
+<select id="selectDetailMyBk" resultMap="bkResult">
+	select 
+		   NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
+		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
+		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
+		  ,status
+		  ,sub_name
+		  ,assets_name
+		  ,bk_content
+		  ,NVL(rej_content,'') AS rejContent
+	  from tb_booking b
+	  join tb_assets a using (assets_no)
+   	  join tb_common c using (main_code)
+	 where booking_no = #{ bkNo }
+	   and a.sub_code= c.sub_code
+       and b.del_yn = 'N'
+</select>
 
 </mapper>

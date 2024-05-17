@@ -78,11 +78,11 @@ public class BookingController {
 		return mv;
 	}
 	
-	@GetMapping("/detail.bk")
-	public String selectDetailMyBk(String no, Model model) {
+	@GetMapping("/detail.bk") // 나의 예약 상세보기 
+	public String selectDetailMyBk(@RequestParam(value="no")String bkNo, Model model) {
 		
-		model.addAttribute("booking", bkServiceImpl.selectDetailMyBk(no)));
-		
+		log.debug("bkNO:{}",bkNo);
+		model.addAttribute("bk", bkServiceImpl.selectDetailMyBk(bkNo));
 		return "booking/myBookingDetail";
 	}
 	

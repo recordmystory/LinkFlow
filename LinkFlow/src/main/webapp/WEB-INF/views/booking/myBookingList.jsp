@@ -117,7 +117,7 @@ input[type="checkbox"]:checked {
 								<c:otherwise>
 									<c:forEach var="bk" items="${ bkList }">
 										<tr onclick="location.href='${contextPath}/booking/detail.bk?no=${ bk.bookingNo }'">
-											<td></td>
+											<td>${ bk.bookingNo }</td>
 											<td>${ bk.mainName }</td>
 											<td>${ bk.subName }</td>
 											<td>${ bk.assetsName }</td>
