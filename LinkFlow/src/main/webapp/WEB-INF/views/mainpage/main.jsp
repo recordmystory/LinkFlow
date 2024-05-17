@@ -237,7 +237,7 @@
 										<tr>
 											<td style="width: 10%;">${ n.boardNo }</td>
 											<td style="width: 70%;"><a href="dd">${ n.boardTitle }</a></td>
-											<td style="width: 20%;">${ m.modDate }</td>
+											<td style="width: 20%;">${ n.modDate }</td>
 										</tr>
 										</c:forEach>
 									</tbody>
