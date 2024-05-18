@@ -10,7 +10,7 @@
 <title>기안서 작성</title>
 
 <!-- ckedtior -->
-<script src="${contextPath}/resources/ckeditor5/build/ckeditor.js"></script>
+<script src="${contextPath}/resources/ckeditor5/edsm/build/ckeditor.js"></script>
 
 <style>
 	.wrapper{
