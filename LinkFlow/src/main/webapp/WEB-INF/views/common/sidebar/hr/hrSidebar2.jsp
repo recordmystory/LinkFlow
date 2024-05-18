@@ -43,13 +43,13 @@
 
            <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
-               <a href="${contextPath}/hr/hrPage" class="nav-link active">
+               <a href="${contextPath}/hr/hrPage" class="nav-link">
                <i class="far fa-circle nav-icon"></i>
                <p>구성원 조회/정보 변경</p>
                </a>
            </li>
            <li class="nav-item">
-               <a href="${contextPath}/hr/hrUpdatePage.go" class="nav-link">
+               <a href="${contextPath}/hr/hrUpdatePage.go" class="nav-link active">
                <i class="far fa-circle nav-icon"></i>
                <p>구성원 추가</p>
                </a>

@@ -2,6 +2,8 @@ package com.mm.linkflow.service.service;
 
 import java.util.List;
 
+import com.mm.linkflow.dto.CommonTableDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 
 public interface HrService {
@@ -16,4 +18,8 @@ public interface HrService {
 	//조직 추가 
 	
 	//조직 변경 
+	
+	//구성원 추가 및 수정에 직급 부서 종류 
+	List<DeptDto> selectDeftList();
+	List<CommonTableDto> selectCommonTableList();
 }

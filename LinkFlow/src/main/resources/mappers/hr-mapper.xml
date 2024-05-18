@@ -45,6 +45,20 @@
 		<result column="GENDER" property="gender"/>
 	</resultMap>
 	
+	<resultMap type="CommonTableDto" id="commonTableResult">
+		<result column="MAIN_CODE" property="mainCode"/>
+		<result column="SUB_CODE" property="subCode"/>
+		<result column="MAIN_NAME" property="mainName"/>
+		<result column="SUB_COL" property="subCol"/>
+		<result column="SUB_NAME" property="subName"/>
+	</resultMap>
+	
+	<resultMap type="DeptDto" id="deptDtoResult" extends="commonMapper.commonResult">
+		<result column="DEPT_CODE" property="deptCode"/> 
+		<result column="DEPT_TITLE" property="deptTitle"/> 
+
+	</resultMap>
+	
 	<select id="selectMemberList" resultMap="memberResult">
 		SELECT 
 	    M.USER_ID,
@@ -131,6 +145,23 @@
 	    WHERE 
 	    M.USER_NAME LIKE '%' || #{keyword} || '%'    
 	ORDER BY c.SUB_CODE DESC
+	</select>
+	
+	<select id="selectDeftList" resultMap="deptDtoResult">
+		SELECT 
+	   DEPT_CODE
+	  ,DEPT_TITLE
+		FROM 
+  	TB_DEPT
+		ORDER BY DEPT_CODE DESC 
+	</select>
+	
+	<select id="selectCommonTableList" resultMap="commonTableResult">
+		SELECT 
+    	c.sub_name
+		FROM 
+    	TB_COMMON C
+		where MAIN_CODE = '007-'
 	</select>
 
 </mapper>

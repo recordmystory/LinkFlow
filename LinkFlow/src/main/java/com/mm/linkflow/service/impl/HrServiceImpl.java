@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.dao.HrDao;
+import com.mm.linkflow.dto.CommonTableDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.HrService;
 
@@ -38,6 +40,18 @@ public class HrServiceImpl implements HrService {
 	public List<MemberDto> searhMemberList(String keyword) {
 		// TODO Auto-generated method stub
 		return hDao.searhMemberList(keyword);
+	}
+
+	@Override
+	public List<DeptDto> selectDeftList() {
+		// TODO Auto-generated method stub
+		return hDao.selectDeftList();
+	}
+
+	@Override
+	public List<CommonTableDto> selectCommonTableList() {
+		// TODO Auto-generated method stub
+		return hDao.selectCommonTableList();
 	}
 
 }
