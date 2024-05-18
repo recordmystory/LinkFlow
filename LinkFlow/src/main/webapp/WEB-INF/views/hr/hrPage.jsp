@@ -72,9 +72,9 @@
                                           
 
                                           <div class="card-tools">
-                                            <form action="" method="get">
+                                            <form action="${contextPath}/hr/search.do" method="get" id="searchForm">
                                             <div class="input-group input-group-sm" style="width: 200px;">
-                                              <input type="search" name="" class="form-control float-right" placeholder="이름으로 검색">
+                                              <input type="search" name="Keyword" class="form-control float-right" placeholder="이름으로 검색" id="Keyword">
                           
                                               <div class="input-group-append">
                                                 <button type="submit" class="btn btn-default">
@@ -118,7 +118,7 @@
                                                
                                               </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="anwArea">
                                             	<c:forEach var="list" items="${list}">
                                               <tr>
                                                 
@@ -129,7 +129,7 @@
                                                 <td style="text-align: center;">${list.position}</td>
                                                 <td style="text-align: center;">${list.phone}</td>
                                                 <td>${list.address} ${list.detailAdd}</td>
-                                                <th style="text-align: center;">${list.gender}</th>
+                                                <td style="text-align: center;">${list.gender}</td>
                                                 <td style="text-align: center;">
                                                  <c:choose>
 																			                <c:when test="${list.delYN == 'N'}">
@@ -195,5 +195,45 @@
    
 
     </div><!--전체영역 끝-->
+   <script>
+				    $(document).ready(function() {
+				        $('#Keyword').click(function() {
+				            var keyword = $("#Keyword").val(); 
+				            
+				            
+				            $.ajax({
+				                url: '${contextPath}/hr/search.do', 
+				                type: 'GET',
+				                data: {
+				                	keyword: keyword,
+				                
+				                },    
+				                success: function(response) {
+				                		let tbody = $("#anwArea");
+				                		tbody.empty(); 
+				                    if(response.length == 0){
+				                    	let tr = "<tr><td colspan='3'>조회된 결과가 없습니다.</td></tr>";
+				                        tbody.append(tr);
+				                        
+				                    } else {
+				                        let tbody = $("#anwArea");
+				                        tbody.empty(); 
+				                        for(let i=0; i<response.length; i++) {
+				                            let tr = "<tr>"
+				                                    + "<td>" + response[i].dayoffStartsearch + " ~ " + response[i].dayoffendsearch + "</td>"
+				                                    + "<td>" + response[i].position + "</td>"
+				                                    + "<td>" + response[i].dayOffCount + "</td>"
+				                                    + "</tr>";
+				                            tbody.append(tr);
+				                        }
+				                    }
+				                },
+				                error: function() {
+				                    console.error('AJAX 오류');
+				                }
+				            });
+				        });
+				    });
+				</script>
 </body>
 </html>

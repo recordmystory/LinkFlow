@@ -85,8 +85,7 @@
 	    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
 	JOIN 
 	    tb_dept D ON M.DEPT_CODE = D.dept_code
-	AND M.DEL_YN = 'N'
-	ORDER BY d.dept_code
+	ORDER BY c.SUB_CODE DESC
 	</select>
 	
 	

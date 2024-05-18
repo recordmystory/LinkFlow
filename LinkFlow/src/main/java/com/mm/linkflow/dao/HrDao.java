@@ -18,6 +18,11 @@ public class HrDao {
 		// TODO Auto-generated method stub
 		return sql.selectList("hrMapper.selectMemberList");
 	}
+
+	public List<MemberDto> searhMemberList(String keyword) {
+		// TODO Auto-generated method stub
+		return sql.selectList("hrMapper.selectMemberList",keyword);
+	}
 	
 	
 }

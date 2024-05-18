@@ -8,7 +8,7 @@ public interface HrService {
 	//구성원 리스트 조회 
 	List<MemberDto> selectMemberList();
 	//구성원 검색 조회 
-	
+	List<MemberDto> searhMemberList(String keyword);
 	//구성원 추가 
 	int insertMember(MemberDto m);
 	//구성원 변경 
