@@ -47,10 +47,9 @@
 </head>
 <body>
 <div class="wrapper">
-    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="LinkFlowMainSection">
-
         <jsp:include page="/WEB-INF/views/common/sidebar/board/boardSidebar.jsp"/>
 
         <div class="LinkFlowMainContent">
@@ -180,7 +179,7 @@
                                         		</c:when>
                                         		<c:otherwise>
                                         			<c:forEach var="b" items="${boardList}">
-	                                            	<tr onclick="location.href='${contextPath}/board/detail.do?type=${b.boardCategory}';">
+	                                            	<tr onclick="location.href='${contextPath}/board/${loginUser.userId == b.regId ? 'detail.do' : 'increase.do' }?type=${b.boardCategory}&no=${ b.boardNo }';">
 	                                                <c:choose>
 	                                                	<c:when test="${b.noticeYN == 'Y' }">
 	                                                		<th>${b.boardNo }</th>

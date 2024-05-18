@@ -25,6 +25,7 @@ public class BoardDto extends CommonDto {
 	private String tempSave;
 	private String noticeYN;
 	private String boardType;
+	private String charDate;
 	
 	private List<AttachDto> attachList;
 }

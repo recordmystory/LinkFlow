@@ -112,12 +112,13 @@
                                                     <input type="checkbox" name="noticeYN" value="N" class="form-check-input" id="noticeCheckbox">
                                                     <b>공지로 등록</b>
                                                 </label>
+                                             <script src="${contextPath }/resources/js/board/BoardNoticeCheckBox.js"></script>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3" style="vertical-align: center;">
-                                            <div class="drop-area" style="margin:0; margin-bottom:10px">
+                                            <div class="drop-area" style="margin:0; margin-bottom:10px; margin-top:10px">
                                                 <div class="file-header" style="width: 100%;">
                                                     <label for="file-upload" style=" width: 15%;">
                                                         <div class="fileSection">
@@ -142,7 +143,7 @@
                                 <br>
                            		</div>
                         
-                        <script src="${contextPath }/resources/js/DragAndDrop.js"></script>
+                        <script src="${contextPath }/resources/js/board/DragAndDrop.js"></script>
                         <!-- ckeditor 함수-->
                         <script>
                             let editor;
@@ -157,21 +158,7 @@
                                 });
 
                         </script>
-                        <script>
-                            // checkbox 상태에 따라 value 변경하는 함수
-                          function updateCheckboxValue() {
-									            var checkbox = document.getElementById("noticeCheckbox");
-									            var value = checkbox.checked ? "Y" : "N";
-									            console.log(value);
-									           	checkbox.value = value;
-									        }
-                          
-                          window.onload = function() {
-                              updateCheckboxValue(); // 초기화
-                          };
-                            
-        									document.getElementById("noticeCheckbox").addEventListener("change", updateCheckboxValue);
-                        </script>
+                        
                         </form>
                     </div>
                 </div>
