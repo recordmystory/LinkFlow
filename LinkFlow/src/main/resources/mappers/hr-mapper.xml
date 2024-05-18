@@ -85,11 +85,53 @@
 	    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
 	JOIN 
 	    tb_dept D ON M.DEPT_CODE = D.dept_code
-	AND M.DEL_YN = 'N'
-	ORDER BY d.dept_code
+	ORDER BY c.SUB_CODE DESC
 	</select>
 	
-	
+	<select id="searhMemberList" resultMap="memberResult">
+		SELECT 
+	    M.USER_ID,
+	    M.USER_PWD,
+      M.DEPT_CODE,
+	    D.DEPT_TITLE DEPT_NAME,
+	    c.sub_name position,
+	    M.USER_NAME,
+	    M.PHONE,
+	    TO_CHAR(M.BIRTH_DATE,'YYYY-MM-DD') as BIRTH_DATE,
+	    M.EDUCATION,
+	    M.ADDRESS,
+	    M.ZIP_CODE,
+	    M.DETAIL_ADD,
+	    TO_CHAR(M.HIRE_DATE,'YYYY-MM-DD') HIRE_DATE,
+	    TO_CHAR( M.RETIRE_DATE,'YYYY-MM-DD') as RETIRE_DATE,
+	    M.SUPER_RIGHT,
+	    M.HR_RIGHT,
+	    M.SP_RIGHT,
+	    M.BOARD_RIGHT,
+	    M.DEPT_RIGHT,
+	    M.PROFILE_URL,
+	    M.SIGN_URL,
+	    M.DAYOFF,
+	    M.SECONDARY_CODE,
+	    M.SECONDARY_USESE,
+	    M.RANK_BCODE,
+	    M.REG_DATE,
+	    M.MOD_DATE,
+	    M.REG_ID,
+	    M.MOD_ID,
+	    M.DEL_YN,
+	   	M.GENDER,
+	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) as SERVICEYEAR
+		FROM 
+		    TB_MEMBER M
+		JOIN 
+		    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+		JOIN 
+		    tb_dept D ON M.DEPT_CODE = D.dept_code
+	    WHERE 
+	    M.USER_NAME LIKE '%' || #{keyword} || '%'    
+	ORDER BY c.SUB_CODE DESC
+	</select>
 
 </mapper>
 	

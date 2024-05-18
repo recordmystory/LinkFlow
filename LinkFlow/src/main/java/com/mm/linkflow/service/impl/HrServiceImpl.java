@@ -34,4 +34,10 @@ public class HrServiceImpl implements HrService {
 		return 0;
 	}
 
+	@Override
+	public List<MemberDto> searhMemberList(String keyword) {
+		// TODO Auto-generated method stub
+		return hDao.searhMemberList(keyword);
+	}
+
 }

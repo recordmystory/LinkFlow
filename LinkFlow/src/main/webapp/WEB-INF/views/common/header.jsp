@@ -97,7 +97,7 @@
 
             <div class="row mainMenuSelect">
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/group/group.page" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-people-line fa-2xl" style="width: 30px;"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">조직도</span></div>
                 </a>
