@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class MemberController {
 	
 	private final MemberService mService;
 	private final FileUtil fileUtil;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	//로그아웃
 	@RequestMapping("/loginout.me")
 	public String signout(HttpSession session) {
@@ -136,6 +138,7 @@ public class MemberController {
 	@PostMapping("/updateUserPassWord")
 	public String updateUserPassWord(MemberDto m, HttpSession session
 			  , RedirectAttributes redirectAttributes) {
+		m.setUserPwd(bcryptPwdEncoder.encode(m.getUserPwd()));
 		int result = mService.updatePwd(m);
 		
 		if (result>0) {

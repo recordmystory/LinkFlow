@@ -55,8 +55,14 @@
 	 list-style: none;
 	 } 
 	 .ImgInfoAera{
-	     margin-left: 47px;
-	 }  
+    margin-left: 47px;
+ 
+	 }
+	 .ImgInfoAera>img{
+   
+    width: 100px;
+	  height: 100px;
+	 }    
 	 .infoTableArea{
 	     argin-top: 20px;
 	 }
@@ -200,7 +206,7 @@
                       <div class="ImgInfoAera">
                       <img class="profile-user-img img-fluid img-circle"
                           src=""
-                          alt="User profile picture">
+                          alt="User profile picture" >
                       </div>  
                       <div class="userInfosmAera">
                           <ul>

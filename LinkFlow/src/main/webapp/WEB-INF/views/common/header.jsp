@@ -71,7 +71,7 @@
                 </a>
               </div>
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${contextPath}/member/myAttendance.page" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-stopwatch fa-2xl" style="margin-left: 3px;"></i> </div>
                   <div class="box-text"><span class="info-box-text spanCss">근태관리</span></div>
                 </a>

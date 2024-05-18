@@ -43,7 +43,7 @@
 
            <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
-               <a href="#" class="nav-link active">
+               <a href="${contextPath}/hr/hrPage" class="nav-link active">
                <i class="far fa-circle nav-icon"></i>
                <p>구성원 조회/정보 변경</p>
                </a>
@@ -54,14 +54,7 @@
                <p>구성원 추가</p>
                </a>
            </li>
-           <li class="nav-item">
-               <a href="#" class="nav-link">
-               <i class="far fa-solid fa-key"></i>
-               
-               <p>비밀번호 초기화</p>
-               </a>
-           </li>
-           
+          
          
 
            </ul>

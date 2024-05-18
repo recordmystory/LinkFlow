@@ -92,19 +92,20 @@
                                         <div class="card-body table-responsive p-0" style="height: 500px;">
                                           <table class="table table-hover table-head-fixed HRTable">
                                             <colgroup>
-                                             <col width="20px"/>
+                                             
                                              <col width="30px"/>
                                              <col width="50px"/>
                                              <col width="50px"/>
                                              <col width="50px"/>
                                              <col width="50px"/>
                                              <col width="80px"/>
-                                             <col width="200px"/>
+                                             <col width="170px"/>
+                                             <col width="20px"/>
                                              <col width="20px"/>
                                             </colgroup>
                                             <thead style="text-align: center;">
                                               <tr>
-                                                <th>사원번호</th>
+                                             
                                                 <th>성함</th>
                                                 <th>ID</th>
                                                 <th>입사일</th>
@@ -112,143 +113,35 @@
                                                 <th>직책</th>
                                                 <th>연락처</th>
                                                 <th>주소</th>
+                                                <th>성별</th>
                                                 <th>상태</th>
                                                
                                               </tr>
                                             </thead>
-                                            <tbody style="text-align: center;">
+                                            <tbody>
+                                            	<c:forEach var="list" items="${list}">
                                               <tr>
-                                                <td>1</td>
-                                                <td>김대표</td>
-                                                <td>admin01</td>
-                                                <td>2021-02-31</td>
-                                                <td>CEO</td>
-                                                <td>대표이사</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
                                                 
+                                                <td style="text-align: center;">${list.userName}</td>
+                                                <td style="text-align: center;">${list.userId}</td>
+                                                <td style="text-align: center;">${list.hireDate}</td>
+                                                <td style="text-align: center;">${list.deptName}</td>
+                                                <td style="text-align: center;">${list.position}</td>
+                                                <td style="text-align: center;">${list.phone}</td>
+                                                <td>${list.address} ${list.detailAdd}</td>
+                                                <th style="text-align: center;">${list.gender}</th>
+                                                <td style="text-align: center;">
+                                                 <c:choose>
+																			                <c:when test="${list.delYN == 'N'}">
+																			                    재직
+																			                </c:when>
+																			                <c:otherwise>
+																			                    퇴직
+																			                </c:otherwise>
+																			            </c:choose>
+                                                </td>
                                               </tr>
-                                              <tr>
-                                                <td>2</td>
-                                                <td>김사원</td>
-                                                <td>user01</td>
-                                                <td>2021-02-31</td>
-                                                <td>개발팀</td>
-                                                <td>사원</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>김일꾼</td>
-                                                <td>user02</td>
-                                                <td>2021-02-31</td>
-                                                <td>영업부</td>
-                                                <td>대리</td>
-                                                <td>010-1111-2222</td>
-                                                <td>서울 강서구</td>
-                                                <td>재직</td>
-                                                
-                                              </tr>
+                                             </c:forEach>
 
                                               
                                             </tbody>

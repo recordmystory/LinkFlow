@@ -42,7 +42,7 @@
 		<result column="TOTAL_MEMBERS" property="totalMember"/>
 		<result column="DEPT_CAPNAME" property="deptCapName"/>
 		<result column="DEPT_MEMBERS" property="deptMember"/>
-
+		<result column="GENDER" property="gender"/>
 		
 	</resultMap>	
 	
@@ -79,6 +79,7 @@
 	    M.REG_ID,
 	    M.MOD_ID,
 	    M.DEL_YN,
+	    M.GENDER,
 	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) as SERVICEYEAR
 	FROM 
 	    TB_MEMBER M
