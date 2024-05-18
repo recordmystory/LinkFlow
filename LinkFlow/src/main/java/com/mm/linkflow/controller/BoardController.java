@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,10 +97,17 @@ public class BoardController {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		board.setRegId(String.valueOf(loginUser.getUserId()));
 		board.setModId(String.valueOf(loginUser.getUserId()));
+		board.setTempSave("02");
 		
-		if(board.getBoardCategory().equals("CATEGORY-8")) {
-			board.setNoticeYN("Y");
+		if(board.getNoticeYN() == null) {
+			if(board.getBoardCategory().equals("CATEGORY-8")) {
+				board.setNoticeYN("Y");
+			}
+			else {
+				board.setNoticeYN("N");
+			}
 		}
+		
 
 		List<AttachDto> attachList = new ArrayList<>();
 		if(uploadFiles != null) {
@@ -117,5 +125,17 @@ public class BoardController {
 		}
 		
 		return "redirect:/board/list.do?type=" + board.getBoardCategory();
+	}
+	
+	@GetMapping("/increase.do")
+	public String increase(int no) {
+		boardService.updateIncreaseCount(no);	
+		return "redirect:/board/detail.do?no=" + no;
+	}
+	
+	@GetMapping("/detail.do") // /board/detail.do?no=글번호
+	public String detail(int no, String type ,Model model) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+		model.addAttribute("board", boardService.selectBoard(no));
+		return "board/detail";
 	}
 }

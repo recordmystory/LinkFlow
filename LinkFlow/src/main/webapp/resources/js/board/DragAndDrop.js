@@ -25,7 +25,14 @@
       });
       
       $("#enrollForm-submit").click(function(){
-      	fileInput.files = dataTransfer.files;
+				const data = editor.getData();
+
+				if(data.trim().length != 0){
+					fileInput.files = dataTransfer.files;	
+				}else{
+					alert("내용은 반드시 작성해야 합니다");
+					return false;
+				}
       })
 
 

@@ -10,7 +10,10 @@
 		<result column="count" property="count" />
 		<result column="temp_save" property="tempSave" />
 		<result column="notice_yn" property="noticeYN" />
+		<result column="char_date" property="charDate" />
 		<result column="category_type" property="boardType" />
+		
+		<collection resultMap="attachMapper.attachResult" property="attachList" />
 	</resultMap>
 
 	<resultMap id="categoryResult" type="BoardCategoryDto" extends="commonMapper.commonResult">
@@ -93,11 +96,37 @@
   		, #{boardCategory}
   		, #{boardTitle}
   		, #{boardContent}
-  		, '02'
+  		, #{tempSave}
   		, #{noticeYN}
   		, #{regId}
   		, #{modId}
   		)
   </insert>
+  
+  <update id="updateIncreaseCount">
+  	update
+  				tb_board
+ 			set count = count+1
+ 			where board_no = #{no}
+  </update>
+  
+  <select id="selectBoard" resultMap="boardResult">
+  select
+        board_no
+      , board_title
+      , b.reg_id
+      , board_content
+      , notice_yn
+      , to_char(b.mod_date, 'YYYY-MM-DD') char_date
+      , file_no
+      , file_path
+      , filesystem_name
+      , origin_name
+	  from tb_board b
+	  left join tb_attachment on (ref_category ='B' and ref_no = board_no)
+	 where b.del_yn ='N'
+	 	 and b.temp_save = '02'
+	   and board_no = #{no}
+  </select>
 
 </mapper>

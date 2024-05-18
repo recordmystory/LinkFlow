@@ -9,14 +9,23 @@ import com.mm.linkflow.dto.PageInfoDto;
 
 public interface BoardService {
 	
+	// 권한별 게시판 카테고리 조회
 	List<BoardCategoryDto> selectBoardType(MemberDto loginUser);
 
+	// 게시글갯수 조회
 	int selectBoardListCount(String boardType);
 
+	// 페이징별 게시글리스트 조회
 	List<BoardDto> selectBoardList(PageInfoDto pi, String boardType);
 	
 	// 공지사항 조회용 - 황민우
 	List<BoardDto> selectNewNoticeList();
-
+	
+	// 게시글 작성
 	int insertBoard(BoardDto board);
+	
+	// 조회수 증가
+	int updateIncreaseCount(int no);
+
+	BoardDto selectBoard(int no);
 }
