@@ -43,14 +43,14 @@
   <div class="sidebar">
   	<nav class="linkfoiwsideMenu">
     	<div class="LinkFlowInsertBtnArea">
-      	<a href="#" class="btn btn-block bg-gradient-primary btn-lg" style="color:white">게시글 작성하기</a>
+      	<a href="${contextPath }/board/registForm.page" class="btn btn-block bg-gradient-primary btn-lg" style="color:white">게시글 작성하기</a>
     	</div>
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 	      <li class="sidebarName">
 	        <span>게시판</span>
 	      </li><br>
 	      <li class="nav-item">
-	          <a href="#" class="nav-link middleName">
+	          <a href="${contextPath }/board/list.do" class="nav-link middleName">
 	            <i class="nav-icon far-2xl fa-solid fa-check"></i>
 	            <p>사내공지</p>
 	          </a>

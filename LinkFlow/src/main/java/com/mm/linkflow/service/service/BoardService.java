@@ -17,4 +17,6 @@ public interface BoardService {
 	
 	// 공지사항 조회용 - 황민우
 	List<BoardDto> selectNewNoticeList();
+
+	int insertBoard(BoardDto board);
 }

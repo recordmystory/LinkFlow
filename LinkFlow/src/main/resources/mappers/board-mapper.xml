@@ -54,24 +54,50 @@
 	
 	<select id="selectBoardList" resultMap="boardResult">
   	SELECT 
-    b.board_no,
-    b.board_category,
-    b.board_title,
-    b.reg_id,
-    b.count,
-    b.notice_yn,
-    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
-    c.category_type
-FROM 
-    tb_board b
-JOIN 
-    tb_category c ON b.board_category = c.board_category
-WHERE 
-    b.del_yn = 'N'
-    AND b.temp_save = '02'
-    AND b.board_category = #{boardType}
-ORDER BY 
-    b.board_no DESC
+	    b.board_no,
+	    b.board_category,
+	    b.board_title,
+	    b.reg_id,
+	    b.count,
+	    b.notice_yn,
+	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+	    c.category_type
+		FROM 
+		    tb_board b
+		JOIN 
+		    tb_category c ON b.board_category = c.board_category
+		WHERE 
+		    b.del_yn = 'N'
+		    AND b.temp_save = '02'
+		    AND b.board_category = #{boardType}
+		ORDER BY 
+		    b.board_no DESC
   </select>
-		
+  
+  <insert id="insertBoard">
+  	insert
+  		into tb_board
+  		(
+  			board_no
+  		, board_category
+  		, board_title
+  		, board_content
+  		, temp_save
+  		, notice_yn
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+  			seq_boardno.nextval
+  		, #{boardCategory}
+  		, #{boardTitle}
+  		, #{boardContent}
+  		, '02'
+  		, #{noticeYN}
+  		, #{regId}
+  		, #{modId}
+  		)
+  </insert>
+
 </mapper>
