@@ -15,6 +15,9 @@
       .HRTable td {
         cursor: pointer;
     }
+    #anwArea{
+    	text-align: center;
+    }
 	</style>
 </head>
 <body>
@@ -122,15 +125,15 @@
                                             	<c:forEach var="list" items="${list}">
                                               <tr>
                                                 
-                                                <td style="text-align: center;">${list.userName}</td>
-                                                <td style="text-align: center;">${list.userId}</td>
-                                                <td style="text-align: center;">${list.hireDate}</td>
-                                                <td style="text-align: center;">${list.deptName}</td>
-                                                <td style="text-align: center;">${list.position}</td>
-                                                <td style="text-align: center;">${list.phone}</td>
+                                                <td>${list.userName}</td>
+                                                <td>${list.userId}</td>
+                                                <td>${list.hireDate}</td>
+                                                <td>${list.deptName}</td>
+                                                <td>${list.position}</td>
+                                                <td>${list.phone}</td>
                                                 <td>${list.address} ${list.detailAdd}</td>
-                                                <td style="text-align: center;">${list.gender}</td>
-                                                <td style="text-align: center;">
+                                                <td>${list.gender}</td>
+                                                <td>
                                                  <c:choose>
 																			                <c:when test="${list.delYN == 'N'}">
 																			                    재직
@@ -195,45 +198,46 @@
    
 
     </div><!--전체영역 끝-->
-   <script>
-				    $(document).ready(function() {
-				        $('#Keyword').click(function() {
-				            var keyword = $("#Keyword").val(); 
-				            
-				            
-				            $.ajax({
-				                url: '${contextPath}/hr/search.do', 
-				                type: 'GET',
-				                data: {
-				                	keyword: keyword,
-				                
-				                },    
-				                success: function(response) {
-				                		let tbody = $("#anwArea");
-				                		tbody.empty(); 
-				                    if(response.length == 0){
-				                    	let tr = "<tr><td colspan='3'>조회된 결과가 없습니다.</td></tr>";
-				                        tbody.append(tr);
-				                        
-				                    } else {
-				                        let tbody = $("#anwArea");
-				                        tbody.empty(); 
-				                        for(let i=0; i<response.length; i++) {
-				                            let tr = "<tr>"
-				                                    + "<td>" + response[i].dayoffStartsearch + " ~ " + response[i].dayoffendsearch + "</td>"
-				                                    + "<td>" + response[i].position + "</td>"
-				                                    + "<td>" + response[i].dayOffCount + "</td>"
-				                                    + "</tr>";
-				                            tbody.append(tr);
-				                        }
-				                    }
-				                },
-				                error: function() {
-				                    console.error('AJAX 오류');
-				                }
-				            });
-				        });
-				    });
-				</script>
+		<script>
+		    $(document).ready(function() {
+		        
+		        $('#searchForm').submit(function(event) {
+		            event.preventDefault(); 
+		            var keyword = $("#Keyword").val();
+		            $.ajax({
+		                url: '${contextPath}/hr/search.do',
+		                type: 'GET',
+		                data: { keyword: keyword }, 
+		                success: function(response) {
+		                    let tbody = $("#anwArea");
+		                    tbody.empty();
+		                    if (response.length == 0) {
+		                        let tr = "<tr><td colspan='9'>조회된 결과가 없습니다.</td></tr>";
+		                        tbody.append(tr);
+		                    } else {
+		                        for (let i = 0; i < response.length; i++) {
+		                            let tr = "<tr>" +
+		                                "<td>" + response[i].userName + "</td>" +
+		                                "<td>" + response[i].userId + "</td>" +
+		                                "<td>" + response[i].hireDate + "</td>" +
+		                                "<td>" + response[i].deptName + "</td>" +
+		                                "<td>" + response[i].position + "</td>" +
+		                                "<td>" + response[i].phone + "</td>" +
+		                                "<td>" + response[i].address + " " + response[i].detailAdd + "</td>" +
+		                                "<td>" + response[i].gender + "</td>" +
+		                                "<td>" + (response[i].delYN === 'N' ? '재직' : '퇴직') + "</td>" +
+		                                "</tr>";
+		                            tbody.append(tr);
+		                        }
+		                    }
+		                },
+		                error: function() {
+		                    console.error('AJAX 오류');
+		                }
+		            });
+		        });
+		
+		    });
+		</script>
 </body>
 </html>

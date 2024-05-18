@@ -21,7 +21,7 @@ public class HrDao {
 
 	public List<MemberDto> searhMemberList(String keyword) {
 		// TODO Auto-generated method stub
-		return sql.selectList("hrMapper.selectMemberList",keyword);
+		return sql.selectList("hrMapper.searhMemberList",keyword);
 	}
 	
 	
