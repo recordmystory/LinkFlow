@@ -43,7 +43,18 @@ public class MemberServiceImpl implements MemberService {
 	public List<MemberDto> searchDayoff(MemberDto m) {
 		return mDao.searchDayoff(m);
 	}
-
+	
+	@Override
+	public int updatInfoeMember(MemberDto m) {
+		// TODO Auto-generated method stub
+		return mDao.updatInfoeMember(m);
+	}
+	@Override
+	public int deleteProfill(MemberDto m) {
+		// TODO Auto-generated method stub
+		return mDao.deleteProfill(m);
+	}
+	
 	
 
 	

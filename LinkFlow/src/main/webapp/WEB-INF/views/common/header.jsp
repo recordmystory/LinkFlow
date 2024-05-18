@@ -171,8 +171,18 @@
          <li class="nav-item dropdown">
            <a class="nav-link" data-toggle="dropdown" href="#">
            
-             <img src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>" 
-             style="width: 30px;height: 30px; border-radius: 50%;">
+               <c:choose>
+					        <c:when test="${not empty loginUser.profileUrl}">
+					            <img class="profile-user-img img-fluid img-circle"
+					                 src="${contextPath}${loginUser.profileUrl}"
+					                 alt="" style="width: 30px; height: 30px;">
+					        </c:when>
+					        <c:otherwise>
+					            <img class="profile-user-img img-fluid img-circle"
+					                 src="${contextPath}/resources/images/common/defaultProfile.png"
+					                 alt="" style="width: 30px; height: 30px;">
+					        </c:otherwise>
+					    </c:choose>
             
            </a>
            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">

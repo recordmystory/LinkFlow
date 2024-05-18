@@ -92,12 +92,22 @@
                               <form action="${contextPath}/member/updateInfo.do" method="post" enctype="multipart/form-data" id="profillArea">
                                 <div class="card card-primary card-outline">
                                   <div class="card-body box-profile">
-                                    <div class="text-center" style="margin-top: 50px;">
-                                      <img class="profile-user-img img-fluid img-circle"
-                                          src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
-                                          alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
-                                      <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="uploadFile">    
-                                    </div>
+                                   <div class="text-center" style="margin-top: 50px;">
+																		    <c:choose>
+																		        <c:when test="${not empty loginUser.profileUrl}">
+																		            <img class="profile-user-img img-fluid img-circle"
+																		                 src="${contextPath}${loginUser.profileUrl}"
+																		                 alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
+																		                 <i class="fa-solid fa-circle-xmark fa-xl" id="deleteProfill"></i>
+																		        </c:when>
+																		        <c:otherwise>
+																		            <img class="profile-user-img img-fluid img-circle"
+																		                 src="${contextPath}/resources/images/common/defaultProfile.png"
+																		                 alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
+																		        </c:otherwise>
+																		    </c:choose>
+																		    <input type="file" class="file" id="profileImgFile" style="display:none;" accept="image/*" name="uploadFile">    
+																		</div>
           
                                     <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>
           
@@ -276,6 +286,33 @@
 				            });
 				        });
 				    });
+				</script>
+					<script>
+						$(document).ready(function() {
+						    $("#deleteProfill").click(function() {
+						        
+						        var formData = new FormData();
+						        formData.append("userId", "${loginUser.userId}");
+						
+						        $.ajax({
+						            url: "${contextPath}/member/modifyProfile",
+						            type: "POST",
+						            data: formData,
+						            processData: false,
+						            contentType: false,
+						            success: function(result) {
+						            	if(result == "SUCCESS"){
+			       							location.reload();
+				       						}else if(result == "FAIL") {
+				       							alert("프로필변경에 실패했습니다.");
+				       						}
+						            },
+						            error: function() {
+						                console.log("프로필 이미지 삭제용 AJAX 통신 실패");
+						            }
+						        });
+						    });
+						});
 				</script>
 				        
         <script>

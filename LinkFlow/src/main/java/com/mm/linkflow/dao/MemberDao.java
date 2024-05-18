@@ -42,6 +42,16 @@ public class MemberDao {
 		return sql.selectList("memberMapper.searchDayoff",m);
 	}
 
+	public int updatInfoeMember(MemberDto m) {
+		// TODO Auto-generated method stub
+		return sql.update("memberMapper.updateInfoMember",m);
+	}
+
+	public int deleteProfill(MemberDto m) {
+		// TODO Auto-generated method stub
+		return sql.update("memberMapper.deleteProfill",m);
+	}
+
 
 
 }

@@ -70,9 +70,19 @@
                         <div class="card card-primary card-outline">
                           <div class="card-body box-profile">
                             <div class="text-center" style="margin-top: 50px;">
-                              <img class="profile-user-img img-fluid img-circle"
-                                  src="${contextPath}<c:out value='${loginUser.profileUrl}' default='/resources/images/common/defaultProfile.png'/>"
-                                  alt="기본이미지" style="width: 300px; height: 300px;">
+                              <c:choose>
+												        <c:when test="${not empty loginUser.profileUrl}">
+												            <img class="profile-user-img img-fluid img-circle"
+												                 src="${contextPath}${loginUser.profileUrl}"
+												                 alt="" style="width: 30px; height: 30px;">
+												        </c:when>
+												        <c:otherwise>
+												            <img class="profile-user-img img-fluid img-circle"
+												                 src="${contextPath}/resources/images/common/defaultProfile.png"
+												                 alt="" style="width: 30px; height: 30px;">
+												        </c:otherwise>
+											   			 </c:choose>
+            
                             </div>
   
                             <h3 class="profile-username text-center" style="margin-top: 30px;">${loginUser.userName}</h3>

@@ -25,6 +25,10 @@ public interface MemberService {
 	   
 	   //사원 연차 사용 검색 조회 서비스
 	   List<MemberDto> searchDayoff(MemberDto m);
-	
 	   
+	   //마이페이지 정보만 업데이트하는 서비스 
+	   int updatInfoeMember(MemberDto m);
+	   
+	   //프로필 이미지 삭제 서비스 
+	   int deleteProfill(MemberDto m);
 }
