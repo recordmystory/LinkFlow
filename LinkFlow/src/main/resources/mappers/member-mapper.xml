@@ -212,5 +212,13 @@
 			WHERE USER_ID = #{userId}
 			and user_pwd = #{userPwd}	
 	</update>
-
+	
+	<!-- [전자결재] 서명 설정 ( 작성자 : 김지우 )  -->
+	<update id="uploadSignImg">
+		UPDATE TB_MEMBER
+		SET SIGN_URL = #{signUrl},
+			  MOD_DATE = SYSDATE
+	  WHERE USER_ID = #{userId}
+	</update>
+	
 </mapper>
