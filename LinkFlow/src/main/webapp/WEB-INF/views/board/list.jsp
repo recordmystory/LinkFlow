@@ -137,12 +137,13 @@
                             </div>
 
                             <div class="form-inline">
+                            	<form id="searchForm" action="${contextPath }/board/search.do" method="get" align="center">
                                 <div class="input-group">
                                     <div class="select" style="margin-right: 15px;">
-                                        <select name="" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
-                                            <option value="all">작성자</option>
-                                            <option value="wait">제목</option>
-                                            <option value="complete">내용</option>
+                                        <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
+                                            <option value="user_id">작성자</option>
+										                        <option value="board_title">제목</option>
+										                        <option value="board_content">내용</option>
                                         </select>
                                     </div>
                                     <input class="form-control form-control-sidebar" type="search" placeholder="검색하기" aria-label="Search">
@@ -151,7 +152,8 @@
                                             <i class="fas fa-search fa-fw"></i>
                                         </button>
                                     </div>
-                                </div>
+                                	</div>
+                                </form>
                             </div>
                         </div>
 
@@ -206,11 +208,14 @@
                                     <hr style="margin-top: 0px;">
                                     <div class="pagination" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?type=${map.currentType}&page=${pi.currentPage -1}">&laquo;</a></li>
+                    
+														                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?type=${map.currentType}&page=${p}">${p}</a></li>
+														                </c:forEach>
+														                
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?${map.currentType}&page=${pi.currentPage +1}">&raquo;</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -222,5 +227,20 @@
         </div>
     </div>
 </div>
+<c:if test="${not empty search }">
+  <script>
+  	$(document).ready(function(){
+  		$("#searchForm select").val("${search.condition}");
+  		
+  		// 검색후 페이지일 경우 페이징바의 페이지 클릭시
+  		$("#pagingArea a").on("click", function(){
+  			$("#searchForm input[name=page]").val($(this).text());
+  			$("#searchForm").submit();
+  			//
+  			return false; // 기본이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
+  		})
+  	})
+  </script>
+ </c:if>
 </body>
 </html>

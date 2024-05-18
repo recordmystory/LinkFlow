@@ -37,10 +37,10 @@
 		  <choose>
   			<when test="refNo == 0">
   				<choose>
-  					<when test='refType == "B"'>
+  					<when test='refCategory == "B"'>
 		  				, seq_boardno.currval					
   					</when>
-  					<when test='refType == "E"'>
+  					<when test='refCategory == "E"'>
   						, seq_edoc.currval
   					</when>
   				</choose>

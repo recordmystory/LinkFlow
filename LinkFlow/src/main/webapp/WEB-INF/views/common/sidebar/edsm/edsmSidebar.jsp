@@ -182,7 +182,7 @@
       
      <li class="nav-item">
 
-       <a href="${ contextPath }/edsm/sign/setting.sign" class="nav-link middleName">
+       <a href="${ contextPath }/edsm/sign/setting.sg" class="nav-link middleName">
          <i class="fa-solid fa-gear fa-lg"></i>&nbsp;&nbsp;
        
       
