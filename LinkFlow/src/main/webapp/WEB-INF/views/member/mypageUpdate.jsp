@@ -95,13 +95,13 @@
                                    <div class="text-center" style="margin-top: 50px;">
 																		    <c:choose>
 																		        <c:when test="${not empty loginUser.profileUrl}">
-																		            <img class="profile-user-img img-fluid img-circle"
+																		            <img class="profile-user-img img-fluid img-circle" id="profillArea"
 																		                 src="${contextPath}${loginUser.profileUrl}"
 																		                 alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
 																		                 <i class="fa-solid fa-circle-xmark fa-xl" id="deleteProfill"></i>
 																		        </c:when>
 																		        <c:otherwise>
-																		            <img class="profile-user-img img-fluid img-circle"
+																		            <img class="profile-user-img img-fluid img-circle" id="profillArea"
 																		                 src="${contextPath}/resources/images/common/defaultProfile.png"
 																		                 alt="User profile picture" style="width: 300px; height: 300px;" onclick="$('#profileImgFile').click();">
 																		        </c:otherwise>
@@ -287,7 +287,7 @@
 				        });
 				    });
 				</script>
-					<script>
+				<script>
 						$(document).ready(function() {
 						    $("#deleteProfill").click(function() {
 						        
@@ -302,7 +302,7 @@
 						            contentType: false,
 						            success: function(result) {
 						            	if(result == "SUCCESS"){
-			       							location.reload();
+						            		$("#profillArea img").attr('src', '${contextPath}/resources/images/common/defaultProfile.png');
 				       						}else if(result == "FAIL") {
 				       							alert("프로필변경에 실패했습니다.");
 				       						}
@@ -394,7 +394,20 @@
               
           })
       </script>
-  
+  		<script>
+		    $(document).ready(function() {
+		        $("#profileImgFile").change(function() {
+		            var file = this.files[0];
+		            if (file) {
+		                var reader = new FileReader();
+		                reader.onload = function(e) {
+		                    $("#profillArea img").attr('src', e.target.result);
+		                }
+		                reader.readAsDataURL(file);
+		            }
+		        });
+		    });
+		</script>
 
     </div>
 </body>
