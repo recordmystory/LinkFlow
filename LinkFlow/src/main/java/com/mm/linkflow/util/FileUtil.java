@@ -18,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUtil {
 	public Map<String, String> fileUpload(MultipartFile uploadFile, String folderName){
 		
-//		String filePath = "/upload/" + folderName + new SimpleDateFormat("/yyyy/MM/dd").format(new Date());
-		
-		String resourcePath = new File("src/main/webapp/resources").getAbsolutePath();
-	    String filePath = resourcePath + "/upload/" + folderName + new SimpleDateFormat("/yyyy/MM/dd").format(new Date());
+		String filePath = "/upload/" + folderName + new SimpleDateFormat("/yyyy/MM/dd").format(new Date());
 		
 		File filePathDir = new File(filePath);
 		if(!filePathDir.exists()) {
