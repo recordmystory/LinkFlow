@@ -41,5 +41,9 @@ public class BoardDao {
 		
 		return sqlSession.selectList("boardMapper.selectBoardList", "CATEGORY-8", rowBounds);
 	}
+
+	public int insertBoard(BoardDto board) {
+		return sqlSession.insert("boardMapper.insertBoard", board);
+	}
 	
 }

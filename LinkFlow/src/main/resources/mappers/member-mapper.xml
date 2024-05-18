@@ -42,7 +42,7 @@
 		<result column="TOTAL_MEMBERS" property="totalMember"/>
 		<result column="DEPT_CAPNAME" property="deptCapName"/>
 		<result column="DEPT_MEMBERS" property="deptMember"/>
-
+		<result column="GENDER" property="gender"/>
 		
 	</resultMap>	
 	
@@ -79,6 +79,7 @@
 	    M.REG_ID,
 	    M.MOD_ID,
 	    M.DEL_YN,
+	    M.GENDER,
 	    TRUNC(months_between(SYSDATE,M.HIRE_DATE) /12) as SERVICEYEAR
 	FROM 
 	    TB_MEMBER M
@@ -200,7 +201,7 @@
 		AND M.DEL_YN = 'N'
 
 	</select>
-	
+	<!-- 프로필 사진 업뎃 -->
 	<update id="updateMember">
 		UPDATE TB_MEMBER 
 			SET 
@@ -221,4 +222,23 @@
 	  WHERE USER_ID = #{userId}
 	</update>
 	
+		<!-- 프로필 정보 업뎃 -->
+	<update id="updateInfoMember">
+		UPDATE TB_MEMBER 
+			SET 
+			     phone = #{phone}
+			    ,ADDRESS = #{address}
+			    ,ZIP_CODE =#{zipCode}
+			    ,DETAIL_ADD=#{detailAdd}
+			    
+			WHERE USER_ID = #{userId}
+			and user_pwd = #{userPwd}	
+	</update>
+	
+	<update id="deleteProfill">
+	UPDATE tb_member
+	SET profile_url = NULL 
+	WHERE user_id = #{userId}
+	</update>
+
 </mapper>

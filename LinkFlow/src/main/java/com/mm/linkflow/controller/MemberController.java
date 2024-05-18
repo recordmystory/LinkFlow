@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ public class MemberController {
 	
 	private final MemberService mService;
 	private final FileUtil fileUtil;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	//로그아웃
 	@RequestMapping("/loginout.me")
 	public String signout(HttpSession session) {
@@ -70,24 +73,57 @@ public class MemberController {
 	public String update(MemberDto m, MultipartFile uploadFile,HttpSession session,RedirectAttributes redirectAttributes) {
 		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String originName = loginUser.getProfileUrl();
 		
-		
-		
-		Map<String,String> map = fileUtil.fileUpload(uploadFile, "profile");
-		
-		String newProfileUrl = map.get("filePath") + "/" + map.get("filesystemName");
-		loginUser.setProfileUrl(newProfileUrl);
-		m.setProfileUrl(newProfileUrl);
-		int result = mService.updateMember(m); 
-		log.debug("result : {}", result);
-		if(result > 0) {
-			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
-			session.setAttribute("loginUser", mService.loginMember(m));
+		if(originName == null) {
+			Map<String,String> map = fileUtil.fileUpload(uploadFile, "profile");
+			
+			String newProfileUrl = map.get("filePath") + "/" + map.get("filesystemName");
+			loginUser.setProfileUrl(newProfileUrl);
+			m.setProfileUrl(newProfileUrl);
+			int result = mService.updateMember(m); 
+			
+			if(result > 0) {
+				redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
+				session.setAttribute("loginUser", mService.loginMember(m));
+			}else {
+				redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
+			}
+			
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
+			int result = mService.updatInfoeMember(m); 
+			
+			if(result > 0) {
+				redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
+				session.setAttribute("loginUser", mService.loginMember(m));
+			}else {
+				redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
+			}
 		}
+		
 		return "redirect:/member/myinfo.page";
 		
+	}
+	
+	//프로필 삭제 AJAX 
+	@ResponseBody
+	@PostMapping("/modifyProfile")
+	private String modifyProfile(HttpSession session) {
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		String originFileUrl = loginUser.getProfileUrl();
+		
+		int result =mService.deleteProfill(loginUser);
+		
+		if(result > 0) {
+	         if(originFileUrl != null) {
+	            new File(originFileUrl).delete();
+	         }
+	         return "SUCCESS";
+	      }else {
+	        
+	         return "FAIL";
+	      }
+
 	}
 	
 	//비밀번호 확인 AJAX
@@ -102,6 +138,7 @@ public class MemberController {
 	@PostMapping("/updateUserPassWord")
 	public String updateUserPassWord(MemberDto m, HttpSession session
 			  , RedirectAttributes redirectAttributes) {
+		m.setUserPwd(bcryptPwdEncoder.encode(m.getUserPwd()));
 		int result = mService.updatePwd(m);
 		
 		if (result>0) {

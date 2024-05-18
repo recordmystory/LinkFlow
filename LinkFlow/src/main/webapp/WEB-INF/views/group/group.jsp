@@ -55,8 +55,14 @@
 	 list-style: none;
 	 } 
 	 .ImgInfoAera{
-	     margin-left: 47px;
-	 }  
+    margin-left: 47px;
+ 
+	 }
+	 .ImgInfoAera>img{
+   
+    width: 100px;
+	  height: 100px;
+	 }    
 	 .infoTableArea{
 	     argin-top: 20px;
 	 }
@@ -200,7 +206,7 @@
                       <div class="ImgInfoAera">
                       <img class="profile-user-img img-fluid img-circle"
                           src=""
-                          alt="User profile picture">
+                          alt="User profile picture" >
                       </div>  
                       <div class="userInfosmAera">
                           <ul>
@@ -262,7 +268,7 @@
 					                	if (response.profileUrl === null) {
 					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/resources/images/common/defaultProfile.png');
 					                	} else {
-					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}/'+response.profileUrl);
+					                	    $('.modal-body .userInfoAera .ImgInfoAera img').attr('src', '${contextPath}'+response.profileUrl);
 					                	}
 				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(1)').text('성함: ' + response.userName);
 				                    $('.modal-body .userInfoAera .userInfosmAera li:nth-child(2)').text('소속: ' + response.deptName);
