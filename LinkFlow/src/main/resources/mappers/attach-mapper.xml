@@ -11,29 +11,44 @@
 	</resultMap>
 	
 	<!-- 첨부파일 인서트용 쿼리 -->
+	<!-- 구성모 refType별로 수정 -->
 	<insert id="insertAttach">
 		INSERT
 		  INTO TB_ATTACHMENT
 		  (
 		    FILE_NO
-		  , REF_NO
 		  , REF_CATEGORY
 		  , ORIGIN_NAME
 		  , FILESYSTEM_NAME
 		  , FILE_PATH
 		  , REG_ID
 		  , MOD_ID
+		  , REF_NO
 		  )
 		  VALUES
 		  (
 		    SEQ_ATTACHMENT.NEXTVAL
-		  , #{refNo}
 		  , #{refCategory}
 		  , #{originName}
 		  , #{filesystemName}
 		  , #{filePath}
 		  , #{regId}
 		  , #{modId}
+		  <choose>
+  			<when test="refNo == 0">
+  				<choose>
+  					<when test='refType == "B"'>
+		  				, seq_boardno.currval					
+  					</when>
+  					<when test='refType == "E"'>
+  						, seq_edoc.currval
+  					</when>
+  				</choose>
+  			</when>
+  			<otherwise>
+		  		, #{refNo}
+  			</otherwise>
+  		</choose>
 		  )
 	</insert>
 	
