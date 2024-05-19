@@ -27,7 +27,7 @@ public class HrServiceImpl implements HrService {
 	@Override
 	public int insertMember(MemberDto m) {
 		// TODO Auto-generated method stub
-		return 0;
+		return hDao.insertMember(m);
 	}
 
 	@Override

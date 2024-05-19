@@ -35,6 +35,11 @@ public class HrDao {
 		// TODO Auto-generated method stub
 		return sql.selectList("hrMapper.selectCommonTableList");
 	}
+
+	public int insertMember(MemberDto m) {
+		// TODO Auto-generated method stub
+		return sql.insert("hrMapper.insertMember",m);
+	}
 	
 	
 }

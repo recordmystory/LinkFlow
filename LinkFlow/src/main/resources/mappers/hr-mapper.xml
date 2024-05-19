@@ -153,16 +153,72 @@
 	  ,DEPT_TITLE
 		FROM 
   	TB_DEPT
+  	where del_yn ='N'
 		ORDER BY DEPT_CODE DESC 
 	</select>
 	
 	<select id="selectCommonTableList" resultMap="commonTableResult">
-		SELECT 
-    	c.sub_name
+	SELECT 
+     c.sub_code   
+  	,c.sub_name
 		FROM 
     	TB_COMMON C
 		where MAIN_CODE = '007-'
 	</select>
+	
+<insert id="insertMember">
+    INSERT INTO TB_MEMBER (
+         USER_ID
+        , DEPT_CODE
+        , USER_PWD
+        , USER_NAME
+        , PHONE
+        , BIRTH_DATE
+        , EDUCATION
+        , ADDRESS
+        , ZIP_CODE
+        , DETAIL_ADD
+        , HIRE_DATE
+        , SUPER_RIGHT
+        , HR_RIGHT
+        , SP_RIGHT
+        , BOARD_RIGHT
+        , DEPT_RIGHT
+        , DAYOFF
+        , RANK_BCODE
+        , RANK_SCODE
+        , REG_ID
+        , REG_DATE
+        , MOD_DATE
+        , MOD_ID
+        , DEL_YN
+    ) VALUES ( 
+         #{userId} 
+        , #{deptCode}
+        , #{userPwd}
+        , #{userName}
+        , #{phone}
+        , TO_DATE(#{birthDate}, 'YYYY-MM-DD')
+        , #{education}
+        , #{address}
+        , #{zipCode}
+        , #{detailAdd}
+        , TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+        , 'N'
+        , 'N'
+        , 'N'
+        , 'N'
+        , 'N'
+        , 12
+        , '007-'
+        , #{rankScode}
+        , 'admin01'
+        , SYSDATE
+        , SYSDATE
+        , 'admin01'
+        , 'N'
+    )
+</insert>
 
 </mapper>
 	

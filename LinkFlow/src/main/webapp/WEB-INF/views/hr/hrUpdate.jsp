@@ -75,66 +75,67 @@
                                             
                                             </div>
                                             <!-- /.card-header -->
-                                            <form action="zzzzz" method="post" id="insertMember">
+                                            <form action="${contextPath}/hr/insertMember.do" method="post" id="insertMember">
                                             <div class="card-body">
                                             <div class="">
-                                            		 <div class="col-md-6">
+                                           		 <div class="col-md-6">
                                                 <label>아이디</label>
                                                 <div class="input-group input-group">
                                                     
-                                                    <input type="text" class="form-control" placeholder="아이디를 입력하세요" name="" value="">
+                                                    <input type="text" class="form-control" placeholder="아이디를 입력하세요" name="userId">
                                                     <span class="input-group-append">
                                                       <button type="button" class="btn btn-primary btn-flat" onclick="">중복확인</button>
                                                     </span>
                                                 </div><br>
 
                                                 </div>
-                                                
+                                                <input type="hidden" name="userPwd" value="linkflow123@">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>성함</label>
-                                                    <input type="text" value="김대표" name="" class="form-control" required>   
+                                                    <input type="text" class="form-control" required placeholder="성함을 입력하세요" name="userName">   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>연락처</label>
-                                                    <input type="text" value="010-1111-2222" name="" class="form-control" required>   
+                                                    <input type="text" value="010-1111-2222" name="phone" class="form-control" required placeholder="연락처를 입력하세요" >   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>입사일</label>
-                                                    <input type="date" value="2021-05-09" name="" class="form-control" required>   
+                                                    <input type="date" value="2021-05-09" name="hireDate" class="form-control" required >   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>생년월일</label>
-                                                    <input type="date" value="1999-12-22" name="" class="form-control" required>   
+                                                    <input type="date" value="1999-12-22" name="birthDate" class="form-control" required>   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>부서</label>
-                                                        <select class="form-control select2" style="width: 100%;" required>
+                                                        <select class="form-control select2" style="width: 100%;" required name="deptCode">
                                                          <c:forEach var="dList" items="${dList}">
-																									        <option>${dList.deptTitle}</option>
+																									        <option value="${dList.deptCode }">${dList.deptTitle}</option>
 																									    	</c:forEach>
                                                         </select>
                                                 </div>
                                                 </div>
+                                                
 
                                                 <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>직책</label>
-                                                    <select class="form-control select2" style="width: 100%;" required>
+                                                    <select class="form-control select2" style="width: 100%;" required name="rankScode">
                                                       <c:forEach var="cList" items="${cList}">
-																									        <option>${cList.subName}</option>
+																									        <option value="${cList.subCode }">${cList.subName}</option>
 																									    </c:forEach>
 	                                                    </select>
                                                 </div>
@@ -143,14 +144,11 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>최종학력</label>
-                                                        <select class="form-control select2" style="width: 100%;" required>
-                                                            <option selected="selected">대졸</option>
-            
-                                                            <option>박사</option>
-                                                            <option>석사</option>
-                                                            <option>고졸</option>
-                                                            
-                                                            
+                                                        <select class="form-control select2" style="width: 100%;" required name="education">
+                                                            <option value="박사">박사</option>
+                                                            <option value="석사">석사</option>
+                                                            <option value="대졸">대졸</option>
+                                                            <option value="고졸">고졸</option>
                                                         </select>
                                                 </div>
                                                 </div>
@@ -158,12 +156,12 @@
                                                 <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>접근 권한</label>
-                                                    <select class="select2" multiple="multiple" data-placeholder="권한을 선택하세요" style="width: 100%;" name="arr[]">
-                                                        <option value="1">슈퍼관리자</option>
-                                                        <option value="2">인사관리</option>
-                                                        <option value="3">경영관리</option>
-                                                        <option value="4">게시판관리</option>
-                                                        <option value="5">부서관리</option>
+                                                    <select class="select2" multiple data-placeholder="권한을 선택하세요" style="width: 100%;" name="right">
+                                                        <option value="superRight">슈퍼관리자</option>
+                                                        <option value="hrRight">인사관리</option>
+                                                        <option value="spRight">경영관리</option>
+                                                        <option value="boardRight">게시판관리</option>
+                                                        <option value="deptRight">부서관리</option>
                                                         
                                                     </select>
                                                 </div>
@@ -174,9 +172,9 @@
                                                   <div class="form-group">
                                                   <label>성별</label>
                                                    &nbsp;&nbsp;
-                                                  <input type="radio" name="gender" id="Male" value="M">
+                                                  <input type="radio" name="gender" id="Male" value="남">
                                                   <label for="Male">남자</label> &nbsp;&nbsp;
-                                                  <input type="radio" name="gender" id="Female" value="F">
+                                                  <input type="radio" name="gender" id="Female" value="여">
                                                   <label for="Female">여자</label><br>
                                                   </div>   
                                                 </div>
@@ -186,15 +184,15 @@
                                                     <label>주소</label>
                                                     <div class="input-group input-group">
                                                         
-                                                        <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="" value="">
+                                                        <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="zipCode" value="">
                                                         <span class="input-group-append">
                                                           <button type="button" class="btn btn-primary btn-flat" onclick="sample6_execDaumPostcode()">주소 찾기</button>
                                                         </span>
                                                     </div><br>
     
-                                                    <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="" value="" required><br>
-                                                    <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"name="" value=""><br>
-                                                    <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소"  name="" value="" required>
+                                                    <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="address" value="" required><br>
+                                                    <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"><br>
+                                                    <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소"  name="detailAdd" value="" required>
                                                 </div>
                                                
                                                 <!-- /.col -->
@@ -208,15 +206,39 @@
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">등록하기</button>
                                                 <a href="" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
-                                                
+                                               
                                             </div>
+                                            </form> 
                                         </div>
-                                    	</form>
+                                    	
                                         <!-- /.card -->
                                 
 
                                         </div>
                                     </div>
+                                    
+                                    <div class="row">
+                                    	<div class="col-12">
+	                                      <!-- Default box -->
+	                                      <div class="card-warning">
+	                                        <div class="card-header">
+	                                          <h3 class="card-title">사원 추가 도움말</h3>
+	                          
+	                                        
+	                                        </div>
+	                                        <div class="card-body">
+	                                          사원 추가시 비밀번호 초기값은 'linkflow123@' 입니다. 사용자에게 전달 부탁드립니다. 
+	                                          
+	                                          
+	                                        </div>
+	                                        <!-- /.card-body -->
+	                                    
+	                                        <!-- /.card-footer-->
+	                                      </div>
+	                                      <!-- /.card -->
+	                                    </div>
+	                                  </div>
+                                    
 
                                 </div><!--HRArea 끝-->
                     
