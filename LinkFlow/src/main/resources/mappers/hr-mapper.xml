@@ -166,59 +166,71 @@
 		where MAIN_CODE = '007-'
 	</select>
 	
-<insert id="insertMember">
-    INSERT INTO TB_MEMBER (
-         USER_ID
-        , DEPT_CODE
-        , USER_PWD
-        , USER_NAME
-        , PHONE
-        , BIRTH_DATE
-        , EDUCATION
-        , ADDRESS
-        , ZIP_CODE
-        , DETAIL_ADD
-        , HIRE_DATE
-        , SUPER_RIGHT
-        , HR_RIGHT
-        , SP_RIGHT
-        , BOARD_RIGHT
-        , DEPT_RIGHT
-        , DAYOFF
-        , RANK_BCODE
-        , RANK_SCODE
-        , REG_ID
-        , REG_DATE
-        , MOD_DATE
-        , MOD_ID
-        , DEL_YN
-    ) VALUES ( 
-         #{userId} 
-        , #{deptCode}
-        , #{userPwd}
-        , #{userName}
-        , #{phone}
-        , TO_DATE(#{birthDate}, 'YYYY-MM-DD')
-        , #{education}
-        , #{address}
-        , #{zipCode}
-        , #{detailAdd}
-        , TO_DATE(#{hireDate}, 'YYYY-MM-DD')
-        , 'N'
-        , 'N'
-        , 'N'
-        , 'N'
-        , 'N'
-        , 12
-        , '007-'
-        , #{rankScode}
-        , 'admin01'
-        , SYSDATE
-        , SYSDATE
-        , 'admin01'
-        , 'N'
-    )
-</insert>
+	<insert id="insertMember">
+	    INSERT INTO TB_MEMBER (
+	         USER_ID
+	        , DEPT_CODE
+	        , USER_PWD
+	        , USER_NAME
+	        , PHONE
+	        , BIRTH_DATE
+	        , EDUCATION
+	        , ADDRESS
+	        , ZIP_CODE
+	        , DETAIL_ADD
+	        , HIRE_DATE
+	        , RETIRE_DATE
+	        , SUPER_RIGHT
+	        , HR_RIGHT
+	        , SP_RIGHT
+	        , BOARD_RIGHT
+	        , DEPT_RIGHT
+	        , PROFILE_URL
+	        , SIGN_URL
+	        , DAYOFF
+	        , SECONDARY_CODE
+	        , SECONDARY_USESE
+	        , RANK_BCODE
+	        , RANK_SCODE
+	        , REG_DATE
+	        , MOD_DATE
+	        , REG_ID
+	        , MOD_ID
+	        , DEL_YN
+	        , GENDER
+	    ) VALUES ( 
+	         #{userId}
+	        , #{deptCode}
+	        , #{userPwd}
+	        , #{userName}
+	        , #{phone}
+	        , TO_DATE(#{birthDate}, 'YYYY-MM-DD')
+	        , #{education}
+	        , #{address}
+	        , #{zipCode}
+	        , #{detailAdd}
+	        , TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+	        , NULL
+	        , 'N'
+	        , 'N'
+	        , 'N'
+	        , 'N'
+	        , 'N'
+	        , NULL
+	        , NULL
+	        , 12
+	        , 'N'
+	        , 'N'
+	        , '007-'
+	        , #{rankScode}
+	        , SYSDATE
+	        , SYSDATE
+	        , 'admin01'
+	        , 'admin01'
+	        , 'N'
+	        , #{gender}
+	    )
+	</insert>
 
 </mapper>
 	
