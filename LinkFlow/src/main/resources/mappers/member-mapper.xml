@@ -239,5 +239,12 @@
 	SET profile_url = NULL 
 	WHERE user_id = #{userId}
 	</update>
-
+ 	
+ 	<select id="SerchPwd" resultMap="memberResult">
+ 	SELECT 
+ 	 USER_PWD
+ 	FROM TB_MEMBER 
+ 	WHERE user_id = #{userId}
+ 	
+ 	</select>
 </mapper>

@@ -129,7 +129,13 @@ public class MemberController {
 	//비밀번호 확인 AJAX
 	@ResponseBody
 	@PostMapping("/checkPassword")
-	public String checkPassword(MemberDto m) {
+	public String checkPassword(String userId, String userPwd) {
+		
+		String checkPwd = bcryptPwdEncoder.encode(userPwd);
+		MemberDto m = new MemberDto();
+		m.setUserId(userId);
+		m.setUserPwd(checkPwd);
+		
 		int result = mService.checkPassword(m);
 		return result > 0 ? "YYYYY" : "NNNNN";
 		

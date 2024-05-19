@@ -31,4 +31,6 @@ public interface MemberService {
 	   
 	   //프로필 이미지 삭제 서비스 
 	   int deleteProfill(MemberDto m);
+	   
+	   String SerchPwd(String userId);
 }

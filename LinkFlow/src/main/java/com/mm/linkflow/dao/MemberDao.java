@@ -52,6 +52,11 @@ public class MemberDao {
 		return sql.update("memberMapper.deleteProfill",m);
 	}
 
+	public String SerchPwd(String userId) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("memberMapper.SerchPwd",userId);
+	}
+
 
 
 }
