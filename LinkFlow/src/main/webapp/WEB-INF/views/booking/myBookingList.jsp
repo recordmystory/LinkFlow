@@ -75,14 +75,14 @@ input[type="checkbox"]:checked {
 					<div class="card">
 						<div class="card-header">
 							<h6 class="card-title">
-								<input type="checkbox"> 시설 &nbsp; 
-								<input type="checkbox"> 비품
-							</h6>
+									<input type="checkbox" id="roomCheckbox" name="room" onchange="search(); checkYN();" ${search.room == 'Y' ? 'checked' : ''}> 시설 &nbsp;
+									 <input type="checkbox" id="supCheckbox" name="supplies" onchange="search(); checkYN();" ${search.supplies == 'Y' ? 'checked' : ''}> 비품
+								</h6>
 
 							<div class="card-tools">
 								<div class="input-group input-group-sm" style="width: 120px;">
-									<select id="dropdownOptions" class="form-control">
-										<option value="">전체</option>
+									<select id="status" class="form-control" onchange="search()">
+										<option value="ALL">전체</option>
 										<option value="WAI">예약대기</option>
 										<option value="COM">예약완료</option>
 										<option value="USE">사용중</option>
@@ -93,6 +93,7 @@ input[type="checkbox"]:checked {
 								</div>
 							</div>
 						</div>
+						
 						<!-- /.card-header -->
 						<div class="card-body table-responsive p-0">
 							<table class="table table-hover text-nowrap">
@@ -107,7 +108,7 @@ input[type="checkbox"]:checked {
 										<th style="width: 170px;">상태</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="listBody">
 								<c:choose>
 								<c:when test="${empty bkList}">
 									<tr>
@@ -149,7 +150,59 @@ input[type="checkbox"]:checked {
 			</div>
 		</div>
 		<!-- /.content-wrapper -->
-	</div>
+		<script>
+		
+		// 체크박스 값 확인 및 반환하는 함수
+	    function checkYN() {
+	        let room = document.getElementById('roomCheckbox').checked ? 'Y' : 'N';
+	        let supplies = document.getElementById('supCheckbox').checked ? 'Y' : 'N';
+	        return { room, supplies };
+	    }
+
+	    // 검색 실행 함수
+	    function search() {
+	        let { room, supplies } = checkYN(); // checkYN()으로부터 값을 가져옴
+	        let status = document.getElementById('status').value;
+
+			$.ajax({
+				url: '${contextPath }/booking/mylist.search',
+				type: 'GET',
+				data:{
+					room: room,
+					supplies: supplies,
+					status: status
+				},success:function(result){
+					let table ="";
+					if(result != null){
+						for(let i=0; i<result.length; i++){
+							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + result[i].bookingNo + "'\">";
+							table +="<td>"+ result[i].bookingNo+"</td>";
+							table +="<td>"+ result[i].mainName +"</td>";
+							table +="<td>"+ result[i].subName +"</td>";
+							table +="<td>"+ result[i].assetsName+"</td>";
+							table +="<td>"+ result[i].bkStartDate +"</td>";
+							table +="<td>"+ result[i].bkStartTime +" ~ "+ result[i].bkEndTime +"</td>";
+							table +="<td>"+ result[i].status +"</th></tr>";
+						}
+					}
+					
+					$("#listBody").html(table);
+				}
+				
+			})
+		}
+		
+		$(document).ready(function(){
+            search();
+        });
+		
+		 $(document).ready(function() {
+		 	$('#roomCheckbox, #supCheckbox, #status').change(function() {
+		    	search(); // 변경 사항이 감지되면 검색 실행
+		    });
+	    });
+		</script>
+	
 
 </body>
 </html>

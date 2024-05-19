@@ -29,6 +29,29 @@ public class BookingServiceImpl implements BookingService {
 	public List<BookingDto> selectMyBkList(PageInfoDto pi, String userId) {
 		return bkDao.selectMyBkList(pi,userId);
 	}
+
+
+	@Override
+	public int selectMySearchCount(Map<String, String> search) {
+		return bkDao.selectMySearchCount(search);
+	}
+
+	@Override
+	public List<BookingDto> selectMySearchList(Map<String, String> search, PageInfoDto pi) {
+		return bkDao.selectMySearchList(search, pi);
+	}
+
+	
+	@Override
+	public int modifyBooking(BookingDto bk) {
+		return bkDao.modifyBooking(bk);
+	}
+
+	@Override
+	public int cancleBooking(BookingDto bk) {
+		return bkDao.cancleBooking(bk);
+	}
+
 	
 	@Override
 	public BookingDto selectDetailMyBk(String bkNo) {
@@ -63,16 +86,6 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public int delAssets(int assetsNo) {
 		return 0;
-	}
-
-	@Override
-	public int selectBkUseCount() {
-		return 0;
-	}
-
-	@Override
-	public List<AssetsDto> selectSupUse(PageInfoDto pi) {
-		return null;
 	}
 
 	@Override

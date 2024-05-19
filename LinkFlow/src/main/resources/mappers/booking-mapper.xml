@@ -44,9 +44,9 @@
 		  ,use_yn
       from
        	   tb_assets a 
-      join tb_common c using (main_code)
-     where del_yn ='N'
-       and main_code='003-'
+      join tb_common c on a.main_code = c.main_code
+     where a.del_yn ='N'
+       and c.main_code='003-'
        and a.sub_code= c.sub_code
      order by assets_no desc
 </select>
@@ -115,7 +115,8 @@
 
 <select id="selectDetailMyBk" resultMap="bkResult">
 	select 
-		   NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
+	 	   booking_no
+		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
 		  ,status
@@ -131,4 +132,71 @@
        and b.del_yn = 'N'
 </select>
 
+<update id="modifyBk">
+	update tb_booking
+	   set bk_start_dt = #{bkStartDate}||' '||#{bkStartTime},
+	   	   bk_end_dt = #{bkEndDate}||' '||#{bkEndTime},
+	   	   bk_content = #{bkContent},
+	   	   mod_date = sysdate,
+	   	   assets_no = (select assets_no
+	   	   				  from tb_assets
+	   	   				 where assets_name = #{assetsName}
+	   	   				)
+	 where booking_no = #{bookingNo}
+</update>
+
+<update id="cancleBk">
+	update tb_booking
+	   set bk_content = #{bkContent},
+	   	   mod_date = sysdate,
+	   	   status = 'CAN'
+	 where booking_no = #{bookingNo}
+</update>
+
+<select id="selectMySearchCount" resultType="_int">
+	select count(*)
+	  from tb_booking b
+	  join tb_assets using (assets_no)
+	 where booking_id = #{userId}
+	   and del_yn = 'N'
+	   <if test='status != "ALL"'>
+	   	and status = #{status}
+	   </if>
+	   <choose>
+	   <when test='room == "Y"'>
+	   	and a.main_code = '002-'
+	   </when>
+	   <otherwise>
+	   	and a.main_code = '003-'
+	   </otherwise>
+	   </choose>
+</select>
+
+<select id="selectMySearchList" resultMap="bkResult">
+	select 
+		   booking_no
+		  ,main_name
+		  ,sub_name
+		  ,assets_name
+		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
+		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
+		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
+		  ,status
+     from tb_booking b
+     join tb_assets a using (assets_no)
+     join tb_common c using (main_code)
+    where booking_id = #{userId}
+      and a.sub_code= c.sub_code
+      and b.del_yn = 'N'
+       <if test='status != "ALL"'>
+	   	and status = #{status}
+	   </if>
+	   <if test='room == "Y"'>
+	   	and a.main_code = '002-'
+	   </if>
+	   <if test='supplies == "Y"'>
+	   	and a.main_code = '003-'
+	   </if>
+
+</select>
 </mapper>

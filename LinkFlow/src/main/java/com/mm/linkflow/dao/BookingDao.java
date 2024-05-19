@@ -59,8 +59,27 @@ public class BookingDao {
 
 	public BookingDto selectDetailMyBk(String bkNo) {
 		BookingDto bk = sql.selectOne("bkMapper.selectDetailMyBk",bkNo);
-		System.out.println(bk);
 		return sql.selectOne("bkMapper.selectDetailMyBk",bkNo);
+	}
+
+	public int modifyBooking(BookingDto bk) {
+		return sql.update("bkMapper.modifyBk",bk);
+	}
+
+	public int cancleBooking(BookingDto bk) {
+		return sql.update("bkMapper.cancleBk",bk);
+	}
+
+	public int selectMySearchCount(Map<String, String> search) {
+		return sql.selectOne("bkMapper.selectMySearchCount",search);
+	}
+
+	public List<BookingDto> selectMySearchList(Map<String, String> search, PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() -1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset , limit);
+		return sql.selectList("bkMapper.selectMySearchList",search, rowBounds);
 	}
 
 }

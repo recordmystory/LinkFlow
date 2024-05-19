@@ -1,6 +1,7 @@
 package com.mm.linkflow.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,24 @@ public class BookingController {
 		return mv;
 	}
 	
+
+	@GetMapping("/sup.search") // 비품검색 
+	public ModelAndView selectSupSearch(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
+		
+		log.debug("search:{}",search);
+		int listCount = bkServiceImpl.searchBkCount(search);
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<AssetsDto> assList = bkServiceImpl.selectSearchSupList(pi, search);
+		mv.addObject("pi",pi)
+		  .addObject("assList",assList)
+		  .addObject("search", search)
+		  .setViewName("booking/bookingSupplies");
+		
+		return mv;
+	}
+
+	
 	@GetMapping("/mylist.bk") // 나의 예약 리스트 
 	public ModelAndView myBookingPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv, HttpSession session) {
 		String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
@@ -78,35 +97,82 @@ public class BookingController {
 		return mv;
 	}
 	
+	
+	@GetMapping("/mylist.search")
+	public ModelAndView myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, ModelAndView mv, HttpSession session) {
+
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		search.put("userId",userId);
+		
+		int listCount = bkServiceImpl.selectMySearchCount(search);
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<BookingDto> bkList = bkServiceImpl.selectMySearchList(search, pi);
+
+		for (int i = 0; i < bkList.size(); i++) {
+			switch (bkList.get(i).getStatus()) {
+				case "WAI" : bkList.get(i).setStatus("예약대기"); break;
+				case "COM" : bkList.get(i).setStatus("예약완료"); break;
+				case "USE" : bkList.get(i).setStatus("사용중"); break;
+				case "END" : bkList.get(i).setStatus("사용완료"); break;
+				case "REJ" : bkList.get(i).setStatus("반려"); break;
+				case "CAN" : bkList.get(i).setStatus("취소"); break;
+			}
+		}
+
+		mv.addObject("pi", pi).addObject("bkList", bkList).setViewName("booking/myBookingList");
+
+		return mv;
+
+	}
+	
+	
 	@GetMapping("/detail.bk") // 나의 예약 상세보기 
 	public String selectDetailMyBk(@RequestParam(value="no")String bkNo, Model model) {
 		
-		log.debug("bkNO:{}",bkNo);
-		model.addAttribute("bk", bkServiceImpl.selectDetailMyBk(bkNo));
+		BookingDto bk =  bkServiceImpl.selectDetailMyBk(bkNo);
+		
+		if(bk != null) {
+			switch(bk.getStatus()) {
+			case "WAI" : bk.setStatus("예약대기"); break;
+			case "COM" : bk.setStatus("예약완료"); break;
+			case "USE" : bk.setStatus("사용중"); break;
+			case "END" : bk.setStatus("사용완료"); break;
+			case "REJ" : bk.setStatus("반려"); break;
+			case "CAN" : bk.setStatus("취소"); break;
+			}
+		}
+		model.addAttribute("bk", bk);
 		return "booking/myBookingDetail";
 	}
 	
-	@GetMapping("/supplies.use") //사용가능한비품 
-	public void selectSupUse() {
+	@PostMapping("/modify.bk")
+	public String modifyBooking(BookingDto bk) {
+		
+		log.debug("bk: {}",bk);
+		int result = bkServiceImpl.modifyBooking(bk);
+		log.debug("result : {}", result);
+		if(result>0) {
+			
+			return "redirect:booking/myBookingList";
+		}else {
+			return "redirect:booking/myBookingDetail?no="+bk.getBookingNo();
+		}
 		
 	}
 	
-	@GetMapping("/sup.search") // 비품검색 
-	public ModelAndView selectSupSearch(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
-		
-		log.debug("search:{}",search);
-		int listCount = bkServiceImpl.searchBkCount(search);
-		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
-		
-		List<AssetsDto> assList = bkServiceImpl.selectSearchSupList(pi, search);
-		mv.addObject("pi",pi)
-		  .addObject("assList",assList)
-		  .addObject("search", search)
-		  .setViewName("booking/bookingSupplies");
-		
-		return mv;
-	}
+	@PostMapping("/cancle.bk")
+	public String cancleBooking(BookingDto bk) {
+		int result = bkServiceImpl.cancleBooking(bk);
+		log.debug("result:{}",result);
+		if (result > 0) {
 
+			return "redirect:booking/myBookingList";
+		} else {
+			return "redirect:booking/myBookingDetail?no=" + bk.getBookingNo();
+		}
+	}
+	
 	@GetMapping("/assets.list") // 자산리스트 조회 
 	public void selectAssetsList() {
 		
