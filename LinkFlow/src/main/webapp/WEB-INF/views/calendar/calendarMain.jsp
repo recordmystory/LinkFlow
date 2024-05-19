@@ -144,7 +144,7 @@
             googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
             timeZone: 'Asia/Seoul', //시간대 -확인
             dayMaxEvents: true, 
-            initialDate: '2023-01-12', //기준일
+            initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동할 수 있음
             editable: true, // 이벤트를 드래그하여 이동할 수 있음
             selectable: true, // 날짜를 클릭하여 이벤트를 생성할 수 있음
@@ -155,12 +155,120 @@
                 
                 }
             },
+            //상세일정조회
             eventClick: function(info) {
-                // prevent browser from following the link
+            	  var event = info.event;
+                var extendedProps = event.extendedProps;
+            	  $('#schDetailTitle').text(event.title); //.text <div>, <span>, <p>일 때 사용
+                
+                
+            	  $('#schDetailTitle').text(event.title); // .text <div>, <span>, <p>일 때 사용
+                // .val <input>, <select>, <textarea> 폼 요소
+                // .val <input>, <select>, <textarea> 폼 요소
+                $('#schImport').val(extendedProps.schImport);
+                
+
+             // 시작 날짜
+                var startDateChange = new Date(event.start);
+                var startDate = startDateChange.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                    
+                });
+                $('#startDate').text(startDate);
+
+                // 종료 날짜
+                var endDateChange = new Date(event.end);
+                var endDate = endDateChange.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit', //2자리로 표시해라
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                    
+                });
+                $('#endDate').text(endDate === startDate ? '' : '~  ' +  endDate);
+                
+                
+                $('#address').text(extendedProps.address); 
+                $('#schDetailModal_content_text').text(extendedProps.schContent); // 내용 텍스트
+							
+                $('#schImport').prop('checked', extendedProps.schImport === 'Y'); 
+                $('#notifyYn').prop('checked', extendedProps.notifyYn === 'Y');
+                
+                //schCalSubCode처리
+                if (extendedProps.schCalSubCode == '03') {
+                    $('#schCalSubCode').text('개인 캘린더');
+                } else if (extendedProps.schCalSubCode == '02') {
+                    $('#schCalSubCode').text('부서 캘린더');
+                } else if (extendedProps.schCalSubCode == '01') {
+                    $('#schCalSubCode').text('전사 캘린더');
+                }
+                
+                $('#schDetailModal').modal('show');
+                
+              //일정 수정 ******************************************************
+                //updateform (getEventById)로도 처리 가능 -> 알아보기
+                $('.schDetailModal_blueBtn').click(function() {
+                    $('#schUpdateModal input[name="schTitle"]').val(event.title);
+                    $('#schUpdateModal input[name="address"]').val(extendedProps.address);
+                    $('#schUpdateModal textarea[name="schContent"]').val(extendedProps.schContent);
+                    $('#schUpdateModal input[name="schImport"]').prop('checked', extendedProps.schImport === 'Y');
+                    $('#schUpdateModal input[name="notifyYn"]').prop('checked', extendedProps.notifyYn === 'Y');
+                    $('#schUpdateModal select[name="schCalSubCode"]').val(extendedProps.schCalSubCode);
+                    $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
+
+                    $('#schUpdateModal').modal('show');
+
+                    $('#schUpdateButton').click(function() {
+                    	  // 시작 날짜-밖
+                       var startDate1 = startDateChange.toISOString().slice(0, -8);
+												var endDate1 = endDateChange.toISOString().slice(0, -8);
+                        var data = {
+                            schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
+                            schTitle: $('#schTitle').val(), 
+                            schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
+                            schCalSubCode: $('#schCalSubCode').val(),
+                         // 시작 날짜
+                            startDate: startDate1,
+
+                            // 종료 날짜
+                             endDate: endDate1,
+                            
+                            address: $('#address').val(), 
+                            notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
+                            schContent: $('#schContent').val() 
+                            
+                        };
+                        console.log("전달되는 데이터:", data);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "${contextPath}/calendar/updateSch.do",
+                            data: JSON.stringify(data),
+                            contentType: 'application/json',
+                            success: function(result) {
+                                if (result === "success") {
+                                    console.log("일정 수정 성공.");
+                                    $("#schUpdateModal").modal("hide");
+                                    alert("일정 수정 성공.");
+                                }
+                            },
+                            error: function(result) {
+                                console.log("일정 수정 실패.");
+                                alert("일정 수정 실패.");
+                            }
+                        });
+                    });
+                });
+                
                 info.jsEvent.preventDefault();
             },
             eventSources: [
-                //공휴일 이벤트
+                //공휴일 
                 {
                     googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
                     //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
@@ -171,7 +279,7 @@
                     constraint: 'availableForMeeting' 
                 },
                 {
-                     //일정 이벤트
+                     //특정 캘린더의 전체 일정 조회
                 	events: function(info, successCallback, failureCallback) {
                         var schCalSubCode = [];
 
@@ -186,7 +294,7 @@
                         }
 
                         $.ajax({
-                            url: "${contextPath}/calendar/	.do",
+                            url: "${contextPath}/calendar/schList.do",
                             type: "get",
                             traditional: true,
                             data: {
@@ -199,12 +307,21 @@
                                         var calendarEvents = result[schCalSubCode];
                                         for (var i = 0; i < calendarEvents.length; i++) {
                                             var eventData = {
-                                                title: calendarEvents[i].schTitle,
-                                                start: calendarEvents[i].startDate,
-                                                end: calendarEvents[i].endDate,
-                                                color: calendarEvents[i].calColor
+                                            				title: calendarEvents[i].schTitle, //풀캠 필수속성
+                                                    start: calendarEvents[i].startDate, 
+                                                    end: calendarEvents[i].endDate, 
+                                                    color: calendarEvents[i].calColor, 
+                                                    extendedProps: { // 사용자 정의 속성
+                                                        schTitle: calendarEvents[i].schTitle,
+                                                        schImport: calendarEvents[i].schImport,
+                                                        schCalSubCode: calendarEvents[i].schCalSubCode,
+                                                        address: calendarEvents[i].address,
+                                                        notifyYn: calendarEvents[i].notifyYn,
+                                                        schContent: calendarEvents[i].schContent,
+                                                        schNo: calendarEvents[i].schNo
+                                                    }
                                             };
-                                            events.push(eventData);
+                                            events.push(eventData);//addEvent로도 가능
                                         }
                                     }
                                 }
@@ -222,9 +339,6 @@
         calendar.render();
     });
     //풀캘린더 
-
-	 
-	 
 	 
 
  

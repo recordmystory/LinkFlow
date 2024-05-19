@@ -30,4 +30,14 @@ public class CalenderDao {
 	public List<ScheduleDto> selectSchList(String schCalSubCode) {
         return sqlSessionTemplate.selectList("calendarMapper.selectScheduleList", schCalSubCode);
 	}
+
+	//상세조회
+	public ScheduleDto detailSch(String schNo) {
+		return sqlSessionTemplate.selectOne("calendarMapper.detailSch", schNo);
+	}
+
+	//일정수정
+	public int updateSch(ScheduleDto schedule) {
+	    return sqlSessionTemplate.update("calendarMapper.updateSch", schedule);
+	}
 }

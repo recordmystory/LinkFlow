@@ -1,7 +1,5 @@
 package com.mm.linkflow.dto;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +15,8 @@ public class ScheduleDto extends CommonDto{
 	private String schNo;
 	private String calNo;
 	private String schContent;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private String address;
 	private String notifyYn;
 	private String schImport;

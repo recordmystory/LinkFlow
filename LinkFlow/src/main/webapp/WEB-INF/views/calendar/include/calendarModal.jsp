@@ -184,45 +184,47 @@
        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
               <div class="modal-header justify-content-center">                 
-                <h5 class="modal-title font-weight-bolder" id="schDetailTitle">개발2팀 회식</h5>
+                <h5 class="modal-title font-weight-bolder" id="schDetailTitle"></h5>
               </div>
               <div class="modal-body">
                   <div>
                     <div class="schDetailModal_content justify-content-end mx-1">
                       중요일정&nbsp;
-                      <input type="checkbox" class="weste-modal" id="recipient-name">
+                      <input type="checkbox" class="weste-modal" id="schImport" style="pointer-events: none;">
                     </div>
                    </div>
                    <div class="schDetailModal_content font-weight-bolder">
                         <label for="recipient-name" class="col-form-label">캘린더</label>
-                        <div style="padding-right: 35px;">부서 캘린더</div> 
+                        <div style="padding-right: 35px;" id="schCalSubCode"></div> 
                     </div>
                     <div class="schDetailModal_content"> 
                       <label for="recipient-name" class="col-form-label">일정</label> 
-                      <div>2024/04/26&nbsp; 오전 9:30 ~ 오전 10:00</div> 
+                      <div>
+	                      <spen id="startDate"></spen> 
+	                      <spen id="endDate"></spen> 
+	                     </div>
+                      
                     </div>
                     <!--조건 걸어야함-->
                     <div class="schDetailModal_content">
                       <label for="recipient-name" class="col-form-label">장소</label>
                       <div class="search">
-                        <div>서울시 서초구 방배동 939-949</div>
+                        <div id="address"></div>
                         <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
                       </div>                          
                     </div>
                     <!---->
                     <div class="schDetailModal_content">
-                      <label for="recipient-name" class="col-form-label">알림</label>
+                      <label for="recipient-name" class="col-form-label" >알림</label>
                       <div>
-                        30분 전 메일발송
-                        <input type="checkbox" class="weste-modal" id="recipient-name" style="display: none;"> 
+                       종료 30분 전 메일발송
+                        <input type="checkbox" class="weste-modal" id="notifyYn" style="pointer-events: none; "> 
                       </div>
                     </div>
                     <div class="schDetailModal_content">
                       <label for="message-text" class="col-form-label">내용</label>
                       <div id="schDetailModal_content_text"> 
-                            서울시 서초구 방배동 939-949에 있는
-                          '떡봉솥뚜껑닭볶음탕찾아주셔서서감사
-                            합니다' 에서 부서 전체 회식
+                           
                       </div>
                     </div>
                 </div>
@@ -315,7 +317,7 @@
     </div>
     <!--공유캘린더 더보기 클릭시 모달 shareCalMoreModal end-->
     
-		<!-- 일정 등록 모달 -->
+	<!-- 일정 등록 모달 -->
 		<div class="modal fade" id="schInsertModal" tabindex="-1" aria-labelledby="schInsertModal" aria-hidden="true">
 		    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		        <div class="modal-content">
@@ -343,35 +345,37 @@
 		                    </div>
 		                    <!-- 시작 날짜와 종료 날짜 -->
 		                    <div class="schDetailModal_content">
-		                        <label for="startDate" class="col-form-label">일정</label>
-		                        <div class="dateInput col-sm-5 text-sm">
-		                            <label for="startDate" class="col-form-label" >시작 날짜</label>
-		                            <input type="date" class="form-select" name="startDate" required >
-		                            <label for="endDate" class="col-form-label">종료 날짜</label>
-		                            <input type="date" class="form-select" name="endDate" required >
-		                        </div>
-		                    </div>
+												    <label for="startDate" class="col-form-label" style="width:32px;">일정 </label>
+												    <div class="dateInput text-sm">
+												        <label for="startDate" class="col-form-label" >시작</label>
+												        <input type="datetime-local" class="form-select" name="startDate" style="width: 170px; text-align: center;" required><br>
+												        <label for="endDate" class="col-form-label">종료</label>
+												        <input type="datetime-local" class="form-select" name="endDate" style="width: 170px; text-align: center;" required>
+												    </div>
+												</div>
 		                    <!-- 장소 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="address" class="col-form-label">장소</label>
 		                        <div class="search mt-1">
-		                            <input type="text" name="address">
-		                            <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
-		                        </div>
+		                            <input type="text" name="address" class="form-select" style="width:320px; font-size: small; margin-left: 30px;">
+   														  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        </div>
 		                    </div>
 		                    <!-- 알림 설정 -->
 		                    <div class="schDetailModal_content">
-		                        <label for="notifyYn" class="col-form-label" >알림</label>
+		                        <label for="notifyYn" class="col-form-label" >알림</label> 
 		                        <div>
-		                            30분 전 메일발송
+		                           종료 30분 전 메일발송
 		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyBtn">
 		                        </div>
 		                    </div>
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
-		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" required ></textarea>
+		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" style="margin-left:67px; " required ></textarea>
 		                    </div>
+		                    <div class="schDetailModal_content justify-content-start text-sm">
+                     		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
+                       </div>
 		                    <!-- 수정자 아이디 -->
 		                   <input type="hidden" name="modId" id="modId">
 		                </form>
@@ -380,6 +384,7 @@
 		                <button type="submit" id="schInsertButton" class="btn blue-button">등록</button>
 		                <button type="button" class="btn gray-button">취소</button>
 		            </div>
+		            
 		        </div>
 		    </div>
 		</div>
@@ -389,69 +394,73 @@
     <!--일정 수정 모달 start-->
     <div class="modal fade" id="schUpdateModal" tabindex="-1" aria-labelledby="schUpdateModal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-              <div class="modal-header justify-content-center">                 
-                <input type="text" class="schInsertModalTitle ml-4" placeholder="제목을 입력해주세요">
-              </div>
-               <div class="modal-body">
-                    <div>
-                      <div class="schDetailModal_content justify-content-end mx-1">
-                        중요일정&nbsp;
-                        <input type="checkbox" class="weste-modal" id="recipient-name">
-                      </div>
-                      <div class="schDetailModal_content font-weight-bolder">
-                          <label for="recipient-name" class="col-form-label">캘린더</label>
-                          <form method="" >
-                            <div class="form-group mt-1">
-                              <select class="form-select" id="calendar" name="calendar">
-                                <option value="" selected>개인 캘린더</option>
-                                <option value="">부서 캘린더</option>
-                                <option value="">회사 캘린더</option>
-                              </select>
-                            </div>
-                      </div>
-                      <div class="schDetailModal_content"> 
-                        <label for="recipient-name" class="col-form-label">일정</label> 
-                          <div class="dateInput col-sm-5 text-sm">
-                            <label for="taskId" class="col-form-label ">시작 날짜</label>
-                            <input type="date" class="form-select" id="calendar_start_date" name="calendar_start_date">
-                        
-                            <label for="taskId" class="col-form-label">종료 날짜</label>
-                            <input type="date" class="form-select" id="calendar_end_date" name="calendar_end_date">
-                          </div>
-                      </div>
-                      <!--조건 걸어야함-->
-                      <div class="schDetailModal_content">
-                        <label for="recipient-name" class="col-form-label">장소</label>
-                        <div class="search mt-1">
-                          <div>서울시 서초구 방배동 939-949</div>
-                          <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
-                        </div>                          
-                      </div>
-                      <!---->
-                      <div class="schDetailModal_content">
-                        <label for="recipient-name" class="col-form-label">알림</label>
-                        <div>
-                          30분 전 메일발송
-                          <input type="checkbox" class="weste-modal" id="recipient-name">
-                        </div>
-                      </div>
-                      <div class="schDetailModal_content">
-                        <label for="message-text" class="col-form-label">내용</label>
-                        <textarea class="schInsertModal_content_text mt-2"></textarea>
-                      </div>
-                    </div>
-                    <div class="schDetailModal_content justify-content-start text-sm">
-                      <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
-                    </div>
-              </div>
-              <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn blue-button">등록</button>
-                  <button type="button" class="btn gray-button"">취소</button>
-              </div>
-          </div>
-        </div>
-    </div>
+		        <div class="modal-content">
+		            <div class="modal-body">
+		                <form id="scheduleForm">
+		                    <!-- 일정 제목 -->
+		                    <div class="modal-header justify-content-center">
+		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" id="schTitle" placeholder="제목을 입력해주세요" required >
+		                    </div>
+		                    <!-- 중요일정 체크박스 -->
+		                    <div class="schDetailModal_content justify-content-end mx-1">
+		                        중요일정&nbsp;
+		                        <input type="checkbox" class="weste-modal" id="schImport" name="schImport">
+		                    </div>
+		                    <!-- 캘린더 선택 -->
+		                    <div class="schDetailModal_content font-weight-bolder">
+		                        <label for="calendarNo" class="col-form-label">캘린더</label>
+		                        <div class="form-group mt-1">
+		                            <select class="form-select" name="schCalSubCode" id="schCalSubCode" >
+		                                <option value="03" selected>개인 캘린더</option>
+		                                <option value="02">부서 캘린더</option>
+		                                <option value="01">전사 캘린더</option>
+		                            </select>
+		                        </div>    
+		                    </div>
+		                    <!-- 시작 날짜와 종료 날짜 -->
+		                    <div class="schDetailModal_content">
+												    <label for="startDate" class="col-form-label" style="width:32px;">일정 </label>
+												    <div class="dateInput text-sm">
+												        <label for="startDate" class="col-form-label" >시작</label>
+												        <input type="datetime-local" class="form-select" name="startDate" id="startDate" style="width: 170px; text-align: center;" required><br>
+												        <label for="endDate" class="col-form-label">종료</label>
+												        <input type="datetime-local" class="form-select" name="endDate" id="endDate" style="width: 170px; text-align: center;" required>
+												    </div>
+												</div>
+		                    <!-- 장소 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="address" class="col-form-label">장소</label>
+		                        <div class="search mt-1">
+		                            <input type="text" name="address" id="address" class="form-select" style="width:320px; font-size: small; margin-left: 30px;">
+   															<div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                       
+		                    		</div>
+		                    </div>
+		                    <!-- 알림 설정 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="notifyYn" class="col-form-label" >알림</label> 
+		                        <div>
+		                           종료 30분 전 메일발송
+		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyYN">
+		                        </div>
+		                    </div>
+		                    <!-- 일정 내용 -->
+		                    <div class="schDetailModal_content">
+		                        <label for="schContent" class="col-form-label">내용</label>
+		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" id="schContent" style="margin-left:67px; " required ></textarea>
+		                    </div>
+		                    <div class="schDetailModal_content justify-content-start text-sm">
+                     		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
+                       </div>
+                       <input type="hidden" name="schNo" id="schNo">
+		                </form>
+		            </div>
+		            <div class="modal-footer justify-content-center">
+		                <button type="submit" id="schUpdateButton" class="btn blue-button">수정</button>
+		                <button type="button" class="btn gray-button">취소</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
     <!--일정 수정 모달 end-->
     
     <!--공유 일정 모달 start-->
@@ -1154,12 +1163,12 @@ $('#kt_docs_jstree_basic').jstree({
 	$(document).ready(function() {
  //캘린더 일정등록 ajax start **************************************
 		  // 중요일정 체크박스 클릭 시
-	    $('#schImportBtn').click(function() {
+	    $('#schImport').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="schImport"]').val(important);
 	    });
 		  
-	    $('#notifyBtn').click(function() {
+	    $('#notify').click(function() {
 	        var notify = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="notifyYn"]').val(notify);
 	    });
