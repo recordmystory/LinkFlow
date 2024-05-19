@@ -100,21 +100,38 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>연락처</label>
-                                                    <input type="text" value="010-1111-2222" name="phone" class="form-control" required placeholder="연락처를 입력하세요" >   
+                                                    <input type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" >   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>입사일</label>
-                                                    <input type="date" value="2021-05-09" name="hireDate" class="form-control" required >   
+                                                    <input type="date" id="hireDateInput" name="hireDate" class="form-control" required >   
                                                     </div>   
                                                 </div>
+                                                <script>
+                                                function setTodayDate() {
+                                                    var today = new Date();
+                                                    var dd = String(today.getDate()).padStart(2, '0');
+                                                    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+                                                    var yyyy = today.getFullYear();
+
+                                                    today = yyyy + '-' + mm + '-' + dd;
+                                                    return today;
+                                                }
+
+
+                                                window.onload = function() {
+                                                   
+                                                    document.getElementById('hireDateInput').value = setTodayDate();
+                                                };
+                                                </script>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>생년월일</label>
-                                                    <input type="date" value="1999-12-22" name="birthDate" class="form-control" required>   
+                                                    <input type="date"  name="birthDate" class="form-control" required>   
                                                     </div>   
                                                 </div>
 
@@ -462,6 +479,9 @@
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End
+
+
 </script>
+
 </body>
 </html>

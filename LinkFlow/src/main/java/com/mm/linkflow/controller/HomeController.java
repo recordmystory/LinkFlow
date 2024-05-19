@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class HomeController {
 	private final AttemdamceService attService;
 	private final MemberService mService;
 	private final BoardService boardService;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	/**
 	 * 테스트로 게시판리스트조회로함 나중에 로그인페이지로 하셈
 	 * @return
@@ -50,7 +52,7 @@ public class HomeController {
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			if (loginUser != null) {
+			if (loginUser != null && bcryptPwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 				int checkIn = attService.selectCheckIn(loginUser.getUserId());
 				if(checkIn == 0) {
 					attService.checkInAtt(loginUser.getUserId());

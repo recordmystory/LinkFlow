@@ -88,7 +88,7 @@ public class HRcontroller {
 		        }
 		    } 
 		
-		m.setUserPwd(bcryptPwdEncoder.encode(m.getUserPwd()));
+		m.setUserPwd(bcryptPwdEncoder.encode("1234"));
 		
 		int result = hService.insertMember(m);
 		if(result > 0) {

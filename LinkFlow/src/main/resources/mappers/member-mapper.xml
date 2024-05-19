@@ -88,7 +88,6 @@
 	JOIN 
 	    tb_dept D ON M.DEPT_CODE = D.dept_code
 	where m.user_id = #{userId}
-	and m.user_pwd = #{userPwd}
 	AND M.DEL_YN = 'N'
 	</select>
 
