@@ -1,6 +1,6 @@
 package com.mm.linkflow.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,6 +58,8 @@ public class MemberDto extends CommonDto {
 	private String deptCapName; 
 	private String deptMember;
 	private String gender; 
-	private ArrayList<String> right;
+	private String[] right;
+	
+	
 	
 }

@@ -1,6 +1,9 @@
 package com.mm.linkflow.controller;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -53,16 +57,47 @@ public class HRcontroller {
 	
 	@PostMapping("/insertMember.do")
 	public String insertMember(MemberDto m,RedirectAttributes redirectAttributes) {
+		 String[] rights = m.getRight();
+		    
+		    m.setSuperRight("N");
+		    m.setHrRight("N");
+		    m.setSpRight("N");
+		    m.setBoardRight("N");
+		    m.setDeptRight("N");
+
+		  
+		    if (rights != null) {
+		        for (int i = 0; i < rights.length; i++) {
+		            switch (rights[i]) {
+		                case "1":
+		                    m.setSuperRight("Y");
+		                    break;
+		                case "2":
+		                    m.setHrRight("Y");
+		                    break;
+		                case "3":
+		                    m.setSpRight("Y");
+		                    break;
+		                case "4":
+		                    m.setBoardRight("Y");
+		                    break;
+		                case "5":
+		                    m.setDeptRight("Y");
+		                    break;
+		            }
+		        }
+		    } 
 		
-		m.setUserPwd(bcryptPwdEncoder.encode("linkflow123@") );
+		m.setUserPwd(bcryptPwdEncoder.encode(m.getUserPwd()));
+		
 		int result = hService.insertMember(m);
 		if(result > 0) {
 			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 사원 추가가 되었습니다.");
 			
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", "사원추가 실패하였습니다.");
-			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+			
 		}
-		return "hr/hrPage";
+		return "redirect:/hr/hrPage";
 	}
 }

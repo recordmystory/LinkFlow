@@ -211,11 +211,11 @@
 	        , #{detailAdd}
 	        , TO_DATE(#{hireDate}, 'YYYY-MM-DD')
 	        , NULL
-	        , 'N'
-	        , 'N'
-	        , 'N'
-	        , 'N'
-	        , 'N'
+	        , #{superRight}
+	        , #{hrRight}
+	        , #{spRight}
+	        , #{boardRight}
+	        , #{deptRight}
 	        , NULL
 	        , NULL
 	        , 12

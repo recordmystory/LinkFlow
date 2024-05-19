@@ -157,11 +157,11 @@
                                                 <div class="form-group">
                                                     <label>접근 권한</label>
                                                     <select class="select2" multiple data-placeholder="권한을 선택하세요" style="width: 100%;" name="right">
-                                                        <option value="superRight">슈퍼관리자</option>
-                                                        <option value="hrRight">인사관리</option>
-                                                        <option value="spRight">경영관리</option>
-                                                        <option value="boardRight">게시판관리</option>
-                                                        <option value="deptRight">부서관리</option>
+                                                        <option value="1">슈퍼관리자</option>
+                                                        <option value="2">인사관리</option>
+                                                        <option value="3">경영관리</option>
+                                                        <option value="4">게시판관리</option>
+                                                        <option value="5">부서관리</option>
                                                         
                                                     </select>
                                                 </div>
