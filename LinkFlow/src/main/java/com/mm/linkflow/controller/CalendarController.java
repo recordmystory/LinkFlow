@@ -7,8 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,18 +69,45 @@ public class CalendarController {
 	}
   
 	//일정 전체 조회(특정 캘린더)
-	   @ResponseBody
-	    @GetMapping("/schList.do")
+	    @ResponseBody
+	    @RequestMapping("/schList.do")
 	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
-	        Map<String, List<ScheduleDto>> result = new HashMap<>();
+		   Map<String, List<ScheduleDto>> result = new HashMap<>();
 
 	        for (String schCalSubCode : schCalSubCodes) {
 	            List<ScheduleDto> events = calendarService.selectSchList(schCalSubCode);
 	            result.put(schCalSubCode, events);
+	            for (ScheduleDto event : events) {
+	            	//색상확인중
+	                log.debug("Event Title: {}, Color: {}", event.getSchTitle(), event.getCalColor());
+	            }
 	        }
 
 	        return result;
 	    }
-	}
+	   
+	 //일정 상세 조회(특정 캘린더) x
+	   @GetMapping("/schSelect.do")
+	   public String detailSch(String schNo, Model model) {
+	       ScheduleDto schedule = calendarService.detailSch(schNo);
+	       model.addAttribute("schedule", schedule);
+	       return "calendar/calendarMain";
+	   }
+	   
+	 //일정 수정
+	   @ResponseBody
+	   @PostMapping(value="/updateSch.do", produces="application/json")
+	   public String updateSch(@RequestBody ScheduleDto schedule) {
+	       int result = calendarService.updateSch(schedule);
+	       if (result == 1) {
+	           return "success"; // 성공
+	       } else {
+	           return "fail"; // 실패
+	       }
+	   }
+
+	   
+}
+	
 	  
 

@@ -13,6 +13,10 @@ public interface CalendarService {
 	//한 캘린더의 모든 일정 조회
 	List<ScheduleDto> selectSchList(String schCalSubCode);
 
+	ScheduleDto detailSch(String schNo);
+
+	int updateSch(ScheduleDto schedule);
+
 	/*
 	 * //일정둥록 -calNo조회 String getSelectCalNo(Map<String, String> selectCalNo);
 	 */
