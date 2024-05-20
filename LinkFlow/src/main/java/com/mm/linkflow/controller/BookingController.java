@@ -104,7 +104,7 @@ public class BookingController {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		search.put("userId",userId);
-		log.debug("status: {}", search.get("status"));
+		log.debug("status: {}", search.get("room"));
 			
 		int listCount = bkServiceImpl.selectMySearchCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
