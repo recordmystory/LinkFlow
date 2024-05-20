@@ -446,6 +446,8 @@
                      		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
+                       <input type="hidden" name="calNo" id="calNo">
+                       
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
@@ -888,7 +890,6 @@ $('#kt_docs_jstree_basic').jstree({
             
             $('.resultNameArea').append(html);
         } else {
-            // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
             $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
         }
     }
@@ -1051,7 +1052,6 @@ $('#kt_docs_jstree_basic').jstree({
               
               $('.resultNameArea').append(html);
           } else {
-              // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
               $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
           }
       }
@@ -1061,7 +1061,7 @@ $('#kt_docs_jstree_basic').jstree({
       
         document.querySelector('.referenceIn').addEventListener('click', function() {
       var nameAreas = document.querySelectorAll('.NameArea');
-      
+           
       nameAreas.forEach(function(nameArea) {
           var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
           if (checkbox) {

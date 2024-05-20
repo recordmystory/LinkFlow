@@ -7,18 +7,22 @@ import com.mm.linkflow.dto.CalendarDto;
 import com.mm.linkflow.dto.ScheduleDto;
 
 public interface CalendarService {
-	//ÀÏÁ¤µî·Ï
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ë“±ë¡
 	int insertSch(ScheduleDto schedule);
 	
-	//ÇÑ Ä¶¸°´õÀÇ ¸ğµç ÀÏÁ¤ Á¶È¸
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ì „ì²´ì¡°íšŒ
 	List<ScheduleDto> selectSchList(String schCalSubCode);
-
+	
+	//íœ´ì§€í†µ - ì¼ì • ìƒì„¸
 	ScheduleDto detailSch(String schNo);
-
+	
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ìˆ˜ì •
 	int updateSch(ScheduleDto schedule);
-
 	/*
-	 * //ÀÏÁ¤µÕ·Ï -calNoÁ¶È¸ String getSelectCalNo(Map<String, String> selectCalNo);
+	 * //ìˆ˜ì • - ìº˜ë¦°ë” CAL_SUB_CODE int updateSchCalSubCode(Map<String, Object> map);
 	 */
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì •ì‚­ì œ(ìƒíƒœë³€ê²½)
+	int deleteSch(String schNo);
+
 }
   
