@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
@@ -50,7 +50,8 @@ public class EdsmProgController {
 		List<EdocFormDto> list = edsmProgService.selectFormList();
 		
 		// 결재선 설정 모달 조회
-		List<MemberDto> apprList = edsmProgService.selectApprLine();
+		List<DeptDto> apprList = edsmProgService.selectApprLine();
+	
 		
 		mv.addObject("list", list).addObject("apprList", apprList).setViewName("edsm/prog/apprEnrollForm");
 		

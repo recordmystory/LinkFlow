@@ -21,6 +21,7 @@ public class MemberDto extends CommonDto {
 	private String deptCode; //부서코드
 	private String position; //직급
 	private String subCode;
+	private String subName;
 	private String userName; //이름
 	private String phone; //연락처
 	private String birthDate; //생년월일
@@ -61,6 +62,6 @@ public class MemberDto extends CommonDto {
 	private String gender; 
 	private String[] right;
 	
-	private List<DeptDto> deptList;
+	
 	
 }

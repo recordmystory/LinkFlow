@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.dao.EdsmProgDao;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 
@@ -41,7 +41,7 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	}
 
 	@Override
-	public List<MemberDto> selectApprLine() {
+	public List<DeptDto> selectApprLine() {
 		return edsmProgDao.selectApprLine();
 	}
 	
