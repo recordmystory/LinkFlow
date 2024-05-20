@@ -130,9 +130,9 @@
 						<!-- 문자열을 '/'로 나누어 배열로 변환 -->
 						<c:set var="todayArr" value="${fn:split(today, '/')}"/> --%>
 					<div class="bk-detail">
-						<input type="hidden" name="bookingNo" value="${bk.bookingNo }">
-						<input type="hidden" name="bkStartDate" id="bkStartDate">
-						<input type="hidden" name="bkEndDate" id="bkEndDate">
+						<input type="hidden" name="bookingNo" value="${bk.bookingNo }" id="bookingNo">
+						<!-- <input type="hidden" name="bkStartDate" id="bkStartDate">
+						<input type="hidden" name="bkEndDate" id="bkEndDate"> -->
 						<div class="bk-detailArea">
 							<div class="ymd" style="height:30px;">
 								<div class="ymd">
@@ -140,26 +140,26 @@
 									<c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
 									<c:if test="${ not empty bk.bkStartDate}">
 										<select id="year" name="year" class="form-control" style="width: 100px;">
-											<option>${ ymdArr[0] }</option>
+											<option value="${ ymdArr[0] }">${ ymdArr[0] }</option>
 											<c:if test="${ ymdArr[0] == 12 }">
-												<option>${ ymdArr[0] + 1}</option>
+												<option value="${ ymdArr[0] + 1 }">${ ymdArr[0] + 1}</option>
 											</c:if>
 										</select>&nbsp; 
 									<select id="month" name="month" class="form-control" style="width: 80px;">
 										<option value="${ ymdArr[1] }">${ ymdArr[1] }</option>
 										<c:choose>
 											<c:when test="${ymdArr[1] == todayArr[1]}">
-												<option value="">0${ ymdArr[1] }</option>
+												<option value="0${ ymdArr[1] }">0${ ymdArr[1] }</option>
 											</c:when>
 											<c:otherwise>
-												<option value="">0${ymdArr[1] -1}</option>
+												<option value="0${ymdArr[1] -1}">0${ymdArr[1] -1}</option>
 											</c:otherwise>
 										</c:choose>
 											<!-- 해당 월과 +1 월만 나오게 하기-->
 									</select>&nbsp; 
 									<select id="day" name="day" class="form-control" style="width: 80px;">
-										<option>04</option>
-										<option>05</option>
+										<option value="${ ymdArr[2] }">${ ymdArr[2] }</option>
+										<option value="${ ymdArr[2] +1 }">${ ymdArr[2] +1 }</option>
 										<!-- 01~30 또는 31 까지 나오게 하기 -->
 									</select>&nbsp;
 									<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
@@ -212,11 +212,10 @@
 							</div>
 							<hr>
 							<div class="ass-detail">
-								<select id="ass-type" class="form-control " name="subName" style="width: 100px;">
+								<select id="ass-type" class="form-control " name="subName" style="width: 100px;" disabled>
 									<option>${ bk.subName }</option>
 								</select>&nbsp;
-								<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
-								</p>
+								<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp; </p>
 								<select id="ass-name" name="assetsName" class="form-control" style="width: 80px;">
 									<option value="A">A</option>
 									<option value="B">B</option>
@@ -229,7 +228,7 @@
 							<div style="margin: 40px;">
 								<h4>사유</h4>
 								<div class="coment" style="height: 150px;">
-									<input type="text" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
+									<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
 							</div>
 							<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
 							<hr>
@@ -309,7 +308,38 @@
 	<!-- /.modal -->
 	<script>
 		function bkUpdate(){
+			let year = document.getElementById('year').value;
+			let month = document.getElementById('month').value;
+			let day = document.getElementById('day').value;
+			let bkStartDate = year +'/' +month+ '/'+ day;
+			let bkStartTime = document.getElementById('start').value;
+			let bkEndDate = year +'/' +month+ '/'+ day;
+			let bkEndTime = document.getElementById('end').value;
+			let assetsName = document.getElementById('ass-name').value;
+			let bkContent = document.getElementById('bk-content').value;
+			let bookingNo = document.getElementById('bookingNo').value;
 			
+			$.ajax({
+				url:'${contextPath}/booking/modify.bk',
+				type:'post',
+				data:{
+					bkStartDate:bkStartDate,
+					bkStartTime:bkStartTime,
+					bkEndDate:bkEndDate,
+					bkEndTime:bkEndTime,
+					assetsName:assetsName,
+					bkContent:bkContent,
+					bookingNo:bookingNo
+				},success:function(bk){
+					if(bk != null){
+						alert('예약이 수정되었습니다.');
+						window.location.href = '${contextPath}/booking/mylist.bk'
+					}
+				},error:function(){
+					
+				}
+				
+			})
 		}
 	</script>
 

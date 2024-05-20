@@ -134,8 +134,8 @@
 
 <update id="modifyBk">
 	update tb_booking
-	   set bk_start_dt = #{bkStartDate}||' '||#{bkStartTime},
-	   	   bk_end_dt = #{bkEndDate}||' '||#{bkEndTime},
+	   set bk_start_dt = to_date(#{bkStartDate}||' '||#{bkStartTime},'YYYY/MM/DD HH24:MI'),
+	   	   bk_end_dt = to_date(#{bkEndDate}||' '||#{bkEndTime},'YYYY/MM/DD HH24:MI'),
 	   	   bk_content = #{bkContent},
 	   	   mod_date = sysdate,
 	   	   assets_no = (select assets_no

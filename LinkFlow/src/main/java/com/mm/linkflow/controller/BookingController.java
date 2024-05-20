@@ -104,7 +104,6 @@ public class BookingController {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		search.put("userId",userId);
-		log.debug("status: {}", search.get("room"));
 			
 		int listCount = bkServiceImpl.selectMySearchCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -151,17 +150,25 @@ public class BookingController {
 		return "booking/myBookingDetail";
 	}
 	
-	@PostMapping("/modify.bk")
-	public String modifyBooking(BookingDto bk) {
-		
-		log.debug("bk: {}",bk);
+	@ResponseBody
+	@PostMapping(value="/modify.bk", produces="application/json; charset=utf-8")
+	public BookingDto modifyBooking(@RequestParam Map<String,String> map) {
+		log.debug("bkEndTime: {}", map.get("bkEndTime"));
+		BookingDto bk = new BookingDto().builder()
+										.assetsName(map.get("assetsName"))
+										.bkContent(map.get("bkContent"))
+										.bkStartDate(map.get("bkStartDate"))
+										.bkStartTime(map.get("bkStartTime"))
+										.bkEndDate(map.get("bkEndDate"))
+										.bkEndTime(map.get("bkEndTime"))
+										.bookingNo(map.get("bookingNo"))
+										.build();
 		int result = bkServiceImpl.modifyBooking(bk);
 		log.debug("result : {}", result);
 		if(result>0) {
-			
-			return "redirect:booking/myBookingList";
+			return bk;
 		}else {
-			return "redirect:booking/myBookingDetail?no="+bk.getBookingNo();
+			return null;
 		}
 		
 	}
