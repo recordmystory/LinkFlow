@@ -141,16 +141,18 @@
 									<c:if test="${ not empty bk.bkStartDate}">
 										<select id="year" name="year" class="form-control" style="width: 100px;">
 											<option>${ ymdArr[0] }</option>
-											<option>${ ymdArr[0] + 1}</option>
+											<c:if test="${ ymdArr[0] == 12 }">
+												<option>${ ymdArr[0] + 1}</option>
+											</c:if>
 										</select>&nbsp; 
 									<select id="month" name="month" class="form-control" style="width: 80px;">
-										<option>${ ymdArr[1] }</option>
+										<option value="${ ymdArr[1] }">${ ymdArr[1] }</option>
 										<c:choose>
 											<c:when test="${ymdArr[1] == todayArr[1]}">
-												<option>${ ymdArr[1] +1}</option>
+												<option value="">0${ ymdArr[1] }</option>
 											</c:when>
 											<c:otherwise>
-												<option>${ ymdArr[1] -1}</option>
+												<option value="">0${ymdArr[1] -1}</option>
 											</c:otherwise>
 										</c:choose>
 											<!-- 해당 월과 +1 월만 나오게 하기-->
@@ -162,47 +164,45 @@
 									</select>&nbsp;
 									<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
 										</p>
-										<select id="start" name="bkStartTime" class="form-control"
-											style="width: 110px;">
-											<option>09:00</option>
-											<option>09:30</option>
-											<option>10:00</option>
-											<option>10:30</option>
-											<option>11:00</option>
-											<option>11:30</option>
-											<option>12:00</option>
-											<option>12:30</option>
-											<option>13:00</option>
-											<option>13:30</option>
-											<option>14:00</option>
-											<option>14:30</option>
-											<option>15:00</option>
-											<option>15:30</option>
-											<option>16:00</option>
-											<option>16:30</option>
-											<option>17:00</option>
+										<select id="start" name="bkStartTime" class="form-control" style="width: 110px;">
+											<option value="09:00">09:00</option>
+											<option value="09:30">09:30</option>
+											<option value="10:00">10:00</option>
+											<option value="10:30">10:30</option>
+											<option value="11:00">11:00</option>
+											<option value="11:30">11:30</option>
+											<option value="12:00">12:00</option>
+											<option value="12:30">12:30</option>
+											<option value="13:00">13:00</option>
+											<option value="13:30">13:30</option>
+											<option value="14:00">14:00</option>
+											<option value="14:30">14:30</option>
+											<option value="15:00">15:00</option>
+											<option value="15:30">15:30</option>
+											<option value="16:00">16:00</option>
+											<option value="16:30">16:30</option>
+											<option value="17:00">17:00</option>
 											<!-- 09시부터 18시 까지-->
 										</select>&nbsp; &nbsp; 
 									<span>~</span> &nbsp; &nbsp; 
-									<select id="end" name="bkEndTime" class="form-control"
-											style="width: 110px;">
-											<option>10:00</option>
-											<option>10:30</option>
-											<option>11:00</option>
-											<option>11:30</option>
-											<option>12:00</option>
-											<option>12:30</option>
-											<option>13:00</option>
-											<option>13:30</option>
-											<option>14:00</option>
-											<option>14:30</option>
-											<option>15:00</option>
-											<option>15:30</option>
-											<option>16:00</option>
-											<option>16:30</option>
-											<option>17:00</option>
-											<option>17:30</option>
-											<option>18:00</option>
+									<select id="end" name="bkEndTime" class="form-control" style="width: 110px;">
+											<option value="10:00">10:00</option>
+											<option value="10:30">10:30</option>
+											<option value="11:00">11:00</option>
+											<option value="11:30">11:30</option>
+											<option value="12:00">12:00</option>
+											<option value="12:30">12:30</option>
+											<option value="13:00">13:00</option>
+											<option value="13:30">13:30</option>
+											<option value="14:00">14:00</option>
+											<option value="14:30">14:30</option>
+											<option value="15:00">15:00</option>
+											<option value="15:30">15:30</option>
+											<option value="16:00">16:00</option>
+											<option value="16:30">16:30</option>
+											<option value="17:00">17:00</option>
+											<option value="17:30">17:30</option>
+											<option value="18:00">18:00</option>
 										</select>&nbsp;
 								</c:if>
 								</div>
@@ -218,9 +218,9 @@
 								<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
 								</p>
 								<select id="ass-name" name="assetsName" class="form-control" style="width: 80px;">
-									<option>A</option>
-									<option>B</option>
-									<option>C</option>
+									<option value="A">A</option>
+									<option value="B">B</option>
+									<option value="C">C</option>
 									<!-- ass-type 에 따라 내용 바뀌게 -->
 								</select>
 							</div>
@@ -229,7 +229,7 @@
 							<div style="margin: 40px;">
 								<h4>사유</h4>
 								<div class="coment" style="height: 150px;">
-									<input type="text" name="bkContent" class="bk-content">${ bk.bkContent }</div>
+									<input type="text" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
 							</div>
 							<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
 							<hr>
@@ -271,7 +271,7 @@
 				</div>
 				<div class="modal-footer justify-content-between">
 					<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-					<button type="button" class="btn btn-outline-primary" onclick="bkUpdateForm();">&nbsp;OK&nbsp;</button>
+					<button type="button" class="btn btn-outline-primary" onclick="bkUpdate();">&nbsp;OK&nbsp;</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -308,7 +308,9 @@
 	</div>
 	<!-- /.modal -->
 	<script>
-	
+		function bkUpdate(){
+			
+		}
 	</script>
 
 

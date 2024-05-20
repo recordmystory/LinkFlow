@@ -156,20 +156,26 @@
 <select id="selectMySearchCount" resultType="_int">
 	select count(*)
 	  from tb_booking b
-	  join tb_assets using (assets_no)
-	 where booking_id = #{userId}
-	   and del_yn = 'N'
-	   <if test='status != "ALL"'>
+	  join tb_assets a on b.assets_no = a.assets_no
+     join tb_common c on a.main_code = c.main_code
+    where booking_id = #{userId}
+      and a.sub_code= c.sub_code
+      and b.del_yn = 'N'
+       <if test='status != "ALL"'>
 	   	and status = #{status}
 	   </if>
 	   <choose>
-	   <when test='room == "Y"'>
-	   	and a.main_code = '002-'
+	   <when test='room == "Y" and supplies == "Y"'>
+	   and c.main_code in ('002-','003-')
 	   </when>
-	   <otherwise>
-	   	and a.main_code = '003-'
-	   </otherwise>
+	   <when test='room == "Y" and supplies == "N"'>
+	   and c.main_code = '002-'
+	   </when>
+	   <when test='room == "N" and supplies == "Y"'>
+	   and c.main_code = '003-'
+	   </when>
 	   </choose>
+	   
 </select>
 
 <select id="selectMySearchList" resultMap="bkResult">
@@ -188,17 +194,17 @@
     where booking_id = #{userId}
       and a.sub_code= c.sub_code
       and b.del_yn = 'N'
-       <if test="status != 'ALL'">
+       <if test='status != "ALL"'>
 	   	and status = #{status}
 	   </if>
 	   <choose>
-	   <when test="room == 'Y' and supplies == 'Y'">
+	   <when test='room == "Y" and supplies == "Y"'>
 	   and c.main_code in ('002-','003-')
 	   </when>
-	   <when test="room == 'Y' and supplies == 'N'">
+	   <when test='room == "Y" and supplies == "N"'>
 	   and c.main_code = '002-'
 	   </when>
-	   <when test="room == 'N' and supplies == 'Y'">
+	   <when test='room == "N" and supplies == "Y"'>
 	   and c.main_code = '003-'
 	   </when>
 	   </choose>
