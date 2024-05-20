@@ -104,6 +104,9 @@ public class CalendarController {
 	   public String updateSch(@RequestBody ScheduleDto schedule) {
 	       int result = calendarService.updateSch(schedule);
 	       log.debug("updateResult: {}", result);
+	       log.debug("schCalSubCode: {}", schedule.getSchCalSubCode());
+	       log.debug("address: {}", schedule.getAddress());
+	       
 	       if (result == 1) {
 	           return "success"; // ����
 	       } else {

@@ -114,7 +114,9 @@
 
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <li class="sidebarName">캘린더</li><br>
+        <li class="sidebarName">
+        		<a href="${contextPath}/calendar/calMain.page">캘린더</a>
+        </li><br>
     
         <li class="nav-item">
             <a href="#" class="nav-link middleName">                         
