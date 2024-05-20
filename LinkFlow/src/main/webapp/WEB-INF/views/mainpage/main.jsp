@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 <!-- fullCalendar -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>
 <c:if test="${ loginUser.superRight == 'Y' || loginUser.hrRight == 'Y' }">
 <!-- chart js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -129,6 +130,10 @@
    	#calendar {
   		height: 501px !important;
 	}
+	.holiday{
+      border-color: transparent; /*투명화*/
+      font-size: smaller; 
+    }
 </style>
 </head>
 <body>
@@ -265,7 +270,7 @@
 										<c:forEach var="n" items="${list}">
 										<tr>
 											<td style="width: 10%;">${ n.boardNo }</td>
-											<td style="width: 70%;"><a href="dd">${ n.boardTitle }</a></td>
+											<td style="width: 70%;"><a href="${contextPath}/board/detail.do?no=${n.boardNo}">${ n.boardTitle }</a></td>
 											<td style="width: 20%;">${ n.modDate }</td>
 										</tr>
 										</c:forEach>
@@ -376,15 +381,23 @@
 	
 	        // 캘린더 시작
 	        document.addEventListener('DOMContentLoaded', function() {
-	          var calendarEl = document.getElementById('calendar');
-	          var calendar = new FullCalendar.Calendar(calendarEl, {
-	            headerToolbar: {
-	                start: '', 
-	                center: '',
-	                end: ''
-	            }
-	          });
-	          calendar.render();
+	            var calendarEl = document.getElementById('calendar');
+	            var calendar = new FullCalendar.Calendar(calendarEl, {
+	                googleCalendarApiKey: 'AIzaSyCu-1ogsBMhEzc8DWez4qvcZRRqiVlWKgU',
+	                eventSources: {
+	                    googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+	                    backgroundColor: 'red',
+	                    classNames: 'holiday',
+	                    textColor: 'white'
+	                },
+	                headerToolbar: {
+	                    start: '', 
+	                    center: '',
+	                    end: ''
+	                }
+	            
+	            });
+	            calendar.render();
 	          
 	        });
 	        // 캘린더 끝
