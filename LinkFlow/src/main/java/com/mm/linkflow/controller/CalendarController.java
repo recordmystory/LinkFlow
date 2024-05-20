@@ -31,25 +31,29 @@ public class CalendarController {
 	private final CalendarService calendarService;
 
 	
-	//calendarMain ¶ç¿ì±â   
+	//calendarMain ï¿½ï¿½ï¿½ï¿½   
 	@GetMapping("/calMain.page")
 	public String calendarMain() {
 		return "calendar/calendarMain";
 	}
 	
-	//schWasteList ¶ç¿ì±â
+	//schWasteList ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/wasteList.page")
 	public String schWasteList() {
 		return "calendar/schWasteList";
 	}
 	
-	//calMain - ÀÏÁ¤ µî·Ï 
+	//calMain - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
 	@ResponseBody
 	@PostMapping(value="/regist.do", produces="text/html; charset=utf-8")//
 	public String insertSch(ScheduleDto schedule, HttpSession session) {  
 		String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
 		schedule.setModId(userId);
 		log.debug(userId);
+		log.debug("schImport:{}",schedule.getSchImport());
+		log.debug("notifyYn:{}",schedule.getNotifyYn());
+
+		
 		/*
 		 * String schCalSubCode = schedule.getCalSubCode();
 		 * 
@@ -62,13 +66,13 @@ public class CalendarController {
 		
 	    int result = calendarService.insertSch(schedule);
 	    if (result == 1) {  
-	        return "success"; // ¼º°ø  
+	        return "success"; // ï¿½ï¿½ï¿½ï¿½  
 	    } else {
-	        return "fail"; // µî·Ï ½ÇÆÐ
+	        return "fail"; // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    }
 	}
   
-	//ÀÏÁ¤ ÀüÃ¼ Á¶È¸(Æ¯Á¤ Ä¶¸°´õ)
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½È¸(Æ¯ï¿½ï¿½ Ä¶ï¿½ï¿½ï¿½ï¿½)
 	    @ResponseBody
 	    @RequestMapping("/schList.do")
 	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
@@ -78,7 +82,7 @@ public class CalendarController {
 	            List<ScheduleDto> events = calendarService.selectSchList(schCalSubCode);
 	            result.put(schCalSubCode, events);
 	            for (ScheduleDto event : events) {
-	            	//»ö»óÈ®ÀÎÁß
+	            	//ï¿½ï¿½ï¿½ï¿½È®ï¿½ï¿½ï¿½ï¿½
 	                log.debug("Event Title: {}, Color: {}", event.getSchTitle(), event.getCalColor());
 	            }
 	        }
@@ -86,7 +90,7 @@ public class CalendarController {
 	        return result;
 	    }
 	   
-	 //ÀÏÁ¤ »ó¼¼ Á¶È¸(Æ¯Á¤ Ä¶¸°´õ) x
+	 //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¸(Æ¯ï¿½ï¿½ Ä¶ï¿½ï¿½ï¿½ï¿½) x
 	   @GetMapping("/schSelect.do")
 	   public String detailSch(String schNo, Model model) {
 	       ScheduleDto schedule = calendarService.detailSch(schNo);
@@ -94,15 +98,19 @@ public class CalendarController {
 	       return "calendar/calendarMain";
 	   }
 	   
-	 //ÀÏÁ¤ ¼öÁ¤
+	 //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	   @ResponseBody
 	   @PostMapping(value="/updateSch.do", produces="application/json")
 	   public String updateSch(@RequestBody ScheduleDto schedule) {
 	       int result = calendarService.updateSch(schedule);
+	       log.debug("updateResult: {}", result);
+	       log.debug("schCalSubCode: {}", schedule.getSchCalSubCode());
+	       log.debug("address: {}", schedule.getAddress());
+	       
 	       if (result == 1) {
-	           return "success"; // ¼º°ø
+	           return "success"; // ï¿½ï¿½ï¿½ï¿½
 	       } else {
-	           return "fail"; // ½ÇÆÐ
+	           return "fail"; // ï¿½ï¿½ï¿½ï¿½
 	       }
 	   }
 

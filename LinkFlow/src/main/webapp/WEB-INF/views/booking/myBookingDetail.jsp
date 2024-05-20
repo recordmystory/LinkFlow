@@ -61,6 +61,10 @@
 	padding: 40px;
 }
 
+.bk-content{
+	border:0;
+}
+
 .form-control {
 	text-align: center;
 }
@@ -109,14 +113,14 @@
 					</div>
 					</section>
 					<!-- /.container-fluid -->
-					<div class="" style="display: flex; flex-wrap: wrap;">
-						<div class="bk-head">
+				<div class="" style="display: flex; flex-wrap: wrap;">
+					<div class="bk-head">
 
-							<div>
-								<button class="btn bg-gradient-secondary">목록으로</button>
-							</div>
+						<div>
+							<a class="btn bg-gradient-secondary" href="${ contextPath }/booking/mylist.bk">목록으로</a>
 						</div>
-						<%--
+					</div>
+					<%--
 						 <%
 						    java.util.Date now = new java.util.Date();
 						    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd");
@@ -125,100 +129,129 @@
 						
 						<!-- 문자열을 '/'로 나누어 배열로 변환 -->
 						<c:set var="todayArr" value="${fn:split(today, '/')}"/> --%>
-					    
-						<div class="bk-detail">
-							<div class="bk-detailArea">
-								<div class="ymd" sytle="height:30px;">
-									<div class="ymd">
+					<div class="bk-detail">
+						<input type="hidden" name="bookingNo" value="${bk.bookingNo }">
+						<input type="hidden" name="bkStartDate" id="bkStartDate">
+						<input type="hidden" name="bkEndDate" id="bkEndDate">
+						<div class="bk-detailArea">
+							<div class="ymd" style="height:30px;">
+								<div class="ymd">
 									<c:set var="ymd" value="${bk.bkStartDate}" />
-   									<c:set var="ymdArr" value="${fn:split(ymd, '/')}"/>
-										<select id="year" class="form-control" style="width: 100px;">
+									<c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
+									<c:if test="${ not empty bk.bkStartDate}">
+										<select id="year" name="year" class="form-control" style="width: 100px;">
 											<option>${ ymdArr[0] }</option>
 											<option>${ ymdArr[0] + 1}</option>
-										</select>&nbsp; <select id="month" class="form-control"
-											style="width: 80px;">
-											<option>${ ymdArr[1] }</option>
-											<c:choose>
-												<c:when test="${ymdArr[1] == todayArr[1]}">
-													<option>${ ymdArr[1] +1}</option>
-												</c:when>
-												<c:otherwise>
-													<option>${ ymdArr[1] -1}</option>
-												</c:otherwise>
-											</c:choose>
-										<!-- 해당 월과 +1 월만 나오게 하기-->
-										</select>&nbsp; <select id="day" class="form-control"
-											style="width: 80px;">
-											<option>04</option>
-											<option>05</option>
-											<!-- 01~30 또는 31 까지 나오게 하기 -->
-										</select>&nbsp;
-										<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
-										</p>
-										<select id="hour" class="form-control" style="width: 110px;">
-											<option>09:00</option>
-											<option>09:30</option>
-											<option>10:00</option>
-											<option>10:30</option>
-											<!-- 09시부터 18시 까지-->
-										</select>&nbsp; &nbsp; <span>~</span> &nbsp; &nbsp; <select id="minn"
-											class="form-control" style="width: 110px;">
-											<option>09:00</option>
-											<option>09:30</option>
-											<option>10:00</option>
-											<option>10:30</option>
-										</select>&nbsp;
-									</div>
-									<div>
-										<h5 style="margin-right: 20px;">예약 대기</h5>
-									</div>
-								</div>
-								<hr>
-								<div class="ass-detail">
-									<select id="ass-type" class="form-control "
-										style="width: 100px;">
-										<option>회의실</option>
-										<option>차량</option>
+										</select>&nbsp; 
+									<select id="month" name="month" class="form-control" style="width: 80px;">
+										<option>${ ymdArr[1] }</option>
+										<c:choose>
+											<c:when test="${ymdArr[1] == todayArr[1]}">
+												<option>${ ymdArr[1] +1}</option>
+											</c:when>
+											<c:otherwise>
+												<option>${ ymdArr[1] -1}</option>
+											</c:otherwise>
+										</c:choose>
+											<!-- 해당 월과 +1 월만 나오게 하기-->
+									</select>&nbsp; 
+									<select id="day" name="day" class="form-control" style="width: 80px;">
+										<option>04</option>
+										<option>05</option>
+										<!-- 01~30 또는 31 까지 나오게 하기 -->
 									</select>&nbsp;
 									<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
-									</p>
-									<select id="ass-name" class="form-control" style="width: 80px;">
-										<option>A</option>
-										<option>B</option>
-										<option>C</option>
-										<!-- ass-type 에 따라 내용 바뀌게 -->
-									</select>
+										</p>
+										<select id="start" name="bkStartTime" class="form-control"
+											style="width: 110px;">
+											<option>09:00</option>
+											<option>09:30</option>
+											<option>10:00</option>
+											<option>10:30</option>
+											<option>11:00</option>
+											<option>11:30</option>
+											<option>12:00</option>
+											<option>12:30</option>
+											<option>13:00</option>
+											<option>13:30</option>
+											<option>14:00</option>
+											<option>14:30</option>
+											<option>15:00</option>
+											<option>15:30</option>
+											<option>16:00</option>
+											<option>16:30</option>
+											<option>17:00</option>
+											<!-- 09시부터 18시 까지-->
+										</select>&nbsp; &nbsp; 
+									<span>~</span> &nbsp; &nbsp; 
+									<select id="end" name="bkEndTime" class="form-control"
+											style="width: 110px;">
+											<option>10:00</option>
+											<option>10:30</option>
+											<option>11:00</option>
+											<option>11:30</option>
+											<option>12:00</option>
+											<option>12:30</option>
+											<option>13:00</option>
+											<option>13:30</option>
+											<option>14:00</option>
+											<option>14:30</option>
+											<option>15:00</option>
+											<option>15:30</option>
+											<option>16:00</option>
+											<option>16:30</option>
+											<option>17:00</option>
+											<option>17:30</option>
+											<option>18:00</option>
+										</select>&nbsp;
+								</c:if>
 								</div>
-
-								<hr>
-								<div style="margin: 40px;">
-									<h4>사유</h4>
-									<div class="coment" style="height: 150px;">
-										${ bk.bkContent }
-									</div>
+								<div>
+									<h5 style="margin-right: 20px;">${bk.status }</h5>
 								</div>
-								<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
-								<hr>
-								<div style="margin: 40px;">
-									<h4>비고</h4>
-									<div class="coment" style="height: 100px;" disabled>
-										${ bk.rejContent }<c:out value="${todayArr}" />
-									</div>
-								</div>
-
 							</div>
-							<div class="md-btn" style="padding-top: 30px; float: right;">
-								<!-- 상태가 예약 대기일 때 보여질 수 있도록-->
-								<button class="btn bg-gradient-primary" data-toggle="modal"
-									data-target="#bk-mod">예약 수정</button>
-								<button class="btn btn-default" data-toggle="modal"
-									data-target="#bk-can">예약 취소</button>
+							<hr>
+							<div class="ass-detail">
+								<select id="ass-type" class="form-control " name="subName" style="width: 100px;">
+									<option>${ bk.subName }</option>
+								</select>&nbsp;
+								<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
+								</p>
+								<select id="ass-name" name="assetsName" class="form-control" style="width: 80px;">
+									<option>A</option>
+									<option>B</option>
+									<option>C</option>
+									<!-- ass-type 에 따라 내용 바뀌게 -->
+								</select>
 							</div>
+
+							<hr>
+							<div style="margin: 40px;">
+								<h4>사유</h4>
+								<div class="coment" style="height: 150px;">
+									<input type="text" name="bkContent" class="bk-content">${ bk.bkContent }</div>
+							</div>
+							<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
+							<hr>
+							<div style="margin: 40px;">
+								<h4>비고</h4>
+								<div class="coment" style="height: 100px;">${ bk.rejContent }
+								</div>
+							</div>
+
 						</div>
-
-						<!-- /.card -->
+						<div class="md-btn" style="padding-top: 30px; float: right;">
+							<c:if test="${bk.status eq '예약대기' }">
+								<!-- 상태가 예약 대기일 때 보여질 수 있도록-->
+								<button class="btn bg-gradient-primary" data-toggle="modal" data-target="#bk-mod">예약 수정</button>
+								<button class="btn btn-default" data-toggle="modal" data-target="#bk-can">예약 취소</button>
+							</c:if>
+						</div>
+					
 					</div>
-					<!-- /.content-wrapper -->
+					<!-- /.card -->
+				</div>
+				<!-- /.content-wrapper -->
 			</div>
 		</div>
 		<!-- /.content-wrapper -->
@@ -229,8 +262,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">예약 수정하기</h4>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -239,7 +271,7 @@
 				</div>
 				<div class="modal-footer justify-content-between">
 					<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-					<button type="button" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
+					<button type="button" class="btn btn-outline-primary" onclick="bkUpdateForm();">&nbsp;OK&nbsp;</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -258,20 +290,26 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					<h6>사유</h6>
-					<input type="text" class="can-coment" placeholder="취소 사유">
-				</div>
-				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-					<button type="button" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
-				</div>
+				<form id="cancleBk" action="${contextPath }/booking/cancle.bk" method="post">
+					<div class="modal-body">
+						<h6>사유</h6>
+						<input type="text" class="can-coment" name="bkContent" placeholder="취소 사유">
+					</div>
+						<input type="hidden" name="bookingNo" value="${ bk.bookingNo }">
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+						<button type="submit" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
+					</div>
+				</form>
 			</div>
 			<!-- /.modal-content -->
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
+	<script>
+	
+	</script>
 
 
 </body>

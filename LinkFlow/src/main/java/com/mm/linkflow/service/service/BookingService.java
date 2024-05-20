@@ -14,11 +14,21 @@ public interface BookingService {
 	int selectBkCount(String userId); //예약리스트 페이징 
 	List<BookingDto> selectMyBkList(PageInfoDto pi, String userId); // 나의 예약 리스트
 	
+	int selectMySearchCount(Map<String,String> search);
+	List<BookingDto> selectMySearchList(Map<String,String> search, PageInfoDto pi);
+	
 	BookingDto selectDetailMyBk(String bkNo); // 나의 예약 상세보기
+	
+	int modifyBooking(BookingDto bk); // 예약 수정
+	
+	int cancleBooking(BookingDto bk); // 예약 취소
 	
 	int selectSupCount(); // 비품페이징 
 	List<AssetsDto> selectSuppliesList(PageInfoDto pi); // 비품 리스트
 	
+	int searchBkCount(Map<String,String> search); // 검색한 비품 페이징
+    List<AssetsDto> selectSearchSupList(PageInfoDto pi,Map<String,String> search); // 검색한 비품 리스트 
+    
 	List<AssetsDto> selectAssetsList(PageInfoDto pi); // 자산 리스트 
 	
 	int insertAssets(AssetsDto ass); // 자산 추가 
@@ -26,12 +36,7 @@ public interface BookingService {
 	int modssets(AssetsDto ass); // 자산 수정 
 	
 	int delAssets(int assetsNo); // 자산 삭제
-	
-    int selectBkUseCount(); // 사용가능 비품 페이징 
-    List<AssetsDto> selectSupUse(PageInfoDto pi); // 사용가능 비품 리스트  
     
-    int searchBkCount(Map<String,String> search); // 검색한 비품 페이징
-    List<AssetsDto> selectSearchSupList(PageInfoDto pi,Map<String,String> search); // 검색한 비품 리스트 
     
     int insertBooking(BookingDto bk); // 예약하기 
     

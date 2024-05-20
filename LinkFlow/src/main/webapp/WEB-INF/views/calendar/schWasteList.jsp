@@ -14,6 +14,10 @@
     .schDetailModal_content > p, .search {
       margin:auto;
    }
+   
+.table-striped tbody tr {
+    background-color: white !important;
+
 
 </style>
 </head>

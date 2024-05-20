@@ -258,8 +258,10 @@
                                 }
                             },
                             error: function(result) {
+                            	if (result === "success") {
                                 console.log("일정 수정 실패.");
                                 alert("일정 수정 실패.");
+                            	}
                             }
                         });
                     });
