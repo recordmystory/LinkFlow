@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -120,19 +122,21 @@
 							<a class="btn bg-gradient-secondary" href="${ contextPath }/booking/mylist.bk">목록으로</a>
 						</div>
 					</div>
-					<%--
-						 <%
-						    java.util.Date now = new java.util.Date();
-						    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd");
-						    String today = sdf.format(now);
-						%>
+					<%
+						// 현재 날짜와 시간 가져오기
+						Date now = new Date();
 						
-						<!-- 문자열을 '/'로 나누어 배열로 변환 -->
-						<c:set var="todayArr" value="${fn:split(today, '/')}"/> --%>
+						// 날짜 형식 지정
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+						
+						// 현재 날짜를 문자열로 변환
+						String today = dateFormat.format(now);
+					%>
+					<c:set var="todayArr" value="${fn:split(today, '/')}"/>
+					
 					<div class="bk-detail">
 						<input type="hidden" name="bookingNo" value="${bk.bookingNo }" id="bookingNo">
-						<!-- <input type="hidden" name="bkStartDate" id="bkStartDate">
-						<input type="hidden" name="bkEndDate" id="bkEndDate"> -->
+					
 						<div class="bk-detailArea">
 							<div class="ymd" style="height:30px;">
 								<div class="ymd">
@@ -148,8 +152,8 @@
 									<select id="month" name="month" class="form-control" style="width: 80px;">
 										<option value="${ ymdArr[1] }">${ ymdArr[1] }</option>
 										<c:choose>
-											<c:when test="${ymdArr[1] == todayArr[1]}">
-												<option value="0${ ymdArr[1] }">0${ ymdArr[1] }</option>
+											<c:when test="${ymdArr[1] eq todayArr[1]}">
+												<option value="0${ ymdArr[1] +1 }">0${ ymdArr[1] +1}</option>
 											</c:when>
 											<c:otherwise>
 												<option value="0${ymdArr[1] -1}">0${ymdArr[1] -1}</option>
@@ -341,6 +345,11 @@
 				
 			})
 		}
+		
+		$(document).ready(function(){
+			 var todayArr = [<c:out value="${todayArr[0]}" />, <c:out value="${todayArr[1]}" />, <c:out value="${todayArr[2]}" />];
+				    console.log(todayArr);
+		})
 	</script>
 
 
