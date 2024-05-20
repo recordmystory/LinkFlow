@@ -22,6 +22,10 @@ public class AttachDao {
 		return sqlSession.selectList("attachMapper.selectAttach", at);
 	}
 	
+	public List<AttachDto> selectDelFileList(String[] delFileNo) {
+		return sqlSession.selectList("attachMapper.selectDelFileList", delFileNo);
+	}
+	
 	public int deleteAttach(String[] delFileNo) {
 		return sqlSession.delete("attachMapper.deleteAttach", delFileNo);
 	}
