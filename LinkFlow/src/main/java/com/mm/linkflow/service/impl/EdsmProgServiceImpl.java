@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.dao.EdsmProgDao;
 import com.mm.linkflow.dto.EdocDto;
+import com.mm.linkflow.dto.EdocFormDto;
+import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class EdsmProgServiceImpl implements EdsmProgService {
 	
 	private final EdsmProgDao edsmProgDao;
+	
 
 	@Override
 	public int selectAllListCount() {
@@ -25,6 +28,21 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	@Override
 	public List<EdocDto> selectAllList(PageInfoDto pi) {
 		return null;
+	}
+
+	@Override
+	public List<EdocFormDto> selectFormList() {
+		return edsmProgDao.selectFormList();
+	}
+
+	@Override
+	public List<EdocFormDto> selectEdFrContentList(String docType) {
+		return edsmProgDao.selectEdFrContentList(docType);
+	}
+
+	@Override
+	public List<MemberDto> selectApprLine() {
+		return edsmProgDao.selectApprLine();
 	}
 	
 //	@Override

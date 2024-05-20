@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mm.linkflow.dto.EdocDto;
-import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.EdocFormDto;
+import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
@@ -35,11 +36,31 @@ public class EdsmProgController {
 //		
 //		return mv;
 //	}
-
-	@GetMapping("/apprEnrollForm.prog")
-	public String apprEnrollForm() {
-		return "/edsm/prog/apprEnrollForm";
+	
+	@ResponseBody
+	@PostMapping("/edFrContentList.prog")
+	public List<EdocFormDto> ajaxEdFrContentList(String docType){
+		return edsmProgService.selectEdFrContentList(docType);
 	}
+	
+	@GetMapping("/apprEnrollForm.prog")
+	public ModelAndView apprEnrollForm(ModelAndView mv) {
+		
+		// 문서 종류 조회
+		List<EdocFormDto> list = edsmProgService.selectFormList();
+		
+		// 결재선 설정 모달 조회
+		List<MemberDto> apprList = edsmProgService.selectApprLine();
+		
+		mv.addObject("list", list).addObject("apprList", apprList).setViewName("edsm/prog/apprEnrollForm");
+		
+		return mv;
+	}
+	
+//	@GetMapping("/apprEnrollForm.prog")
+//	public String apprEnrollForm() {
+//		return "/edsm/prog/apprEnrollForm";
+//	}
 
 	@GetMapping("/modifyForm.prog")
 	public String apprModifyForm() {
