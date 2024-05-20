@@ -19,5 +19,5 @@ public class DeptDto extends CommonDto {
 	private String deptCode;
 	private String deptTitle;
 	
-	private List<MemberDto> MemberList; // 부서리스트 남는것
+	private List<MemberDto> memberList; // 부서리스트 담는것
 }

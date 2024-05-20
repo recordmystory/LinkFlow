@@ -2,9 +2,9 @@ package com.mm.linkflow.service.service;
 
 import java.util.List;
 
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 public interface EdsmProgService {
@@ -20,6 +20,6 @@ public interface EdsmProgService {
 	List<EdocFormDto> selectEdFrContentList(String docType);
 	
 	// 결재선 설정 모달 조회
-	List<MemberDto> selectApprLine();
+	List<DeptDto> selectApprLine();
 
 }

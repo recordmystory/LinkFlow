@@ -458,29 +458,19 @@
                                <li data-jstree='{ "type" : "buiding" }'>
                                    LinkFlow
                                    <ul>
-	                                     <li data-jstree='{ "selected" : false }'>
-	                                         경영지원팀
-	                                         <ul>
-	                                             <li data-jstree='{ "type" : "person" }'>
-	                                                 김경영 대리
+	                                   <c:forEach var="appr" items="${apprList}">
+		                                   <li data-jstree='{ "selected" : false }'>
+		                                   		${appr.deptTitle}
+		                                   			<ul>
+	                                         		<c:forEach var="apprPerson" items="${appr.memberList}">
+	                                         			<li data-jstree='{ "type" : "person" }' data-userId="${apprPerson.userId}">
+	                                                 ${apprPerson.userName} ${apprPerson.subName}
+	                                                 
 	                                             </li>
-	                                             <li data-jstree='{ "type" : "person" }'>
-	                                                 김가렌 사원
-	                                             </li>
-	                                             <li data-jstree='{ "type" : "person" }'>
-	                                                 김지우 사원
-	                                             </li>
+	                                         		</c:forEach>
 	                                         </ul>
-	                                     </li>
-	                                     <li data-jstree='{ "selected" : false }'>
-	                                         개발부서
-	                                         <ul>
-	                                             <li data-jstree='{ "type" : "person" }'>
-	                                                 김개발 대리
-	                                             </li>
-	                                             
-	                                         </ul>
-	                                     </li>
+		                                   </li>
+	                                   </c:forEach>
                                     </ul>
                            </ul>
                                
@@ -702,7 +692,7 @@
                 
                 $('.resultNameArea').append(html);
             } else {
-                // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
+               
                 $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
             }
         }

@@ -1,63 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edsmProgMapper">
-	<resultMap type="MemberDto" id="memberResult" extends="commonMapper.commonResult">
-		<id column="USER_ID" property="userId"/>
-		<result column="USER_PWD" property="userPwd"/>
-		<result column="DEPT_CODE" property="deptCode"/>
-		<result column="DEPT_NAME" property="deptName"/>
-		<result column="position" property="position"/>
-		<result column="USER_NAME" property="userName"/>
-		<result column="PHONE" property="phone"/>
-		<result column="BIRTH_DATE" property="birthDate"/>
-		<result column="EDUCATION" property="education"/>
-		<result column="ADDRESS" property="address"/>
-		<result column="ZIP_CODE" property="zipCode"/>
-		<result column="DETAIL_ADD" property="detailAdd"/>
-		<result column="HIRE_DATE" property="hireDate"/>
-		<result column="RETIRE_DATE" property="retireDate"/>
-		<result column="SUPER_RIGHT" property="superRight"/>
-		<result column="HR_RIGHT" property="hrRight"/>
-		<result column="SP_RIGHT" property="spRight"/>
-		<result column="BOARD_RIGHT" property="boardRight"/>
-		<result column="DEPT_RIGHT" property="deptRight"/>
-		<result column="PROFILE_URL" property="profileUrl"/>
-		<result column="SIGN_URL" property="signUrl"/>
-		<result column="DAYOFF" property="dayOff"/>
-		<result column="SECONDARY_CODE" property="secondaryCode"/>
-		<result column="SECONDARY_USESE" property="secondaryUsese"/>
-		<result column="RANK_BCODE" property="rankBcode"/>
-		<result column="SERVICEYEAR" property="serviceYear"/>
-		<result column="year_walkDay" property="yearWalkDay"/>
-		<result column="year_walktime" property="yearWalktime"/>
-		<result column="year_lateCount" property="yearlateCount"/>
-		<result column="year_absentCount" property="yearAbsentCount"/>
-		<result column="month_walkDay" property="monthWalkDay"/>
-		<result column="month_walktime" property="monthWalktime"/>
-		<result column="month_lateCount" property="monthlateCount"/>
-		<result column="month_absentCount" property="monthAbsentCount"/>
-		<result column="searhstart_day" property="dayoffStartsearch"/>
-		<result column="searhend_day" property="dayoffendsearch"/>
-		<result column="dayoffCount" property="dayOffCount"/>
-		<result column="TOTAL_MEMBERS" property="totalMember"/>
-		<result column="DEPT_CAPNAME" property="deptCapName"/>
-		<result column="DEPT_MEMBERS" property="deptMember"/>
-		<result column="GENDER" property="gender"/>
-		
-		<collection resultMap="deptResult" property="deptList" />
-	</resultMap>	
+	
 	
 	<resultMap type="DeptDto" id="deptResult" extends="commonMapper.commonResult">
 		<result column="DEPT_CODE" property="deptCode"/>
 		<result column="DEPT_TITLE" property="deptTitle"/>
+		
+		<collection property="memberList" ofType="MemberDto">
+			<id column="USER_ID" property="userId"/>
+			<result column="USER_NAME" property="userName"/>
+			<result column="sub_name" property="subName"/>
+		</collection>
+
 	</resultMap>
 	
-	<select id="selectApprLine" resultMap="memberResult">
+	<select id="selectApprLine" resultMap="deptResult">
 		SELECT 
          D.DEPT_CODE       
-       , D.DEPT_TITLE AS DEPT_NAME
+       , D.DEPT_TITLE 
        , M.USER_NAME 
-       , C.SUB_NAME AS POSITION
+       , C.SUB_NAME 
        , M.USER_ID
       FROM 
           TB_MEMBER M

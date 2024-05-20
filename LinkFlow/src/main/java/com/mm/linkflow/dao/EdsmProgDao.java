@@ -2,14 +2,11 @@ package com.mm.linkflow.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.mm.linkflow.dto.EdocDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.MemberDto;
-import com.mm.linkflow.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +23,7 @@ public class EdsmProgDao {
 		return sqlSessionTemplate.selectList("edsmFormMapper.selectEdFrContentList", docType);
 	}
 
-	public List<MemberDto> selectApprLine() {
+	public List<DeptDto> selectApprLine() {
 		return sqlSessionTemplate.selectList("edsmProgMapper.selectApprLine");
 	}
 	
