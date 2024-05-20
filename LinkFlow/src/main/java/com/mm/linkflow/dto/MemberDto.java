@@ -20,6 +20,7 @@ public class MemberDto extends CommonDto {
 	private String userPwd; //비밀번호
 	private String deptCode; //부서코드
 	private String position; //직급
+	private String subCode;
 	private String userName; //이름
 	private String phone; //연락처
 	private String birthDate; //생년월일

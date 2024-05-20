@@ -25,11 +25,7 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMember(MemberDto m) {
 		return mDao.updateMember(m);
 	}
-	@Override
-	public int checkPassword(MemberDto m) {
-		// TODO Auto-generated method stub
-		return mDao.checkPassword(m);
-	}
+	
 	@Override
 	public int updatePwd(MemberDto m) {
 		

@@ -131,13 +131,17 @@ public class MemberController {
 	@PostMapping("/checkPassword")
 	public String checkPassword(String userId, String userPwd) {
 		
-		String checkPwd = bcryptPwdEncoder.encode(userPwd);
-		MemberDto m = new MemberDto();
-		m.setUserId(userId);
-		m.setUserPwd(checkPwd);
 		
-		int result = mService.checkPassword(m);
-		return result > 0 ? "YYYYY" : "NNNNN";
+		
+		
+		
+		String userOldPwd = mService.SerchPwd(userId);
+		
+		 
+		if(bcryptPwdEncoder.matches(userPwd, userOldPwd)) { return "YYYYY"; }else {
+		return "NNNNN"; }
+		
+		
 		
 	}
 	

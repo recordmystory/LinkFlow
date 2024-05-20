@@ -18,6 +18,10 @@
     #anwArea{
     	text-align: center;
     }
+    #anwArea td, #anwArea th {
+		  font-size: 15px;
+		  white-space: nowrap;
+		}
 	</style>
 </head>
 <body>
@@ -96,34 +100,44 @@
                                           <table class="table table-hover table-head-fixed HRTable">
                                             <colgroup>
                                              
+                                             <col width="20px"/>
+                                             <col width="20px"/>
                                              <col width="30px"/>
-                                             <col width="50px"/>
-                                             <col width="50px"/>
-                                             <col width="50px"/>
-                                             <col width="50px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
                                              <col width="80px"/>
-                                             <col width="170px"/>
-                                             <col width="20px"/>
-                                             <col width="20px"/>
+                                             <col width="180px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
+                                             <col width="30px"/>
                                             </colgroup>
                                             <thead style="text-align: center;">
                                               <tr>
                                              
-                                                <th>성함</th>
-                                                <th>ID</th>
-                                                <th>입사일</th>
-                                                <th>부서</th>
-                                                <th>직책</th>
-                                                <th>연락처</th>
-                                                <th>주소</th>
-                                                <th>성별</th>
-                                                <th>상태</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">성함</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">ID</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">입사일</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">부서</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">직책</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">연락처</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">주소</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">모든권한</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">인사권한</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">경영권한</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">게시판권한</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">부서권한</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">성별</th>
+                                                <th style="font-size:12px;  white-space: nowrap;">상태</th>
                                                
                                               </tr>
                                             </thead>
                                             <tbody id="anwArea">
                                             	<c:forEach var="list" items="${list}">
-                                              <tr>
+                                              <tr onclick="location.href='${contextPath}/hr/detailMember?id=${list.userId}';">
                                                 
                                                 <td>${list.userName}</td>
                                                 <td>${list.userId}</td>
@@ -132,6 +146,62 @@
                                                 <td>${list.position}</td>
                                                 <td>${list.phone}</td>
                                                 <td>${list.address} ${list.detailAdd}</td>
+                                                <th>
+                                                   <c:choose>
+																			                <c:when test="${list.superRight == 'Y'}">
+																			                    O
+																			                </c:when>
+																			                <c:otherwise>
+																			                    X
+																			                </c:otherwise>
+																			            </c:choose>
+                                                
+                                                </th>
+                                                                                                <th>
+                                                   <c:choose>
+																			                <c:when test="${list.hrRight == 'Y'}">
+																			                    O
+																			                </c:when>
+																			                <c:otherwise>
+																			                    X
+																			                </c:otherwise>
+																			            </c:choose>
+                                                
+                                                </th>
+                                                                                                <th>
+                                                   <c:choose>
+																			                <c:when test="${list.spRight == 'Y'}">
+																			                    O
+																			                </c:when>
+																			                <c:otherwise>
+																			                    X
+																			                </c:otherwise>
+																			            </c:choose>
+                                                
+                                                </th>
+                                                                                                <th>
+                                                   <c:choose>
+																			                <c:when test="${list.boardRight == 'Y'}">
+																			                    O
+																			                </c:when>
+																			                <c:otherwise>
+																			                    X
+																			                </c:otherwise>
+																			            </c:choose>
+                                                
+                                                </th>
+                                                     </th>
+                                                                                                <th>
+                                                   <c:choose>
+																			                <c:when test="${list.deptRight == 'Y'}">
+																			                    O
+																			                </c:when>
+																			                <c:otherwise>
+																			                    X
+																			                </c:otherwise>
+																			            </c:choose>
+                                                
+                                                </th>
                                                 <td>${list.gender}</td>
                                                 <td>
                                                  <c:choose>
@@ -217,6 +287,11 @@
 		                                "<td>" + response[i].position + "</td>" +
 		                                "<td>" + response[i].phone + "</td>" +
 		                                "<td>" + response[i].address + " " + response[i].detailAdd + "</td>" +
+		                                "<td>" + (response[i].superRight === 'Y' ? 'O' : 'X') + "</td>" +
+		                                "<td>" + (response[i].hrRight === 'Y' ? 'O' : 'X') + "</td>" +
+		                                "<td>" + (response[i].spRight === 'Y' ? 'O' : 'X') + "</td>" +
+		                                "<td>" + (response[i].boardRight === 'Y' ? 'O' : 'X') + "</td>" +
+		                                "<td>" + (response[i].deptRight === 'Y' ? 'O' : 'X') + "</td>" +
 		                                "<td>" + response[i].gender + "</td>" +
 		                                "<td>" + (response[i].delYN === 'N' ? '재직' : '퇴직') + "</td>" +
 		                                "</tr>";

@@ -40,6 +40,18 @@ public class HrDao {
 		// TODO Auto-generated method stub
 		return sql.insert("hrMapper.insertMember",m);
 	}
+
+	public int checkId(String checkId) {
+		return sql.selectOne("hrMapper.checkId",checkId);
+	}
+
+	public MemberDto selectDatailMember(String id) {
+		return sql.selectOne("hrMapper.selectDatailMember",id);
+	}
+
+	public int updateInfoMember(MemberDto m) {
+		return sql.update("hrMapper.updateInfoMember",m);
+	}
 	
 	
 }

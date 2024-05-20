@@ -14,8 +14,7 @@ public interface MemberService {
 	   //마이페이지 정보 수정용 서비스 	   
 	   int updateMember(MemberDto m);
 	   
-	   //마이페이지 암호변경전 암호 확인하는 서비스 
-	   int checkPassword(MemberDto m);
+	  
 	   
 	   //마이페이지 암호 변경하는 서비스 
 	   int updatePwd(MemberDto m);

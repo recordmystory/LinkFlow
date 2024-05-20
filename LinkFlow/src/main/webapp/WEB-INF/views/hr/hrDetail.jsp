@@ -42,14 +42,14 @@
 
     <div class="LinkFlowMainSection">
 
-        <jsp:include page="/WEB-INF/views/common/sidebar/hr/hrSidebar2.jsp"/>
+        <jsp:include page="/WEB-INF/views/common/sidebar/hr/hrSidebar.jsp"/>
 
         <div class="LinkFlowMainContent" style="padding: 30px;">
         	<!-- Content Header (Page header) -->
                     <section class="content-header">
                             <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">구성원 추가</h1>
+                                <h1 class="m-0">구성원 정보 변경</h1>
                             </div>
                         
                         </div>
@@ -68,74 +68,56 @@
                                   <div class="row">
                                     <div class="col-12">
                                      
-                                        <div class="card card-warning">
+                                        <div class="card card-primary">
                                             <div class="card-header">
-                                            <h3 class="card-title">사원 정보 등록</h3>
+                                            <h3 class="card-title">사원 정보 변경</h3>
                                 
                                             
                                             </div>
                                             <!-- /.card-header -->
-                                            <form action="${contextPath}/hr/insertMember.do" method="post" id="insertMember">
+                                            <form action="${contextPath}/hr/updateInfoMember.do" method="post" id="insertMember">
                                             <div class="card-body">
                                             <div class="">
                                            		 <div class="col-md-6">
                                                 <label>아이디</label>
-                                                <div class="input-group input-group">
+                                                <div class="input-group">
                                                     
-                                                    <input type="text" class="form-control" placeholder="아이디를 입력하세요" name="userId" id="userId">
-                                                    <span class="input-group-append">
-                                                      <button type="button" class="btn btn-primary btn-flat" onclick="checkId();">중복확인</button>
-                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="아이디를 입력하세요" name="userId" id="userId" value="${m.userId}" readonly="readonly">
+                                                    
                                                 </div>
-                                                <div id="resultArea" style="font-size:15px"></div>
+                                                
                                                 <br>
 
                                                 </div>
-                                                <input type="hidden" name="userPwd" value="linkflow123@">
+                                                
                                                 <input type="hidden" name="regId" value="${loginUser.userId }">
                                                 <input type="hidden" name="modId" value="${loginUser.userId }">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>성함</label>
-                                                    <input type="text" class="form-control" required placeholder="성함을 입력하세요" name="userName">   
+                                                    <input type="text" class="form-control" required placeholder="성함을 입력하세요" name="userName" value="${m.userName}">   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>연락처</label>
-                                                    <input type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" >   
+                                                    <input type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" value="${m.phone}">   
                                                     </div>   
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>입사일</label>
-                                                    <input type="date" id="hireDateInput" name="hireDate" class="form-control" required >   
+                                                    <input type="date" name="hireDate" class="form-control" required value="${m.hireDate}">   
                                                     </div>   
                                                 </div>
-                                                <script>
-                                                function setTodayDate() {
-                                                    var today = new Date();
-                                                    var dd = String(today.getDate()).padStart(2, '0');
-                                                    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
-                                                    var yyyy = today.getFullYear();
-
-                                                    today = yyyy + '-' + mm + '-' + dd;
-                                                    return today;
-                                                }
-
-
-                                                window.onload = function() {
-                                                   
-                                                    document.getElementById('hireDateInput').value = setTodayDate();
-                                                };
-                                                </script>
+                                                
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>생년월일</label>
-                                                    <input type="date"  name="birthDate" class="form-control" required>   
+                                                    <input type="date"  name="birthDate" class="form-control" required value="${m.birthDate}">   
                                                     </div>   
                                                 </div>
 
@@ -143,9 +125,11 @@
                                                     <div class="form-group">
                                                         <label>부서</label>
                                                         <select class="form-control select2" style="width: 100%;" required name="deptCode">
-                                                         <c:forEach var="dList" items="${dList}">
-																									        <option value="${dList.deptCode }">${dList.deptTitle}</option>
-																									    	</c:forEach>
+																													 <c:forEach var="dList" items="${dList}">
+																													 <option value="${dList.deptCode}" ${dList.deptCode == m.deptCode ? 'selected' : ''}>
+																														${dList.deptTitle}
+																													</option> 
+																													</c:forEach>
                                                         </select>
                                                 </div>
                                                 </div>
@@ -156,7 +140,9 @@
                                                     <label>직책</label>
                                                     <select class="form-control select2" style="width: 100%;" required name="rankScode">
                                                       <c:forEach var="cList" items="${cList}">
-																									        <option value="${cList.subCode }">${cList.subName}</option>
+																									        <option value="${cList.subCode }" ${cList.subCode == m.subCode ? 'selected':''}>
+																									        ${cList.subName}
+																									        </option>
 																									    </c:forEach>
 	                                                    </select>
                                                 </div>
@@ -166,10 +152,10 @@
                                                     <div class="form-group">
                                                         <label>최종학력</label>
                                                         <select class="form-control select2" style="width: 100%;" required name="education">
-                                                            <option value="박사">박사</option>
-                                                            <option value="석사">석사</option>
-                                                            <option value="대졸">대졸</option>
-                                                            <option value="고졸">고졸</option>
+                                                            <option value="박사" ${m.education == '박사' ? 'selected' : ''}>박사</option>
+																								            <option value="석사" ${m.education == '석사' ? 'selected' : ''}>석사</option>
+																								            <option value="대졸" ${m.education == '대졸' ? 'selected' : ''}>대졸</option>
+																								            <option value="고졸" ${m.education == '고졸' ? 'selected' : ''}>고졸</option>
                                                         </select>
                                                 </div>
                                                 </div>
@@ -178,11 +164,11 @@
                                                 <div class="form-group">
                                                     <label>접근 권한</label>
                                                     <select class="select2" multiple data-placeholder="권한을 선택하세요" style="width: 100%;" name="right">
-                                                        <option value="1">슈퍼관리자</option>
-                                                        <option value="2">인사관리</option>
-                                                        <option value="3">경영관리</option>
-                                                        <option value="4">게시판관리</option>
-                                                        <option value="5">부서관리</option>
+                                                        <option value="1" ${m.superRight == 'Y' ? 'selected' : ''}>슈퍼관리자</option>
+                                                        <option value="2" ${m.hrRight == 'Y' ? 'selected' : ''}>인사관리</option>
+                                                        <option value="3" ${m.spRight == 'Y' ? 'selected' : ''}>경영관리</option>
+                                                        <option value="4" ${m.boardRight == 'Y' ? 'selected' : ''}>게시판관리</option>
+                                                        <option value="5" ${m.deptRight == 'Y' ? 'selected' : ''}>부서관리</option>
                                                         
                                                     </select>
                                                 </div>
@@ -193,9 +179,10 @@
                                                   <div class="form-group">
                                                   <label>성별</label>
                                                    &nbsp;&nbsp;
-                                                  <input type="radio" name="gender" id="Male" value="남">
+                                                  
+                                                  <input type="radio" name="gender" id="Male" value="남" ${m.gender == '남' ? 'checked' : ''}>
                                                   <label for="Male">남자</label> &nbsp;&nbsp;
-                                                  <input type="radio" name="gender" id="Female" value="여">
+                                                  <input type="radio" name="gender" id="Female" value="여" ${m.gender == '여' ? 'checked' : ''}>
                                                   <label for="Female">여자</label><br>
                                                   </div>   
                                                 </div>
@@ -205,15 +192,15 @@
                                                     <label>주소</label>
                                                     <div class="input-group input-group">
                                                         
-                                                        <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="zipCode" value="">
+                                                        <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="zipCode" value="${m.zipCode}">
                                                         <span class="input-group-append">
                                                           <button type="button" class="btn btn-primary btn-flat" onclick="sample6_execDaumPostcode()">주소 찾기</button>
                                                         </span>
                                                     </div><br>
     
-                                                    <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="address" value="" required><br>
+                                                    <input class="form-control" type="text" id="sample6_address" placeholder="주소" name="address" value="${m.address}" required><br>
                                                     <input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"><br>
-                                                    <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소"  name="detailAdd" value="" required>
+                                                    <input class="form-control" type="text" id="sample6_detailAddress" placeholder="상세주소"  name="detailAdd" value="${m.detailAdd}" required>
                                                 </div>
                                                
                                                 <!-- /.col -->
@@ -225,13 +212,15 @@
                                             </div>
                                             <!-- /.card-body -->
                                             <div class="card-footer">
-                                                <button type="submit" class="btn btn-primary" disabled id="goPass">등록하기</button>
+                                                <button type="submit" class="btn btn-primary"  id="goPass">변경하기</button>
+                                                <a href="" class="btn btn-danger float-right" style="margin-left: 10px;">퇴사처리</a>
+                                                <a href="" class="btn btn-warning float-right" style="margin-left: 10px;" data-toggle="modal" data-target="#modal-pass">비밀번호 초기화</a>
                                                 <a href="" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
                                                
                                             </div>
                                             </form> 
                                         </div>
-                                    	
+                                    		
                                         <!-- /.card -->
                                 
 
@@ -241,14 +230,14 @@
                                     <div class="row">
                                     	<div class="col-12">
 	                                      <!-- Default box -->
-	                                      <div class="card-warning">
+	                                      <div class="card-primary">
 	                                        <div class="card-header">
-	                                          <h3 class="card-title">사원 추가 도움말</h3>
+	                                          <h3 class="card-title">사원 변경 도움말</h3>
 	                          
 	                                        
 	                                        </div>
 	                                        <div class="card-body">
-	                                          사원 추가시 비밀번호 초기값은 'linkflow123@' 입니다. 사용자에게 전달 부탁드립니다. 
+	                                          비밀번호 초기화 시 비밀번호 초기값은 'linkflow123@' 입니다. 사용자에게 전달 부탁드립니다. 
 	                                          
 	                                          
 	                                        </div>
@@ -272,41 +261,38 @@
                 
  				 
         </div>
-      
+      								<div class="modal fade" id="modal-pass">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">비밀번호 초기화</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                              <p>비밀번호를 초기화를 진행하면 초기 비밀번호'linkflow123@'으로 초기화 됩니다.<p>
+                              <P>해당 사원의 비밀번호 초기화를 원하시면 하단의 변경하기 버튼을 눌러주세요.</P> 
+                               
+                              	
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" onclick="" class="btn btn-primary left" data-dismiss="modal" id="goPass">초기화 하기</button>
+                              
+                            </div>
+                         
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+                      <script></script>
    
 		</div>
    </div><!--전체영역 끝-->
-			<script>
-				    
-				       function checkId(){
-				            var checkId = $('#userId').val(); 
-				            
-				           
-				            
-				            $.ajax({
-				                url: '${contextPath}/hr/checkId', 
-				                type: 'POST',
-				              
-				                data: {
-				                	checkId: checkId,
-				                   
-				                },    
-				                success: function(response) {
-				                    if (response ==='YYYYY') {
-				                        $('#resultArea').text('중복된 아이디가 없습니다'); 
-				                        $('#goPass').prop('disabled', false); 
-				                    } else if(response ==='NNNNN') {
-				                        $('#resultArea').text('중복된 아이디가 있습니다. 다른 아이디로 시도해주세요'); 
-				                        $('#goPass').prop('disabled', true); 
-				                    }
-				                },
-				                error: function(xhr, status, error) {
-				                    console.error('AJAX 오류');
-				                }
-				            });
-				        };
-				    
-				</script>
+			
 			<script>
     function sample6_execDaumPostcode() {
               new daum.Postcode({

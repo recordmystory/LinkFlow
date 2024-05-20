@@ -54,4 +54,19 @@ public class HrServiceImpl implements HrService {
 		return hDao.selectCommonTableList();
 	}
 
+	@Override
+	public int checkId(String checkId) {
+		return hDao.checkId(checkId);
+	}
+
+	@Override
+	public MemberDto selectDatailMember(String id) {
+		return hDao.selectDatailMember(id);
+	}
+
+	@Override
+	public int updateInfoMember(MemberDto m) {
+		return hDao.updateInfoMember(m);
+	}
+
 }

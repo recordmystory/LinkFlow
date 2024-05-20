@@ -15,9 +15,17 @@ public interface HrService {
 	int insertMember(MemberDto m);
 	//구성원 변경 
 	int modiflyMember(MemberDto m);
+	//구성원 조회 
+	MemberDto selectDatailMember(String id);
+	//구성원 정보 변경
+	int updateInfoMember(MemberDto m);
+	
 	//조직 추가 
 	
 	//조직 변경 
+	
+	//아이디 중복확인 
+	int checkId(String checkId);
 	
 	//구성원 추가 및 수정에 직급 부서 종류 
 	List<DeptDto> selectDeftList();

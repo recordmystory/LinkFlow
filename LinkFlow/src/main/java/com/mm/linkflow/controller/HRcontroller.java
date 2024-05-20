@@ -88,7 +88,7 @@ public class HRcontroller {
 		        }
 		    } 
 		
-		m.setUserPwd(bcryptPwdEncoder.encode("1234"));
+		m.setUserPwd(bcryptPwdEncoder.encode(m.getUserPwd()));
 		
 		int result = hService.insertMember(m);
 		if(result > 0) {
@@ -99,5 +99,71 @@ public class HRcontroller {
 			
 		}
 		return "redirect:/hr/hrPage";
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkId")
+	public String checkId(String checkId) {
+		int result = hService.checkId(checkId);
+		
+		return result > 0 ? "NNNNN" : "YYYYY" ; 
+	}
+	
+	@RequestMapping("/detailMember")
+	public String detailMember(String id,Model model) {
+		MemberDto m = hService.selectDatailMember(id);
+		List<DeptDto> dList = hService.selectDeftList();
+		List<CommonTableDto> cList = hService.selectCommonTableList();
+		
+		model.addAttribute("dList",dList);
+		model.addAttribute("cList",cList);
+		model.addAttribute("m",m);
+		return "hr/hrDetail";
+	}
+	
+	@PostMapping("/updateInfoMember.do")
+	public String udateInfoMember (MemberDto m,RedirectAttributes redirectAttributes) {
+		String[] rights = m.getRight();
+	    
+	    m.setSuperRight("N");
+	    m.setHrRight("N");
+	    m.setSpRight("N");
+	    m.setBoardRight("N");
+	    m.setDeptRight("N");
+
+	  
+	    if (rights != null) {
+	        for (int i = 0; i < rights.length; i++) {
+	            switch (rights[i]) {
+	                case "1":
+	                    m.setSuperRight("Y");
+	                    break;
+	                case "2":
+	                    m.setHrRight("Y");
+	                    break;
+	                case "3":
+	                    m.setSpRight("Y");
+	                    break;
+	                case "4":
+	                    m.setBoardRight("Y");
+	                    break;
+	                case "5":
+	                    m.setDeptRight("Y");
+	                    break;
+	            }
+	        }
+	    } 
+	
+	    
+	
+	int result = hService.updateInfoMember(m);
+	if(result > 0) {
+		redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 사원 변경이 완료되었습니다.");
+		
+	}else {
+		redirectAttributes.addFlashAttribute("alertMsg", "사원 정보 변경 실패하였습니다.");
+		
+	}
+	return "redirect:/hr/hrPage";
 	}
 }
