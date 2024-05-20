@@ -308,34 +308,37 @@
                                   <tr>
                                     <th class="table-active">문서 종류</th>
                                     <td>
-                                      <select class="form-control documentType">
-                                        <option value="letterOfApproval">품의서</option>
+                                      <!--  <option value="letterOfApproval">품의서</option>
                                         <option value="certificateOfEmployment">재직증명서</option>
                                         <option value="dayoffForm">휴가신청서</option>
-                                        <option value="expenseResolustion">지출결의서</option>
+                                        <option value="expenseResolustion">지출결의서</option> -->
+                                      <select class="form-control documentTypeSelect" id="documentTypeSelect">
+                                        <c:forEach var="fr" items="${list}" varStatus="num">
+																	       <option value="${fr.edFrName}">${fr.edFrName}</option>
+																	    	</c:forEach>
                                       </select>
                                     </td>
                                     <th class="table-active">작성자</th>
-                                    <td>Linkflow 과장 김디디</td>
+                                    <td>Linkflow ${loginUser.position} ${loginUser.userName}</td>
                                   </tr>
                                   <tr>
                                     <th class="table-active">보존 연한</th>
                                     <td>
                                       <select class="form-control">
-                                        <option value="">1년</option>
-                                        <option value="">3년</option>
-                                        <option value="">5년</option>
-                                        <option value="">10년</option>
-                                        <option value="">영구</option>
+                                        <option value="1">1년</option>
+                                        <option value="3">3년</option>
+                                        <option value="5">5년</option>
+                                        <option value="10">10년</option>
+                                        <option value="0" selected>영구</option>
                                       </select>
                                     </td>
                                     <th class="table-active">보안 등급</th>
                                     <td>
                                       <select class="form-control">
-                                        <option value="">S등급</option>
-                                        <option value="">A등급</option>
-                                        <option value="">B등급</option>
-                                        <option value="">C등급</option>
+                                        <option value="S">S등급</option>
+                                        <option value="A">A등급</option>
+                                        <option value="B">B등급</option>
+                                        <option value="C" selected>C등급</option>
                                     </select>
                                     </td>
                                   </tr>
@@ -351,7 +354,7 @@
                               <table class="table table-bordered" style="margin-top: 10px;">
                                 <tr>
                                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
-                                  <th class="table-active" style="text-align: center; vertical-align: middle;">기안서 작성자</th>
+                                  <th class="table-active" style="text-align: center; vertical-align: middle;">${loginUser.userName}</th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
                                 </tr>
@@ -562,346 +565,107 @@
     </div>
     <!-- /.modal -->
     	
-        <script>
-        var editor;
-        
-        ClassicEditor
-          .create(document.querySelector('#editor'))
-          .then(newEditor => {
-              editor = newEditor;
-          })
-          .catch(error => {
-              console.error(error);
-          });
-        $(function(){
-              $('.documentType').change(function(){
-              // 휴가신청서 폼 뿌려지게
-                if($(this).val() == 'dayoffForm'){
-                	$('.drafting-content').css('display', 'none');
-                 $('.dayoff-table').append(`<h6>신청</h6>
-                                            <table class="table table-bordered dayoff-table">
-                                              <tbody>
-                                                <tr>
-                                                  <th class="table-active dayoff-table-title">휴가종류</th>
-                                                  <td>
-                                                    <select class="form-control" id="dayoff-table-type">
-                                                      <option value="">오전반차</option>
-                                                      <option value="">오후반차</option>
-                                                      <option value="">연차</option>
-                                                    </select>
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <th class="table-active dayoff-table-title">휴가일자</th>
-                                                  <td>
-                                                    <input type="date" name="startDate" id="startDate" class="form-control date">        
-                                                    <span style="margin: 0px 50px 0px 50px; font-weight: bold;">~</span>
-                                                    <input type="date" name="endDate" id="endDate" class="form-control date">
-                                                  </td>
-                                                  <tr>
-                                                    <th class="table-active dayoff-table-title">휴가사유</th>
-                                                    <td>
-                                                      <textarea name="dayoffReason" id="dayoffReason" placeholder="휴가사유 입력" class="form-control"></textarea>
-                                                    </td>
-                                                  </tr>
-                                              </tbody>`);
-                
-              } else {
-            	  $('.drafting-content').css('display', 'block');
-                $('.dayoff-table').html('');
-              }
+ <script>
+ var editor;
 
-              // 에디터 내에 문서 양식 뿌리기
-              if($(this).val() == 'letterOfApproval'){
-
-                editor.setData(`<h1>품의서</h1>
-                                    <p>&nbsp;</p>
-                                    <figure class="table" style="width:100%;">
-                                        <table class="ck-table-resized" style="border-style:ridge;">
-                                            <colgroup>
-                                                <col style="width:10.15%;">
-                                                <col style="width:43.98%;">
-                                                <col style="width:10.03%;">
-                                                <col style="width:35.84%;">
-                                            </colgroup>
+ ClassicEditor
+     .create(document.querySelector('#editor'))
+     .then(newEditor => {
+         editor = newEditor;
+         
+         
+         $('#documentTypeSelect').change(function(){
+     		
+     		$.ajax({
+     			url: '${contextPath}/edsm/prog/edFrContentList.prog',
+     			type: 'post',
+     			data: {docType: $(this).val()},
+     			success: function(result){
+     				editor.setData(result[0].edFrContent);
+     			},
+     			error: function(){
+     				console.log('ajax 통신 실패');
+     			}
+     		});
+     		
+     	});
+     })
+     .catch(error => {
+         console.error(error);
+         
+     });
+ 		
+    $(function(){
+    	$('.documentTypeSelect').change(function(){
+            // 휴가신청서 폼 뿌려지게
+              if($(this).val() == '휴가신청서'){
+              	$('.drafting-content').hide();
+               $('.dayoff-table').append(`<h6>신청</h6>
+                                          <table class="table table-bordered dayoff-table">
                                             <tbody>
+                                              <tr>
+                                                <th class="table-active dayoff-table-title">휴가종류</th>
+                                                <td>
+                                                  <select class="form-control" id="dayoff-table-type">
+                                                    <option value="">오전반차</option>
+                                                    <option value="">오후반차</option>
+                                                    <option value="">연차</option>
+                                                  </select>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <th class="table-active dayoff-table-title">휴가일자</th>
+                                                <td>
+                                                  <input type="date" name="startDate" id="startDate" class="form-control date">        
+                                                  <span style="margin: 0px 50px 0px 50px; font-weight: bold;">~</span>
+                                                  <input type="date" name="endDate" id="endDate" class="form-control date">
+                                                </td>
                                                 <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                                    <td>&nbsp;</td>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직급</p></td>
-                                                    <td>&nbsp;</td>
+                                                  <th class="table-active dayoff-table-title">휴가사유</th>
+                                                  <td>
+                                                    <textarea name="dayoffReason" id="dayoffReason" placeholder="휴가사유 입력" class="form-control"></textarea>
+                                                  </td>
                                                 </tr>
-                                                <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                                    <td>&nbsp;</td>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성일</p></td>
-                                                    <td>&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">제목</p></td>
-                                                    <td colspan="3">&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">품의 사유 및 상세 내역</p></td>
-                                                    <td colspan="3">
-                                                        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">예상 비용</p></td>
-                                                    <td colspan="3">&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
-                                                    <td colspan="3">
-                                                        <p>&nbsp;</p><p>&nbsp;</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="4">
-                                                        <p>&nbsp;</p>
-                                                        <p>위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.</p>
-                                                        <p>&nbsp;</p><p>&nbsp;</p><p style="text-align:right;">년 월 일</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </figure>
-                                    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>`);
+                                            </tbody>`);
+              
+            } else {
+            	$('.drafting-content').show();
+              $('.dayoff-table').html('');
+            }
 
-              } else if($(this).val() == 'certificateOfEmployment'){
+    	});
+    	
+    });
+    
+   // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
+  $('#saveData').click(function(){
 
-                editor.setData(`<h1>재직증명서</h1>
-                          <p style="text-align:center;">&nbsp;</p>
-                          <figure class="table" style="width:100%;">
-                              <table class="ck-table-resized" style="background-color:hsl(0, 0%, 100%);">
-                                  <colgroup>
-                                      <col style="width:8.21%;">
-                                      <col style="width:35.42%;">
-                                      <col style="width:9.9%;">
-                                      <col style="width:46.47%;">
-                                  </colgroup>
-                                  <tbody>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                          <td>&nbsp;</td>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주민등록번호</p></td>
-                                          <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">주소</p></td>
-                                          <td colspan="3">&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">회사명</p></td>
-                                          <td>&nbsp;</td>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">사업자번호</p></td>
-                                          <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                          <td>&nbsp;</td>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
-                                          <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소재지</p></td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">재직기간</p></td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                          <td colspan="4">
-                                              <p style="text-align:center;">&nbsp;</p>
-                                              <p style="text-align:center;">상기와 같이 재직하고 있음을 증명함</p>
-                                              <p style="text-align:center;">&nbsp;</p>
-                                              <p style="text-align:center;">&nbsp;</p>
-                                              <p style="text-align:center;">년 월 일</p>
-                                              <p>&nbsp;</p>
-                                              <p style="text-align:center;">주식회사 Linkflow</p>
-                                              <p style="text-align:center;">&nbsp;</p>
-                                          </td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                          </figure>
-                          <p style="text-align:right;">&nbsp;</p>
-                          <p>&nbsp;</p>`);
+    $('#approvalSelectedArea1').text($('.approvalName1').text());
+    $('#approvalSelectedArea2').text($('.approvalName2').text());
 
-              } else if($(this).val() == 'expenseResolustion'){
+    let $refUser = '';
+    let refNameCount = $('.referenceName').length;
 
-                editor.setData(`<h1 style="text-align:center;">지출결의서</h1>
-                                <figure class="table" style="width:100%;">
-                                    <table class="ck-table-resized" style="background-color:hsl(0, 0%, 90%);">
-                                        <colgroup>
-                                          <col style="width:6.77%;">
-                                          <col style="width:41.36%;">
-                                          <col style="width:6.23%;">
-                                          <col style="width:45.64%;">
-                                          </colgroup>
-                                          <tbody>
-                                            <tr>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 제목</p></td>
-                                              <td>&nbsp;</td><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">작성 일자</p></td>
-                                              <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">결제 일자</p></td>
-                                              <td>&nbsp;</td>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">부서 / 담당</p></td>
-                                              <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">지출 금액</p></td>
-                                              <td colspan="3">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                              <td style="background-color:hsl(0, 0%, 90%);" rowspan="14"><p style="text-align:center;">지출 내역</p></td>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">항목</p></td>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">금액(원)</p></td>
-                                              <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비고</p></td>
-                                            </tr>
-                                            <tr>
-                                              <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                              <td>&nbsp;</td>
-                                              <td>&nbsp;</td>
-                                              <td>&nbsp;</td>
-                                            </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                          <td>&nbsp;</td>
-                                        </tr>
-                                       <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">합계</p></td>
-                                        <td>&nbsp;</td><td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">입금 정보</p></td>
-                                        <td colspan="3">&nbsp;</td></tr><tr><td colspan="4"><p><br>위 금액을 청구하오니 결제해 주시기 바랍니다</p><p>&nbsp;</p><p style="text-align:center;">년 월 일</p><p style="text-align:center;">주식회사 Linkflow</p></td>
-                                      </tr>
-                                  </tbody>
-                                </table>
-                              </figure>`);
+    if(refNameCount >= 2){
+      $('.referenceName').each(function(index){
+        if(index > 0) {
+          $refUser += ' / ';
+        }
 
-              } else if($(this).val() == 'dayoffForm'){
+        $refUser += $(this).text();
 
-                editor.setData(`<h1 style="text-align:center;">휴가신청서</h1>
-                                <p style="text-align:center;">&nbsp;</p>
-                                <figure class="table" style="width:100%;">
-                                  <table class="ck-table-resized dayoffForm" style="background-color:hsl(0, 0%, 100%);">
-                                    <colgroup>
-                                      <col style="width:8.21%;">
-                                      <col style="width:91.79%;">
-                                    </colgroup>
-                                    <tbody>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">소속</p></td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">성명</p></td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">직위</p></td>
-                                        <td>&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 종류</p></td>
-                                        <td id="dayoffType">&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 사유</p></td>
-                                        <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">휴가 기간</p></td>
-                                        <td>&nbsp;</td></tr><tr><td style="background-color:hsl(0, 0%, 90%);"><p style="text-align:center;">비상연락처</p></td>
-                                        <td>&nbsp;</td></tr><tr><td colspan="2"><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">년 월 일</p></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </figure>
-                              <p style="text-align:right;">&nbsp;</p><p>&nbsp;</p>`);
-              }
+      });
+    } else if (refNameCount == 1){
+      $refUser = $('.referenceName').text();
+    } else {
+      $refUser = '';
+    }
 
-            });
-            
-            // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
-            $('#saveData').click(function(){
-
-              $('#approvalSelectedArea1').text($('.approvalName1').text());
-              $('#approvalSelectedArea2').text($('.approvalName2').text());
-
-              let $refUser = '';
-              let refNameCount = $('.referenceName').length;
-
-              if(refNameCount >= 2){
-                $('.referenceName').each(function(index){
-                  if(index > 0) {
-                    $refUser += ' / ';
-                  }
-
-                  $refUser += $(this).text();
-
-                });
-              } else if (refNameCount == 1){
-                $refUser = $('.referenceName').text();
-              } else {
-                $refUser = '';
-              }
-
-              $('#refSelectedArea').text($refUser);
-                  
-            });
+    $('#refSelectedArea').text($refUser);
+        
+  });
 
 
-          });
 
           // 결재선 설정 모달 스크립트
           $('#kt_docs_jstree_basic').jstree({
@@ -945,165 +709,165 @@
     });
 
 
-          document.querySelector('.approvalIn').addEventListener('click', function() {
-                var nameAreas = document.querySelectorAll('.NameArea');
-                var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
-                var maxApprovalCount = 2;
-
-            
-                if (existingApprovalCount >= maxApprovalCount) return;
-
-                var currentIndex = existingApprovalCount + 1;
-
-                nameAreas.forEach(function(nameArea) {
-                    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-                    if (checkbox && existingApprovalCount < maxApprovalCount) {
-                        var nameValue = nameArea.textContent.trim();
-
-                    
-                        var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
-                        if (existingElement) return;
-
-                        var className = 'approvalName' + currentIndex;
-
-                        var newElement = document.createElement('div');
-                        newElement.className = className;
-                        newElement.textContent = nameValue;
-
-                        document.querySelector('.approvalArea').appendChild(newElement);
-
-                        nameArea.remove();
-
-                        existingApprovalCount++;
-                        currentIndex++;
-                    }
-                });
-            });
-
-          document.querySelector('.approvalOut').addEventListener('click', function() {
-              var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
-              var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
-
-              moveApprovalNames(approvalNames1);
-              moveApprovalNames(approvalNames2);
-          });
-
-          function moveApprovalNames(approvalNames) {
-              approvalNames.forEach(function(approvalName) {
-                  var nameText = approvalName.textContent.trim();
-
-                  var resultName = document.createElement('div');
-                  resultName.className = 'NameArea';
-                  resultName.textContent = nameText;
-
-                  var newCheckbox = document.createElement('input');
-                  newCheckbox.type = 'checkbox';
-                  resultName.appendChild(newCheckbox);
-
-                  document.querySelector('.resultNameArea').appendChild(resultName);
-
-                  approvalName.remove();
-              });
-          }
-
-          
-
-        document.querySelector('.referenceIn').addEventListener('click', function() {
+  document.querySelector('.approvalIn').addEventListener('click', function() {
         var nameAreas = document.querySelectorAll('.NameArea');
-        
+        var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
+        var maxApprovalCount = 2;
+
+    
+        if (existingApprovalCount >= maxApprovalCount) return;
+
+        var currentIndex = existingApprovalCount + 1;
+
         nameAreas.forEach(function(nameArea) {
             var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-            if (checkbox) {
+            if (checkbox && existingApprovalCount < maxApprovalCount) {
                 var nameValue = nameArea.textContent.trim();
-                
-               
-                var existingElement = document.querySelector('.referenceArea .referenceName');
-                if (existingElement && existingElement.textContent.trim() === nameValue) {
-                    return; 
-                }
-
-                var referenceName = document.createElement('div');
-                referenceName.className = 'referenceName';
-                referenceName.textContent = nameValue;
-                document.querySelector('.referenceArea').appendChild(referenceName);
-                
-                nameArea.remove();
-                }
-            });
-        });
-
-        document.querySelector('.referenceOut').addEventListener('click', function() {
-              
-              var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
-
-              
-              approvalNames.forEach(function(referenceName) {
-                  
-                  var nameValue = referenceName.textContent.trim();
-                  
-                  var resultNameArea = document.querySelector('.resultNameArea');
-                 
-                  var nameArea = document.createElement('div');
-                  nameArea.className = 'NameArea';
-                  nameArea.textContent = nameValue;
-                  
-                  var checkbox = document.createElement('input');
-                  checkbox.type = 'checkbox';
-                  nameArea.appendChild(checkbox);
-                  
-                  resultNameArea.appendChild(nameArea);
-                  
-                  referenceName.remove();
-              });
-          });
-
-          document.querySelector('.approvalUpBtn').addEventListener('click', function() {
-              var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-              var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-              if (approvalName1 && approvalName2) {
-                  var tempText = approvalName1.textContent;
-                  approvalName1.textContent = approvalName2.textContent;
-                  approvalName2.textContent = tempText;
-              }
-          });
-          document.querySelector('.approvalDownBtn').addEventListener('click', function() {
-              var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-              var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-              if (approvalName1 && approvalName2) {
-                  var tempText = approvalName1.textContent;
-                  approvalName1.textContent = approvalName2.textContent;
-                  approvalName2.textContent = tempText;
-              }
-          });
-          document.getElementById('saveData').addEventListener('click', function() {
-            var approvalName1Element = document.querySelector('.approvalName1');
-            var approvalName2Element = document.querySelector('.approvalName2');
-
-        
-            var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
-            var frtApprovalElement = document.querySelector('.frtApproval');
-            frtApprovalElement.textContent = approvalName1Text;
 
             
-            var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
-            var scdApprovalElement = document.querySelector('.scdApproval');
-            scdApprovalElement.textContent = approvalName2Text;
+                var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
+                if (existingElement) return;
 
-            var referenceNameElements = document.querySelectorAll('.referenceName');
-            var textToInsert = '';
+                var className = 'approvalName' + currentIndex;
 
-            referenceNameElements.forEach(function(referenceNameElement, index) {
-                var text = referenceNameElement.textContent.trim();
-                if (index > 0) {
-                    textToInsert += ', ';
-                }
-                textToInsert += text;
-            });
+                var newElement = document.createElement('div');
+                newElement.className = className;
+                newElement.textContent = nameValue;
 
-            document.getElementById('refMember').value = textToInsert;
+                document.querySelector('.approvalArea').appendChild(newElement);
+
+                nameArea.remove();
+
+                existingApprovalCount++;
+                currentIndex++;
+            }
         });
-    </script>
+    });
+
+  document.querySelector('.approvalOut').addEventListener('click', function() {
+      var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
+      var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+
+      moveApprovalNames(approvalNames1);
+      moveApprovalNames(approvalNames2);
+  });
+
+  function moveApprovalNames(approvalNames) {
+      approvalNames.forEach(function(approvalName) {
+          var nameText = approvalName.textContent.trim();
+
+          var resultName = document.createElement('div');
+          resultName.className = 'NameArea';
+          resultName.textContent = nameText;
+
+          var newCheckbox = document.createElement('input');
+          newCheckbox.type = 'checkbox';
+          resultName.appendChild(newCheckbox);
+
+          document.querySelector('.resultNameArea').appendChild(resultName);
+
+          approvalName.remove();
+      });
+  }
+
+  
+
+document.querySelector('.referenceIn').addEventListener('click', function() {
+var nameAreas = document.querySelectorAll('.NameArea');
+
+nameAreas.forEach(function(nameArea) {
+    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+    if (checkbox) {
+        var nameValue = nameArea.textContent.trim();
+        
+       
+        var existingElement = document.querySelector('.referenceArea .referenceName');
+        if (existingElement && existingElement.textContent.trim() === nameValue) {
+            return; 
+        }
+
+        var referenceName = document.createElement('div');
+        referenceName.className = 'referenceName';
+        referenceName.textContent = nameValue;
+        document.querySelector('.referenceArea').appendChild(referenceName);
+        
+        nameArea.remove();
+        }
+    });
+});
+
+document.querySelector('.referenceOut').addEventListener('click', function() {
+      
+      var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+
+      
+      approvalNames.forEach(function(referenceName) {
+          
+          var nameValue = referenceName.textContent.trim();
+          
+          var resultNameArea = document.querySelector('.resultNameArea');
+         
+          var nameArea = document.createElement('div');
+          nameArea.className = 'NameArea';
+          nameArea.textContent = nameValue;
+          
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          nameArea.appendChild(checkbox);
+          
+          resultNameArea.appendChild(nameArea);
+          
+          referenceName.remove();
+      });
+  });
+
+  document.querySelector('.approvalUpBtn').addEventListener('click', function() {
+      var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+      var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+      if (approvalName1 && approvalName2) {
+          var tempText = approvalName1.textContent;
+          approvalName1.textContent = approvalName2.textContent;
+          approvalName2.textContent = tempText;
+      }
+  });
+  document.querySelector('.approvalDownBtn').addEventListener('click', function() {
+      var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+      var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+      if (approvalName1 && approvalName2) {
+          var tempText = approvalName1.textContent;
+          approvalName1.textContent = approvalName2.textContent;
+          approvalName2.textContent = tempText;
+      }
+  });
+  document.getElementById('saveData').addEventListener('click', function() {
+    var approvalName1Element = document.querySelector('.approvalName1');
+    var approvalName2Element = document.querySelector('.approvalName2');
+
+
+    var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
+    var frtApprovalElement = document.querySelector('.frtApproval');
+    frtApprovalElement.textContent = approvalName1Text;
+
+    
+    var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
+    var scdApprovalElement = document.querySelector('.scdApproval');
+    scdApprovalElement.textContent = approvalName2Text;
+
+    var referenceNameElements = document.querySelectorAll('.referenceName');
+    var textToInsert = '';
+
+    referenceNameElements.forEach(function(referenceNameElement, index) {
+        var text = referenceNameElement.textContent.trim();
+        if (index > 0) {
+            textToInsert += ', ';
+        }
+        textToInsert += text;
+    });
+
+    document.getElementById('refMember').value = textToInsert;
+});
+</script>
 </body>
 </html>

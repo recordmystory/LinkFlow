@@ -61,6 +61,6 @@ public class MemberDto extends CommonDto {
 	private String gender; 
 	private String[] right;
 	
-	
+	private List<DeptDto> deptList;
 	
 }
