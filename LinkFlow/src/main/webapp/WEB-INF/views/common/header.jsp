@@ -65,7 +65,7 @@
 
             <div class="row mainMenuSelect">
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${contextPath}/calendar/calMain.page" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-calendar-days fa-2xl"style="margin-left: 3px;"></i></div>
                   <div class="box-icon-name"><span class="info-box-text spanCss">일정</span></div>
                 </a>

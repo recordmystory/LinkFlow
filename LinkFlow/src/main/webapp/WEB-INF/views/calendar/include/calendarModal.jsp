@@ -168,13 +168,7 @@
     .modal-title{
       font-size:120%;
     }
-     /*일정 등록 모달 스타일*/
-    .schInsertModalBtn{
-      font-weight: bold;
-      font-size: medium;
-      color: rgba(255, 255, 255, 0.744);
-      background-color: #80ace5be;
-    }
+
  
 </style>
 </head>
@@ -330,7 +324,7 @@
 		                    <!-- 중요일정 체크박스 -->
 		                    <div class="schDetailModal_content justify-content-end mx-1">
 		                        중요일정&nbsp;
-		                        <input type="checkbox" class="weste-modal" id="schImportBtn" name="schImport">
+		                        <input type="checkbox" class="weste-modal" id="schImportInsertBtn" name="schImport">
 		                    </div>
 		                    <!-- 캘린더 선택 -->
 		                    <div class="schDetailModal_content font-weight-bolder">
@@ -365,7 +359,7 @@
 		                        <label for="notifyYn" class="col-form-label" >알림</label> 
 		                        <div>
 		                           종료 30분 전 메일발송
-		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyBtn">
+		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyInsertBtn">
 		                        </div>
 		                    </div>
 		                    <!-- 일정 내용 -->
@@ -1163,12 +1157,12 @@ $('#kt_docs_jstree_basic').jstree({
 	$(document).ready(function() {
  //캘린더 일정등록 ajax start **************************************
 		  // 중요일정 체크박스 클릭 시
-	    $('#schImport').click(function() {
+	    $('#schImportInsertBtn').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="schImport"]').val(important);
 	    });
 		  
-	    $('#notify').click(function() {
+	    $('#notifyInsertBtn').click(function() {
 	        var notify = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="notifyYn"]').val(notify);
 	    });
@@ -1296,6 +1290,5 @@ $('#kt_docs_jstree_basic').jstree({
 </script>
     
     
-    </script>
 </body>
 </html>

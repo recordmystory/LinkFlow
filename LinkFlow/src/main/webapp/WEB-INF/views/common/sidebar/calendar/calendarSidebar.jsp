@@ -109,12 +109,14 @@
     <!-- Sidebar Menu -->
     <nav class="linkfoiwsideMenu">
         <div class="LinkFlowInsertBtnArea">
-          <button class="btn btn-block btn-lg schInsertModalBtn" data-bs-target="#schInsertModal" data-bs-toggle="modal">+ 일정 등록</button>
+          <button class="btn btn-block bg-gradient-primary btn-lg schInsertModalBtn" data-bs-target="#schInsertModal" data-bs-toggle="modal">+ 일정 등록</button>
         </div>
 
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <li class="sidebarName">캘린더</li><br>
+        <li class="sidebarName">
+        		<a href="${contextPath}/calendar/calMain.page">캘린더</a>
+        </li><br>
     
         <li class="nav-item">
             <a href="#" class="nav-link middleName">                         
@@ -189,7 +191,7 @@
         </ul>
       </li>
       <div class="nav-item">
-        <a href="#" class="nav-link middleName">휴지통</a>
+        <a href="${contextPath}/calendar/wasteList.page" class="nav-link middleName">휴지통</a>
       </div>
     </nav>
     <!-- /.sidebar-menu -->

@@ -183,20 +183,26 @@
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
 		  ,status
      from tb_booking b
-     join tb_assets a using (assets_no)
-     join tb_common c using (main_code)
+     join tb_assets a on b.assets_no = a.assets_no
+     join tb_common c on a.main_code = c.main_code
     where booking_id = #{userId}
       and a.sub_code= c.sub_code
       and b.del_yn = 'N'
-       <if test='status != "ALL"'>
+       <if test="status != 'ALL'">
 	   	and status = #{status}
 	   </if>
-	   <if test='room == "Y"'>
-	   	and a.main_code = '002-'
-	   </if>
-	   <if test='supplies == "Y"'>
-	   	and a.main_code = '003-'
-	   </if>
+	   <choose>
+	   <when test="room == 'Y' and supplies == 'Y'">
+	   and c.main_code in ('002-','003-')
+	   </when>
+	   <when test="room == 'Y' and supplies == 'N'">
+	   and c.main_code = '002-'
+	   </when>
+	   <when test="room == 'N' and supplies == 'Y'">
+	   and c.main_code = '003-'
+	   </when>
+	   </choose>
+	   
 
 </select>
 </mapper>
