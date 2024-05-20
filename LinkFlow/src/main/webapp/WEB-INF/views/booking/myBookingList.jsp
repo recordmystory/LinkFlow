@@ -75,13 +75,13 @@ input[type="checkbox"]:checked {
 					<div class="card">
 						<div class="card-header">
 							<h6 class="card-title">
-									<input type="checkbox" id="roomCheckbox" name="room" onchange="search(); checkYN();" ${search.room == 'Y' ? 'checked' : ''}> 시설 &nbsp;
-									 <input type="checkbox" id="supCheckbox" name="supplies" onchange="search(); checkYN();" ${search.supplies == 'Y' ? 'checked' : ''}> 비품
+									<input type="checkbox" id="roomCheckbox" name="room" onchange="search(); checkYN();"> 시설 &nbsp;
+									 <input type="checkbox" id="supCheckbox" name="supplies" onchange="search(); checkYN();"> 비품
 								</h6>
 
 							<div class="card-tools">
 								<div class="input-group input-group-sm" style="width: 120px;">
-									<select id="status" class="form-control" onchange="search()">
+									<select id="status" name="status" class="form-control" onchange="search();">
 										<option value="ALL">전체</option>
 										<option value="WAI">예약대기</option>
 										<option value="COM">예약완료</option>
@@ -165,35 +165,41 @@ input[type="checkbox"]:checked {
 	        let status = document.getElementById('status').value;
 
 			$.ajax({
-				url: '${contextPath }/booking/mylist.search',
-				type: 'GET',
+				url: "${contextPath }/booking/mylist.search",
+				type: "get",
 				data:{
 					room: room,
 					supplies: supplies,
 					status: status
 				},success:function(result){
 					let table ="";
-					if(result != null){
-						for(let i=0; i<result.length; i++){
-							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + result[i].bookingNo + "'\">";
-							table +="<td>"+ result[i].bookingNo+"</td>";
-							table +="<td>"+ result[i].mainName +"</td>";
-							table +="<td>"+ result[i].subName +"</td>";
-							table +="<td>"+ result[i].assetsName+"</td>";
-							table +="<td>"+ result[i].bkStartDate +"</td>";
-							table +="<td>"+ result[i].bkStartTime +" ~ "+ result[i].bkEndTime +"</td>";
-							table +="<td>"+ result[i].status +"</th></tr>";
+					let list = result.bkList;
+					if(list != null){
+						for(let i=0; i<list.length; i++){
+							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + list[i].bookingNo + "'\">";
+							table +="<td>"+ list[i].bookingNo+"</td>";
+							table +="<td>"+ list[i].mainName +"</td>";
+							table +="<td>"+ list[i].subName +"</td>";
+							table +="<td>"+ list[i].assetsName+"</td>";
+							table +="<td>"+ list[i].bkStartDate +"</td>";
+							table +="<td>"+ list[i].bkStartTime +" ~ "+ list[i].bkEndTime +"</td>";
+							table +="<td>"+ list[i].status +"</th></tr>";
 						}
 					}
 					
+					$("#roomCheckbox").prop("checked",result.search.room == 'Y' ? true: false);
+					$("#supCheckbox").prop("checked",result.search.supplies == 'Y' ? true: false);
+					
 					$("#listBody").html(table);
+				},error:function(){
+					console.log("에작 실패");
 				}
 				
 			})
 		}
 		
 		$(document).ready(function(){
-            search();
+            /* search(); */
         });
 		
 		 $(document).ready(function() {

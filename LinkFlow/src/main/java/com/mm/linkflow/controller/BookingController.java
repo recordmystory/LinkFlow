@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mm.linkflow.dto.AssetsDto;
@@ -97,13 +98,14 @@ public class BookingController {
 		return mv;
 	}
 	
-	
-	@GetMapping("/mylist.search")
-	public ModelAndView myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, ModelAndView mv, HttpSession session) {
+	@ResponseBody
+	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8")
+	public Map<String,Object> myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, HttpSession session) {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		search.put("userId",userId);
-		
+		log.debug("status: {}", search.get("status"));
+			
 		int listCount = bkServiceImpl.selectMySearchCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		
@@ -119,10 +121,13 @@ public class BookingController {
 				case "CAN" : bkList.get(i).setStatus("취소"); break;
 			}
 		}
-
-		mv.addObject("pi", pi).addObject("bkList", bkList).setViewName("booking/myBookingList");
-
-		return mv;
+		
+		Map<String,Object> mp = new HashMap<>();
+		mp.put("pi",pi);
+		mp.put("bkList", bkList);
+		mp.put("search", search);
+		
+		return mp;
 
 	}
 	
