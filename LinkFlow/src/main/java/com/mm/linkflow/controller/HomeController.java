@@ -40,7 +40,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/main")
-	public String mainfoward() {
+	public String mainfoward(HttpServletRequest req) {
+		List<BoardDto> list = boardService.selectNewNoticeList();
+		req.getSession().setAttribute("list", list);
 		return "mainpage/main";
 	}
 	
@@ -57,9 +59,6 @@ public class HomeController {
 				if(checkIn == 0) {
 					attService.checkInAtt(loginUser.getUserId());
 				}
-				List<BoardDto> list = boardService.selectNewNoticeList();
-				log.debug("list {}", list);
-				req.getSession().setAttribute("list", list);
 				req.getSession().setAttribute("loginUser", loginUser);
 				out.println("alert('" + loginUser.getUserName() +"님이 로그인 하였습니다.');");
 				out.println("location.href= '" + req.getContextPath() + "/main';");
