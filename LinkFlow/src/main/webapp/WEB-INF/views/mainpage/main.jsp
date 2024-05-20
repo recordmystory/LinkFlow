@@ -97,8 +97,37 @@
 		color: black;
 	}
 	
-	#calendar a {
-		color: black;
+	.fc-day-sun a {
+        color: red;
+        text-decoration: none;
+    }
+
+    .fc-day-sat a {
+        color: blue;
+        text-decoration: none;
+    }
+    .fc-day-mon a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-tue a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-wed a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-thu a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-fri a {
+        color: black;
+        text-decoration: none;
+    }
+   	#calendar {
+  		height: 501px !important;
 	}
 </style>
 </head>
