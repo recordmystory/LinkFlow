@@ -77,4 +77,19 @@
 		 </where>
 	</delete>
 	
+	<select id="selectDelFileList" resultMap="attachResult">
+  	select
+  				 file_no
+  			 , file_path
+  			 , filesystem_name
+  			 , original_name
+  	from attachment
+   <where>
+   	<foreach item="item" collection="array"
+   					 open="file_no in (" separator="," close=")">
+   		#{item}
+   	</foreach>
+   </where>
+  </select>
+	
 </mapper>

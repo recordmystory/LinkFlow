@@ -1,5 +1,6 @@
 package com.mm.linkflow.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class AttachServiceImpl implements com.mm.linkflow.service.service.AttachService {
 	
-	private final AttachDao attachTestDao;
+	private final AttachDao attachDao;
 	
 	
 	// insert할 첨부파일 리스트 넘겨주기
@@ -23,7 +24,7 @@ public class AttachServiceImpl implements com.mm.linkflow.service.service.Attach
 		// attachment insert
 		if(!list.isEmpty()) {
 			for(AttachDto at : list) {
-				result += attachTestDao.insertAttach(at);
+				result += attachDao.insertAttach(at);
 			}
 		}
 		return result;
@@ -37,14 +38,21 @@ public class AttachServiceImpl implements com.mm.linkflow.service.service.Attach
 		         				.refNo(refNo)
 		         				.refCategory(refCategory)
 		         				.build();
-		return attachTestDao.list(at);
+		return attachDao.list(at);
 	}
 
 	
 	// 삭제할 첨부파일의 파일번호 넘겨주기
 	@Override
+	public List<AttachDto> selectDelFileList(String[] delFileNo) {
+		return delFileNo != null ? attachDao.selectDelFileList(delFileNo)
+				 : new ArrayList<AttachDto>();
+	}
+
+
+	@Override
 	public int deleteAttach(String[] delFileNo) {
-		return attachTestDao.deleteAttach(delFileNo);
+		return attachDao.deleteAttach(delFileNo);
 	}
 
 }
