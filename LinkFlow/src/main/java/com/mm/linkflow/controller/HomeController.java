@@ -18,6 +18,7 @@ import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.AttemdamceService;
 import com.mm.linkflow.service.service.BoardService;
 import com.mm.linkflow.service.service.MemberService;
+import com.mm.linkflow.util.MonthUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class HomeController {
 	private final MemberService mService;
 	private final BoardService boardService;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
+	private final MonthUtil monthUtil;
 	/**
 	 * 테스트로 게시판리스트조회로함 나중에 로그인페이지로 하셈
 	 * @return
@@ -42,7 +44,41 @@ public class HomeController {
 	@RequestMapping("/main")
 	public String mainfoward(HttpServletRequest req) {
 		List<BoardDto> list = boardService.selectNewNoticeList();
+		int male = mService.selectMale();
+		int female = mService.selectFemale();
+		req.getSession().setAttribute("oneMonth", monthUtil.monthReturn(0));
+		req.getSession().setAttribute("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(0)));
+		req.getSession().setAttribute("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(0)));
+		req.getSession().setAttribute("oneMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(0)));
+		
+		req.getSession().setAttribute("twoMonth", monthUtil.monthReturn(2));
+		req.getSession().setAttribute("twoMonthMember", mService.selectAllMember(monthUtil.monthReturn(2)));
+		req.getSession().setAttribute("twoMonthHire", mService.selectHireMember(monthUtil.monthReturn(2)));
+		req.getSession().setAttribute("twoMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(2)));
+		
+		req.getSession().setAttribute("threeMonth", monthUtil.monthReturn(3));
+		req.getSession().setAttribute("threeMonthMember", mService.selectAllMember(monthUtil.monthReturn(3)));
+		req.getSession().setAttribute("threeMonthHire", mService.selectHireMember(monthUtil.monthReturn(3)));
+		req.getSession().setAttribute("threeMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(3)));
+		
+		req.getSession().setAttribute("fourMonth", monthUtil.monthReturn(4));
+		req.getSession().setAttribute("fourMonthMember", mService.selectAllMember(monthUtil.monthReturn(4)));
+		req.getSession().setAttribute("fourMonthHire", mService.selectHireMember(monthUtil.monthReturn(4)));
+		req.getSession().setAttribute("fourMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(4)));
+		
+		req.getSession().setAttribute("fiveMonth", monthUtil.monthReturn(5));
+		req.getSession().setAttribute("fiveMonthMember", mService.selectAllMember(monthUtil.monthReturn(5)));
+		req.getSession().setAttribute("fiveMonthHire", mService.selectHireMember(monthUtil.monthReturn(5)));
+		req.getSession().setAttribute("fiveMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(5)));
+		
+		req.getSession().setAttribute("sixMonth", monthUtil.monthReturn(6));
+		req.getSession().setAttribute("sixMonthMember", mService.selectAllMember(monthUtil.monthReturn(6)));
+		req.getSession().setAttribute("sixMonthHire", mService.selectHireMember(monthUtil.monthReturn(6)));
+		req.getSession().setAttribute("sixMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(6)));
+	
 		req.getSession().setAttribute("list", list);
+		req.getSession().setAttribute("male", male);
+		req.getSession().setAttribute("female", female);
 		return "mainpage/main";
 	}
 	

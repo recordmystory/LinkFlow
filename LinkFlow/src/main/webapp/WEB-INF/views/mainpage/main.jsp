@@ -396,7 +396,7 @@
 	            labels: ['남자','여자'],
 	            datasets: [
 	                {
-	                    data: [20,15],
+	                    data: ['${male}','${female}'],
 	                    backgroundColor : ['#1a66cc', '#d1180b'],
 	                }
 	            ]
@@ -431,7 +431,7 @@
 	            xAxis: [
 	                {
 	                type: 'category',
-	                data: ['2023-11', '2023-12', '2024-01', '2024-02', '2024-03', '2024-04'],
+	                data: ['${sixMonth}', '${fiveMonth}', '${fourMonth}', '${threeMonth}', '${twoMonth}', '${oneMonth}'],
 	                }
 	            ],
 	            yAxis: {
@@ -447,7 +447,7 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [30, 31, 32, 33, 34, 35]
+	                data: ['${sixMonthMember}', '${fiveMonthMember}', '${fourMonthMember}', '${threeMonthMember}', '${twoMonthMember}', '${oneMonthMember}']
 	                },
 	                {
 	                name: '입사자',
@@ -458,7 +458,7 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [1, 1, 1, 2, 2, 2]
+	                data: ['${sixMonthHire}', '${fiveMonthHire}', '${fourMonthHire}', '${threeMonthHire}', '${twoMonthHire}', '${oneMonthHire}']
 	                },
 	                {
 	                name: '퇴사자',
@@ -469,12 +469,12 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [0, 0, 0, 1, 1, 1]
+	                data: ['${sixMonthRetire}', '${fiveMonthRetire}', '${fourMonthRetire}', '${threeMonthRetire}', '${twoMonthRetire}', '${oneMonthRetire}']
 	                }
 	            ]
 	        };
 	
-	        option && myChart.setOption(option);
+	    	option && myChart.setOption(option);
 	        // 꺾은선 그래프 끝
 	        
 	        
