@@ -61,11 +61,11 @@ input[type="checkbox"]:checked {
 <body>
 
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 		<div class="LinkFlowMainSection">
 			<jsp:include
-				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
+				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp"/>
 			<div class="LinkFlowMainContent">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
@@ -135,11 +135,11 @@ input[type="checkbox"]:checked {
 									</tbody>
 								</table>
 							</div>
-
+							</div>
 							<!-- /.card-body -->
 						</div>
 					</div>
-				</div>
+			
 				<div class="pagination" id="pageArea"
 					style="display: flex; justify-content: center;">
 					<ul class="pagination">
@@ -154,6 +154,7 @@ input[type="checkbox"]:checked {
 			</div>
 		</div>
 		<!-- /.content-wrapper -->
+		</div>
 			<script>
 				$(document).ready(function() {
 					if(${not empty search }){
@@ -186,6 +187,5 @@ input[type="checkbox"]:checked {
 				}
 			</script>
 
-	</div>
 </body>
 </html>

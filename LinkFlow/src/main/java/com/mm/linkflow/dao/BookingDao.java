@@ -82,4 +82,8 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectMySearchList",search, rowBounds);
 	}
 
+	public List<AssetsDto> selectDetailAssList(String supName) {
+		return sql.selectList("bkMapper.selectDetailAssList",supName);
+	}
+
 }

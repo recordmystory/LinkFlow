@@ -54,11 +54,11 @@
 <select id="selectSearchBkCount" resultType="_int">
 	select count(*)
 	  from tb_assets a 
-	  join tb_common c using (main_code)
+	  join tb_common c on a.main_code = c.main_code
 	 where main_code = '003-'
        and a.sub_code= c.sub_code
 	   and del_yn = 'N'
-	   <if test='condition != null and keyword != null'>
+	   <if test='keyword != null'>
        and ${condition} like '%'|| #{keyword} ||'%'
        </if>
        <if test='useYN == "Y"'>
@@ -73,11 +73,11 @@
 		  ,use_yn
       from
        	   tb_assets a 
-      join tb_common c using (main_code)
+      join tb_common c on a.main_code = c.main_code
      where del_yn ='N'
        and main_code='003-'
        and a.sub_code= c.sub_code
-       <if test='condition != null and keyword != null'>
+       <if test='keyword != null'>
        and ${condition} like '%'|| #{keyword} ||'%'
        </if>
        <if test='useYN == "Y"'>
@@ -113,12 +113,24 @@
 
 </select>
 
+<select id="selectDetailAssList" resultMap="assResult">
+	select 
+		   assets_name
+	  from tb_assets a
+	  join tb_common c using (main_code)
+	 where a.sub_code = c.sub_code
+       and c.sub_name = #{subName}
+       and c.del_yn = 'N'
+       and a.use_yn = 'Y'
+</select>
+
 <select id="selectDetailMyBk" resultMap="bkResult">
 	select 
 	 	   booking_no
-		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
-		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
-		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
+		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '') AS bk_start_date
+		  ,NVL(to_char(bk_end_dt,'YYYY/MM/DD'), '') AS bk_end_date
+		  ,NVL(to_char(bk_start_dt,'hh24:mi'), '') AS bk_start_time
+		  ,NVL(to_char(bk_end_dt,'hh24:mi'), '') AS bk_end_time
 		  ,status
 		  ,sub_name
 		  ,assets_name
@@ -134,10 +146,12 @@
 
 <update id="modifyBk">
 	update tb_booking
-	   set bk_start_dt = to_date(#{bkStartDate}||' '||#{bkStartTime},'YYYY/MM/DD HH24:MI'),
-	   	   bk_end_dt = to_date(#{bkEndDate}||' '||#{bkEndTime},'YYYY/MM/DD HH24:MI'),
-	   	   bk_content = #{bkContent},
+	   set bk_content = #{bkContent},
 	   	   mod_date = sysdate,
+	   	   <if test='subName == "회의실" or subName =="차량"'>
+		       bk_start_dt = to_date(#{bkStartDate}||' '||#{bkStartTime},'YYYY/MM/DD HH24:MI'),
+		   	   bk_end_dt = to_date(#{bkEndDate}||' '||#{bkEndTime},'YYYY/MM/DD HH24:MI'),
+	   	   </if>
 	   	   assets_no = (select assets_no
 	   	   				  from tb_assets
 	   	   				 where assets_name = #{assetsName}
@@ -208,7 +222,5 @@
 	   and c.main_code = '003-'
 	   </when>
 	   </choose>
-	   
-
 </select>
 </mapper>

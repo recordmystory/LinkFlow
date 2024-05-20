@@ -99,7 +99,7 @@ public class BookingController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8")
+	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8") // 나의 예약리스트 검색
 	public Map<String,Object> myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, HttpSession session) {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
@@ -132,10 +132,10 @@ public class BookingController {
 	
 	
 	@GetMapping("/detail.bk") // 나의 예약 상세보기 
-	public String selectDetailMyBk(@RequestParam(value="no")String bkNo, Model model) {
+	public ModelAndView selectDetailMyBk(@RequestParam(value="no")String bkNo, ModelAndView mv, @RequestParam(value="sup")String supName) {
 		
 		BookingDto bk =  bkServiceImpl.selectDetailMyBk(bkNo);
-		
+		List<AssetsDto> assList = bkServiceImpl.selectDetailAssList(supName);
 		if(bk != null) {
 			switch(bk.getStatus()) {
 			case "WAI" : bk.setStatus("예약대기"); break;
@@ -146,14 +146,16 @@ public class BookingController {
 			case "CAN" : bk.setStatus("취소"); break;
 			}
 		}
-		model.addAttribute("bk", bk);
-		return "booking/myBookingDetail";
+		
+		mv.addObject("bk", bk)
+		  .addObject("assList",assList)
+		  .setViewName("booking/myBookingDetail");
+		return mv ;
 	}
 	
 	@ResponseBody
-	@PostMapping(value="/modify.bk", produces="application/json; charset=utf-8")
+	@PostMapping(value="/modify.bk", produces="application/json; charset=utf-8") // 예약 수정
 	public BookingDto modifyBooking(@RequestParam Map<String,String> map) {
-		log.debug("bkEndTime: {}", map.get("bkEndTime"));
 		BookingDto bk = new BookingDto().builder()
 										.assetsName(map.get("assetsName"))
 										.bkContent(map.get("bkContent"))
@@ -162,9 +164,9 @@ public class BookingController {
 										.bkEndDate(map.get("bkEndDate"))
 										.bkEndTime(map.get("bkEndTime"))
 										.bookingNo(map.get("bookingNo"))
+										.subName(map.get("subName"))
 										.build();
 		int result = bkServiceImpl.modifyBooking(bk);
-		log.debug("result : {}", result);
 		if(result>0) {
 			return bk;
 		}else {
@@ -173,12 +175,12 @@ public class BookingController {
 		
 	}
 	
-	@PostMapping("/cancle.bk")
+	@PostMapping("/cancle.bk") // 예약 취소
 	public String cancleBooking(BookingDto bk) {
 		int result = bkServiceImpl.cancleBooking(bk);
 		log.debug("result:{}",result);
+		
 		if (result > 0) {
-
 			return "redirect:booking/myBookingList";
 		} else {
 			return "redirect:booking/myBookingDetail?no=" + bk.getBookingNo();
