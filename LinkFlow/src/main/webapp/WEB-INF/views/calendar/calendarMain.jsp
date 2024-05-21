@@ -422,18 +422,23 @@
         });
 
     //schDetailModals에서 detailBtn 클릭시(schUpdateModal수정 detailBtn모달과 삭제 모달로 이동)
+
         /*$('#schUpdateButton').click(function() {
           alert("일정 수정 성공.");
+
+        $('#schUpdateButton').click(function() {
+
           $('#schUpdateModal').modal('hide'); 
            // $('#schUpdateModal').modal('show');
            // $('body').addClass('overflow-hidden'); 
+          alert("일정 수정 성공.");
 
         });*/
 
-        $('#schDetaildeleteModalBtn').click(function() {
-         // $('#schDetailModal').modal('hide'); 
-          $('#deleteBtn').modal('show');
-          $('#deleteBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
+        $('#schDetailModal').click(function() {
+          $('#schDetailModal').modal('hide'); 
+          $('#detailBtn').modal('show');
+          $('#datailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
           $('body').addClass('overflow-hidden');
         });
 
@@ -452,6 +457,14 @@
         $('#schUpdateModal').on('hidden.bs.modal', function(e) {
               $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
         }); */
+        
+      //일정 수정하기 -> 취소버튼
+        $('#schUpdateCancelBtn').click(function() {
+            $('#schUpdateModal').modal('hide');
+            $('#detailBtn').modal('hide'); 
+						//새로고침 또는 캘린더 메인으로
+						
+          });
       }); 
     	 
 

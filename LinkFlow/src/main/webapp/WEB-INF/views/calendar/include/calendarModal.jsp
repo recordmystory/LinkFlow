@@ -375,8 +375,8 @@
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
-		                <button type="submit" id="schInsertButton" class="btn blue-button" >등록</button>
-		                <button type="button" class="btn gray-button" >취소</button>
+		                <button type="button" id="schInsertButton" class="btn blue-button" >등록</button>
+		                <button type="button" class="btn gray-button" id="">취소</button>
 		            </div>
 		            
 		        </div>
@@ -453,6 +453,8 @@
 		            <div class="modal-footer justify-content-center">
 		                <button type="button" id="schUpdateButton" class="btn blue-button">수정</button>
 		                <button type="button" class="btn gray-button" >취소</button>
+		                <button type="button" class="btn gray-button" id="schUpdateCancelBtn" >취소</button>
+
 		            </div>
 		        </div>
 		    </div>
@@ -490,7 +492,7 @@
                            <div class="input-group">
                             <input type="search" class="form-control" value="" name="useName">
                               <div class="input-group-append">
-                                   <button type="submit" class="btn btn-primary">
+                                   <button type="button" class="btn btn-primary">
                                        <i class="fa fa-search"></i>
                                    </button>
                                </div>
