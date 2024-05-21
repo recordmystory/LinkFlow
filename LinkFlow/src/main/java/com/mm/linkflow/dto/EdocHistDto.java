@@ -17,9 +17,13 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class EdocHistDto extends CommonDto {
 	private String userId; 
+	private String edFormCode;
 	private String edNo; 
 	private int edHistOrder; 
 	private String edHistSubCode; 
 	private String edHistDate; 
 	private String edHistComment;  
+	
+	private List<EdocFormDto> edocFormList;
+	
 }

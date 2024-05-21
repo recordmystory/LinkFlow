@@ -23,6 +23,17 @@ public class EdocDto extends CommonDto {
 	private int presDate;
 	private String secCode;
 	private String status;
+	private String tempSave;
 	
+	// 첨부파일
+	private List<AttachDto> attachList;
+	
+	// 결재이력 (결재자)
 	private List<EdocHistDto> edocHistList;
+	
+	// 참조자
+	private List<EdocRefDto> edocRefList;
+	
+	
+	
 }

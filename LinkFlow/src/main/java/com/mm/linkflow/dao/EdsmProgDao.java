@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.mm.linkflow.dto.DeptDto;
+import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
+import com.mm.linkflow.dto.EdocHistDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,14 @@ public class EdsmProgDao {
 
 	public List<DeptDto> selectApprLine() {
 		return sqlSessionTemplate.selectList("edsmProgMapper.selectApprLine");
+	}
+
+	public int insertDoc(EdocDto edocDto) {
+		return sqlSessionTemplate.insert("edsmProgMapper.insertDoc", edocDto);
+	}
+
+	public int insertApprLine(EdocHistDto edocHistDto) {
+		return sqlSessionTemplate.insert("edsmProgMapper.inserApprLine", edocHistDto);
 	}
 	
 //	public int selectAllListCount() {

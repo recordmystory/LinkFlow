@@ -294,9 +294,10 @@
 	                <div class="container-fluid" style="display: flex; justify-content: center;"> 
 	                  <div class="contentArea">
 	
+	                   <form action="${contextPath}/edsm/prog/draftingDoc.prog" method="post">
 	                    <div class="contentInElement">
 	                        <div class="btnArea">
-                            <button class="btn btn-primary btn-sm">기안하기</button>
+                            <button type="submit" id="draftingBtn" class="btn btn-primary btn-sm">기안하기</button>
                             <button class="btn btn-secondary btn-sm">임시저장</button>  
                           </div>
 
@@ -308,13 +309,9 @@
                                   <tr>
                                     <th class="table-active">문서 종류</th>
                                     <td>
-                                      <!--  <option value="letterOfApproval">품의서</option>
-                                        <option value="certificateOfEmployment">재직증명서</option>
-                                        <option value="dayoffForm">휴가신청서</option>
-                                        <option value="expenseResolustion">지출결의서</option> -->
-                                      <select class="form-control documentTypeSelect" id="documentTypeSelect">
+                                      <select class="form-control documentTypeSelect" name="edFormCode" id="documentTypeSelect">
                                         <c:forEach var="fr" items="${list}" varStatus="num">
-																	       <option value="${fr.edFrName}">${fr.edFrName}</option>
+																	       <option value="${fr.edFrCode}">${fr.edFrName}</option>
 																	    	</c:forEach>
                                       </select>
                                     </td>
@@ -324,7 +321,7 @@
                                   <tr>
                                     <th class="table-active">보존 연한</th>
                                     <td>
-                                      <select class="form-control">
+                                      <select class="form-control" name="presDate">
                                         <option value="1">1년</option>
                                         <option value="3">3년</option>
                                         <option value="5">5년</option>
@@ -334,7 +331,7 @@
                                     </td>
                                     <th class="table-active">보안 등급</th>
                                     <td>
-                                      <select class="form-control">
+                                      <select class="form-control" name="secCode">
                                         <option value="S">S등급</option>
                                         <option value="A">A등급</option>
                                         <option value="B">B등급</option>
@@ -349,7 +346,7 @@
                           <div class="approval-line">
                               <div class="approval-line-title">
                                 <h6 style="margin-right: 10px;">결재선</h6>
-                                <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#modal-xl">결재선 설정</button>
+                                <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#modal-xl">결재선 설정</button>
                               </div>
                               <table class="table table-bordered" style="margin-top: 10px;">
                                 <tr>
@@ -372,13 +369,13 @@
                           <!-- 별첨 -->
                           <div class="attachment" style="margin-bottom: 25px;">
                             <h6>별첨</h6>
-                            <input class="form-control" type="file" id="formFileMultiple" multiple>
+                            <input class="form-control" type="file" id="formFileMultiple" name="uploadFiles" multiple>
                           </div>
 
                           <!-- 제목 -->
                           <div class="drafting-title" style="margin-bottom: 25px;">
                             <h6>제목</h6>
-                            <input type="text" name="" id="" class="form-control" style="width: 1000px;">
+                            <input type="text" name="edTitle" id="" class="form-control" style="width: 1000px;">
                           </div>
 
                           <!-- 휴가신청서 폼이 뿌려질 곳-->
@@ -389,11 +386,13 @@
                           <div class="drafting-content">
                             <h6>본문</h6>
                             <div id="editor">제목</div>
+                          	<input type="hidden" id="editorContent" name="edContent">
                           </div>
                         </div>
                         
                       </div>
 	                    </div>
+	                  </form>
 	                  </div>
 	                </div>
                 </section>
@@ -462,10 +461,11 @@
 		                                   <li data-jstree='{ "selected" : false }'>
 		                                   		${appr.deptTitle}
 		                                   			<ul>
-	                                         		<c:forEach var="apprPerson" items="${appr.memberList}">
+	                                         		<c:forEach var="apprPerson" items="${appr.memberList}" varStatus="status">
 	                                         			<li data-jstree='{ "type" : "person" }' data-userId="${apprPerson.userId}">
 	                                                 ${apprPerson.userName} ${apprPerson.subName}
-	                                                 
+	                                                 <input type="hidden" id="userId" value="${apprPerson.userId}"/>
+	                                                 <input type="hidden" id="edHistOrder" value="${status.index + 1}"/>
 	                                             </li>
 	                                         		</c:forEach>
 	                                         </ul>
@@ -476,6 +476,7 @@
                                
                           
                          </div><!--jstree 끝-->
+                         
                          
                        </div>
                      </div>
@@ -586,9 +587,16 @@
      });
  		
     $(function(){
+    	$('#draftingBtn').click(function(){
+    		let edFrContent = editor.getData();
+    		
+    		$('#editorContent').val(edFrContent);
+    		$(this).submit();
+    	});
+    	
     	$('.documentTypeSelect').change(function(){
             // 휴가신청서 폼 뿌려지게
-              if($(this).val() == '휴가신청서'){
+              if($(this).val() == '3'){
               	$('.drafting-content').hide();
                $('.dayoff-table').append(`<h6>신청</h6>
                                           <table class="table table-bordered dayoff-table">
@@ -652,7 +660,19 @@
     }
 
     $('#refSelectedArea').text($refUser);
-        
+    
+    $.ajax({
+    	url: '${contextPath}/edsm/prog/apprLine.prog',
+    	type: 'post',
+    	data: {userId: $('#userId').val(), edFormCode: $('#documentTypeSelect').val(), edHistOrder: $('#edHistOrder').val()},
+    	success: function(result){
+    		console.log(result);
+    		console.log('ajax 통신 성공 및 TB_EDOC_HIST INSERT 성공');
+    	},
+    	error: function(){
+    		console.log('ajax 통신 실패');
+    	}
+    });
   });
 
 
