@@ -95,7 +95,7 @@ public class CalendarController {
 	   public String detailSch(String schNo, Model model) {
 	       ScheduleDto schedule = calendarService.detailSch(schNo);
 	       model.addAttribute("schedule", schedule);
-	       return "calendar/calendarMain";
+	       return "calendar/calendarModal";
 	   }
 	   
 	//캘린더 메인 - 일정 수정

@@ -128,10 +128,11 @@
     <script>
 
   //풀캘린더 script start
+  var calendar;
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -210,8 +211,9 @@
                 
                 $('#schDetailModal').modal('show');
                 
-              //일정 수정 ******************************************************
+                //일정 수정폼 ******************************************************
                 //updateform (getEventById)로도 처리 가능 
+              
                 $('.schDetailModal_blueBtn').click(function() {
                     $('#schUpdateModal').modal('show');
 
@@ -228,80 +230,6 @@
                     //extendedProps.endDate
                     
                 });
-              
-                $('#schUpdateButton').click(function() {
-                	
-                	  // 시작 날짜-밖
-                	var selectedSchCalSubCode = $('#schUpdateModal select[name="schCalSubCode"]').val();
-                    var startDate1 = startDateChange.toISOString().slice(0, -8);
-											var endDate1 = endDateChange.toISOString().slice(0, -8);
-                    var data = {
-                    		calNo: $('#calNo').val(),
-                        schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
-                        schTitle: $('#schTitle').val(), 
-                        schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
-                        schCalSubCode: selectedSchCalSubCode,
-
-                        startDate: startDate1,
-                        endDate: endDate1,
-                        
-                        address: $('#address').val(), 
-                        notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
-                        schContent: $('#schContent').val() 
-                        
-                    };
-                    console.log('Data:', data);
-
-                    $.ajax({
-                        type: "POST",
-                        url: "${contextPath}/calendar/updateSch.do",
-                        data: JSON.stringify(data),
-                        contentType: "application/json",
-                        dataType: "text", // 현아띵 추가요
-                        success: function(resultSch) {
-                            if (resultSch === "success") {
-                                $('#schUpdateModal').modal('hide');
-                                alert("일정 수정 성공.");
-
-                            }
-                        },
-                        error: function(resultSch) {
-                        	if (resultSch === "fail") {
-                            alert("일정 수정 실패.");
-                            $('#schUpdateModal').modal('hide');
-
-                        	}
-                        }
-                    });
-                });
-              
-              
-              //일정 삭제**************************************************
-                $('#detailBtn').click(function() {
-                	$.ajax({
-                        
-                        url:"${contextPath}/calendar/deleteSch.do",
-                        type:"get", 
-                        data: {
-                        	schNo:event.extendedProps.schNo
-                        },  
-                        success:function(result){
-                        	 if (result === "success") {
-	                        	 console.log(result);
-	                           alert("삭제 성공")
-
-                        	 }
-                         },  
-                        error:function(result){
-                        	if (result === "fail") {
-	                          console.log("일정 삭제 실패.");
-	                          alert("일정 삭제 실패.");
-                        	}
-                        }
-                     });                
-                  });
-              
-              
                 
                  //공휴일 클릭시 구글캘린더 이동 막기(기본동작 막기)
                    info.jsEvent.preventDefault();
@@ -383,7 +311,94 @@
     });
     //풀캘린더 
 	 
+   //풀캘린더 수정, 삭제
+     $(document).ready(function() {
 
+    	 // 현아띵 개인캘린더,부서캘린더,전사캘린더 체크박스 클릭시 일정 목록 조회
+         $("#personalCalCheckbox, #departCalCheckbox, #companyCalCheckbox").change(function(){
+         	addEventAndShow(); // 이벤트 불러오기
+         });
+   
+    //
+      $('#schUpdateButton').click(function() {
+      	
+      	  // 시작 날짜-밖
+      	var selectedSchCalSubCode = $('#schUpdateModal select[name="schCalSubCode"]').val();
+        var startDate1 = startDateChange.toISOString().slice(0, -8);
+				var endDate1 = endDateChange.toISOString().slice(0, -8);
+         var data = {
+         		calNo: $('#calNo').val(),
+             schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
+             schTitle: $('#schTitle').val(), 
+             schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
+             schCalSubCode: selectedSchCalSubCode,
+
+             startDate: startDate1,
+             endDate: endDate1,
+             
+             address: $('#address').val(), 
+             notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
+             schContent: $('#schContent').val() 
+             
+         };
+         console.log('Data:', data);
+
+         $.ajax({
+             type: "POST",
+             url: "${contextPath}/calendar/updateSch.do",
+             data: JSON.stringify(data),
+             contentType: "application/json",
+             dataType: "text", // 현아띵 추가요
+             success: function(resultSch) {
+                 if (resultSch === "success") {
+                     $('#schUpdateModal').modal('hide');
+                     alert("일정 수정 성공.");
+
+                 }
+             },
+             error: function(resultSch) {
+             	if (resultSch === "fail") {
+                 alert("일정 수정 실패.");
+                 $('#schUpdateModal').modal('hide');
+
+             	}
+             }
+         });
+      });
+  
+    
+    //일정 삭제**************************************************
+      $('#detailBtn').click(function() {
+      	$.ajax({
+              
+              url:"${contextPath}/calendar/deleteSch.do",
+              type:"get", 
+              data: {
+              	schNo:event.extendedProps.schNo
+              },  
+              success:function(result){
+              	 if (result === "success") {
+               	 console.log(result);
+                  alert("삭제 성공")
+
+              	 }
+               },  
+              error:function(result){
+              	if (result === "fail") {
+                 console.log("일정 삭제 실패.");
+                 alert("일정 삭제 실패.");
+              	}
+              }
+           });                
+        });
+    });
+	    
+              
+                
+    
+    
+    
+    
  
 //캘린더 모달 이벤트 start -> 나중에 풀캠 스크립트 내부로 이동
       $(document).ready(function() {
@@ -466,7 +481,68 @@
 						
           });
       }); 
-    	 
+    
+      function addEventAndShow(){
+      	var schCalSubCode = [];
+
+          if ($("#personalCalCheckbox").is(":checked")) {
+              schCalSubCode.push($("#personalCalCheckbox").val());
+          }
+          
+          if ($("#departCalCheckbox").is(":checked")) {
+          	schCalSubCode.push($("#departCalCheckbox").val());
+          }
+          
+          if ($("#companyCalCheckbox").is(":checked")) {
+          	schCalSubCode.push($("#companyCalCheckbox").val());
+          }
+          
+          $.ajax({
+              url: "${contextPath}/calendar/schList.do",
+              type: "get",
+              traditional: true,
+              data: {
+                  schCalSubCodes: schCalSubCode
+              },
+              contentType: "application/json",
+              dataType: "json",
+              success: function(result) {
+                  for (var schCalSubCode in result) {
+                      if (result.hasOwnProperty(schCalSubCode)) {
+                          var calendarEvents = result[schCalSubCode];
+                          for (var i = 0; i < calendarEvents.length; i++) {
+                              var eventData = {
+                              				title: calendarEvents[i].schTitle, //풀캠 필수속성
+                                      start: calendarEvents[i].startDate, 
+                                      end: calendarEvents[i].endDate, 
+                                      color: calendarEvents[i].calColor, 
+                                      extendedProps: { // 사용자 정의 속성
+                                          schTitle: calendarEvents[i].schTitle,
+                                          schImport: calendarEvents[i].schImport,
+                                          schCalSubCode: calendarEvents[i].schCalSubCode,
+                                          address: calendarEvents[i].address,
+                                          notifyYn: calendarEvents[i].notifyYn,
+                                          schContent: calendarEvents[i].schContent,
+                                          schNo: calendarEvents[i].schNo,
+                                          calNo: calendarEvents[i].calNo
+
+                                      }
+                              };
+                              //events.push(eventData);//addEvent로도 가능
+                              calendar.addEventSource(eventData);
+                          }
+                      }
+                  }
+                  
+                  //successCallback(events);
+                  calendar.refetchEvents();
+              },
+              error: function(result) {
+                  failureCallback(result);
+              	
+              }
+          });
+		}
 
 	</script>
 </body>
