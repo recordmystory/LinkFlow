@@ -130,10 +130,7 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/checkPassword")
 	public String checkPassword(String userId, String userPwd) {
-		
-		
-		
-		
+
 		
 		String userOldPwd = mService.SerchPwd(userId);
 		

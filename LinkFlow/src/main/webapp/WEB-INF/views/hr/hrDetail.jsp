@@ -120,6 +120,13 @@
                                                     <input type="date"  name="birthDate" class="form-control" required value="${m.birthDate}">   
                                                     </div>   
                                                 </div>
+                                                
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>연차</label>
+                                                    <input type="number"  name="dayOff" class="form-control" required value="${m.dayOff}">   
+                                                    </div>   
+                                                </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -213,9 +220,20 @@
                                             <!-- /.card-body -->
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary"  id="goPass">변경하기</button>
-                                                <a href="" class="btn btn-danger float-right" style="margin-left: 10px;">퇴사처리</a>
+                                                
+                                                <c:choose>
+                                                	<c:when test="${m.delYN == 'N'}">
+                                                	<a href="" class="btn btn-danger float-right" style="margin-left: 10px;" data-toggle="modal" data-target="#modal-goRetire" id="goButton">퇴사처리</a>
+                                                	</c:when>
+                                                	<c:otherwise>
+                                                	<a href="" class="btn btn-info float-right" style="margin-left: 10px;" data-toggle="modal" data-target="#modal-goJoinPathy" id="goButton">재직처리</a>
+                                                	</c:otherwise>
+                                                </c:choose>
+                                                
+                                                
+                                                
                                                 <a href="" class="btn btn-warning float-right" style="margin-left: 10px;" data-toggle="modal" data-target="#modal-pass">비밀번호 초기화</a>
-                                                <a href="" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
+                                                <a href="${contextPath}/hr/hrPage" class="btn btn-default float-right" style="margin-left: 10px;">변경취소</a>
                                                
                                             </div>
                                             </form> 
@@ -258,10 +276,120 @@
                                 
                         </div> <!-- /.content-wrapper -->
                         </section>
-                
- 				 
-        </div>
-      								<div class="modal fade" id="modal-pass">
+					                
+					 				 
+					        </div>
+					        
+					        
+					        		<!-- 퇴사처리 확인 모달 -->
+											<div class="modal fade" id="modal-goRetire">
+											    <div class="modal-dialog">
+											        <div class="modal-content">
+											            <div class="modal-header">
+											                <h4 class="modal-title">사원 퇴사</h4>
+											                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											                    <span aria-hidden="true">&times;</span>
+											                </button>
+											            </div>
+											            
+											            <div class="modal-body">
+											                <p>${m.userName}님을 퇴사 처리 하시겠습니까?</p>
+											                <p>해당 사원의 퇴사 처리를 원하시면 하단의 퇴사 버튼을 눌러주세요.</p> 
+											            </div>
+											            <div class="modal-footer">
+											                <button type="button" class="btn btn-danger left" data-dismiss="modal" id="goRetire">퇴사</button>
+											            </div>
+											        </div>
+											    </div>
+											</div>
+
+											<script>
+											    $(document).ready(function() {
+											        $("#modal-goRetire").on("click", "#goRetire", function() {
+											            var userId = $("#userId").val();  
+											            $.ajax({
+											                url: "${contextPath}/hr/goRetire",
+											                method: "POST", 
+											                data: { userId: userId }, 
+											                success: function(result) {
+											                    if(result === "YYYYY") {
+											                        alert("퇴사처리가 성공적으로 되었습니다.");
+											                        $("#goButton")
+											                            .text("재직처리")
+											                            .removeClass("btn-danger")
+											                            .addClass("btn-info")
+											                            .attr("data-target", "#modal-goJoinPathy");
+											                    } else if(result === "NNNNN") {
+											                        alert("서버 오류로 인해 퇴사처리에 실패했습니다.");
+											                    }
+											                },
+											                error: function(xhr, status, error) {
+											                    console.error(xhr.responseText);
+											                }
+											            });
+											        });
+											    });
+											</script>
+                      
+                      <!-- 재직처리 확인 모달 -->
+                      <div class="modal fade" id="modal-goJoinPathy">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">사원 재직</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                              <p>${m.userName}님을 재직 처리 하시겠습니까?<p>
+                              <P>해당 사원의 재직,재입사 처리를 원하시면 하단의 재직 버튼을 눌러주세요.</P> 
+                               
+                              	
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" onclick="" class="btn btn-info left" data-dismiss="modal" id="goJoinPathy">재직</button>
+                              
+                            </div>
+                         
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+                      <script>
+											    $(document).ready(function() {
+											        $("#modal-goJoinPathy").on("click", "#goJoinPathy", function() {
+											            var userId = $("#userId").val();  
+											            $.ajax({
+											                url: "${contextPath}/hr/goJoinPathy",
+											                method: "POST", 
+											                data: { userId: userId }, 
+											                success: function(result) {
+											                    if(result === "YYYYY") {
+											                        alert("재입사 처리가 성공적으로 되었습니다.");
+											                        $("#goButton")
+											                            .text("퇴사처리")
+											                            .removeClass("btn-info")
+											                            .addClass("btn-danger")
+											                            .attr("data-target", "#modal-goRetire");
+											                    } else if(result === "NNNNN") {
+											                        alert("서버 오류로 인해 재입사 처리에 실패했습니다.");
+											                    }
+											                },
+											                error: function(xhr, status, error) {
+											                    console.error(xhr.responseText);
+											                }
+											            });
+											        });
+											    });
+											</script>
+                      
+                      
+                      
+                      <div class="modal fade" id="modal-pass">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -278,7 +406,7 @@
                               	
                             </div>
                             <div class="modal-footer">
-                              <button type="button" onclick="" class="btn btn-primary left" data-dismiss="modal" id="goPass">초기화 하기</button>
+                              <button type="button" onclick="" class="btn btn-warning left" data-dismiss="modal" id="goPassword">초기화 하기</button>
                               
                             </div>
                          
@@ -288,11 +416,44 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      <script></script>
+                      
    
-		</div>
+			</div>
    </div><!--전체영역 끝-->
-			
+	   
+				
+				
+				
+				
+				
+				<script>
+			    $(document).ready(function(){
+			      
+			        $("#modal-pass").on("click", "#goPassword", function(){
+			        		var userId = $("#userId").val();  
+			        	
+			            $.ajax({
+			                url: "${contextPath}/hr/changePassword",
+			                method: "POST", 
+			                data: { userId : userId }, 
+			                success: function(result){
+			                	 
+			                	if(result === "YYYYY"){
+			                		 alert("초기화에 성공하였습니다!");
+			                	}	 
+			                	else if(result === "NNNNN"){
+			                		 alert("서버 오류로 인해 비밀번호 초기화에 실패했습니다.");
+			                	}
+			                },
+			                error: function(xhr, status, error){
+			                    
+			                   
+			                    console.error(xhr.responseText);
+			                }
+			            });
+			        });
+			    });
+			</script>
 			<script>
     function sample6_execDaumPostcode() {
               new daum.Postcode({

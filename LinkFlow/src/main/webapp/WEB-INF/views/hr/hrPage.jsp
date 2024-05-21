@@ -206,10 +206,10 @@
                                                 <td>
                                                  <c:choose>
 																			                <c:when test="${list.delYN == 'N'}">
-																			                    재직
+																			                    <div style="color: green; font-weight: bold;">재직</div>
 																			                </c:when>
 																			                <c:otherwise>
-																			                    퇴직
+																			                    <div style="color: red; font-weight: bold;">퇴직</div>
 																			                </c:otherwise>
 																			            </c:choose>
                                                 </td>
@@ -278,8 +278,9 @@
 		                        let tr = "<tr><td colspan='9'>조회된 결과가 없습니다.</td></tr>";
 		                        tbody.append(tr);
 		                    } else {
+		                    	
 		                        for (let i = 0; i < response.length; i++) {
-		                            let tr = "<tr>" +
+		                        	let tr = "<tr onclick=\"location.href='${contextPath}/hr/detailMember?id=" + response[i].userId + "';\">" +
 		                                "<td>" + response[i].userName + "</td>" +
 		                                "<td>" + response[i].userId + "</td>" +
 		                                "<td>" + response[i].hireDate + "</td>" +
@@ -293,9 +294,10 @@
 		                                "<td>" + (response[i].boardRight === 'Y' ? 'O' : 'X') + "</td>" +
 		                                "<td>" + (response[i].deptRight === 'Y' ? 'O' : 'X') + "</td>" +
 		                                "<td>" + response[i].gender + "</td>" +
-		                                "<td>" + (response[i].delYN === 'N' ? '재직' : '퇴직') + "</td>" +
+		                                "<td>" + (response[i].delYN === 'N' ? '<div style="color: green; font-weight: bold;">재직</div>' : '<div style="color: red; font-weight: bold;">퇴직</div>') + "</td>" +
 		                                "</tr>";
-		                            tbody.append(tr);
+		                            		tbody.append(tr);
+		                            
 		                        }
 		                    }
 		                },

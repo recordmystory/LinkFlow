@@ -166,4 +166,41 @@ public class HRcontroller {
 	}
 	return "redirect:/hr/hrPage";
 	}
+	
+	@ResponseBody
+	@PostMapping("/changePassword")
+	public String changePassword(MemberDto m) {
+		String userPwd = bcryptPwdEncoder.encode("linkflow123@");
+		m.setUserPwd(userPwd);
+		
+		int result = hService.resetPasswoard(m);
+		
+		return result > 0 ? "YYYYY" : "NNNNN";
+		
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("/goRetire")
+	public String goRetire(MemberDto m) {
+
+		int result = hService.goRetire(m);
+		
+		return result > 0 ? "YYYYY" : "NNNNN";
+		
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("/goJoinPathy")
+	public String goJoinPathy(MemberDto m) {
+
+		int result = hService.goJoinPathy(m);
+		
+		return result > 0 ? "YYYYY" : "NNNNN";
+		
+		
+	}
+	
+	
 }

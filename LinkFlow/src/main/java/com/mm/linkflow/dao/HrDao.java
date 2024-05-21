@@ -52,6 +52,18 @@ public class HrDao {
 	public int updateInfoMember(MemberDto m) {
 		return sql.update("hrMapper.updateInfoMember",m);
 	}
+
+	public int resetPasswoard(MemberDto m) {
+		return sql.update("hrMapper.resetPasswoard",m);
+	}
+
+	public int goRetire(MemberDto m) {
+		return sql.update("hrMapper.goRetire",m);
+	}
+
+	public int goJoinPathy(MemberDto m) {
+		return sql.update("hrMapper.goJoinPathy",m);
+	}
 	
 	
 }

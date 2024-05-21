@@ -68,7 +68,7 @@
                                   <div class="row">
                                     <div class="col-12">
                                      
-                                        <div class="card card-warning">
+                                        <div class="card card-info">
                                             <div class="card-header">
                                             <h3 class="card-title">사원 정보 등록</h3>
                                 
@@ -226,7 +226,7 @@
                                             <!-- /.card-body -->
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" disabled id="goPass">등록하기</button>
-                                                <a href="" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
+                                                <a href="${contextPath}/hr/hrPage" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
                                                
                                             </div>
                                             </form> 
@@ -241,7 +241,7 @@
                                     <div class="row">
                                     	<div class="col-12">
 	                                      <!-- Default box -->
-	                                      <div class="card-warning">
+	                                      <div class="card-info">
 	                                        <div class="card-header">
 	                                          <h3 class="card-title">사원 추가 도움말</h3>
 	                          
@@ -249,7 +249,8 @@
 	                                        </div>
 	                                        <div class="card-body">
 	                                          사원 추가시 비밀번호 초기값은 'linkflow123@' 입니다. 사용자에게 전달 부탁드립니다. 
-	                                          
+	                                          <br><br>
+	                                          사원 등록후 연차는 기본적으로 12개 생성됩니다. 추후 협의를 통해 사원 변경페이지에서 추가 등록 부탁드립니다.
 	                                          
 	                                        </div>
 	                                        <!-- /.card-body -->
