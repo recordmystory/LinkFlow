@@ -170,7 +170,7 @@
 							</ul>
 						</li>
 						<li class="nav-item">
-							<a href="/asset-management" class="nav-link middleName"> 
+							<a href="${ contextPath }/booking/assets.list" class="nav-link middleName"> 
 								<iclass="nav-icon far-2xl fa-solid fa-wallet"></i>
 								<p>자산 관리</p>
 							</a>
@@ -187,6 +187,7 @@
 		<div class="modal fade" id="booking">
 			<div class="modal-dialog">
 				<div class="modal-content">
+				<form id="insertBooking" action="${contextPath }/booking/insert.bk" method="post">
 					<div class="md-header">
 						<select name="bk-name" id="bk-name" class="md-type" onchange="changeBody();">
 							<option value="room">시설</option>
@@ -207,7 +208,7 @@
 		                        <option value="">04</option>
 		                        <option value="">5</option>
 		                    </select> &nbsp;&nbsp;
-		                    <select name="bk-date" id="bk-date" class="md-select">
+		                    <select name="bk-date" id="bk-day" class="md-select">
 		                        <option value="">15</option>
 		                        <option value="">16</option>
 		                        <option value="">17</option>
@@ -217,22 +218,32 @@
 		                </div>
 		                <span class="md-list">이용 시간</span>
 		                <div class="md-div">
-		                    <select name="bk-sTime" id="bk-sTime" style="width:90px;" class="md-select">
-		                        <option value="">09 : 00</option>
-		                        <option value="">10 : 00</option>
+		                    <select name="bkStartTime" id="bk-sTime" style="width:90px;" class="md-select">
+		                        <c:forEach var="hour" begin="9" end="17">
+                                    <c:forEach var="minute" begin="0" end="30" step="30">
+                                        <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
+                                            ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
+                                        </option>
+                                    </c:forEach>
+                                </c:forEach>
 		                    </select> &nbsp;&nbsp;
 		                    <span>~</span>&nbsp;&nbsp;
-		                    <select name="bk-eTime" id="bk-eTime" style="width:90px;" class="md-select">
-		                        <option value="">09:00</option>
-		                        <option value="">10:00</option>
+		                    <select name="bkEndime" id="bk-eTime" style="width:90px;" class="md-select">
+		                        <c:forEach var="hour" begin="10" end="18">
+                                    <c:forEach var="minute" begin="0" end="30" step="30">
+                                        <option value="${hour}:${minute == 0 ? '00' : minute}">
+                                            ${hour}:${minute == 0 ? '00' : minute}
+                                        </option>
+                                    </c:forEach>
+                                </c:forEach>
 		                    </select> &nbsp;&nbsp;
 		                </div>
 		                <span class="md-list">이용 시설</span>
 		                <div class="md-div">
 		                    <select name="bk-room" id="bk-room" style="width:100px;" class="md-select">
-		                        <option value="">회의실A</option>
-		                        <option value="">회의실B</option>
-		                        <option value="">회의실C</option>
+		                        <option value="A">회의실A</option>
+		                        <option value="B">회의실B</option>
+		                        <option value="C">회의실C</option>
 		                    </select>
 		                </div>
 		            </div>
@@ -254,26 +265,27 @@
 		                </div>
 		                <span class="md-list">이용 시간</span>
 		                <div id="car-time-content" class="md-div" style="display: none;">
-		                    <select name="bk-name" id="bk-name" style="width: 120px;" class="md-select">
+		                    <select name="bkStartDate" id="bk-date" style="width: 120px;" class="md-select">
 		                        <option value="">2024/04/22</option>
 		                        <option value="">2024/04/23</option>
 		                    </select> &nbsp;&nbsp;
 		                    <span>~</span>&nbsp;&nbsp;
-		                    <select name="bk-name" id="bk-name" style="width: 120px;" class="md-select">
+		                    <select name="bkEndDate" id="bk-eDate" style="width: 120px;" class="md-select">
 		                        <option value="">2024/04/23</option>
-		                        <option value="">10:00</option>
+		                        
 		                    </select> &nbsp;&nbsp;
 		                </div>
 		            </div>
 		            
 					<div class="modal-body">
 						<h6>사유</h6>
-						<input type="text" class="bk-coment" placeholder="예약 사유">
+						<input type="text" class="bk-coment" name="bkContent" placeholder="예약 사유">
 					</div>
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-						<button type="button" class="btn btn-outline-primary">SUBMIT</button>
+						<button type="submit" class="btn btn-outline-primary">SUBMIT</button>
 					</div>
+				</form>
 				</div>
 				<!-- /.modal-content -->
 			</div>
@@ -302,6 +314,10 @@
 	            roomContent.style.display = 'none';
 	            suppliesContent.style.display = 'block';
 	        }
+	    }
+	    
+	    function submit(){
+	    	
 	    }
 	  </script>
 </body>

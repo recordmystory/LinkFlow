@@ -141,9 +141,6 @@
 						<div class="bk-detailArea">
 						    <div class="ymd" style="height:30px;">
 						        <div class="ymd">
-						        	<select id="year2" name="year2" class="form-control" style="width: 100px;"></select>
-						        	<select id="month2" name="month2" class="form-control" style="width: 80px;"></select>
-						        	<select id="day2" name="day2" class="form-control" style="width: 80px;"></select>
 						        	
 						            <c:set var="ymd" value="${bk.bkStartDate}" />
 						            <c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
@@ -152,6 +149,12 @@
 						                    <h4>&nbsp;</h4>
 						                </c:when>
 						                <c:otherwise>
+						                
+							        	<select id="year2" name="year2" class="form-control" style="width: 100px;"></select>
+							        	<select id="month2" name="month2" class="form-control" style="width: 80px;"></select>
+							        	<select id="day2" name="day2" class="form-control" style="width: 80px;"></select>
+						                
+						                
 						                    <select id="year" name="year" class="form-control" style="width: 100px;">
 						                        <option value="${ymdArr[0]}">${ymdArr[0]}</option>
 						                        <c:if test="${ymdArr[0] == 12}">
@@ -383,16 +386,16 @@
 		        $("#detailArea select").prop("disabled", true);
 		    }
 		    
-		    //var now = new Date();
+		   var now = new Date();
 		    
 		    /***************************** 날짜 초기화 ***********************************/
 		    $("#year2").empty();
 		    $("#month2").empty();
 		    $("#day2").empty();
 		    
-		    var detailYear = "2024"; // DB에서 조회한 상세 년도
-		    var detailMonth = "5"; // DB에서 조회한 상세 월
-		    var detailDay = "16"; // DB에서 조회한 상세 일
+		    var detailYear = "${ymdArr[0]}"; // DB에서 조회한 상세 년도
+		    var detailMonth = "${ymdArr[1]}"; // DB에서 조회한 상세 월
+		    var detailDay = "${ymdArr[2]}"; // DB에서 조회한 상세 일
 
 		    //년도 셋팅
 		    $("#year2").append("<option value='"+detailYear+"'>"+detailYear+"</option>");
@@ -402,14 +405,24 @@
 		    }
 		 	
 		 	//월 셋팅
-		 	for(var i=Number(detailMonth); i<=12; i++) {
-		 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
+		 	if(detailMonth == now.getMonth()+1){
+			 	for(var i=Number(detailMonth); i<=Number(detailMonth)+1; i++) {
+			 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		 	}else{
+		 		for(var i=Number(detailMonth)-1; i<=Number(detailMonth); i++) {
+			 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
 		 	}
 		 	
 		 	//일 셋팅
 		 	var detailDate = new Date(detailYear, detailMonth-1, 0);
-		 	for(var i=detailDay; i<=detailDate.getDate(); i++){
-		 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+		 	$("#day2").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+		 	
+		 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
+		 		if( i != detailDay){
+		 			$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+		 		}
 		 	}
 		 	/***************************** 날짜 초기화 ***********************************/
 		 
@@ -424,9 +437,19 @@
 			$("#month2").change(function(){
 				$("#day2").empty();
 				var tempDate = new Date($("#year").val(), $(this).val()-1, 0);
-				for(var i=1; i<=tempDate.getDate(); i++){
-			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
+				if($("#month2").val() != now.getMonth()+1){
+					for(var i=1; i<=tempDate.getDate(); i++){
+				 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+				 	}
+				}else{
+					$("#day2").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+				 	
+				 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
+				 		if( i != detailDay){
+				 			$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+				 		}
+				 	}
+				}
 		    });
 		})
 		
@@ -436,32 +459,7 @@
 	                alert(message);
 	            }
         } */
-        
-     // 페이지가 로드될 때와 월이 변경될 때 모두 실행되도록 수정합니다.
-        /* document.addEventListener("DOMContentLoaded", updateDayDropdown);
-        document.getElementById("month").addEventListener("change", updateDayDropdown);
-
-        function updateDayDropdown() {
-            var year = document.getElementById("year").value;
-            var month = document.getElementById("month").value;
-            var dayDropdown = document.getElementById("day");
-            var todayDay = ${todayDay}; // 오늘의 일을 가져옵니다.
-            
-            // 선택한 월의 일 수를 계산합니다.
-            var daysInMonth = new Date(year, month, 0).getDate();
-            
-            // 일 수 드롭다운을 비웁니다.
-            dayDropdown.innerHTML = "";
-            
-            // 오늘의 날짜부터 해당 월의 일 수까지 일 수 드롭다운을 생성합니다.
-            for (var day = todayDay; day <= daysInMonth; day++) {
-                var option = document.createElement("option");
-                option.value = day < 10 ? "0" + day : day;
-                option.textContent = day < 10 ? "0" + day : day;
-                dayDropdown.appendChild(option);
-            }
-            console.log(${todayMonth});
-        }*/
+    
 	</script>
 
 
