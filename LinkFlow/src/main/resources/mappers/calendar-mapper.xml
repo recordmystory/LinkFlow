@@ -82,7 +82,7 @@
 	        FROM TB_SCHEDULE S
 	        JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
 	        WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
-	       
+	        AND S.DEL_YN = 'N'
 	    </select> 
 	    
 	<!-- 상세조회 -->
