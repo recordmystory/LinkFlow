@@ -69,4 +69,19 @@ public class HrServiceImpl implements HrService {
 		return hDao.updateInfoMember(m);
 	}
 
+	@Override
+	public int resetPasswoard(MemberDto m) {
+		return hDao.resetPasswoard(m);
+	}
+
+	@Override
+	public int goRetire(MemberDto m) {
+		return hDao.goRetire(m);
+	}
+
+	@Override
+	public int goJoinPathy(MemberDto m) {
+		return hDao.goJoinPathy(m);
+	}
+
 }

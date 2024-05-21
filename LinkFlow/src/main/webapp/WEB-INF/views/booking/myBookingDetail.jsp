@@ -99,10 +99,10 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<div class="LinkFlowMainSection">
 			<jsp:include
-				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
+				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp"/>
 
 			<div class="LinkFlowMainContent">
 				<!-- Content Header (Page header) -->
@@ -113,11 +113,10 @@
 						</div>
 
 					</div>
-					</section>
+				</section>
 					<!-- /.container-fluid -->
 				<div class="" style="display: flex; flex-wrap: wrap;">
 					<div class="bk-head">
-
 						<div>
 							<a class="btn bg-gradient-secondary" href="${ contextPath }/booking/mylist.bk">목록으로</a>
 						</div>
@@ -125,124 +124,146 @@
 					<%
 						// 현재 날짜와 시간 가져오기
 						Date now = new Date();
-						
 						// 날짜 형식 지정
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-						
 						// 현재 날짜를 문자열로 변환
-						String today = dateFormat.format(now);
+						String[] todayArr = dateFormat.format(now).split("/");
+						
+						pageContext.setAttribute("todayYear",todayArr[0]);
+						pageContext.setAttribute("todayMonth",todayArr[1]);
+						pageContext.setAttribute("todayDay",todayArr[1]);
+						
 					%>
-					<c:set var="todayArr" value="${fn:split(today, '/')}"/>
 					
-					<div class="bk-detail">
+					<div class="bk-detail" id="detailArea">
 						<input type="hidden" name="bookingNo" value="${bk.bookingNo }" id="bookingNo">
 					
 						<div class="bk-detailArea">
-							<div class="ymd" style="height:30px;">
-								<div class="ymd">
-									<c:set var="ymd" value="${bk.bkStartDate}" />
-									<c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
-									<c:if test="${ not empty bk.bkStartDate}">
-										<select id="year" name="year" class="form-control" style="width: 100px;">
-											<option value="${ ymdArr[0] }">${ ymdArr[0] }</option>
-											<c:if test="${ ymdArr[0] == 12 }">
-												<option value="${ ymdArr[0] + 1 }">${ ymdArr[0] + 1}</option>
-											</c:if>
-										</select>&nbsp; 
-									<select id="month" name="month" class="form-control" style="width: 80px;">
-										<option value="${ ymdArr[1] }">${ ymdArr[1] }</option>
-										<c:choose>
-											<c:when test="${ymdArr[1] eq todayArr[1]}">
-												<option value="0${ ymdArr[1] +1 }">0${ ymdArr[1] +1}</option>
-											</c:when>
-											<c:otherwise>
-												<option value="0${ymdArr[1] -1}">0${ymdArr[1] -1}</option>
-											</c:otherwise>
-										</c:choose>
-											<!-- 해당 월과 +1 월만 나오게 하기-->
-									</select>&nbsp; 
-									<select id="day" name="day" class="form-control" style="width: 80px;">
-										<option value="${ ymdArr[2] }">${ ymdArr[2] }</option>
-										<option value="${ ymdArr[2] +1 }">${ ymdArr[2] +1 }</option>
-										<!-- 01~30 또는 31 까지 나오게 하기 -->
-									</select>&nbsp;
-									<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;
-										</p>
-										<select id="start" name="bkStartTime" class="form-control" style="width: 110px;">
-											<option value="09:00">09:00</option>
-											<option value="09:30">09:30</option>
-											<option value="10:00">10:00</option>
-											<option value="10:30">10:30</option>
-											<option value="11:00">11:00</option>
-											<option value="11:30">11:30</option>
-											<option value="12:00">12:00</option>
-											<option value="12:30">12:30</option>
-											<option value="13:00">13:00</option>
-											<option value="13:30">13:30</option>
-											<option value="14:00">14:00</option>
-											<option value="14:30">14:30</option>
-											<option value="15:00">15:00</option>
-											<option value="15:30">15:30</option>
-											<option value="16:00">16:00</option>
-											<option value="16:30">16:30</option>
-											<option value="17:00">17:00</option>
-											<!-- 09시부터 18시 까지-->
-										</select>&nbsp; &nbsp; 
-									<span>~</span> &nbsp; &nbsp; 
-									<select id="end" name="bkEndTime" class="form-control" style="width: 110px;">
-											<option value="10:00">10:00</option>
-											<option value="10:30">10:30</option>
-											<option value="11:00">11:00</option>
-											<option value="11:30">11:30</option>
-											<option value="12:00">12:00</option>
-											<option value="12:30">12:30</option>
-											<option value="13:00">13:00</option>
-											<option value="13:30">13:30</option>
-											<option value="14:00">14:00</option>
-											<option value="14:30">14:30</option>
-											<option value="15:00">15:00</option>
-											<option value="15:30">15:30</option>
-											<option value="16:00">16:00</option>
-											<option value="16:30">16:30</option>
-											<option value="17:00">17:00</option>
-											<option value="17:30">17:30</option>
-											<option value="18:00">18:00</option>
-										</select>&nbsp;
-								</c:if>
-								</div>
-								<div>
-									<h5 style="margin-right: 20px;">${bk.status }</h5>
-								</div>
-							</div>
-							<hr>
-							<div class="ass-detail">
-								<select id="ass-type" class="form-control " name="subName" style="width: 100px;" disabled>
-									<option>${ bk.subName }</option>
-								</select>&nbsp;
-								<p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp; </p>
-								<select id="ass-name" name="assetsName" class="form-control" style="width: 80px;">
-									<option value="A">A</option>
-									<option value="B">B</option>
-									<option value="C">C</option>
-									<!-- ass-type 에 따라 내용 바뀌게 -->
-								</select>
-							</div>
+						    <div class="ymd" style="height:30px;">
+						        <div class="ymd">
+						            <c:set var="ymd" value="${bk.bkStartDate}" />
+						            <c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
+						            <c:choose>
+						                <c:when test="${empty bk.bkStartDate}">
+						                    <h4>&nbsp;</h4>
+						                </c:when>
+						                <c:otherwise>
+						                    <select id="year" name="year" class="form-control" style="width: 100px;">
+						                        <option value="${ymdArr[0]}">${ymdArr[0]}</option>
+						                        <c:if test="${ymdArr[0] == 12}">
+						                            <option value="${ymdArr[0] + 1}">${ymdArr[0] + 1}</option>
+						                        </c:if>
+						                    </select>&nbsp; 
+						                    <select id="month" name="month" class="form-control" style="width: 80px;">
+						                        <option value="${ymdArr[1]}">${ymdArr[1]}</option>
+						                        <c:choose>
+											        <c:when test="${ymdArr[1] eq todayMonth}">
+											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}">
+											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}
+											            </option>
+											        </c:when>
+											        <c:otherwise>
+											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}">
+											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}
+											            </option>
+											        </c:otherwise>
+											    </c:choose>
+						                    </select>&nbsp; 
+						                    <select id="day" name="day" class="form-control" style="width: 80px;">
+						                         <c:forEach var="day" begin="1" end="${daysInMonth}">
+											        <option value="${day < 10 ? '0' + day : day}">${day < 10 ? '0' + day : day}</option>
+											    </c:forEach>
+									        </select>&nbsp;
+						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
+						
+						                    <c:choose>
+						                        <c:when test="${bk.subName eq '회의실'}">
+						                            <select id="start" name="bkStartTime" class="form-control" style="width: 110px;">
+						                                <c:forEach var="hour" begin="9" end="17">
+						                                    <c:forEach var="minute" begin="0" end="30" step="30">
+						                                        <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
+						                                            ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
+						                                        </option>
+						                                    </c:forEach>
+						                                </c:forEach>
+						                            </select>
+						                            &nbsp;&nbsp;<span>~</span>&nbsp;&nbsp;
+						                            <select id="end" name="bkEndTime" class="form-control" style="width: 110px;">
+						                                <c:forEach var="hour" begin="10" end="18">
+						                                    <c:forEach var="minute" begin="0" end="30" step="30">
+						                                        <option value="${hour}:${minute == 0 ? '00' : minute}">
+						                                            ${hour}:${minute == 0 ? '00' : minute}
+						                                        </option>
+						                                    </c:forEach>
+						                                </c:forEach>
+						                            </select>&nbsp;
+						                        </c:when>
+						                         <c:when test="${bk.subName eq '차량'}">
+											        <c:set var="ymdEnd" value="${bk.bkEndDate}" />
+											        <c:set var="ymdEndArr" value="${fn:split(ymdEnd, '/')}"/>
+											        <select id="yearEnd" name="yearEnd" class="form-control" style="width: 100px;">
+											            <option value="${ymdEndArr[0]}">${ymdEndArr[0]}</option>
+											            <c:if test="${ymdEndArr[0] == 12}">
+											                <option value="${ymdEndArr[0] + 1}">${ymdEndArr[0] + 1}</option>
+											            </c:if>
+											        </select>&nbsp; 
+											        <select id="monthEnd" name="monthEnd" class="form-control" style="width: 80px;">
+											            <option value="${ymdEndArr[1]}">${ymdEndArr[1]}</option>
+											            <c:choose>
+											                <c:when test="${ymdEndArr[1] eq todayArr[1]}">
+											                    <option value="0${ymdEndArr[1] + 1}">0${ymdEndArr[1] + 1}</option>
+											                </c:when>
+											                <c:otherwise>
+											                    <option value="0${ymdEndArr[1] - 1}">0${ymdEndArr[1] - 1}</option>
+											                </c:otherwise>
+											            </c:choose>
+											        </select>&nbsp; 
+											        <select id="dayEnd" name="dayEnd" class="form-control" style="width: 80px;">
+											            <option value="${ymdEndArr[2]}">${ymdEndArr[2]}</option>
+											            <option value="${ymdEndArr[2] + 1}">${ymdEndArr[2] + 1}</option>
+											        </select>&nbsp;
+											    </c:when>
+						                    </c:choose>
+						                </c:otherwise>
+						            </c:choose>
+						        </div>
+					        	<div>
+						            <h5 style="margin-right: 20px;" id="status" value="${bk.status}">${bk.status}</h5>
+							    </div>
+					        </div>
+							    <hr>
+							    <div class="ass-detail">
+							        <select id="assType" class="form-control" name="subName" style="width: 100px;" disabled>
+							            <option value="${bk.subName}">${bk.subName}</option>
+							        </select>&nbsp;
+							        <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
+							        <select id="assName" name="assetsName" class="form-control" style="min-width: 80px; max-width: 220px;">
+								            <option value="${bk.assetsName }">${bk.assetsName }</option>
+							            <c:forEach var="ass" items="${assList}">
+									        <c:if test="${!ass.assetsName.equals(bk.assetsName)}">
+									            <option value="${ass.assetsName}">${ass.assetsName}</option>
+									        </c:if>
+									    </c:forEach>
+							        </select>
+							    </div>
 
-							<hr>
-							<div style="margin: 40px;">
-								<h4>사유</h4>
-								<div class="coment" style="height: 150px;">
-									<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
-							</div>
-							<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
-							<hr>
-							<div style="margin: 40px;">
-								<h4>비고</h4>
-								<div class="coment" style="height: 100px;">${ bk.rejContent }
+	
+								<hr>
+								<div style="margin: 40px;">
+									<h4>사유</h4>
+									<div class="coment" style="height: 150px;">
+										<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
 								</div>
-							</div>
+								<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
+								<hr>
+								<div style="margin: 40px;">
+									<h4>비고</h4>
+									<div class="coment" style="height: 100px;">${ bk.rejContent }
+									</div>
+								</div>
 
-						</div>
+							</div>
+						<!-- /.card -->
 						<div class="md-btn" style="padding-top: 30px; float: right;">
 							<c:if test="${bk.status eq '예약대기' }">
 								<!-- 상태가 예약 대기일 때 보여질 수 있도록-->
@@ -250,14 +271,13 @@
 								<button class="btn btn-default" data-toggle="modal" data-target="#bk-can">예약 취소</button>
 							</c:if>
 						</div>
-					
+						
 					</div>
-					<!-- /.card -->
+					<!-- /.content-wrapper -->
 				</div>
-				<!-- /.content-wrapper -->
 			</div>
+			<!-- /.content-wrapper -->
 		</div>
-		<!-- /.content-wrapper -->
 	</div>
 	<!-- 예약 수정 -->
 	<div class="modal fade" id="bk-mod">
@@ -315,11 +335,22 @@
 			let year = document.getElementById('year').value;
 			let month = document.getElementById('month').value;
 			let day = document.getElementById('day').value;
+			let yearE = document.getElementById('yearEnd').value;
+			let monthE = document.getElementById('monthEnd').value;
+			let dayE = document.getElementById('dayEnd').value;
+			let subName = document.getElementById('assType').value;
+			
 			let bkStartDate = year +'/' +month+ '/'+ day;
 			let bkStartTime = document.getElementById('start').value;
-			let bkEndDate = year +'/' +month+ '/'+ day;
+			
+			if(subName == '회의실'){
+				let bkEndDate = year +'/' +month+ '/'+ day;
+			}else if(subName == '차량'){
+				let bkEndDate = yearE +'/' +monthE + '/'+ dayE;
+			}
+			
 			let bkEndTime = document.getElementById('end').value;
-			let assetsName = document.getElementById('ass-name').value;
+			let assetsName = document.getElementById('assName').value;
 			let bkContent = document.getElementById('bk-content').value;
 			let bookingNo = document.getElementById('bookingNo').value;
 			
@@ -331,12 +362,12 @@
 					bkStartTime:bkStartTime,
 					bkEndDate:bkEndDate,
 					bkEndTime:bkEndTime,
+					subName:subName,
 					assetsName:assetsName,
 					bkContent:bkContent,
 					bookingNo:bookingNo
 				},success:function(bk){
 					if(bk != null){
-						alert('예약이 수정되었습니다.');
 						window.location.href = '${contextPath}/booking/mylist.bk'
 					}
 				},error:function(){
@@ -347,9 +378,44 @@
 		}
 		
 		$(document).ready(function(){
-			 var todayArr = [<c:out value="${todayArr[0]}" />, <c:out value="${todayArr[1]}" />, <c:out value="${todayArr[2]}" />];
-				    console.log(todayArr);
+			let status = document.getElementById('status').textContent;
+		    if(status !== "예약대기"){
+		        $("#detailArea select").prop("disabled", true);
+		    }
 		})
+		
+		/* window.onload = function() {
+            var message = "${message}";
+	            if (message) {
+	                alert(message);
+	            }
+        } */
+        
+     // 페이지가 로드될 때와 월이 변경될 때 모두 실행되도록 수정합니다.
+        document.addEventListener("DOMContentLoaded", updateDayDropdown);
+        document.getElementById("month").addEventListener("change", updateDayDropdown);
+
+        function updateDayDropdown() {
+            var year = document.getElementById("year").value;
+            var month = document.getElementById("month").value;
+            var dayDropdown = document.getElementById("day");
+            var todayDay = ${todayDay}; // 오늘의 일을 가져옵니다.
+            
+            // 선택한 월의 일 수를 계산합니다.
+            var daysInMonth = new Date(year, month, 0).getDate();
+            
+            // 일 수 드롭다운을 비웁니다.
+            dayDropdown.innerHTML = "";
+            
+            // 오늘의 날짜부터 해당 월의 일 수까지 일 수 드롭다운을 생성합니다.
+            for (var day = todayDay; day <= daysInMonth; day++) {
+                var option = document.createElement("option");
+                option.value = day < 10 ? "0" + day : day;
+                option.textContent = day < 10 ? "0" + day : day;
+                dayDropdown.appendChild(option);
+            }
+            console.log(${todayMonth});
+        }
 	</script>
 
 

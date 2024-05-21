@@ -71,9 +71,9 @@
                             </div>
                             <div class="form-inline">
                                 <div class="input-group">
-                                	<c:if test="${ board.regId == loginUser.userId }">
-                                    <a href="" style="padding-right: 20px;">수정</a>
-                                    <a href="">삭제</a>
+                                	<c:if test="${ board.regId == loginUser.userId or loginUser.superRight == 'Y' or loginUser.boardRight == 'Y'}">
+                                    <a href="${ contextPath }/board/modifyForm.page?no=${board.boardNo}" style="padding-right: 20px;">수정</a>
+                                    <a href="#" onclick="confirmDelete('${contextPath}/board/delete.do?no=${board.boardNo}')">삭제</a>
                                   </c:if>
                                 </div>
                             </div>
@@ -201,6 +201,13 @@
                     });
                 });
             </script>
+            <script>
+						    function confirmDelete(url) {
+						        if (confirm('정말 삭제하시겠습니까?')) {
+						            window.location.href = url;
+						        }
+						    }
+						</script>
         </div>
     </div>
 </div>

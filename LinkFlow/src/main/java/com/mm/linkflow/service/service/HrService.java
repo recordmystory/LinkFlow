@@ -19,6 +19,12 @@ public interface HrService {
 	MemberDto selectDatailMember(String id);
 	//구성원 정보 변경
 	int updateInfoMember(MemberDto m);
+	//비밀번호 초기화 로직
+	int resetPasswoard(MemberDto m);
+	//퇴사 처리하는 로직 
+	int goRetire(MemberDto m);
+	//재직 처리하는 로직 
+	int goJoinPathy(MemberDto m);
 	
 	//조직 추가 
 	

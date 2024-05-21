@@ -52,6 +52,11 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.cancleBooking(bk);
 	}
 
+
+	@Override
+	public List<AssetsDto> selectDetailAssList(String supName) {
+		return bkDao.selectDetailAssList(supName);
+	}
 	
 	@Override
 	public BookingDto selectDetailMyBk(String bkNo) {

@@ -53,6 +53,27 @@ public class MemberDao {
 		// TODO Auto-generated method stub
 		return sql.selectOne("memberMapper.SerchPwd",userId);
 	}
+	
+	// 남자 사원수 조회용 - 황민우
+	public int selectMale() {
+		return sql.selectOne("memberMapper.selectMale");
+	}
+	// 여자 사원수 조회용 - 황민우
+	public int selectFemale() {
+		return sql.selectOne("memberMapper.selectFemale");
+	}
+	// 전체 사원수 조회용 - 황민우
+	public int selectAllMember(String date) {
+		return sql.selectOne("memberMapper.selectAllMember", date);
+	}
+	// 입사자 조회용 - 황민우
+	public int selectHireMember(String date) {
+		return sql.selectOne("memberMapper.selectHireMember", date);
+	}
+	// 퇴사자 조회용 - 황민우
+	public int selectRetireMember(String date) {
+		return sql.selectOne("memberMapper.selectRetireMember", date);
+	}
 
 
 

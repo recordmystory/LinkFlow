@@ -32,4 +32,15 @@ public interface MemberService {
 	   int deleteProfill(MemberDto m);
 	   
 	   String SerchPwd(String userId);
+	   
+	   // 남자 사원수 조회용 - 황민우
+	   int selectMale();
+	   // 여자 사원수 조회용 - 황민우
+	   int selectFemale();
+	   // 전체 사원수 조회용 - 황민우
+	   int selectAllMember(String date);
+	   // 입사자 조회용 - 황민우
+	   int selectHireMember(String date);
+	   // 퇴사자 조회용 - 황민우
+	   int selectRetireMember(String date);
 }

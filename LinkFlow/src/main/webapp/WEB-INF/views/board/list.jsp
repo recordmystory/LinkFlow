@@ -138,6 +138,8 @@
                             <div class="form-inline">
                             	<form id="searchForm" action="${contextPath }/board/search.do" method="get" align="center">
                                 <div class="input-group">
+                                    <input type="hidden" name="page" value="">
+                                    <input type="hidden" name="type" value="${search.boardType == null ? map.currentType : search.boardType  }">
                                     <div class="select" style="margin-right: 15px;">
                                         <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
                                             <option value="user_id">작성자</option>
@@ -145,9 +147,9 @@
 										                        <option value="board_content">내용</option>
                                         </select>
                                     </div>
-                                    <input class="form-control form-control-sidebar" type="search" placeholder="검색하기" aria-label="Search">
+                                    <input name="keyword" class="form-control form-control-sidebar" type="search" placeholder="검색하기" aria-label="Search" value="${search.keyword }">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary">
+                                        <button type="submit"class="btn btn-primary">
                                             <i class="fas fa-search fa-fw"></i>
                                         </button>
                                     </div>
@@ -171,6 +173,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        	<c:forEach var="n" items="${noticeList}">
+                                            	<tr onclick="location.href='${contextPath}/board/${loginUser.userId == n.regId ? 'detail.do' : 'increase.do' }?&no=${ n.boardNo }';">
+                                              	<th>${n.boardNo }</th>
+                                                <th>공지</th>
+                                                <th>${n.boardTitle}</th>
+                                                <th>${n.regId }</th>
+                                                <th>${n.modDate }</th>
+                                                <th>${n.count }</th>
+                                            	</tr>
+                                           </c:forEach>
                                         	<c:choose>
                                         		<c:when test="${empty boardList }">
                                         			<tr>
@@ -179,26 +191,29 @@
                                         		</c:when>
                                         		<c:otherwise>
                                         			<c:forEach var="b" items="${boardList}">
-	                                            	<tr onclick="location.href='${contextPath}/board/${loginUser.userId == b.regId ? 'detail.do' : 'increase.do' }?type=${b.boardCategory}&no=${ b.boardNo }';">
-	                                                <c:choose>
-	                                                	<c:when test="${b.noticeYN == 'Y' }">
-	                                                		<th>${b.boardNo }</th>
-			                                                <th>공지</th>
-			                                                <th>${b.boardTitle}</th>
-			                                                <th>${b.regId }</th>
-			                                                <th>${b.modDate }</th>
-			                                                <th>${b.count }</th>
-	                                                	</c:when>
-			                                              <c:otherwise>
+                                        				<c:choose>
+                                        					<c:when test="${ b.boardCategory != 'CATEGORY-8' }">
+                                        						<tr onclick="location.href='${contextPath}/board/${loginUser.userId == b.regId ? 'detail.do' : 'increase.do' }?&no=${ b.boardNo }';">
 			                                              	<td>${b.boardNo }</td>
 			                                                <td>일반</td>
 			                                                <td>${b.boardTitle}</td>
 			                                                <td>${b.regId }</td>
 			                                                <td>${b.modDate }</td>
 			                                                <td>${b.count }</td>
-			                                              </c:otherwise>
-	                                                </c:choose>
-	                                            	</tr>
+			                                            	</tr>
+                                        					</c:when>
+                                        					<c:otherwise>
+                                        						<tr onclick="location.href='${contextPath}/board/${loginUser.userId == b.regId ? 'detail.do' : 'increase.do' }?&no=${ b.boardNo }';">
+			                                              	<th>${b.boardNo }</th>
+			                                                <th>공지</th>
+			                                                <th>${b.boardTitle}</th>
+			                                                <th>${b.regId }</th>
+			                                                <th>${b.modDate }</th>
+			                                                <th>${b.count }</th>
+			                                            	</tr>
+                                        					</c:otherwise>
+                                        				</c:choose>
+	                                            	
                                             	</c:forEach>
                                             </c:otherwise>
                                         	</c:choose>
@@ -213,7 +228,7 @@
 														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?type=${map.currentType}&page=${p}">${p}</a></li>
 														                </c:forEach>
 														                
-														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?${map.currentType}&page=${pi.currentPage +1}">&raquo;</a></li>
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?type=${map.currentType}&page=${pi.currentPage +1}">&raquo;</a></li>
 
                                         </ul>
                                     </div>

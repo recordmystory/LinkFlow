@@ -12,6 +12,8 @@
 		<result column="notice_yn" property="noticeYN" />
 		<result column="char_date" property="charDate" />
 		<result column="category_type" property="boardType" />
+		<result column="category_name" property="categoryName" />
+		
 		
 		<collection resultMap="attachMapper.attachResult" property="attachList" />
 	</resultMap>
@@ -52,7 +54,22 @@
   	  from tb_board
   	 where 
   	 			del_yn = 'N'
+  	 	 <if test='boardCategory != "CATEGORY-8"'>
+		    		and notice_yn = 'N'
+	    	</if>
   	  and board_category = #{boardType}
+  </select>
+  
+  <select id="selectSearchListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_board b
+  	  join tb_member m on (b.reg_id = user_id)
+  	 where b.del_yn = 'N'
+  	 	 <if test='boardType != "CATEGORY-8"'>
+		    		and b.notice_yn = 'N'
+		   </if>
+  	 	 and ${condition} like '%' || #{keyword} || '%'
+  	 	 and board_category = #{boardType}
   </select>
 	
 	<select id="selectBoardList" resultMap="boardResult">
@@ -71,8 +88,62 @@
 		    tb_category c ON b.board_category = c.board_category
 		WHERE 
 		    b.del_yn = 'N'
-		    AND b.temp_save = '02'
-		    AND b.board_category = #{boardType}
+		    and b.temp_save = '02'
+		    and b.board_category = #{boardType}
+		    	<if test='boardCategory != "CATEGORY-8"'>
+		    		and b.notice_yn = 'N'
+		    	</if>
+		ORDER BY 
+		    b.board_no DESC
+  </select>
+  
+  <select id="selectSearchList" resultMap="boardResult">
+  	SELECT 
+	    b.board_no,
+	    b.board_category,
+	    b.board_title,
+	    b.reg_id,
+	    b.count,
+	    b.notice_yn,
+	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+	    c.category_type
+		FROM 
+		    tb_board b
+		JOIN 
+		    tb_category c ON b.board_category = c.board_category
+		join 
+				tb_member m on (b.reg_id = user_id)
+		WHERE 
+		    b.del_yn = 'N'
+		    and b.temp_save = '02'
+		    and ${condition} like '%' || #{keyword} || '%'
+		    and b.board_category = #{boardType}
+		    	<if test='boardType != "CATEGORY-8"'>
+		    		and b.notice_yn = 'N'
+		    	</if>
+		ORDER BY 
+		    b.board_no DESC
+  </select>
+  
+  <select id="selectNoticeBoardList" resultMap="boardResult">
+  	SELECT 
+	    b.board_no,
+	    b.board_category,
+	    b.board_title,
+	    b.reg_id,
+	    b.count,
+	    b.notice_yn,
+	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+	    c.category_type
+		FROM 
+		    tb_board b
+		JOIN 
+		    tb_category c ON b.board_category = c.board_category
+		WHERE 
+		    b.del_yn = 'N'
+		    and b.notice_yn = 'Y'
+		    and b.temp_save = '02'
+		    and b.board_category = #{boardType}
 		ORDER BY 
 		    b.board_no DESC
   </select>
@@ -116,6 +187,7 @@
       , board_title
       , b.reg_id
       , board_content
+      , board_category
       , notice_yn
       , to_char(b.mod_date, 'YYYY-MM-DD') char_date
       , file_no
@@ -125,8 +197,40 @@
 	  from tb_board b
 	  left join tb_attachment on (ref_category ='B' and ref_no = board_no)
 	 where b.del_yn ='N'
-	 	 and b.temp_save = '02'
 	   and board_no = #{no}
+  </select>
+  
+  <update id="updateBoard">
+  	update
+  				tb_board
+			 set
+			     board_category = #{boardCategory} 
+			 	 , board_title= #{boardTitle}
+			   , notice_yn = #{noticeYN}
+			   , board_content = #{boardContent}
+			   , mod_id = #{modId}
+			   , temp_save = #{tempSave}
+		 where board_no = #{boardNo} 
+  </update>
+  
+  <select id="selectTempSaveList" resultMap="boardResult">
+  	SELECT 
+	    b.board_no,
+	    b.board_category,
+	    c.category_name,
+	    b.board_title,
+	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+	    c.category_type
+		FROM 
+		    tb_board b
+		JOIN 
+		    tb_category c ON b.board_category = c.board_category
+		WHERE 
+		    b.del_yn = 'N'
+		    and b.temp_save = '01'
+		    and b.reg_id = #{userId}
+		ORDER BY 
+		    b.board_no DESC
   </select>
 
 </mapper>

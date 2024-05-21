@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -116,15 +117,15 @@ input[type="checkbox"]:checked {
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="bk" items="${ bkList }">
-										<tr onclick="location.href='${contextPath}/booking/detail.bk?no=${ bk.bookingNo }'">
-											<td>${ bk.bookingNo }</td>
+									<c:forEach var="bk" items="${ bkList }" varStatus="num" >
+										<tr onclick="location.href='${contextPath}/booking/detail.bk?no=${ bk.bookingNo }&sup=${bk.subName }'">
+											<td>${fn:length(bkList) - num.index}</td>
 											<td>${ bk.mainName }</td>
 											<td>${ bk.subName }</td>
 											<td>${ bk.assetsName }</td>
-											<th>${ bk.bkStartDate }</th>
-											<th>${ bk.bkStartTime } ~ ${ bk.bkEndTime }</th>
-											<th>${ bk.status }</th>
+											<td>${ bk.bkStartDate }</td>
+											<td>${ bk.bkStartTime } ~ ${ bk.bkEndTime }</td>
+											<td>${ bk.status }</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
@@ -176,8 +177,8 @@ input[type="checkbox"]:checked {
 					let list = result.bkList;
 					if(list != null){
 						for(let i=0; i<list.length; i++){
-							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + list[i].bookingNo + "'\">";
-							table +="<td>"+ list[i].bookingNo+"</td>";
+							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + list[i].bookingNo + "&sup=" + list[i].supName + "'\">";
+							table +="<td>"+ (list.length - i)+"</td>";
 							table +="<td>"+ list[i].mainName +"</td>";
 							table +="<td>"+ list[i].subName +"</td>";
 							table +="<td>"+ list[i].assetsName+"</td>";

@@ -303,10 +303,36 @@
 			    RANK_SCODE = #{rankScode},
 			    MOD_DATE = SYSDATE,
 			    MOD_ID = #{modId},
-			    GENDER = #{gender}
+			    GENDER = #{gender},
+			    DAYOFF = #{dayOff}
 			WHERE 
 			    USER_ID = #{userId}
 	</update>
+	
+	<update id="resetPasswoard">
+	UPDATE TB_MEMBER 
+	SET
+		USER_PWD = #{userPwd} 
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="goRetire">
+	UPDATE TB_MEMBER 
+	SET
+		 RETIRE_DATE = SYSDATE
+		,DEL_YN = 'Y' 
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="goJoinPathy">
+	UPDATE TB_MEMBER 
+	SET
+		 HIRE_DATE = SYSDATE
+		,DEL_YN = 'N'
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	
 	
 </mapper>
 	

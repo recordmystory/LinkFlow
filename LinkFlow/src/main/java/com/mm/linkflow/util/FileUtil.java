@@ -73,6 +73,7 @@ public class FileUtil {
 						                .regId(member.getUserId())
 						                
 						                .modId(member.getUserId())
+						                .refNo(refNo)
 						                .refCategory(refString)
 						                .originName(map.get("originName"))
 						                .filesystemName(map.get("filesystemName"))

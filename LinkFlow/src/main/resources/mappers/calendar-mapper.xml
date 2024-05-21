@@ -65,56 +65,80 @@
 	    )
 	</insert>
 
-<!-- 전체일정 조회(특정 캘린더)  -->
-<select id="selectScheduleList" resultMap="scheduleResult">
-        SELECT 
-            S.SCH_NO,
-            S.SCH_CONTENT,
-            TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-        		TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
-            S.ADDRESS,
-            S.SCH_IMPORT,
-            S.NOTIFY_YN,
-            S.SCH_TITLE,
-            C.CAL_COLOR,
-            C.CAL_SUB_CODE,
-            C.CAL_NO
-        FROM TB_SCHEDULE S
-        JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
-        WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
-       
-    </select> 
-    
-    <!-- 상세조회 -->
-<select id="detailSch" resultMap="scheduleResult">
-        SELECT 
-        	SCH_NO,
-	        SCH_CONTENT,
-	        TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-          TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
-	        ADDRESS,
-	        SCH_IMPORT,
-	        NOTIFY_YN,
-	        REG_DATE,
-	        MOD_DATE,
-	        DEL_YN,
-	        SCH_TITLE
-        FROM TB_SCHEDULE 
-        WHERE schNo =  #{schNo}
-    </select> 
- 
-    <!-- 일정수정 -->
-    <update id="updateSch">
-    UPDATE TB_SCHEDULE
-    SET
-        SCH_TITLE = #{schTitle},
-        SCH_IMPORT = #{schImport},
-        START_DATE = TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI'),
-        END_DATE = TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI'),
-        ADDRESS = #{address},
-        NOTIFY_YN = #{notifyYn},
-        SCH_CONTENT = #{schContent},
-	      MOD_DATE = SYSDATE
-   	 WHERE SCH_NO = #{schNo}
-    </update>
-	</mapper>
+	<!-- 전체일정 조회(특정 캘린더)  -->
+	<select id="selectScheduleList" resultMap="scheduleResult">
+	        SELECT 
+	            S.SCH_NO,
+	            S.SCH_CONTENT,
+	            TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+	        		TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+	            S.ADDRESS,
+	            S.SCH_IMPORT,
+	            S.NOTIFY_YN,
+	            S.SCH_TITLE,
+	            C.CAL_COLOR,
+	            C.CAL_SUB_CODE,
+	            C.CAL_NO
+	        FROM TB_SCHEDULE S
+	        JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
+	        WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
+	        AND S.DEL_YN = 'N'
+	    </select> 
+	    
+	<!-- 상세조회 -->
+	<select id="detailSch" resultMap="scheduleResult">
+	        SELECT 
+	        	SCH_NO,
+		        SCH_CONTENT,
+		        TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+	          TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+		        ADDRESS,
+		        SCH_IMPORT,
+		        NOTIFY_YN,
+		        REG_DATE,
+		        MOD_DATE,
+		        DEL_YN,
+		        SCH_TITLE,
+	        FROM TB_SCHEDULE 
+	        WHERE schNo =  #{schNo}
+	    </select> 
+	 
+	<!-- 일정수정 -->
+	<update id="updateSch">
+	    UPDATE TB_SCHEDULE
+	    SET
+	        SCH_TITLE = #{schTitle},
+	        SCH_IMPORT = #{schImport},
+	        START_DATE = TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI'),
+	        END_DATE = TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI'),
+	        ADDRESS = #{address},
+	        NOTIFY_YN = #{notifyYn},
+	        SCH_CONTENT = #{schContent},
+	        MOD_DATE = SYSDATE,
+	        CAL_NO = (
+		            SELECT CAL_NO
+		            FROM TB_CALENDAR
+		            WHERE CAL_SUB_CODE = #{schCalSubCode}
+		        )
+	    WHERE SCH_NO = #{schNo}
+	</update>
+	
+	<!-- 일정삭제(상태변경) -->
+	<!-- <delete id="deleteSch">
+	 DELETE FROM TB_SCHEDULE
+	 WHERE SCH_NO = ${schNo}
+	</delete>
+	 -->
+	<update id="deleteSch">
+	 UPDATE TB_SCHEDULE
+	 SET DEL_YN = 'Y'
+	 WHERE SCH_NO = ${schNo}
+	</update>
+
+<!--  캘린더 CAL_SUB_CODE 수정 
+    <update id="updateCalendarSubCode">
+        UPDATE TB_CALENDAR
+        SET CAL_SUB_CODE = #{schCalSubCode}
+        WHERE CAL_NO = #{calNo}
+    </update> -->
+</mapper>

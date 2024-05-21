@@ -31,19 +31,19 @@ public class CalendarController {
 	private final CalendarService calendarService;
 
 	
-	//calendarMain ����   
+	//calendarMain  
 	@GetMapping("/calMain.page")
 	public String calendarMain() {
 		return "calendar/calendarMain";
 	}
 	
-	//schWasteList ����
+	//schWasteList
 	@GetMapping("/wasteList.page")
 	public String schWasteList() {
 		return "calendar/schWasteList";
 	}
 	
-	//calMain - ���� ��� 
+	//캘린더 메인 - 일정 등록
 	@ResponseBody
 	@PostMapping(value="/regist.do", produces="text/html; charset=utf-8")//
 	public String insertSch(ScheduleDto schedule, HttpSession session) {  
@@ -66,13 +66,13 @@ public class CalendarController {
 		
 	    int result = calendarService.insertSch(schedule);
 	    if (result == 1) {  
-	        return "success"; // ����  
+	        return "success"; 
 	    } else {
-	        return "fail"; // ��� ����
+	        return "fail"; 
 	    }
 	}
   
-	//���� ��ü ��ȸ(Ư�� Ķ����)
+	//캘린더 메인 - 일정 전체조회
 	    @ResponseBody
 	    @RequestMapping("/schList.do")
 	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
@@ -82,15 +82,15 @@ public class CalendarController {
 	            List<ScheduleDto> events = calendarService.selectSchList(schCalSubCode);
 	            result.put(schCalSubCode, events);
 	            for (ScheduleDto event : events) {
-	            	//����Ȯ����
-	                log.debug("Event Title: {}, Color: {}", event.getSchTitle(), event.getCalColor());
+	            	//색조회
+	            	log.debug("Event Title: {}, Color: {}", event.getSchTitle(), event.getCalColor());
 	            }
 	        }
 
 	        return result;
 	    }
 	   
-	 //���� �� ��ȸ(Ư�� Ķ����) x
+	//휴지통 - 일정 상세
 	   @GetMapping("/schSelect.do")
 	   public String detailSch(String schNo, Model model) {
 	       ScheduleDto schedule = calendarService.detailSch(schNo);
@@ -98,24 +98,35 @@ public class CalendarController {
 	       return "calendar/calendarMain";
 	   }
 	   
-	 //���� ����
+	//캘린더 메인 - 일정 수정
 	   @ResponseBody
 	   @PostMapping(value="/updateSch.do", produces="application/json")
 	   public String updateSch(@RequestBody ScheduleDto schedule) {
-	       int result = calendarService.updateSch(schedule);
-	       log.debug("updateResult: {}", result);
+	       int resultSch = calendarService.updateSch(schedule);
+	       
+			/*
+			 * Map<String, Object> map = new HashMap<>(); map.put("calNo",
+			 * schedule.getCalNo()); map.put("schCalSubCode", schedule.getSchCalSubCode());
+			 * 
+			 * int resultCalNo = calendarService.updateSchCalSubCode(map);
+			 */
+	       log.debug("updateResult: {}", resultSch);
 	       log.debug("schCalSubCode: {}", schedule.getSchCalSubCode());
 	       log.debug("address: {}", schedule.getAddress());
 	       
-	       if (result == 1) {
-	           return "success"; // ����
+	       if (resultSch == 1) {
+	           return "success"; 
 	       } else {
-	           return "fail"; // ����
+	           return "fail"; 
 	       }
 	   }
 
 	   
+	   //캘린더 메인 - 삭제(상태변경)
+	   @GetMapping(value="/deleteSch.do")
+	   public String deleteSch(String schNo) {
+			return calendarService.deleteSch(schNo) == 1 ? "success" : "fail";	
+	   }
 }
-	
 	  
 

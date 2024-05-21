@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
@@ -28,4 +29,15 @@ public interface BoardService {
 	int updateIncreaseCount(int no);
 
 	BoardDto selectBoard(int no);
+
+	int updateBoard(BoardDto board, String[] delFileNo);
+
+	List<BoardDto> selectNoticeBoardList(String boardType);
+
+	int selectSearchListCount(Map<String, String> search);
+
+	List<BoardDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
+
+	List<BoardDto> selectTempSaveList(String userId);
+
 }
