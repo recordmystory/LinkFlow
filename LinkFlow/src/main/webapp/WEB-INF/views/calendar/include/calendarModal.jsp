@@ -375,8 +375,8 @@
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
-		                <button type="submit" id="schInsertButton" class="btn blue-button">등록</button>
-		                <button type="button" class="btn gray-button">취소</button>
+		                <button type="submit" id="schInsertButton" class="btn blue-button" >등록</button>
+		                <button type="button" class="btn gray-button" >취소</button>
 		            </div>
 		            
 		        </div>
@@ -452,7 +452,7 @@
 		            </div>
 		            <div class="modal-footer justify-content-center">
 		                <button type="submit" id="schUpdateButton" class="btn blue-button">수정</button>
-		                <button type="button" class="btn gray-button">취소</button>
+		                <button type="button" class="btn gray-button" >취소</button>
 		            </div>
 		        </div>
 		    </div>
@@ -1181,14 +1181,17 @@ $('#kt_docs_jstree_basic').jstree({
             	if (result === "success") {
                 // 성공-  모달 닫기
                 console.log("일정 등록이 성공했습니다.");
-                $("#schInsertModal").text("일정 등록이 성공했습니다.");
                 alert("일정 등록이 성공했습니다."); 
+                $("#schInsertModal").modal("hide");
+
             	}
             },
             error: function(result) {
                 // 요청이 실패했을 때 
                 console.error("일정 등록에 실패했습니다.");
                 alert("일정 등록에 실패했습니다.");
+                $("#schInsertModal").modal("hide");
+
             }
         });
     });

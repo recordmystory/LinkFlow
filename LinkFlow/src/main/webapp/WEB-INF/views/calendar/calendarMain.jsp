@@ -213,6 +213,8 @@
               //일정 수정 ******************************************************
                 //updateform (getEventById)로도 처리 가능 
                 $('.schDetailModal_blueBtn').click(function() {
+                    $('#schUpdateModal').modal('show');
+
                     $('#schUpdateModal input[name="schTitle"]').val(event.title);
                     $('#schUpdateModal input[name="address"]').val(extendedProps.address);
                     $('#schUpdateModal textarea[name="schContent"]').val(extendedProps.schContent);
@@ -222,8 +224,7 @@
                     $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
                     $('#schUpdateModal input[name="calNo"]').val(extendedProps.calNo);
 
-                    $('#schUpdateModal').modal('show');
-
+                    
                     $('#schUpdateButton').click(function() {
                     	  // 시작 날짜-밖
 
@@ -252,18 +253,18 @@
                             url: "${contextPath}/calendar/updateSch.do",
                             data: JSON.stringify(data),
                             contentType: 'application/json',
-                            success: function(result) {
-                                if (result === "success") {
-                                    console.log("일정 수정 성공.");
-                                    $("#schUpdateModal").modal("hide");
+                            success: function(resultSch) {
+                                if (resultSch === "success") {
+                                    /* $('#schUpdateModal').modal('hide'); */
                                     alert("일정 수정 성공.");
-                                    calendar.refetchEvents();
+
                                 }
                             },
-                            error: function(result) {
-                            	if (result === "fail") {
-                                console.log("일정 수정 실패.");
+                            error: function(resultSch) {
+                            	if (resultSch === "fail") {
                                 alert("일정 수정 실패.");
+                                $('#schUpdateModal').modal('hide');
+
                             	}
                             }
                         });
@@ -283,7 +284,8 @@
                         success:function(result){
                         	 if (result === "success") {
 	                        	 console.log(result);
-	                           console.log("삭제 성공")
+	                           alert("삭제 성공")
+
                         	 }
                          },  
                         error:function(result){
@@ -365,10 +367,8 @@
                                 successCallback(events);
                             },
                             error: function(result) {
-                            	if(result.isEmpty()){
-                                console.error("일정 조회 오류");
                                 failureCallback(result);
-                            	}
+                            	
                             }
                         });
                     }
@@ -418,35 +418,37 @@
         });
 
     //schDetailModals에서 detailBtn 클릭시(schUpdateModal수정 detailBtn모달과 삭제 모달로 이동)
-        $('.schDetailModal_blueBtn').click(function() {
-          $('#schDetailModal').modal('hide'); 
-            $('#schUpdateModal').modal('show');
-            $('body').addClass('overflow-hidden');   
+        $('#schUpdateButton').click(function() {
+          alert("일정 수정 성공.");
+          $('#schUpdateModal').modal('hide'); 
+           // $('#schUpdateModal').modal('show');
+           // $('body').addClass('overflow-hidden'); 
+
         });
 
-        $('.schDetailModal_grayBtn').click(function() {
-          $('#schDetailModal').modal('hide'); 
-          $('#detailBtn').modal('show');
-          $('#detailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
+        $('#schDetaildeleteModalBtn').click(function() {
+         // $('#schDetailModal').modal('hide'); 
+          $('#deleteBtn').modal('show');
+          $('#deleteBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
           $('body').addClass('overflow-hidden');
         });
 
-        $('#detailBtn').on('hidden.bs.modal', function() {
+        $('#deleteBtn').on('hidden.bs.modal', function() {
             $('body').removeClass('overflow-hidden');
         });
         
-  //일정 수정하기 모달 schUpdateModal
-      // schUpdateModal 닫힐 때
-        $('#schUpdateModal').on('hidden.bs.modal', function(e) {
-            $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
-            $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
-        });
+   //일정 수정하기 모달 schUpdateModal
+     /*  // schUpdateModal 닫힐 때
+        $('.schInsertModalBtn').click(function() {
+  	        $('#schInsertModal').modal('show');
+  	        $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+  	    }); 
 
         // schUpdateModal 닫힐 때
         $('#schUpdateModal').on('hidden.bs.modal', function(e) {
               $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
-        });
-      });
+        }); */
+      }); 
     	 
 
 	</script>
