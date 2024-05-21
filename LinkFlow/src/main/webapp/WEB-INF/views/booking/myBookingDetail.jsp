@@ -124,14 +124,16 @@
 					<%
 						// 현재 날짜와 시간 가져오기
 						Date now = new Date();
-						
 						// 날짜 형식 지정
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-						
 						// 현재 날짜를 문자열로 변환
-						String today = dateFormat.format(now);
+						String[] todayArr = dateFormat.format(now).split("/");
+						
+						pageContext.setAttribute("todayYear",todayArr[0]);
+						pageContext.setAttribute("todayMonth",todayArr[1]);
+						pageContext.setAttribute("todayDay",todayArr[1]);
+						
 					%>
-					<c:set var="todayArr" value="${fn:split(today, '/')}"/>
 					
 					<div class="bk-detail" id="detailArea">
 						<input type="hidden" name="bookingNo" value="${bk.bookingNo }" id="bookingNo">
@@ -155,18 +157,23 @@
 						                    <select id="month" name="month" class="form-control" style="width: 80px;">
 						                        <option value="${ymdArr[1]}">${ymdArr[1]}</option>
 						                        <c:choose>
-						                            <c:when test="${ymdArr[1] eq todayArr[1]}">
-						                                <option value="0${ymdArr[1] + 1}">0${ymdArr[1] + 1}</option>
-						                            </c:when>
-						                            <c:otherwise>
-						                                <option value="0${ymdArr[1] - 1}">0${ymdArr[1] - 1}</option>
-						                            </c:otherwise>
-						                        </c:choose>
+											        <c:when test="${ymdArr[1] eq todayMonth}">
+											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}">
+											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}
+											            </option>
+											        </c:when>
+											        <c:otherwise>
+											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}">
+											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}
+											            </option>
+											        </c:otherwise>
+											    </c:choose>
 						                    </select>&nbsp; 
 						                    <select id="day" name="day" class="form-control" style="width: 80px;">
-						                        <option value="${ymdArr[2]}">${ymdArr[2]}</option>
-						                        <option value="${ymdArr[2] + 1}">${ymdArr[2] + 1}</option>
-						                    </select>&nbsp;
+						                         <c:forEach var="day" begin="1" end="${daysInMonth}">
+											        <option value="${day < 10 ? '0' + day : day}">${day < 10 ? '0' + day : day}</option>
+											    </c:forEach>
+									        </select>&nbsp;
 						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
 						
 						                    <c:choose>
@@ -383,6 +390,32 @@
 	                alert(message);
 	            }
         } */
+        
+     // 페이지가 로드될 때와 월이 변경될 때 모두 실행되도록 수정합니다.
+        document.addEventListener("DOMContentLoaded", updateDayDropdown);
+        document.getElementById("month").addEventListener("change", updateDayDropdown);
+
+        function updateDayDropdown() {
+            var year = document.getElementById("year").value;
+            var month = document.getElementById("month").value;
+            var dayDropdown = document.getElementById("day");
+            var todayDay = ${todayDay}; // 오늘의 일을 가져옵니다.
+            
+            // 선택한 월의 일 수를 계산합니다.
+            var daysInMonth = new Date(year, month, 0).getDate();
+            
+            // 일 수 드롭다운을 비웁니다.
+            dayDropdown.innerHTML = "";
+            
+            // 오늘의 날짜부터 해당 월의 일 수까지 일 수 드롭다운을 생성합니다.
+            for (var day = todayDay; day <= daysInMonth; day++) {
+                var option = document.createElement("option");
+                option.value = day < 10 ? "0" + day : day;
+                option.textContent = day < 10 ? "0" + day : day;
+                dayDropdown.appendChild(option);
+            }
+            console.log(${todayMonth});
+        }
 	</script>
 
 
