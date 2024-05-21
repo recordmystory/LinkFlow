@@ -141,6 +141,10 @@
 						<div class="bk-detailArea">
 						    <div class="ymd" style="height:30px;">
 						        <div class="ymd">
+						        	<select id="year2" name="year2" class="form-control" style="width: 100px;"></select>
+						        	<select id="month2" name="month2" class="form-control" style="width: 80px;"></select>
+						        	<select id="day2" name="day2" class="form-control" style="width: 80px;"></select>
+						        	
 						            <c:set var="ymd" value="${bk.bkStartDate}" />
 						            <c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
 						            <c:choose>
@@ -378,6 +382,52 @@
 		    if(status !== "예약대기"){
 		        $("#detailArea select").prop("disabled", true);
 		    }
+		    
+		    //var now = new Date();
+		    
+		    /***************************** 날짜 초기화 ***********************************/
+		    $("#year2").empty();
+		    $("#month2").empty();
+		    $("#day2").empty();
+		    
+		    var detailYear = "2024"; // DB에서 조회한 상세 년도
+		    var detailMonth = "5"; // DB에서 조회한 상세 월
+		    var detailDay = "16"; // DB에서 조회한 상세 일
+
+		    //년도 셋팅
+		    $("#year2").append("<option value='"+detailYear+"'>"+detailYear+"</option>");
+		 	if(detailMonth == "12") {
+		 		var nextYear = Number(detailYear)+1;
+		 		$("#year2").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
+		    }
+		 	
+		 	//월 셋팅
+		 	for(var i=Number(detailMonth); i<=12; i++) {
+		 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
+		 	}
+		 	
+		 	//일 셋팅
+		 	var detailDate = new Date(detailYear, detailMonth-1, 0);
+		 	for(var i=detailDay; i<=detailDate.getDate(); i++){
+		 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+		 	}
+		 	/***************************** 날짜 초기화 ***********************************/
+		 
+		    $("#year2").change(function(){
+		    	$("#day2").empty();
+				var tempDate = new Date($(this).val(), $("#month2").val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
+		    
+			$("#month2").change(function(){
+				$("#day2").empty();
+				var tempDate = new Date($("#year").val(), $(this).val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
 		})
 		
 		/* window.onload = function() {
