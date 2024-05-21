@@ -224,50 +224,54 @@
                     $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
                     $('#schUpdateModal input[name="calNo"]').val(extendedProps.calNo);
 
+                    //extendedProps.startDate
+                    //extendedProps.endDate
                     
-                    $('#schUpdateButton').click(function() {
-                    	  // 시작 날짜-밖
+                });
+              
+                $('#schUpdateButton').click(function() {
+                	
+                	  // 시작 날짜-밖
+                	var selectedSchCalSubCode = $('#schUpdateModal select[name="schCalSubCode"]').val();
+                    var startDate1 = startDateChange.toISOString().slice(0, -8);
+											var endDate1 = endDateChange.toISOString().slice(0, -8);
+                    var data = {
+                    		calNo: $('#calNo').val(),
+                        schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
+                        schTitle: $('#schTitle').val(), 
+                        schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
+                        schCalSubCode: selectedSchCalSubCode,
 
-                    	  var selectedSchCalSubCode = $('#schUpdateModal select[name="schCalSubCode"]').val();
-                        var startDate1 = startDateChange.toISOString().slice(0, -8);
-												var endDate1 = endDateChange.toISOString().slice(0, -8);
-                        var data = {
-                        		calNo: $('#calNo').val(),
-                            schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
-                            schTitle: $('#schTitle').val(), 
-                            schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
-                            schCalSubCode: selectedSchCalSubCode,
+                        startDate: startDate1,
+                        endDate: endDate1,
+                        
+                        address: $('#address').val(), 
+                        notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
+                        schContent: $('#schContent').val() 
+                        
+                    };
+                    console.log('Data:', data);
 
-                            startDate: startDate1,
-                            endDate: endDate1,
-                            
-                            address: $('#address').val(), 
-                            notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
-                            schContent: $('#schContent').val() 
-                            
-                        };
-                        console.log('Data:', data);
-
-                        $.ajax({
-                            type: "POST",
-                            url: "${contextPath}/calendar/updateSch.do",
-                            data: JSON.stringify(data),
-                            contentType: 'application/json',
-                            success: function(resultSch) {
-                                if (resultSch === "success") {
-                                    /* $('#schUpdateModal').modal('hide'); */
-                                    alert("일정 수정 성공.");
-
-                                }
-                            },
-                            error: function(resultSch) {
-                            	if (resultSch === "fail") {
-                                alert("일정 수정 실패.");
+                    $.ajax({
+                        type: "POST",
+                        url: "${contextPath}/calendar/updateSch.do",
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        dataType: "text", // 현아띵 추가요
+                        success: function(resultSch) {
+                            if (resultSch === "success") {
                                 $('#schUpdateModal').modal('hide');
+                                alert("일정 수정 성공.");
 
-                            	}
                             }
-                        });
+                        },
+                        error: function(resultSch) {
+                        	if (resultSch === "fail") {
+                            alert("일정 수정 실패.");
+                            $('#schUpdateModal').modal('hide');
+
+                        	}
+                        }
                     });
                 });
               
@@ -418,13 +422,13 @@
         });
 
     //schDetailModals에서 detailBtn 클릭시(schUpdateModal수정 detailBtn모달과 삭제 모달로 이동)
-        $('#schUpdateButton').click(function() {
+        /*$('#schUpdateButton').click(function() {
           alert("일정 수정 성공.");
           $('#schUpdateModal').modal('hide'); 
            // $('#schUpdateModal').modal('show');
            // $('body').addClass('overflow-hidden'); 
 
-        });
+        });*/
 
         $('#schDetaildeleteModalBtn').click(function() {
          // $('#schDetailModal').modal('hide'); 

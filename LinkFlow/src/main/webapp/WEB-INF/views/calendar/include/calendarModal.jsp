@@ -451,7 +451,7 @@
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
-		                <button type="submit" id="schUpdateButton" class="btn blue-button">수정</button>
+		                <button type="button" id="schUpdateButton" class="btn blue-button">수정</button>
 		                <button type="button" class="btn gray-button" >취소</button>
 		            </div>
 		        </div>
