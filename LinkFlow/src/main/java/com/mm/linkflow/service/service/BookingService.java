@@ -17,6 +17,7 @@ public interface BookingService {
 	int selectMySearchCount(Map<String,String> search);
 	List<BookingDto> selectMySearchList(Map<String,String> search, PageInfoDto pi);
 	
+	List<AssetsDto> selectDetailAssList(String supName);
 	BookingDto selectDetailMyBk(String bkNo); // 나의 예약 상세보기
 	
 	int modifyBooking(BookingDto bk); // 예약 수정

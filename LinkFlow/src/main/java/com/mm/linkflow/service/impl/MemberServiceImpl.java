@@ -55,6 +55,26 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mDao.SerchPwd(userId);
 	}
+	@Override
+	public int selectMale() {
+		return mDao.selectMale();
+	}
+	@Override
+	public int selectFemale() {
+		return mDao.selectFemale();
+	}
+	@Override
+	public int selectAllMember(String date) {
+		return mDao.selectAllMember(date);
+	}
+	@Override
+	public int selectHireMember(String date) {
+		return mDao.selectHireMember(date);
+	}
+	@Override
+	public int selectRetireMember(String date) {
+		return mDao.selectRetireMember(date);
+	}
 	
 	
 

@@ -15,29 +15,33 @@ import lombok.RequiredArgsConstructor;
 public class CalenderDao {
 	private final SqlSessionTemplate sqlSessionTemplate;
 
-	//ÀÏÁ¤µî·Ï
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ë“±ë¡
 	public int insertSch(ScheduleDto schedule) {
 		return sqlSessionTemplate.insert("calendarMapper.insertSch", schedule);
 	}
-
-	/*
-	 * //ÀÏÁ¤ µî·Ï - ¾ÆÀÌµğ¿Í ¼­ºêÄÚµå·Î calNoÁ¶È¸ public String getSelectCalNo(Map<String, String>
-	 * selectCalNo) { return
-	 * sqlSessionTemplate.selectOne("calendarMapper.getSelectCalNo", selectCalNo); }
-	 */  
 	
-	//Æ¯Á¤ Ä¶¸°´õ ÀüÃ¼ ÀÏÁ¤ Á¶È¸ 
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ì „ì²´ì¡°íšŒ
 	public List<ScheduleDto> selectSchList(String schCalSubCode) {
         return sqlSessionTemplate.selectList("calendarMapper.selectScheduleList", schCalSubCode);
 	}
 
-	//»ó¼¼Á¶È¸
+	//íœ´ì§€í†µ - ì¼ì • ìƒì„¸ì¡°íšŒ
 	public ScheduleDto detailSch(String schNo) {
 		return sqlSessionTemplate.selectOne("calendarMapper.detailSch", schNo);
 	}
 
-	//ÀÏÁ¤¼öÁ¤
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ìˆ˜ì •
 	public int updateSch(ScheduleDto schedule) {
 	    return sqlSessionTemplate.update("calendarMapper.updateSch", schedule);
+
 	}
+	//ìº˜ë¦°ë” ë©”ì¸ - ì¼ì • ì‚­ì œ(ìƒíƒœë³€ê²½)
+	public int deleteSch(String schNo) {
+		return sqlSessionTemplate.update("calendarMapper.deleteSch", schNo);
+	}
+
+	/*
+	 * public int updateSchCalSubCode(Map<String, Object> map) { return
+	 * sqlSessionTemplate.update("calendarMapper.updateCalendarSubCode", map); }
+	 */
 }

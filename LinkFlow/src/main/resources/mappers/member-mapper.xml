@@ -166,15 +166,6 @@
 		ORDER BY D.DEPT_CODE
 	</select>
 
-	<!-- 전체 사원수 조회용 쿼리 -->
-	<select id="selectAllMember" resultType="_int">
-		<![CDATA[
-		SELECT COUNT(*)
-	 	  FROM TB_MEMBER
-	 	 WHERE RETIRE_DATE IS NULL
-	   	   AND TO_CHAR(HIRE_DATE, 'YYYY-MM') < #{month};
-		]]>
-	</select>
 	<select id="groupinfoMember" resultMap="memberResult">
 		SELECT 
 	    M.USER_ID,
@@ -242,5 +233,44 @@
  	FROM TB_MEMBER 
  	WHERE user_id = #{userId}
  	
+ 	</select>
+ 	
+ 	<!-- 남자 사원 수 조회용 - 황민우 -->
+ 	<select id="selectMale" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM TB_MEMBER
+ 		 WHERE GENDER = '남'
+ 		   AND RETIRE_DATE IS NULL
+ 	</select>
+ 	<!-- 여자 사원 수 조회용 - 황민우 -->
+ 	<select id="selectFemale" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM TB_MEMBER
+ 		 WHERE GENDER = '여'
+ 		   AND RETIRE_DATE IS NULL
+ 	</select>
+ 	<!-- 전체 사원 수 조회용 - 황민우 -->
+ 	<select id="selectAllMember" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM TB_MEMBER
+ 		 WHERE RETIRE_DATE IS NULL
+ 		   AND TO_CHAR(HIRE_DATE, 'YYYY-MM') <![CDATA[<=]]> #{date}
+ 	</select>
+ 	<!-- 입사자 조회용 - 황민우 -->
+ 	<select id="selectHireMember" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM TB_MEMBER
+ 		 WHERE TO_CHAR(HIRE_DATE, 'YYYY-MM') = #{date}
+ 	</select>
+ 	<!-- 퇴사자 조회용 - 황민우 -->
+ 	<select id="selectRetireMember" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM TB_MEMBER
+ 		 WHERE TO_CHAR(RETIRE_DATE, 'YYYY-MM') = #{date}
  	</select>
 </mapper>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -61,11 +62,11 @@ input[type="checkbox"]:checked {
 <body>
 
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 		<div class="LinkFlowMainSection">
 			<jsp:include
-				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
+				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp"/>
 			<div class="LinkFlowMainContent">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
@@ -122,9 +123,9 @@ input[type="checkbox"]:checked {
 												</tr>
 											</c:when>
 											<c:otherwise>
-												<c:forEach var="ass" items="${ assList }">
+												<c:forEach var="ass" items="${ assList }" varStatus="num">
 													<tr>
-														<td></td>
+														<td>${fn:length(assList) - num.index}</td>
 														<td>${ ass.subName }</td>
 														<td>${ ass.assetsName }</td>
 														<td>${ ass.useYN == 'Y' ? '예약 가능' : '사용중' }</td>
@@ -135,11 +136,11 @@ input[type="checkbox"]:checked {
 									</tbody>
 								</table>
 							</div>
-
+							</div>
 							<!-- /.card-body -->
 						</div>
 					</div>
-				</div>
+			
 				<div class="pagination" id="pageArea"
 					style="display: flex; justify-content: center;">
 					<ul class="pagination">
@@ -154,6 +155,7 @@ input[type="checkbox"]:checked {
 			</div>
 		</div>
 		<!-- /.content-wrapper -->
+		</div>
 			<script>
 				$(document).ready(function() {
 					if(${not empty search }){
@@ -186,6 +188,5 @@ input[type="checkbox"]:checked {
 				}
 			</script>
 
-	</div>
 </body>
 </html>

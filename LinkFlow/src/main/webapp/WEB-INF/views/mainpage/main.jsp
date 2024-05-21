@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 <!-- fullCalendar -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>
 <c:if test="${ loginUser.superRight == 'Y' || loginUser.hrRight == 'Y' }">
 <!-- chart js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -97,9 +98,42 @@
 		color: black;
 	}
 	
-	#calendar a {
-		color: black;
+	.fc-day-sun a {
+        color: red;
+        text-decoration: none;
+    }
+
+    .fc-day-sat a {
+        color: blue;
+        text-decoration: none;
+    }
+    .fc-day-mon a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-tue a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-wed a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-thu a {
+        color: black;
+        text-decoration: none;
+    }
+    .fc-day-fri a {
+        color: black;
+        text-decoration: none;
+    }
+   	#calendar {
+  		height: 501px !important;
 	}
+	.holiday{
+      border-color: transparent; /*투명화*/
+      font-size: smaller; 
+    }
 </style>
 </head>
 <body>
@@ -236,7 +270,7 @@
 										<c:forEach var="n" items="${list}">
 										<tr>
 											<td style="width: 10%;">${ n.boardNo }</td>
-											<td style="width: 70%;"><a href="dd">${ n.boardTitle }</a></td>
+											<td style="width: 70%;"><a href="${contextPath}/board/detail.do?no=${n.boardNo}">${ n.boardTitle }</a></td>
 											<td style="width: 20%;">${ n.modDate }</td>
 										</tr>
 										</c:forEach>
@@ -347,15 +381,23 @@
 	
 	        // 캘린더 시작
 	        document.addEventListener('DOMContentLoaded', function() {
-	          var calendarEl = document.getElementById('calendar');
-	          var calendar = new FullCalendar.Calendar(calendarEl, {
-	            headerToolbar: {
-	                start: '', 
-	                center: '',
-	                end: ''
-	            }
-	          });
-	          calendar.render();
+	            var calendarEl = document.getElementById('calendar');
+	            var calendar = new FullCalendar.Calendar(calendarEl, {
+	                googleCalendarApiKey: 'AIzaSyCu-1ogsBMhEzc8DWez4qvcZRRqiVlWKgU',
+	                eventSources: {
+	                    googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+	                    backgroundColor: 'red',
+	                    classNames: 'holiday',
+	                    textColor: 'white'
+	                },
+	                headerToolbar: {
+	                    start: '', 
+	                    center: '',
+	                    end: ''
+	                }
+	            
+	            });
+	            calendar.render();
 	          
 	        });
 	        // 캘린더 끝
@@ -367,7 +409,7 @@
 	            labels: ['남자','여자'],
 	            datasets: [
 	                {
-	                    data: [20,15],
+	                    data: ['${male}','${female}'],
 	                    backgroundColor : ['#1a66cc', '#d1180b'],
 	                }
 	            ]
@@ -402,7 +444,7 @@
 	            xAxis: [
 	                {
 	                type: 'category',
-	                data: ['2023-11', '2023-12', '2024-01', '2024-02', '2024-03', '2024-04'],
+	                data: ['${sixMonth}', '${fiveMonth}', '${fourMonth}', '${threeMonth}', '${twoMonth}', '${oneMonth}'],
 	                }
 	            ],
 	            yAxis: {
@@ -418,7 +460,7 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [30, 31, 32, 33, 34, 35]
+	                data: ['${sixMonthMember}', '${fiveMonthMember}', '${fourMonthMember}', '${threeMonthMember}', '${twoMonthMember}', '${oneMonthMember}']
 	                },
 	                {
 	                name: '입사자',
@@ -429,7 +471,7 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [1, 1, 1, 2, 2, 2]
+	                data: ['${sixMonthHire}', '${fiveMonthHire}', '${fourMonthHire}', '${threeMonthHire}', '${twoMonthHire}', '${oneMonthHire}']
 	                },
 	                {
 	                name: '퇴사자',
@@ -440,12 +482,12 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: [0, 0, 0, 1, 1, 1]
+	                data: ['${sixMonthRetire}', '${fiveMonthRetire}', '${fourMonthRetire}', '${threeMonthRetire}', '${twoMonthRetire}', '${oneMonthRetire}']
 	                }
 	            ]
 	        };
 	
-	        option && myChart.setOption(option);
+	    	option && myChart.setOption(option);
 	        // 꺾은선 그래프 끝
 	        
 	        

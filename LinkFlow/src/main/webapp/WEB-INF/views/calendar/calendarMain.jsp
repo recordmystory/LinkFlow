@@ -14,8 +14,7 @@
 
 
 	<style>
-   
-
+ 
      /*풀캘린더 style */
     #calendar {
       max-width: 90%;
@@ -40,6 +39,7 @@
      background-color: rgba(236, 224, 232, 0.515);
 
     }    
+
 
     /*공휴일 스타일*/
     .holiday{
@@ -158,7 +158,7 @@
             //상세일정조회
             eventClick: function(info) {
             	  var event = info.event;
-                var extendedProps = event.extendedProps;
+                var extendedProps = event.extendedProps;	
             	  $('#schDetailTitle').text(event.title); //.text <div>, <span>, <p>일 때 사용
                 
                 
@@ -211,39 +211,41 @@
                 $('#schDetailModal').modal('show');
                 
               //일정 수정 ******************************************************
-                //updateform (getEventById)로도 처리 가능 -> 알아보기
+                //updateform (getEventById)로도 처리 가능 
                 $('.schDetailModal_blueBtn').click(function() {
                     $('#schUpdateModal input[name="schTitle"]').val(event.title);
                     $('#schUpdateModal input[name="address"]').val(extendedProps.address);
                     $('#schUpdateModal textarea[name="schContent"]').val(extendedProps.schContent);
                     $('#schUpdateModal input[name="schImport"]').prop('checked', extendedProps.schImport === 'Y');
                     $('#schUpdateModal input[name="notifyYn"]').prop('checked', extendedProps.notifyYn === 'Y');
-                    $('#schUpdateModal select[name="schCalSubCode"]').val(extendedProps.schCalSubCode);
+                    $('#schUpdateModal select[name="schCalSubCode"]').val(extendedProps.schCalSubCode).change();
                     $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
+                    $('#schUpdateModal input[name="calNo"]').val(extendedProps.calNo);
 
                     $('#schUpdateModal').modal('show');
 
                     $('#schUpdateButton').click(function() {
                     	  // 시작 날짜-밖
-                       var startDate1 = startDateChange.toISOString().slice(0, -8);
+
+                    	  var selectedSchCalSubCode = $('#schUpdateModal select[name="schCalSubCode"]').val();
+                        var startDate1 = startDateChange.toISOString().slice(0, -8);
 												var endDate1 = endDateChange.toISOString().slice(0, -8);
                         var data = {
+                        		calNo: $('#calNo').val(),
                             schNo: $('#schNo').val(),//임의의 정의 속성 schNo 불러오기 extendedProps
                             schTitle: $('#schTitle').val(), 
                             schImport: $('#schImport').is(':checked') ? 'Y' : 'N', 
-                            schCalSubCode: $('#schCalSubCode').val(),
-                         // 시작 날짜
-                            startDate: startDate1,
+                            schCalSubCode: selectedSchCalSubCode,
 
-                            // 종료 날짜
-                             endDate: endDate1,
+                            startDate: startDate1,
+                            endDate: endDate1,
                             
                             address: $('#address').val(), 
                             notifyYn: $('#notifyYn').is(':checked') ? 'Y' : 'N', 
                             schContent: $('#schContent').val() 
                             
                         };
-                        console.log("전달되는 데이터:", data);
+                        console.log('Data:', data);
 
                         $.ajax({
                             type: "POST",
@@ -255,10 +257,11 @@
                                     console.log("일정 수정 성공.");
                                     $("#schUpdateModal").modal("hide");
                                     alert("일정 수정 성공.");
+                                    calendar.refetchEvents();
                                 }
                             },
                             error: function(result) {
-                            	if (result === "success") {
+                            	if (result === "fail") {
                                 console.log("일정 수정 실패.");
                                 alert("일정 수정 실패.");
                             	}
@@ -266,8 +269,38 @@
                         });
                     });
                 });
+              
+              
+              //일정 삭제**************************************************
+                $('#detailBtn').click(function() {
+                	$.ajax({
+                        
+                        url:"${contextPath}/calendar/deleteSch.do",
+                        type:"get", 
+                        data: {
+                        	schNo:event.extendedProps.schNo
+                        },  
+                        success:function(result){
+                        	 if (result === "success") {
+	                        	 console.log(result);
+	                           console.log("삭제 성공")
+                        	 }
+                         },  
+                        error:function(result){
+                        	if (result === "fail") {
+	                          console.log("일정 삭제 실패.");
+	                          alert("일정 삭제 실패.");
+                        	}
+                        }
+                     });                
+                  });
+              
+              
                 
-                info.jsEvent.preventDefault();
+                 //공휴일 클릭시 구글캘린더 이동 막기(기본동작 막기)
+                   info.jsEvent.preventDefault();
+             
+           
             },
             eventSources: [
                 //공휴일 
@@ -275,10 +308,9 @@
                     googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
                     //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
                     //borderColor: 'black'
-                    //className지정가능 ->알아보기
                     classNames: 'holiday',
                     textColor: 'rgba(190, 0, 50, 0.5)',
-                    constraint: 'availableForMeeting' 
+                    constraint: 'availableForMeeting' //일정 옮기지 못하게 제약조건 걸 때 필요
                 },
                 {
                      //특정 캘린더의 전체 일정 조회
@@ -320,18 +352,23 @@
                                                         address: calendarEvents[i].address,
                                                         notifyYn: calendarEvents[i].notifyYn,
                                                         schContent: calendarEvents[i].schContent,
-                                                        schNo: calendarEvents[i].schNo
+                                                        schNo: calendarEvents[i].schNo,
+                                                        calNo: calendarEvents[i].calNo
+
                                                     }
                                             };
                                             events.push(eventData);//addEvent로도 가능
                                         }
                                     }
                                 }
+                                
                                 successCallback(events);
                             },
                             error: function(result) {
+                            	if(result.isEmpty()){
                                 console.error("일정 조회 오류");
                                 failureCallback(result);
+                            	}
                             }
                         });
                     }
@@ -344,7 +381,7 @@
 	 
 
  
-//캘린더 모달 이벤트 start
+//캘린더 모달 이벤트 start -> 나중에 풀캠 스크립트 내부로 이동
       $(document).ready(function() {
 		    // 상세 모달
 		    $('.fc-daygrid-day-events').click(function(event) {
@@ -356,9 +393,13 @@
 		            $('#schDetailModal').modal('show');
 		        } else if ($(event.target).is('a.fc-daygrid-more-link.fc-more-link')) {
 		            event.preventDefault(); // 모달 이벤트 막기
-		        } */
+		        } 
+		        	||$(event.target).is('div.fc-event-title.fc-sticky'
+		        	*/
+		        
 		    	if ($(event.target).is('a.fc-daygrid-more-link.fc-more-link')) {
 		            $('#schDetailModal').modal('hide'); 
+		    
 	        } else{
 		            $('#schDetailModal').modal('show');
 	
@@ -406,7 +447,6 @@
               $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
         });
       });
-
     	 
 
 	</script>
