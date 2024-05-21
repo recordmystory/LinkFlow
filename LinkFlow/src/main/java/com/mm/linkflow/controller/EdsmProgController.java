@@ -38,6 +38,14 @@ public class EdsmProgController {
 	private final FileUtil fileUtil;
 	
 	
+	/** 기안
+	 * 
+	 * @param edocDto
+	 * @param uploadFiles
+	 * @param session
+	 * @param redirectAttributes
+	 * @return 진행중문서 목록 페이지로 redirect
+	 */
 	@PostMapping("/draftingDoc.prog")
 	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
 		log.debug("edocDto : {}", edocDto);
@@ -68,6 +76,11 @@ public class EdsmProgController {
 //		return result > 0 ? "SUCCESS" : "FAIL";
 //	}
 	
+	/** 문서 종류에 따른 문서 양식 에디터 내에 조회
+	 * 
+	 * @param docType
+	 * @return edsmProgService.selectEdFrContentList
+	 */
 	@ResponseBody
 	@PostMapping("/edFrContentList.prog")
 	public List<EdocFormDto> ajaxEdFrContentList(String docType){
