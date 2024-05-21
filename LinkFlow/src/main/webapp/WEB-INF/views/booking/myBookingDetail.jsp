@@ -141,6 +141,10 @@
 						<div class="bk-detailArea">
 						    <div class="ymd" style="height:30px;">
 						        <div class="ymd">
+						        	<select id="year2" name="year2" class="form-control" style="width: 100px;"></select>
+						        	<select id="month2" name="month2" class="form-control" style="width: 80px;"></select>
+						        	<select id="day2" name="day2" class="form-control" style="width: 80px;"></select>
+						        	
 						            <c:set var="ymd" value="${bk.bkStartDate}" />
 						            <c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
 						            <c:choose>
@@ -157,23 +161,18 @@
 						                    <select id="month" name="month" class="form-control" style="width: 80px;">
 						                        <option value="${ymdArr[1]}">${ymdArr[1]}</option>
 						                        <c:choose>
-											        <c:when test="${ymdArr[1] eq todayMonth}">
-											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}">
-											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}
-											            </option>
-											        </c:when>
-											        <c:otherwise>
-											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}">
-											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}
-											            </option>
-											        </c:otherwise>
-											    </c:choose>
+											          <c:when test="${ymdArr[1] eq todayMonth }">
+						                                <option value="0${ymdArr[1] + 1}">0${ymdArr[1] + 1}</option>
+						                            </c:when>
+						                            <c:otherwise>
+						                                <option value="0${ymdArr[1] - 1}">0${ymdArr[1] - 1}</option>
+						                            </c:otherwise>
+						                        </c:choose>
 						                    </select>&nbsp; 
 						                    <select id="day" name="day" class="form-control" style="width: 80px;">
-						                         <c:forEach var="day" begin="1" end="${daysInMonth}">
-											        <option value="${day < 10 ? '0' + day : day}">${day < 10 ? '0' + day : day}</option>
-											    </c:forEach>
-									        </select>&nbsp;
+						                        <option value="${ymdArr[2]}">${ymdArr[2]}</option>
+						                        <option value="${ymdArr[2] + 1}">${ymdArr[2] + 1}</option>
+						                    </select>&nbsp;
 						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
 						
 						                    <c:choose>
@@ -335,9 +334,7 @@
 			let year = document.getElementById('year').value;
 			let month = document.getElementById('month').value;
 			let day = document.getElementById('day').value;
-			let yearE = document.getElementById('yearEnd').value;
-			let monthE = document.getElementById('monthEnd').value;
-			let dayE = document.getElementById('dayEnd').value;
+			
 			let subName = document.getElementById('assType').value;
 			
 			let bkStartDate = year +'/' +month+ '/'+ day;
@@ -346,6 +343,9 @@
 			if(subName == '회의실'){
 				let bkEndDate = year +'/' +month+ '/'+ day;
 			}else if(subName == '차량'){
+				let dayE = document.getElementById('dayEnd').value;
+				let yearE = document.getElementById('yearEnd').value;
+				let monthE = document.getElementById('monthEnd').value;
 				let bkEndDate = yearE +'/' +monthE + '/'+ dayE;
 			}
 			
@@ -382,6 +382,52 @@
 		    if(status !== "예약대기"){
 		        $("#detailArea select").prop("disabled", true);
 		    }
+		    
+		    //var now = new Date();
+		    
+		    /***************************** 날짜 초기화 ***********************************/
+		    $("#year2").empty();
+		    $("#month2").empty();
+		    $("#day2").empty();
+		    
+		    var detailYear = "2024"; // DB에서 조회한 상세 년도
+		    var detailMonth = "5"; // DB에서 조회한 상세 월
+		    var detailDay = "16"; // DB에서 조회한 상세 일
+
+		    //년도 셋팅
+		    $("#year2").append("<option value='"+detailYear+"'>"+detailYear+"</option>");
+		 	if(detailMonth == "12") {
+		 		var nextYear = Number(detailYear)+1;
+		 		$("#year2").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
+		    }
+		 	
+		 	//월 셋팅
+		 	for(var i=Number(detailMonth); i<=12; i++) {
+		 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
+		 	}
+		 	
+		 	//일 셋팅
+		 	var detailDate = new Date(detailYear, detailMonth-1, 0);
+		 	for(var i=detailDay; i<=detailDate.getDate(); i++){
+		 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+		 	}
+		 	/***************************** 날짜 초기화 ***********************************/
+		 
+		    $("#year2").change(function(){
+		    	$("#day2").empty();
+				var tempDate = new Date($(this).val(), $("#month2").val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
+		    
+			$("#month2").change(function(){
+				$("#day2").empty();
+				var tempDate = new Date($("#year").val(), $(this).val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
 		})
 		
 		/* window.onload = function() {
@@ -392,7 +438,7 @@
         } */
         
      // 페이지가 로드될 때와 월이 변경될 때 모두 실행되도록 수정합니다.
-        document.addEventListener("DOMContentLoaded", updateDayDropdown);
+        /* document.addEventListener("DOMContentLoaded", updateDayDropdown);
         document.getElementById("month").addEventListener("change", updateDayDropdown);
 
         function updateDayDropdown() {
@@ -415,7 +461,7 @@
                 dayDropdown.appendChild(option);
             }
             console.log(${todayMonth});
-        }
+        }*/
 	</script>
 
 

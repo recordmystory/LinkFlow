@@ -43,9 +43,10 @@ public class HomeController {
 	
 	@RequestMapping("/main")
 	public String mainfoward(HttpServletRequest req) {
-		List<BoardDto> list = boardService.selectNewNoticeList();
-		int male = mService.selectMale();
-		int female = mService.selectFemale();
+		req.getSession().setAttribute("list", boardService.selectNewNoticeList());
+		req.getSession().setAttribute("male", mService.selectMale());
+		req.getSession().setAttribute("female", mService.selectFemale());
+
 		req.getSession().setAttribute("oneMonth", monthUtil.monthReturn(0));
 		req.getSession().setAttribute("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(0)));
 		req.getSession().setAttribute("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(0)));
@@ -76,9 +77,6 @@ public class HomeController {
 		req.getSession().setAttribute("sixMonthHire", mService.selectHireMember(monthUtil.monthReturn(6)));
 		req.getSession().setAttribute("sixMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(6)));
 	
-		req.getSession().setAttribute("list", list);
-		req.getSession().setAttribute("male", male);
-		req.getSession().setAttribute("female", female);
 		return "mainpage/main";
 	}
 	

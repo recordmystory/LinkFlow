@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edsmProgMapper">
-	
+	<resultMap type="EdocDto" id="edocResult" extends="commonMapper.commonResult">
+		<id column="ED_NO" property="userName"/>
+		<result column="ED_FORM_CODE" property="userName"/>
+		<result column="ED_TITLE" property="userName"/>
+		<result column="ED_CONTENT" property="userName"/>
+		<result column="PRES_DATE" property="userName"/>
+		<result column="SEC_CODE" property="userName"/>
+		<result column="STATUS" property="userName"/>
+		<result column="TEMP_SAVE" property="tempSave"/>
+	</resultMap>
 	
 	<resultMap type="DeptDto" id="deptResult" extends="commonMapper.commonResult">
 		<result column="DEPT_CODE" property="deptCode"/>
@@ -15,6 +24,16 @@
 
 	</resultMap>
 	
+	<resultMap type="EdocHistDto" id="edocHistResult" extends="commonMapper.commonResult">
+		<id column="USER_ID" property="userId"/>
+		<result column="ED_NO" property="edNo"/>
+		<result column="ED_HIST_ORDER" property="edHistOrder"/>
+		<result column="ED_HIST_SUB_CODE" property="edHistSubCode"/>
+		<result column="ED_HIST_DATE" property="edHistDate"/>
+		<result column="ED_HIST_COMMENT" property="edHistComment"/>
+	</resultMap>
+	
+	<!-- 결재선 설정 모달 내 팀명, 사원 조회 -->
 	<select id="selectApprLine" resultMap="deptResult">
 		SELECT 
          D.DEPT_CODE       
@@ -34,4 +53,76 @@
           M.DEL_YN = 'N'
       ORDER BY D.DEPT_CODE
 	</select>
+	
+	<!-- 기안서 작성 (결재 문서 insert)-->
+	<insert id="insertDoc">
+		INSERT INTO TB_EDOC
+		            (
+		              ED_NO
+		            , ED_FORM_CODE
+		            , ED_TITLE
+		            , ED_CONTENT
+		            , PRES_DATE
+		            , SEC_CODE
+		            , STATUS
+		            , REG_DATE
+		            , MOD_DATE
+		            , REG_ID
+		            , MOD_ID
+		            , DEL_YN
+		            )
+		            VALUES
+		            (
+		              'LI' || '-' || (SELECT SUBSTR(EF.ED_FR_NAME, 1, 2)
+                  FROM TB_EDOC_FORM EF
+                  WHERE EF.ED_FR_CODE = #{edFormCode}
+                  AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.NEXTVAL
+		            , #{edFormCode}
+		            , #{edTitle}
+		            , #{edContent}
+		            , #{presDate}
+		            , #{secCode}
+		            , '04'
+		            , SYSDATE
+		            , SYSDATE
+		            , #{regId}
+		            , #{modId}
+		            , 'N'
+		            )
+	</insert>
+	
+	<!-- 결재선 insert -->
+	<insert id="inserApprLine">
+		INSERT INTO TB_EDOC_HIST
+                        (
+                              USER_ID
+                            , ED_NO
+                            , ED_HIST_ORDER
+                            , ED_HIST_SUB_CODE
+                            , ED_HIST_DATE
+                            , ED_HIST_COMMENT
+                            , REG_DATE
+                            , MOD_DATE
+                            , REG_ID
+                            , MOD_ID
+                            , DEL_YN
+                        )
+                        VALUES
+                        (
+		                          #{userId}
+		                        , 'LI' || '-' || (SELECT SUBSTR(EF.ED_FR_NAME, 1, 2)
+						                  FROM TB_EDOC_FORM EF
+						                  WHERE EF.ED_FR_CODE = #{edFormCode}
+						                  AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.CURRVAL
+		                        , #{edHistOrder}
+		                        , NULL
+		                        , NULL
+		                        , NULL
+		                        , SYSDATE
+		                        , SYSDATE
+		                        , #{userId}
+		                        , #{userId}
+		                        , DEFAULT
+                        )
+	</insert>
 </mapper>

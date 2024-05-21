@@ -460,7 +460,8 @@
 	                    return value + '명';
 	                    }
 	                },
-	                data: ['${sixMonthMember}', '${fiveMonthMember}', '${fourMonthMember}', '${threeMonthMember}', '${twoMonthMember}', '${oneMonthMember}']
+	                data: ['${sixMonthMember - sixMonthRetire}', '${fiveMonthMember - fiveMonthRetire}', '${fourMonthMember - fourMonthRetire}', 
+	                	   '${threeMonthMember - fourMonthRetire}', '${twoMonthMember - twoMonthRetire}', '${oneMonthMember - oneMonthRetire}']
 	                },
 	                {
 	                name: '입사자',
