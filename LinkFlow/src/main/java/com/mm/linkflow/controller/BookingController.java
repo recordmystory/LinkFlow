@@ -181,10 +181,10 @@ public class BookingController {
 		log.debug("result:{}",result);
 		
 		if (result > 0) {
-			model.addAttribute("message", "삭제가 완료되었습니다.");
-			return "booking/myBookingList";
+//			model.addAttribute("message", "삭제가 완료되었습니다.");
+			return "redirect:/booking/mylist.bk";
 		} else {
-			return "booking/myBookingDetail?no=" + bk.getBookingNo();
+			return "redirect:/booking/detail.bk?no=" + bk.getBookingNo();
 		}
 	}
 	
