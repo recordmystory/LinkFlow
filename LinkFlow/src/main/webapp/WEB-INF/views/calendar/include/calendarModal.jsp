@@ -217,11 +217,11 @@
                     </div>
                     <div class="schDetailModal_content">
                       <label for="message-text" class="col-form-label">내용</label>
-                      <div id="schDetailModal_content_text"> 
-                           
+                      <div id="schDetailModal_content_text">                            
                       </div>
                     </div>
                 </div>
+                <input type="hidden" name="schNo" id="schNo">
             <div class="modal-footer justify-content-center">
                 <button type="button" class="blue-button btn schDetailModal_blueBtn" data-toggle="modal" data-target="#schUpdateModal">수정</button>
 								<button type="button" class="gray-button btn schDetailModal_grayBtn" data-toggle="modal" data-target="#detailBtn">삭제</button>
@@ -232,14 +232,14 @@
     <!--일정 상세 정보 모달 schDetailModal end-->
 	
 	<!--상세 정보 모달_버튼 모달 detailBtn start-->
-    <div class="modal fade" id="detailBtn" style="color: #5f7ea6;" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
+    <div class="modal fade" id="detailBtn" style="color:#5f7ea6;" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-body" id="detailBtn-modal-body" > 
           </div>
           <div class="modal-checkBtn">
-            <i class="fa-solid fa-check fa-xl mb-5 mr-4"></i>
-            <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" style="color: #bcbdbd;"></i>
+            <i class="fa-solid fa-check fa-xl mb-5 mr-4" id="schDeleteBtn"></i>
+            <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" id="schDeleteCancelBtn" style="color: #bcbdbd;"></i>
           </div>
         </div>
       </div>
@@ -452,7 +452,6 @@
 		            </div>
 		            <div class="modal-footer justify-content-center">
 		                <button type="button" id="schUpdateButton" class="btn blue-button">수정</button>
-		                <button type="button" class="btn gray-button" >취소</button>
 		                <button type="button" class="btn gray-button" id="schUpdateCancelBtn" >취소</button>
 
 		            </div>
