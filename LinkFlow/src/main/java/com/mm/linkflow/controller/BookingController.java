@@ -153,8 +153,8 @@ public class BookingController {
 		return mv ;
 	}
 	
-	@ResponseBody
-	@PostMapping(value="/modify.bk", produces="application/json; charset=utf-8") // 예약 수정
+	@ResponseBody // 예약 수정
+	@PostMapping(value="/modify.bk", produces="application/json; charset=utf-8") 
 	public BookingDto modifyBooking(@RequestParam Map<String,String> map) {
 		BookingDto bk = new BookingDto().builder()
 										.assetsName(map.get("assetsName"))
@@ -176,14 +176,15 @@ public class BookingController {
 	}
 	
 	@PostMapping("/cancle.bk") // 예약 취소
-	public String cancleBooking(BookingDto bk) {
+	public String cancleBooking(BookingDto bk, Model model) {
 		int result = bkServiceImpl.cancleBooking(bk);
 		log.debug("result:{}",result);
 		
 		if (result > 0) {
-			return "redirect:booking/myBookingList";
+			model.addAttribute("message", "삭제가 완료되었습니다.");
+			return "booking/myBookingList";
 		} else {
-			return "redirect:booking/myBookingDetail?no=" + bk.getBookingNo();
+			return "booking/myBookingDetail?no=" + bk.getBookingNo();
 		}
 	}
 	

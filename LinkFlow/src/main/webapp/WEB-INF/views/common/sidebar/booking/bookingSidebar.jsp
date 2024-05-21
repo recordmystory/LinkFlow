@@ -188,86 +188,84 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="md-header">
-						<select name="bk-name" id="bk-name" class="md-type">
+						<select name="bk-name" id="bk-name" class="md-type" onchange="changeBody();">
 							<option value="room">시설</option>
 							<option value="supplies">비품</option>
 						</select> &nbsp;&nbsp;
 						<p style="float: left;">예약하기</p>
 					</div>
-					<%-- <c:choose>
-					<c:when test=${bk-name eq room}>
-						<span class="md-list">예약 날짜</span>
-                            <div class="md-div">
-                                <select name="bk-year" id="bk-year" style="width:70px;" class="md-select">
-                                    <option value="">2024</option>
-                                    <option value="">2025</option>
-                                </select> &nbsp;&nbsp;
-                                <select name="bk-month" id="bk-month" class="md-select">
-                                    <option value="">04</option>
-                                    <option value="">5</option>
-                                </select> &nbsp;&nbsp;
-                                <select name="bk-date" id="bk-date" class="md-select">
-                                    <option value="">15</option>
-                                    <option value="">16</option>
-                                    <option value="">17</option>
-                                    <option value="">18</option>
-                                    <option value="">19</option>
-                                </select> &nbsp;&nbsp;
-                            </div>
-                            <span class="md-list">이용 시간</span>
-                            <div class="md-div">
-                                <select name="bk-sTime" id="bk-sTime" style="width:90px;" class="md-select">
-                                    <option value="">09 : 00</option>
-                                    <option value="">10 : 00</option>
-                                </select> &nbsp;&nbsp;
-                                <span>~</span>&nbsp;&nbsp;
-                                <select name="bk-eTime" id="bk-eTime" style="width:90px;" class="md-select">
-                                    <option value="">09 : 00</option>
-                                    <option value="">10:00</option>
-                                </select> &nbsp;&nbsp;
-                            </div>
-                            <span class="md-list">이용 시설</span>
-                            <div class="md-div">
-                                <select name="bk-room" id="bk-room" style="width:100px;" class="md-select">
-                                    <option value="">회의실A</option>
-                                    <option value="">회의실B</option>
-                                    <option value="">회의실C</option>
-                                </select>
-                            </div>
-                    </c:when>
-
-					<c:when test=${bk-name eq supplies }>
-						<span class="md-list">상품 명</span>
-						<div class="md-div">
-							<select name="supplies" id="supplies" style="width: 100px;"
-								class="md-select">
-								<option value="notebook">노트북</option>
-								<option value="car">차량</option>
-								<option value="keyboard">키보드</option>
-								<option value="mouse">마우스</option>
-							</select> &nbsp;&nbsp;&nbsp; <select name="bk-name" id="bk-name"
-								style="width: 110px;" class="md-select">
-								<option value="">맥북</option>
-								<option value="">LG그램</option>
-							</select>
-						</div>
-						<span class="md-list">이용 시간</span>
-						<c:if test=${supplies eq car }>
-							<div class="md-div">
-								<select name="bk-name" id="bk-name" style="width: 120px;"
-									class="md-select">
-									<option value="">2024/04/22</option>
-									<option value="">2024/04/23</option>
-								</select> &nbsp;&nbsp; <span>~</span>&nbsp;&nbsp; <select name="bk-name"
-									id="bk-name" style="width: 120px;" class="md-select">
-									<option value="">2024/04/23</option>
-									<option value="">10:00</option>
-								</select> &nbsp;&nbsp;
-							</div>
-						</c:if>
-					</c:when>
-					</c:choose> --%>
- 
+							           
+		            <!-- Modal body for room -->
+		            <div id="room-content" class="modal-body-content">
+		                <span class="md-list">예약 날짜</span>
+		                <div class="md-div">
+		                    <select name="bk-year" id="bk-year" style="width:70px;" class="md-select">
+		                        <option value="">2024</option>
+		                        <option value="">2025</option>
+		                    </select> &nbsp;&nbsp;
+		                    <select name="bk-month" id="bk-month" class="md-select">
+		                        <option value="">04</option>
+		                        <option value="">5</option>
+		                    </select> &nbsp;&nbsp;
+		                    <select name="bk-date" id="bk-date" class="md-select">
+		                        <option value="">15</option>
+		                        <option value="">16</option>
+		                        <option value="">17</option>
+		                        <option value="">18</option>
+		                        <option value="">19</option>
+		                    </select> &nbsp;&nbsp;
+		                </div>
+		                <span class="md-list">이용 시간</span>
+		                <div class="md-div">
+		                    <select name="bk-sTime" id="bk-sTime" style="width:90px;" class="md-select">
+		                        <option value="">09 : 00</option>
+		                        <option value="">10 : 00</option>
+		                    </select> &nbsp;&nbsp;
+		                    <span>~</span>&nbsp;&nbsp;
+		                    <select name="bk-eTime" id="bk-eTime" style="width:90px;" class="md-select">
+		                        <option value="">09:00</option>
+		                        <option value="">10:00</option>
+		                    </select> &nbsp;&nbsp;
+		                </div>
+		                <span class="md-list">이용 시설</span>
+		                <div class="md-div">
+		                    <select name="bk-room" id="bk-room" style="width:100px;" class="md-select">
+		                        <option value="">회의실A</option>
+		                        <option value="">회의실B</option>
+		                        <option value="">회의실C</option>
+		                    </select>
+		                </div>
+		            </div>
+		            
+		            <!-- Modal body for supplies -->
+		            <div id="supplies-content" class="modal-body-content" style="display: none;">
+		                <span class="md-list">상품 명</span>
+		                <div class="md-div">
+		                    <select name="supplies" id="supplies" style="width: 100px;" class="md-select">
+		                        <option value="notebook">노트북</option>
+		                        <option value="car">차량</option>
+		                        <option value="keyboard">키보드</option>
+		                        <option value="mouse">마우스</option>
+		                    </select> &nbsp;&nbsp;&nbsp;
+		                    <select name="bk-name" id="bk-name" style="width: 110px;" class="md-select">
+		                        <option value="">맥북</option>
+		                        <option value="">LG그램</option>
+		                    </select>
+		                </div>
+		                <span class="md-list">이용 시간</span>
+		                <div id="car-time-content" class="md-div" style="display: none;">
+		                    <select name="bk-name" id="bk-name" style="width: 120px;" class="md-select">
+		                        <option value="">2024/04/22</option>
+		                        <option value="">2024/04/23</option>
+		                    </select> &nbsp;&nbsp;
+		                    <span>~</span>&nbsp;&nbsp;
+		                    <select name="bk-name" id="bk-name" style="width: 120px;" class="md-select">
+		                        <option value="">2024/04/23</option>
+		                        <option value="">10:00</option>
+		                    </select> &nbsp;&nbsp;
+		                </div>
+		            </div>
+		            
 					<div class="modal-body">
 						<h6>사유</h6>
 						<input type="text" class="bk-coment" placeholder="예약 사유">
@@ -292,12 +290,19 @@
 	      });
 	    });
 	    
-	    /* $function(){
-	    	$.ajax({
-	    		
-	    	})
-	    } */
-	
+	    function changeBody() {
+	        var selectedValue = document.getElementById('bk-name').value;
+	        var roomContent = document.getElementById('room-content');
+	        var suppliesContent = document.getElementById('supplies-content');
+
+	        if (selectedValue === 'room') {
+	            roomContent.style.display = 'block';
+	            suppliesContent.style.display = 'none';
+	        } else if (selectedValue === 'supplies') {
+	            roomContent.style.display = 'none';
+	            suppliesContent.style.display = 'block';
+	        }
+	    }
 	  </script>
 </body>
 </html>

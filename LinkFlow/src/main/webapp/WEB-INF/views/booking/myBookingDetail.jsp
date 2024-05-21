@@ -361,7 +361,6 @@
 					bookingNo:bookingNo
 				},success:function(bk){
 					if(bk != null){
-						alert('예약이 수정되었습니다.');
 						window.location.href = '${contextPath}/booking/mylist.bk'
 					}
 				},error:function(){
@@ -377,6 +376,13 @@
 		        $("#detailArea select").prop("disabled", true);
 		    }
 		})
+		
+		/* window.onload = function() {
+            var message = "${message}";
+	            if (message) {
+	                alert(message);
+	            }
+        } */
 	</script>
 
 
