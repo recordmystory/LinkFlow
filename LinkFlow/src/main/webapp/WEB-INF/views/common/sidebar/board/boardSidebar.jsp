@@ -71,6 +71,7 @@
               	<p>${c.categoryName }게시판</p>
             	</a>
         		</c:forEach>
+        		
         	</ul>
         </li>	
         <li class="nav-item">
@@ -82,7 +83,7 @@
             </p>
           </a>
          	<ul class="nav-item nav-treeview" style="padding-left: 20px;">
-              <a href="#" class="nav-link">
+              <a href="${contextPath }/board/tempSave.page" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">임시저장</p>
               </a>

@@ -82,8 +82,8 @@
   				 file_no
   			 , file_path
   			 , filesystem_name
-  			 , original_name
-  	from attachment
+  			 , origin_name
+  	from tb_attachment
    <where>
    	<foreach item="item" collection="array"
    					 open="file_no in (" separator="," close=")">

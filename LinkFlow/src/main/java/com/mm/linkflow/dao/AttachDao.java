@@ -1,5 +1,6 @@
 package com.mm.linkflow.dao;
 
+import java.io.File;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -23,6 +24,7 @@ public class AttachDao {
 	}
 	
 	public List<AttachDto> selectDelFileList(String[] delFileNo) {
+		
 		return sqlSession.selectList("attachMapper.selectDelFileList", delFileNo);
 	}
 	
