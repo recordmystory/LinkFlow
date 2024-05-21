@@ -71,6 +71,7 @@ public class FileUtil {
 				
 				attachList.add(AttachDto.builder()
 						                .regId(member.getUserId())
+						                
 						                .modId(member.getUserId())
 						                .refNo(refNo)
 						                .refCategory(refString)

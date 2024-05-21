@@ -123,6 +123,7 @@
 	<!-- 기안서 작성 페이지에서 쓸 쿼리 : 양식 조회 용도 -->
 	<select id="selectFormList" resultMap="edocFormResult">
 		SELECT ED_FR_NAME
+		     , ED_FR_CODE
 		FROM TB_EDOC_FORM
 		WHERE DEL_YN = 'N'
 		ORDER BY REG_DATE DESC
@@ -134,6 +135,6 @@
 				 , ED_FR_CONTENT
 		FROM TB_EDOC_FORM
 		WHERE DEL_YN = 'N'
-		    AND ED_FR_NAME = #{docType}
+		    AND ED_FR_CODE = #{docType}
 	</select>
 </mapper>
