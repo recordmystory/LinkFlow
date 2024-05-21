@@ -150,32 +150,11 @@
 						                </c:when>
 						                <c:otherwise>
 						                
-							        	<select id="year2" name="year2" class="form-control" style="width: 100px;"></select>
-							        	<select id="month2" name="month2" class="form-control" style="width: 80px;"></select>
-							        	<select id="day2" name="day2" class="form-control" style="width: 80px;"></select>
+							        	<select id="year" name="year" class="form-control" style="width: 100px;"></select>
+							        	<select id="month" name="month" class="form-control" style="width: 80px;"></select>
+							        	<select id="day" name="day" class="form-control" style="width: 80px;"></select>
 						                
-						                
-						                    <select id="year" name="year" class="form-control" style="width: 100px;">
-						                        <option value="${ymdArr[0]}">${ymdArr[0]}</option>
-						                        <c:if test="${ymdArr[0] == 12}">
-						                            <option value="${ymdArr[0] + 1}">${ymdArr[0] + 1}</option>
-						                        </c:if>
-						                    </select>&nbsp; 
-						                    <select id="month" name="month" class="form-control" style="width: 80px;">
-						                        <option value="${ymdArr[1]}">${ymdArr[1]}</option>
-						                        <c:choose>
-											          <c:when test="${ymdArr[1] eq todayMonth }">
-						                                <option value="0${ymdArr[1] + 1}">0${ymdArr[1] + 1}</option>
-						                            </c:when>
-						                            <c:otherwise>
-						                                <option value="0${ymdArr[1] - 1}">0${ymdArr[1] - 1}</option>
-						                            </c:otherwise>
-						                        </c:choose>
-						                    </select>&nbsp; 
-						                    <select id="day" name="day" class="form-control" style="width: 80px;">
-						                        <option value="${ymdArr[2]}">${ymdArr[2]}</option>
-						                        <option value="${ymdArr[2] + 1}">${ymdArr[2] + 1}</option>
-						                    </select>&nbsp;
+
 						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
 						
 						                    <c:choose>
@@ -230,7 +209,7 @@
 						            </c:choose>
 						        </div>
 					        	<div>
-						            <h5 style="margin-right: 20px;" id="status" value="${bk.status}">${bk.status}</h5>
+						            <h5 style="margin-right: 20px;" id="status" name="status" value="${bk.status}">${bk.status}</h5>
 							    </div>
 					        </div>
 							    <hr>
@@ -333,6 +312,81 @@
 	</div>
 	<!-- /.modal -->
 	<script>
+		
+		$(document).ready(function(){
+			let status = document.getElementById('status').textContent;
+		    if(status !== "예약대기"){
+		        $("#detailArea select").prop("disabled", true);
+		    }
+		    
+		   var now = new Date();
+		    
+		    /***************************** 날짜 초기화 ***********************************/
+		    $("#year").empty();
+		    $("#month").empty();
+		    $("#day").empty();
+		    
+		    var detailYear = "${ymdArr[0]}"; // DB에서 조회한 상세 년도
+		    var detailMonth = "${ymdArr[1]}"; // DB에서 조회한 상세 월
+		    var detailDay = "${ymdArr[2]}"; // DB에서 조회한 상세 일
+
+		    //년도 셋팅
+		    $("#year").append("<option value='"+detailYear+"'>"+detailYear+"</option>");
+		 	if(detailMonth == "12") {
+		 		var nextYear = Number(detailYear)+1;
+		 		$("#year").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
+		    }
+		 	
+		 	//월 셋팅
+		 	if(detailMonth == now.getMonth()+1){
+			 	for(var i=Number(detailMonth); i<=Number(detailMonth)+1; i++) {
+			 		$("#month").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		 	}else{
+		 		for(var i=Number(detailMonth)-1; i<=Number(detailMonth); i++) {
+			 		$("#month").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		 	}
+		 	
+		 	//일 셋팅
+		 	var detailDate = new Date(detailYear, detailMonth, 0);
+		 	$("#day").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+		 	
+		 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
+		 		if( i != detailDay){
+		 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+		 		}
+		 	}
+		 	/***************************** 날짜 초기화 ***********************************/
+		 
+		    $("#year").change(function(){
+		    	$("#day").empty();
+				var tempDate = new Date($(this).val(), $("#month").val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
+		    
+			$("#month").change(function(){
+				$("#day").empty();
+				var tempDate = new Date($("#year").val(), $(this).val(), 0);
+				
+				if(tempDate.getMonth() != now.getMonth()){
+					for(var i=1; i<=tempDate.getDate(); i++){
+				 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
+				 	}
+				}else{
+					$("#day").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+				 	
+				 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
+				 		if( i != detailDay){
+				 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+				 		}
+				 	}
+				}
+		    });
+		})
+		
 		function bkUpdate(){
 			let year = document.getElementById('year').value;
 			let month = document.getElementById('month').value;
@@ -342,17 +396,19 @@
 			
 			let bkStartDate = year +'/' +month+ '/'+ day;
 			let bkStartTime = document.getElementById('start').value;
+			let bkEndTime = document.getElementById('end').value;
+			
+			let bkEndDate;
 			
 			if(subName == '회의실'){
-				let bkEndDate = year +'/' +month+ '/'+ day;
+				bkEndDate = year +'/' +month+ '/'+ day;
 			}else if(subName == '차량'){
 				let dayE = document.getElementById('dayEnd').value;
 				let yearE = document.getElementById('yearEnd').value;
 				let monthE = document.getElementById('monthEnd').value;
-				let bkEndDate = yearE +'/' +monthE + '/'+ dayE;
+				bkEndDate = yearE +'/' +monthE + '/'+ dayE;
 			}
 			
-			let bkEndTime = document.getElementById('end').value;
 			let assetsName = document.getElementById('assName').value;
 			let bkContent = document.getElementById('bk-content').value;
 			let bookingNo = document.getElementById('bookingNo').value;
@@ -380,78 +436,6 @@
 			})
 		}
 		
-		$(document).ready(function(){
-			let status = document.getElementById('status').textContent;
-		    if(status !== "예약대기"){
-		        $("#detailArea select").prop("disabled", true);
-		    }
-		    
-		   var now = new Date();
-		    
-		    /***************************** 날짜 초기화 ***********************************/
-		    $("#year2").empty();
-		    $("#month2").empty();
-		    $("#day2").empty();
-		    
-		    var detailYear = "${ymdArr[0]}"; // DB에서 조회한 상세 년도
-		    var detailMonth = "${ymdArr[1]}"; // DB에서 조회한 상세 월
-		    var detailDay = "${ymdArr[2]}"; // DB에서 조회한 상세 일
-
-		    //년도 셋팅
-		    $("#year2").append("<option value='"+detailYear+"'>"+detailYear+"</option>");
-		 	if(detailMonth == "12") {
-		 		var nextYear = Number(detailYear)+1;
-		 		$("#year2").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
-		    }
-		 	
-		 	//월 셋팅
-		 	if(detailMonth == now.getMonth()+1){
-			 	for(var i=Number(detailMonth); i<=Number(detailMonth)+1; i++) {
-			 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-		 	}else{
-		 		for(var i=Number(detailMonth)-1; i<=Number(detailMonth); i++) {
-			 		$("#month2").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-		 	}
-		 	
-		 	//일 셋팅
-		 	var detailDate = new Date(detailYear, detailMonth-1, 0);
-		 	$("#day2").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
-		 	
-		 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
-		 		if( i != detailDay){
-		 			$("#day2").append("<option value='"+i+"'>"+i+"</option>");
-		 		}
-		 	}
-		 	/***************************** 날짜 초기화 ***********************************/
-		 
-		    $("#year2").change(function(){
-		    	$("#day2").empty();
-				var tempDate = new Date($(this).val(), $("#month2").val()-1, 0);
-				for(var i=1; i<=tempDate.getDate(); i++){
-			 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-		    });
-		    
-			$("#month2").change(function(){
-				$("#day2").empty();
-				var tempDate = new Date($("#year").val(), $(this).val()-1, 0);
-				if($("#month2").val() != now.getMonth()+1){
-					for(var i=1; i<=tempDate.getDate(); i++){
-				 		$("#day2").append("<option value='"+i+"'>"+i+"</option>");
-				 	}
-				}else{
-					$("#day2").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
-				 	
-				 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
-				 		if( i != detailDay){
-				 			$("#day2").append("<option value='"+i+"'>"+i+"</option>");
-				 		}
-				 	}
-				}
-		    });
-		})
 		
 		/* window.onload = function() {
             var message = "${message}";

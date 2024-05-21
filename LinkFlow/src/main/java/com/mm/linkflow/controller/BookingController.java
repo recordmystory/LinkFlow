@@ -189,8 +189,16 @@ public class BookingController {
 	}
 	
 	@GetMapping("/assets.list") // 자산리스트 조회 
-	public void selectAssetsList() {
+	public ModelAndView selectAssetsList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
+		int listCount = bkServiceImpl.selectAssCount();
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<AssetsDto> assList = bkServiceImpl.selectAssetsList(pi);
 		
+		mv.addObject("pi",pi)
+		  .addObject("assList",assList)
+		  .setViewName("booking/assetsList");
+		
+		return mv;
 	}
 	
 	@PostMapping("/insert.ass") // 자산 추가 

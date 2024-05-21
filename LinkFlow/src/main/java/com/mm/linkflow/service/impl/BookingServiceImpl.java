@@ -74,8 +74,13 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
+	public int selectAssCount() {
+		return bkDao.selectAssCount();
+	}
+
+	@Override
 	public List<AssetsDto> selectAssetsList(PageInfoDto pi) {
-		return null;
+		return bkDao.selectAssetsList(pi);
 	}
 
 	@Override
@@ -113,6 +118,7 @@ public class BookingServiceImpl implements BookingService {
 		return 0;
 	}
 
+	
 	
 
 }

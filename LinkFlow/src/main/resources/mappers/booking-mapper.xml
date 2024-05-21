@@ -222,4 +222,18 @@
 	   </when>
 	   </choose>
 </select>
+
+<select id="selectAssCount" resultType="_int">
+	select count(*)
+	  from tb_assets 
+	where del_yn = 'Y'
+</select>
+
+<select id="selectAssetsList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , 
+</select>
+
 </mapper>

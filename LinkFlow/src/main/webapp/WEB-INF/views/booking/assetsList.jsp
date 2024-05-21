@@ -12,6 +12,7 @@
 <style>
 .LinkFlowMainSection {
 	width: 100%;
+	min-height: 1500px;
 	display: flex;
 }
 
@@ -19,12 +20,11 @@
 	width: 100%;
 	min-width: 1260px;
 	background-color: #f4f6f9;
-	min-height: 900px;
+	min-height: 400px;
 	padding: 30px;
-	border-radius: 5px;
 }
 
-/ /* 게시판 */
+/* 게시판 */
 .card-title, .card-tools {
 	padding: 10px;
 }
@@ -38,7 +38,6 @@
 	justify-content: space-between;
 }
 
-/* 모달 */
 /* 모달 */
 .md-header {
 	padding-top: 20px;
@@ -134,7 +133,21 @@
 	margin-bottom: 2px;
 	/* 마지막 p 요소의 아래쪽 간격을 0으로 설정하여 두 요소 사이의 간격을 없앰 */
 }
-/* 체크박스 */
+
+.ass-drop {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.ass-drop p {
+	margin-top: 10px;
+	width: 70px;
+}
+
+.ass-drop select {
+	text-align: center;
+}
+/* 체크박스 
 input[type="checkbox"] {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -147,7 +160,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
 	background-color: #007bff;
-}
+}*/
 </style>
 
 </head>
@@ -159,135 +172,120 @@ input[type="checkbox"]:checked {
 				page="/WEB-INF/views/common/sidebar/booking/bookingSidebar.jsp" />
 
 			<div class="LinkFlowMainContent">
-				<!-- Content Header (Page header) -->
-				<div class="card-header">
-					<div class="card-tools">
-						<div class="input-group input-group-sm">
-							<select id="dropdownOptions" class="form-control main-cate">
-								<option value="room">시설</option>
-								<option value="supplies">비품</option>
-							</select> &nbsp; 
-							<select id="dropdownOptions" class="form-control middle-cate">
-								<option value="">회의실</option>
-							</select> &nbsp; <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-							<div class="input-group-append">
-								<button type="submit" class="btn btn-default">
-									<i class="fas fa-search"></i>
-								</button>
-							</div>
+					<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">&nbsp;</h1>
 						</div>
 					</div>
-				</div>
-				<!-- /.card-header -->
-				<div class="card-body table-responsive p-0">
-					<table class="table table-hover text-nowrap">
-						<thead>
-							<tr>
-								<th style="width: 150px;">카테고리</th>
-								<th style="width: 150px;">자원</th>
-								<th>상품명</th>
-								<th style="width: 220px;">상태</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span data-toggle="modal" data-target="#acc-update">수정</span>
-									| <span>삭제</span></td>
-							</tr>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span>수정</span> | <span>삭제</span></td>
-							</tr>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span>수정</span> | <span>삭제</span></td>
-							</tr>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span>수정</span> | <span>삭제</span></td>
-							</tr>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span>수정</span> | <span>삭제</span></td>
-							</tr>
-							<tr>
-								<td>시설</td>
-								<td>회의실</td>
-								<td>A</td>
-								<td><span>수정</span> | <span>삭제</span></td>
-							</tr>
-
-						</tbody>
-					</table>
-				</div>
-				<!-- /.card-body -->
-				<div class="modal fade" id="acc-update">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="bk-modal" style="padding-top: 40px;">
-								<p>예약 비품 :</p>
-								&nbsp;
-								<p>노트북 / 맥북</p>
-							</div>
-							<div class="bk-modal bk-time">
-								<p>예약 시간</p>
-								<!-- 차량일 때만 -->
-								<p>2024 / 04 / 25 ~ 2024 / 05 / 15</p>
-							</div>
-							<div class="bk-modal">
-								<p>요청자 :
-								<p>&nbsp;
-								<p>조성모(개발1팀)</p>
-							</div>
-							<div class="modal-body">
-								<h6>사용 용도</h6>
-								<input type="text" class="can-coment" placeholder="부서 회의">
-							</div>
-
-							<!-- 승인일 때 -->
-							<!-- <div class="bk-modal bk-content">
-                                            <h5>예약 내용을 확인하였으며, 예약을 승인합니다.</h5>
-                                        </div> -->
-
-							<!-- 반려일 때 -->
-							<div class="modal-body">
-								<h6>비고</h6>
-								<input type="text" class="rej-coment" placeholder=" 반려 사유">
-							</div>
-
-							<div class="modal-footer justify-content-between">
-								<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-								<button type="button" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
-							</div>
+				</section>
+				<!-- /.container-fluid -->
+				<div class="bk-table">
+					<div class="card">
+						<div class="card-header">
+		                    <div class="card-tools">
+		                        <div class="input-group input-group-sm">
+		                            <select id="dropdownOptions" class="form-control main-cate">
+		                                <option value="">시설</option>
+		                                <option value="">비품</option>
+		                            </select> &nbsp;
+		                            <select id="dropdownOptions" class="form-control middle-cate">
+		                                <option value="">회의실</option>
+		                            </select> &nbsp;
+		                            <input type="text" name="table_search" class="form-control float-right"
+		                                placeholder="Search">
+		                            <div class="input-group-append">
+		                                <button type="submit" class="btn btn-default">
+		                                    <i class="fas fa-search"></i>
+		                                </button>
+		                            </div>
+		                        </div>
+		                    </div>
+		             
+						<!-- /.card-header -->
+						<div class="card-body table-responsive p-0">
+		                  <table class="table table-hover text-nowrap">
+		                      <thead>
+		                          <tr>
+		                              <th style="width: 170px;">카테고리</th>
+		                              <th style="width: 170px;">자원</th>
+		                              <th>상품명</th>
+		                              <th style="width: 250px;">상태</th>
+		                          </tr>
+		                      </thead>
+		                      <tbody>
+		                          <tr>
+		                              <td>시설</td>
+		                              <td>회의실</td>
+		                              <td>A</td>
+		                              <td>
+		                                  <span data-toggle="modal" data-target="#acc-update">수정</span>
+		                                  |
+		                                  <span>삭제</span>
+		                              </td>
+		                          </tr>
+		                          <tr>
+		                              <td>시설</td>
+		                              <td>회의실</td>
+		                              <td>A</td>
+		                              <td>
+		                                  <span>수정</span>
+		                                  |
+		                                  <span onclick="assDel();">삭제</span>
+		                              </td>
+		                          </tr>
+		                      </tbody>
+		                  </table>
 						</div>
-						<!-- /.modal-content -->
 					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-			</div>
-			<div
-				style="display: flex; justify-content: space-between; align-items: flex-end;">
-				<div></div>
-				<!-- 이 부분은 왼쪽 정렬을 유지하기 위한 간격입니다. -->
-				<div>
-					<button class="btn bg-gradient-secondary">자산 추가</button>
-				</div>
-			</div>
+  			<!-- /.card-body -->
+  				</div>
 
+				<div class="text-right">
+	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update">자산 추가</button>
+	            </div>
+			</div>
+             <!-- 자산 추가/수정 모달 -->
+             <div class="modal fade" id="acc-update">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="bk-modal" style="padding-top: 40px;">
+                             <h4>자산 추가 </h4>
+                         </div>
+                         <div class="bk-modal ass-drop">
+                             <p>카테고리</p>&nbsp;&nbsp;
+                             <select id="" style="width: 80px;">
+                                 <option value="">시설</option>
+                                 <option value="">비품</option>
+                             </select>
+                         </div>
+                         <div class="bk-modal ass-drop">
+                             <p>자원 종류</p>&nbsp;&nbsp;
+                             <select id="" style="width: 100px;">
+                                 <option value="">회의실</option>
+                                 <!-- 비품일때 -->
+                                 <option value="">노트북</option>
+                                 <option value="">마우스</option>
+                                 <option value="">차량</option>
+                             </select>
+                         </div>
+                         <div class="bk-modal ass-drop">
+                             <p>상품명 </p>&nbsp;&nbsp;
+                             <input type="text">
+                         </div>
+ 
+                         <div class="modal-footer justify-content-between">
+                             <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                             <button type="button" class="btn btn-outline-primary">SUBMIT</button>
+                         </div>
+                     </div>
+                     <!-- /.modal-content -->
+                 </div>
+                 <!-- /.modal-dialog -->
+             </div>
+             <!-- /.modal -->
 
-		</div>
 		<div class="pagination" id="pageArea"
 			style="display: flex; justify-content: center;">
 			<ul class="pagination">
@@ -304,18 +302,40 @@ input[type="checkbox"]:checked {
 				</li>
 			</ul>
 		</div>
+		</div>
 	</div>
+	   </div>
 	<!-- /.card -->
 
 	<!-- /.content-wrapper -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script>
-		
-		 $(document).ready(function() {
-		 	$('#roomCheckbox, #supCheckbox, #status').change(function() {
-		    	// search(); // 변경 사항이 감지되면 검색 실행
-		    });
+			
+		$(document).ready(function () {
+	        $('.dropdown-item').click(function () {
+	            var selectedText = $(this).find('.spanCss').text();
+	            $('.resultArea').text(selectedText);
+	        });
 	    });
-		</script>
+	
+	    function assDel(seq) {
+	        Swal.fire({
+	            //   title: '글을 삭제하시겠습니까???',
+	            text: "자원 삭제 시, 자원에 대한 모든 예약 기록이 삭제되어 복구할 수 없습니다.",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonColor: '#d33',
+	            cancelButtonColor: '#C0C0C0',
+	            cancelButtonText: '취소',
+	            confirmButtonText: '삭제'
+	        }).then((result) => {
+	            if (result.value) {
+	                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
+	            }
+	        })
+	    }
+
+	</script>
 	
 
 </body>
