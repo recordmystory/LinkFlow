@@ -157,23 +157,18 @@
 						                    <select id="month" name="month" class="form-control" style="width: 80px;">
 						                        <option value="${ymdArr[1]}">${ymdArr[1]}</option>
 						                        <c:choose>
-											        <c:when test="${ymdArr[1] eq todayMonth}">
-											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}">
-											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) + 1) : parseInt(ymdArr[1]) + 1}
-											            </option>
-											        </c:when>
-											        <c:otherwise>
-											            <option value="${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}">
-											                ${ymdArr[1] < 9 ? '0' + (parseInt(ymdArr[1]) - 1) : parseInt(ymdArr[1]) - 1}
-											            </option>
-											        </c:otherwise>
-											    </c:choose>
+											          <c:when test="${ymdArr[1] eq todayMonth }">
+						                                <option value="0${ymdArr[1] + 1}">0${ymdArr[1] + 1}</option>
+						                            </c:when>
+						                            <c:otherwise>
+						                                <option value="0${ymdArr[1] - 1}">0${ymdArr[1] - 1}</option>
+						                            </c:otherwise>
+						                        </c:choose>
 						                    </select>&nbsp; 
 						                    <select id="day" name="day" class="form-control" style="width: 80px;">
-						                         <c:forEach var="day" begin="1" end="${daysInMonth}">
-											        <option value="${day < 10 ? '0' + day : day}">${day < 10 ? '0' + day : day}</option>
-											    </c:forEach>
-									        </select>&nbsp;
+						                        <option value="${ymdArr[2]}">${ymdArr[2]}</option>
+						                        <option value="${ymdArr[2] + 1}">${ymdArr[2] + 1}</option>
+						                    </select>&nbsp;
 						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
 						
 						                    <c:choose>
@@ -335,9 +330,7 @@
 			let year = document.getElementById('year').value;
 			let month = document.getElementById('month').value;
 			let day = document.getElementById('day').value;
-			let yearE = document.getElementById('yearEnd').value;
-			let monthE = document.getElementById('monthEnd').value;
-			let dayE = document.getElementById('dayEnd').value;
+			
 			let subName = document.getElementById('assType').value;
 			
 			let bkStartDate = year +'/' +month+ '/'+ day;
@@ -346,6 +339,9 @@
 			if(subName == '회의실'){
 				let bkEndDate = year +'/' +month+ '/'+ day;
 			}else if(subName == '차량'){
+				let dayE = document.getElementById('dayEnd').value;
+				let yearE = document.getElementById('yearEnd').value;
+				let monthE = document.getElementById('monthEnd').value;
 				let bkEndDate = yearE +'/' +monthE + '/'+ dayE;
 			}
 			
@@ -392,7 +388,7 @@
         } */
         
      // 페이지가 로드될 때와 월이 변경될 때 모두 실행되도록 수정합니다.
-        document.addEventListener("DOMContentLoaded", updateDayDropdown);
+        /* document.addEventListener("DOMContentLoaded", updateDayDropdown);
         document.getElementById("month").addEventListener("change", updateDayDropdown);
 
         function updateDayDropdown() {
@@ -415,7 +411,7 @@
                 dayDropdown.appendChild(option);
             }
             console.log(${todayMonth});
-        }
+        }*/
 	</script>
 
 
