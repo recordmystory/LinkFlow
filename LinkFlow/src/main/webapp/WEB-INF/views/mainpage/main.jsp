@@ -190,7 +190,7 @@
 							</a>
 						</span> 
 							<span class="menubar_category"> 
-							<a href=""> 
+							<a href="${ contextPath }/project/list.pj"> 
 								<i class="fa-solid fa-desktop" style="font-size: 38px; padding-left: 10.5px; padding-top: 15px;"></i>
 								<p class="category_content" style="width: 100px; padding-top: 24px; transform: translateX(-2px);">프로젝트</p>
 							</a>

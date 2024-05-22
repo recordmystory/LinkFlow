@@ -47,10 +47,10 @@ public class HomeController {
 		req.getSession().setAttribute("male", mService.selectMale());
 		req.getSession().setAttribute("female", mService.selectFemale());
 
-		req.getSession().setAttribute("oneMonth", monthUtil.monthReturn(0));
-		req.getSession().setAttribute("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(0)));
-		req.getSession().setAttribute("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(0)));
-		req.getSession().setAttribute("oneMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(0)));
+		req.getSession().setAttribute("oneMonth", monthUtil.monthReturn(1));
+		req.getSession().setAttribute("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(1)));
+		req.getSession().setAttribute("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(1)));
+		req.getSession().setAttribute("oneMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(1)));
 		
 		req.getSession().setAttribute("twoMonth", monthUtil.monthReturn(2));
 		req.getSession().setAttribute("twoMonthMember", mService.selectAllMember(monthUtil.monthReturn(2)));

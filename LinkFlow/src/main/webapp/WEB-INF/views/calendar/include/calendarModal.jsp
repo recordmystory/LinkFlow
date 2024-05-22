@@ -352,7 +352,8 @@
 		                        <label for="address" class="col-form-label">장소</label>
 		                        <div class="search mt-1">
 		                            <input type="text" name="address" class="form-select" style="width:320px; font-size: small; margin-left: 30px;">
-   														  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        </div>
+   														  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        
+   												  </div>
 		                    </div>
 		                    <!-- 알림 설정 -->
 		                    <div class="schDetailModal_content">
@@ -376,7 +377,7 @@
 		            </div>
 		            <div class="modal-footer justify-content-center">
 		                <button type="button" id="schInsertButton" class="btn blue-button" >등록</button>
-		                <button type="button" class="btn gray-button" id="">취소</button>
+		                <button type="button" class="btn gray-button" id="cencelBtn">취소</button>
 		            </div>
 		            
 		        </div>
@@ -446,8 +447,7 @@
                      		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
-                       <input type="hidden" name="calNo" id="calNo">
-                       
+                       <input type="hidden" name="calNo" id="calNo">                       
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
@@ -768,59 +768,59 @@
     <!--공유 캘린더 모달 end-->
     
     <!------휴지통 모달------------------------------------------------  -->
-              <!-- 일정 상세 정보 모달 start -->
-        <div class="modal fade" id="schDetailModal" tabindex="-1" aria-labelledby="schDetailModal" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-              <div class="modal-content">
-                  <div class="modal-header justify-content-center">
-                      <h5 class="modal-title font-weight-bolder" id="schDetailTitle">개발2팀 회식</h5>
-                  </div>
-                  <div class="modal-body">
-                      <div>
-                          <div class="schDetailModal_content justify-content-end mx-1">
-                            중요일정&nbsp;
+     <!-- 일정 상세 정보 모달 start -->
+      <div class="modal fade" id="schDetailModal" tabindex="-1" aria-labelledby="schDetailModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title font-weight-bolder" id="schDetailTitle">개발2팀 회식</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="schDetailModal_content justify-content-end mx-1">
+                          중요일정&nbsp;
+                          <input type="checkbox" class="weste-modal" id="recipient-name">
+                        </div>
+                        <div class="schDetailModal_content font-weight-bolder">
+                            <label for="recipient-name" class="col-form-label">캘린더</label>
+                            <p style="padding-right: 30px;">부서 캘린더</p> 
+                        </div>
+                        <div class="schDetailModal_content"> 
+                          <label for="recipient-name" class="col-form-label">일정</label> 
+                          <p>2024/04/26&nbsp; 오전 9:30 ~ 오전 10:00</p> 
+                        </div>
+                        <!--조건 걸어야함-->
+                        <div class="schDetailModal_content">
+                          <label for="recipient-name" class="col-form-label">장소</label>
+                          <div class="search">
+                            <div>서울시 서초구 방배동 939-949</div>
+                            <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
+                          </div>                          
+                        </div>
+                        <!---->
+                        <div class="schDetailModal_content">
+                          <label for="recipient-name" class="col-form-label">알림</label>
+                          <p>
+                            30분 전 메일발송
                             <input type="checkbox" class="weste-modal" id="recipient-name">
-                          </div>
-                          <div class="schDetailModal_content font-weight-bolder">
-                              <label for="recipient-name" class="col-form-label">캘린더</label>
-                              <p style="padding-right: 30px;">부서 캘린더</p> 
-                          </div>
-                          <div class="schDetailModal_content"> 
-                            <label for="recipient-name" class="col-form-label">일정</label> 
-                            <p>2024/04/26&nbsp; 오전 9:30 ~ 오전 10:00</p> 
-                          </div>
-                          <!--조건 걸어야함-->
-                          <div class="schDetailModal_content">
-                            <label for="recipient-name" class="col-form-label">장소</label>
-                            <div class="search">
-                              <div>서울시 서초구 방배동 939-949</div>
-                              <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
-                            </div>                          
-                          </div>
-                          <!---->
-                          <div class="schDetailModal_content">
-                            <label for="recipient-name" class="col-form-label">알림</label>
-                            <p>
-                              30분 전 메일발송
-                              <input type="checkbox" class="weste-modal" id="recipient-name">
-                            </p>
-                          </div>
-                          <div class="schDetailModal_content">
-                            <label for="message-text" class="col-form-label">내용</label>
-                            <p id="schDetailModal_content_text"> 
-                                 서울시 서초구 방배동 939-949에 있는
-                                '떡봉솥뚜껑닭볶음탕찾아주셔서서감사
-                                 합니다' 에서 부서 전체 회식
-                            </p>
-                          </div>
-                       </div>
-                  </div>
-                  <div class="modal-footer justify-content-center">
-                      <button type="button" class="btn blue-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">복구</button>
-                      <button type="button" class="btn gray-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">삭제</button>
-                  </div>
-              </div>
+                          </p>
+                        </div>
+                        <div class="schDetailModal_content">
+                          <label for="message-text" class="col-form-label">내용</label>
+                          <p id="schDetailModal_content_text"> 
+                               서울시 서초구 방배동 939-949에 있는
+                              '떡봉솥뚜껑닭볶음탕찾아주셔서서감사
+                               합니다' 에서 부서 전체 회식
+                          </p>
+                        </div>
+                     </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn blue-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">복구</button>
+                    <button type="button" class="btn gray-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">삭제</button>
+                </div>
             </div>
+          </div>
         </div>
         <!--일정 상세 정보 모달 end-->
         <!--상세 정보 모달_버튼 모달 start-->
@@ -830,17 +830,15 @@
               <div class="modal-body" id="detailBtn-modal-body" > 
               </div>
               <div class="modal-checkBtn">
-                <i class="fa-solid fa-check fa-xl mb-5 mr-4" style="color: #055dd1;"></i>
-                <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" style="color: #bcbdbd;"></i>
+                <i class="fa-solid fa-check fa-xl mb-5 mr-4" id="schDetailDeleteBtn" style="color: #055dd1;"></i>
+                <i class="fa-solid fa-xmark fa-xl mb-5 before-btn" id="schDetailCencelBtn" style="color: #bcbdbd;"></i>
               </div>
             </div>
           </div>
         </div>
         <!--상세 정보 모달_버튼 모달 ends-->
+        
     <script>
-   
-  
-
 
 //공유일정 조직도 모달 schShareModal***********************************************
   $(document).ready(function(){
@@ -1141,23 +1139,21 @@ $('#kt_docs_jstree_basic').jstree({
     
 
  // 캘린더 등록하기 모달(schInsertModal)***********************************************
-    $(document).ready(function() {
-  	    $('.schInsertModalBtn').click(function() {
-  	        $('#schInsertModal').modal('show');
-  	        $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
-  	    }); 
-
-  	    // schInsertModal 닫힐 때
-  	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
-  	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
-  	    }); 
-    });
-    
-//캘린더 ajax start **************************************
 
 	$(document).ready(function() {
- //캘린더 일정등록 ajax start **************************************
-		  // 중요일정 체크박스 클릭 시
+ //캘린더 일정등록 ajax
+			//일정등록 클릭시 모달 띄우기
+			if('${loginUser.userId}'){
+				//경로이동 로그인으로 
+			}else{ //로그인 중이라면
+	 			$('.schInsertModalBtn').click(function() {
+	 	        $('#schInsertModal').modal('show');
+	 	        $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
+	 	    }); 
+				
+			}
+ 
+		  // 중요일정 체크박스 클릭 시 조건
 	    $('#schImportInsertBtn').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="schImport"]').val(important);
@@ -1171,6 +1167,12 @@ $('#kt_docs_jstree_basic').jstree({
 	    var mod = '${loginUser.userId}'; 
         $('input[name="modId"]').val(mod); 
 	    
+      var start = $('input[name="notifyYn"]').val(startDate);
+    	var end = $('input[name="notifyYn"]').val(endDate);
+    		
+    	if(start < end){
+    		alert("start");
+    	}	
    		 $('#schInsertButton').click(function() {
     	//수정자 == 로그인 아이디
 
@@ -1191,13 +1193,21 @@ $('#kt_docs_jstree_basic').jstree({
                 // 요청이 실패했을 때 
                 console.error("일정 등록에 실패했습니다.");
                 alert("일정 등록에 실패했습니다.");
-                $("#schInsertModal").modal("hide");
 
             }
         });
     });
  //캘린더 일정등록 ajax end **************************************
 
+ 	    //schInsertModal 닫힐 때
+ 	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
+ 	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
+ 	    }); 
+ 	    
+ 	  	//등록모달 -> 삭제버튼 클릭시
+ 	    $('#cencelBtn').click(function() {
+        $('#schInsertModal').modal('hide');
+    	}); 
 });
  
     

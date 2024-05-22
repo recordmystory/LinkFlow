@@ -166,11 +166,11 @@
 		            schUpdateForm(event);
 		            
 		            //공휴일 클릭시 링크 이동 막기(기본 이벤트 막기)
-	              info.jsEvent.preventDefault();
+	              //info.jsEvent.preventDefault();
 
 		        },
             eventSources: [
-                //공휴일 
+              //공휴일 
                 {
                     googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
                     //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
@@ -179,71 +179,63 @@
                     textColor: 'rgba(190, 0, 50, 0.5)',
                     
                     constraint: 'availableForMeeting' //일정 옮기지 못하게 제약조건 걸 때 필요
-                },
-                {
-                     //특정 캘린더의 전체 일정 조회
-                	events: function(info, success, error) {
-                        var schCalSubCode = [];
-
-                        if ($("#personalCalCheckbox").is(":checked")) {
-                            schCalSubCode.push($("#personalCalCheckbox").val());
-                        }
-                        if ($("#departCalCheckbox").is(":checked")) {
-                        	schCalSubCode.push($("#departCalCheckbox").val());
-                        }
-                        if ($("#companyCalCheckbox").is(":checked")) {
-                        	schCalSubCode.push($("#companyCalCheckbox").val());
-                        }
-
-                        $.ajax({
-                            url: "${contextPath}/calendar/schList.do",
-                            type: "get",
-                            traditional: true,
-                            data: {
-                                schCalSubCodes: schCalSubCode
-                            },
-                            success: function(result) {
-                                var events = [];
-                                for (var schCalSubCode in result) {
-                                    if (result.hasOwnProperty(schCalSubCode)) {
-                                        var calendarEvents = result[schCalSubCode];
-                                        for (var i = 0; i < calendarEvents.length; i++) {
-                                            var eventData = {
-                                            				title: calendarEvents[i].schTitle, //풀캠 필수속성
-                                                    start: calendarEvents[i].startDate, 
-                                                    end: calendarEvents[i].endDate, 
-                                                    color: calendarEvents[i].calColor, 
-                                                    extendedProps: { // 사용자 정의 속성
-                                                        schTitle: calendarEvents[i].schTitle,
-                                                        schImport: calendarEvents[i].schImport,
-                                                        schCalSubCode: calendarEvents[i].schCalSubCode,
-                                                        address: calendarEvents[i].address,
-                                                        notifyYn: calendarEvents[i].notifyYn,
-                                                        schContent: calendarEvents[i].schContent,
-                                                        schNo: calendarEvents[i].schNo,
-                                                        calNo: calendarEvents[i].calNo
-
-                                                    }
-                                            };
-                                            events.push(eventData);//addEvent로도 가능
-                                        }
-                                    }
-                                }
-                                
-                                success(events);
-                            },
-                            error: function() {
-                            	
-                            }
-                        });
-                    }
                 }
             ]
         });
         calendar.render();
+        
+        $(".calCheckbox").each(function(index, checkboxEl){
+        	if($(checkboxEl).is(":checked")){
+        		addEventAndShow($(checkboxEl).val());
+        	}
+        })
     });
     //풀캘린더 
-	 
+    
+         // 넘겨받은 그룹코드의 일정들을 조회해서 캘린더에 뿌리는 역할의함수
+     function addEventAndShow(code){
+      $.ajax({
+          url: "${contextPath}/calendar/schList.do",
+          type: "get",
+          //traditional: true,
+          data: {
+              schCalSubCodes: code
+          },
+          contentType: "application/json",
+          dataType: "json",
+          success: function(calendarEvents) { // [{일정}, {일정}]
+               for (var i = 0; i < calendarEvents.length; i++) {
+                   var eventData = {
+                   				title: calendarEvents[i].schTitle, //풀캠 필수속성
+                           start: calendarEvents[i].startDate, 
+                           end: calendarEvents[i].endDate, 
+                           color: calendarEvents[i].calColor, 
+                           extendedProps: { // 사용자 정의 속성
+                               schTitle: calendarEvents[i].schTitle,
+                               schImport: calendarEvents[i].schImport,
+                               schCalSubCode: calendarEvents[i].schCalSubCode,
+                               address: calendarEvents[i].address,
+                               notifyYn: calendarEvents[i].notifyYn,
+                               schContent: calendarEvents[i].schContent,
+                               schNo: calendarEvents[i].schNo,
+                               calNo: calendarEvents[i].calNo
+
+                           }
+                   };
+                   //events.push(eventData);//addEvent로도 가능
+                   calendar.addEvent(eventData);
+               }
+              
+              //successCallback(events);
+              //calendar.refetchEvents();
+          },
+          error: function(result) {
+              failureCallback(result);
+          	
+          }
+      });
+		}
+ 
     // 일정 상세 ******************
 		function schDetail(event) {
         var extendedProps = event.extendedProps;
@@ -336,8 +328,9 @@
                 dataType: "text",
                 success: function(resultSch) {
                     if (resultSch === "success") {
-                        $('#schUpdateModal').modal('hide');
                         alert("일정 수정 성공.");
+                        $('#schUpdateModal').modal('hide');
+                        $('#schDetailModal').modal('hide');
                         calendar.refetchEvents();
                     } else {
                         alert("일정 수정 실패.");
@@ -356,12 +349,12 @@
 			  
 			 
     // 일정 삭제 *******************************
-    	//삭제 html text
+    	//삭제모달 html text
         $('.schDetailModal_grayBtn').click(function() {
           $('#detailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
         });
     
-    	//삭제 버튼 클릭시 
+    	//삭제모달에서 삭제 버튼 클릭시 
         $('#schDeleteBtn').click(function() {
         
             var schNo = $('#schDetailModal input[name="schNo"]').val();
@@ -387,26 +380,30 @@
             });
         });
     
-      
+      //삭제모달에서 취소버튼 클릭시
+       $('#schDeleteCancelBtn').click(function() {
+           $('#detailBtn').modal('hide');
+
+       });
 
      // 개인캘린더, 부서캘린더, 전사캘린더 체크박스 클릭 시 일정 목록 조회
-        $("#personalCalCheckbox, #departCalCheckbox, #companyCalCheckbox").change(function() {
-       				 	//체크된게 있으면 리패치
-            if ($("#personalCalCheckbox").is(":checked") || $("#departCalCheckbox").is(":checked") || $("#companyCalCheckbox").is(":checked")) {
-                calendar.refetchEvents();
-            } else {
-                // 체크된게 하나도 없으면 공휴일 제외하고 삭제
-                var events = calendar.getEvents();
+        $(".calCheckbox").change(function() {
+        	
+        		var changeCheckboxVal = $(this).val();
+            if($(this).is(":checked")) {
+                //calendar.refetchEvents();
+            	addEventAndShow($(this).val());
+            }else { // 체크해제일 경우
+            	
+                var events = calendar.getEvents(); // 현재보여지는 모든 일정을 다 가져오고 
+                
                 events.forEach(function(event) {
-                    var extendedProps = event.extendedProps;
-                    if (extendedProps.schCalSubCode === '03') {
-                        event.remove();
-                    } else if (extendedProps.schCalSubCode === '02' ) { 
-                        event.remove();
-                    } else if (extendedProps.schCalSubCode === '01' ) {
-                        event.remove();
-                    }
+                	//console.log(event.extendedProps);
+                	//console.log(event.extendedProps.schCalSubCode);
+                	event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
                 });
+                
+                //calendar.refetchEvents();
             }
         });
     });
@@ -587,70 +584,10 @@
 						//새로고침 또는 캘린더 메인으로
 						
           });
-      }); 
+      }); */
     
-      function addEventAndShow(){
-      	var schCalSubCode = [];
 
-          if ($("#personalCalCheckbox").is(":checked")) {
-              schCalSubCode.push($("#personalCalCheckbox").val());
-          }
-          
-          if ($("#departCalCheckbox").is(":checked")) {
-          	schCalSubCode.push($("#departCalCheckbox").val());
-          }
-          
-          if ($("#companyCalCheckbox").is(":checked")) {
-          	schCalSubCode.push($("#companyCalCheckbox").val());
-          }
-          
-          $.ajax({
-              url: "${contextPath}/calendar/schList.do",
-              type: "get",
-              traditional: true,
-              data: {
-                  schCalSubCodes: schCalSubCode
-              },
-              contentType: "application/json",
-              dataType: "json",
-              success: function(result) {
-                  for (var schCalSubCode in result) {
-                      if (result.hasOwnProperty(schCalSubCode)) {
-                          var calendarEvents = result[schCalSubCode];
-                          for (var i = 0; i < calendarEvents.length; i++) {
-                              var eventData = {
-                              				title: calendarEvents[i].schTitle, //풀캠 필수속성
-                                      start: calendarEvents[i].startDate, 
-                                      end: calendarEvents[i].endDate, 
-                                      color: calendarEvents[i].calColor, 
-                                      extendedProps: { // 사용자 정의 속성
-                                          schTitle: calendarEvents[i].schTitle,
-                                          schImport: calendarEvents[i].schImport,
-                                          schCalSubCode: calendarEvents[i].schCalSubCode,
-                                          address: calendarEvents[i].address,
-                                          notifyYn: calendarEvents[i].notifyYn,
-                                          schContent: calendarEvents[i].schContent,
-                                          schNo: calendarEvents[i].schNo,
-                                          calNo: calendarEvents[i].calNo
-
-                                      }
-                              };
-                              //events.push(eventData);//addEvent로도 가능
-                              calendar.addEventSource(eventData);
-                          }
-                      }
-                  }
-                  
-                  //successCallback(events);
-                  calendar.refetchEvents();
-              },
-              error: function(result) {
-                  failureCallback(result);
-              	
-              }
-          });
-		}
- 	 */
+ 	 
 	</script>
 </body>
 </html>

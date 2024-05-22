@@ -19,8 +19,9 @@ public class ProjectDto extends CommonDto {
 	private String proTitle;
 	private String client;
 	private String address;
-	private String detail_add;
-	private Date stratDate;
-	private Date endDate;
+	private String detailAdd;
+	private String startDate;
+	private String endDate;
 	private String proYn;
+	private String deptName;
 }
