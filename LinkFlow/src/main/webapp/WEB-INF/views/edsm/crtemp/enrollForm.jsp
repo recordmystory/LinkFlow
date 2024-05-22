@@ -43,24 +43,6 @@
       background-color: white;
     }
     
-    /* 해당 페이지에서 사용할 CSS 추가 */
-    .bottom-menu{
-      width: 20%;
-    }
-
-    .search-keyword{
-      width: 300px;
-    }
-
-    .search{
-      display: flex;
-    }
-
-    .header-parent {
-        display: flex;
-        align-items: center; /* 모든 요소를 수직으로 중앙 정렬합니다. */
-    }
-
     /* 이 페이지내에서만 쓸 CSS 추가 */
     .setting-table > th {
       width: 5px;
@@ -73,18 +55,9 @@
     .content-area > div:not(.drafting-content) > div  {
       margin-top: 30px;
     }
-
-    .btnArea{
-      margin-bottom: 30px;
-    }
-
+    
     .ck-editor__editable{
       min-height: 600px;
-    }
-
-    /* 모달 높이 설정 */
-    .modal-content{
-        height: 700px;
     }
 
     /* 버튼 간격 조절 */
@@ -139,7 +112,8 @@
                                   </td>
                                 </tr>
                                 <tr>
-                                  <th class="table-active">보존 연한</th>
+                                  <th class="table-active">보존 
+                                  연한</th>
                                   <td>
                                     <select class="form-control" name="presDate">
                                       <option value="1">1년</option>
@@ -171,18 +145,14 @@
                           <div id="editor" name="frContent"></div>
                         </div>
                       </div>
-                      
+                      </div>
                     </div>
                       <!-- /.card-body -->
                </div>
              </div>
            </div>
-           
-          </section>
           <!-- /.content -->
-      </div>
       <!-- /.content-wrapper -->
-	</div>
 	
 	<script>
 		// CKEditor

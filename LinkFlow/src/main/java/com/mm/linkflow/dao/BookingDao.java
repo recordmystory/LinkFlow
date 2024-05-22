@@ -86,4 +86,16 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectDetailAssList",supName);
 	}
 
+	public int selectAssCount() {
+		return sql.selectOne("bkMapper.selectAssCount");
+	}
+
+	public List<AssetsDto> selectAssetsList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sql.selectList("bkMapper.selectAssetsList",null,rowBounds);
+	}
+
 }

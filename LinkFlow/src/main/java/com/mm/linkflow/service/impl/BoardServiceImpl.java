@@ -1,5 +1,7 @@
 package com.mm.linkflow.service.impl;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,9 @@ import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -33,6 +37,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int selectBoardListCount(String boardType) {
 		return boardDao.selectBoardListCount(boardType);
+	}
+	
+	@Override
+	public int selectTrashListCount(String userId) {
+		return boardDao.selectTrashListCount(userId);
 	}
 
 	@Override
@@ -55,17 +64,20 @@ public class BoardServiceImpl implements BoardService {
 	// 게시글작성
 	@Override
 	public int insertBoard(BoardDto board) {
-		// board insert
+		
 		int result1 = boardDao.insertBoard(board);
 		
 		int result2 = 1;
 		List<AttachDto> attachList = board.getAttachList();
+		log.debug("attachList : {}", attachList);
 		if(!attachList.isEmpty()) {
 			result2 = 0;
 			for(AttachDto at : attachList) {
 				result2 += attachDao.insertAttach(at);
 			}
 		}
+		log.debug("result1 : {}", result1);
+		log.debug("result2 : {}", result2);
 		return result1 * result2;
 	}
 
@@ -92,8 +104,12 @@ public class BoardServiceImpl implements BoardService {
 				// 새로운 첨부파일 정보 insert
 				List<AttachDto> list = board.getAttachList();
 				int result3 = 0;
-				for(AttachDto at : list) {
-					result3 += attachDao.insertAttach(at);
+				if(list != null) {
+					for(AttachDto at : list) {
+						result3 += attachDao.insertAttach(at);
+					}
+				}else {
+					list = new ArrayList<>();
 				}
 				
 				return result1 == 1
@@ -113,9 +129,53 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardDto> selectTempSaveList(String userId) {
-		return boardDao.selectTempSaveList(userId);
+	public List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId) {
+		return boardDao.selectTempSaveList(pi, userId);
 	}
 
+	@Override
+	public int deleteBoard(List<Integer> no) {
+		return boardDao.deleteBoard(no);
+	}
 
+	@Override
+	public int selectCurrnetTempSave() {
+		return boardDao.selectCurrnetTempSave();
+	}
+
+	@Override
+	public int selectTempSaveListCount(String userId) {
+		return boardDao.selectTempSaveListCount(userId);
+	}
+
+	@Override
+	public int removeBoard(List<Integer> no) {
+		int result1 = boardDao.removeBoard(no);
+		int result2 = 0;
+		for(int index : no) {
+			List<String> delFileNo = attachDao.selectDelFileNo(index);
+			if(delFileNo != null) {
+				String[] delFileNoArray = new String[delFileNo.size()];
+				delFileNo.toArray(delFileNoArray);
+				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
+				result2 += attachDao.deleteAttach(delFileNoArray);	
+				for(AttachDto at : delFileList) {
+					new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+				}
+			}
+		}
+		return result1 * result2;
+	}
+
+	@Override
+	public List<BoardDto> selectTrashList(PageInfoDto pi, String userId) {
+		return boardDao.selectTrashList(pi, userId);
+	}
+
+	@Override
+	public int restoreBoard(List<Integer> no) {
+		return boardDao.restoreBoard(no);
+	}
+
+	
 }

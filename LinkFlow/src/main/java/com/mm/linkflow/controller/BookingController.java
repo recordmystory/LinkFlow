@@ -181,16 +181,24 @@ public class BookingController {
 		log.debug("result:{}",result);
 		
 		if (result > 0) {
-			model.addAttribute("message", "삭제가 완료되었습니다.");
-			return "booking/myBookingList";
+//			model.addAttribute("message", "삭제가 완료되었습니다.");
+			return "redirect:/booking/mylist.bk";
 		} else {
-			return "booking/myBookingDetail?no=" + bk.getBookingNo();
+			return "redirect:/booking/detail.bk?no=" + bk.getBookingNo();
 		}
 	}
 	
 	@GetMapping("/assets.list") // 자산리스트 조회 
-	public void selectAssetsList() {
+	public ModelAndView selectAssetsList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
+		int listCount = bkServiceImpl.selectAssCount();
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<AssetsDto> assList = bkServiceImpl.selectAssetsList(pi);
 		
+		mv.addObject("pi",pi)
+		  .addObject("assList",assList)
+		  .setViewName("booking/assetsList");
+		
+		return mv;
 	}
 	
 	@PostMapping("/insert.ass") // 자산 추가 

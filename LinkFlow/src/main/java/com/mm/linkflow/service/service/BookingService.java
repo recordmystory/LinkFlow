@@ -30,6 +30,7 @@ public interface BookingService {
 	int searchBkCount(Map<String,String> search); // 검색한 비품 페이징
     List<AssetsDto> selectSearchSupList(PageInfoDto pi,Map<String,String> search); // 검색한 비품 리스트 
     
+    int selectAssCount();
 	List<AssetsDto> selectAssetsList(PageInfoDto pi); // 자산 리스트 
 	
 	int insertAssets(AssetsDto ass); // 자산 추가 

@@ -8,6 +8,7 @@ import com.mm.linkflow.dao.EdsmProgDao;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
+import com.mm.linkflow.dto.EdocHistDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 
@@ -20,15 +21,15 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	private final EdsmProgDao edsmProgDao;
 	
 
-	@Override
-	public int selectAllListCount() {
-		return 0;
-	}
-
-	@Override
-	public List<EdocDto> selectAllList(PageInfoDto pi) {
-		return null;
-	}
+//	@Override
+//	public int selectAllListCount() {
+//		return 0;
+//	}
+//
+//	@Override
+//	public List<EdocDto> selectAllList(PageInfoDto pi) {
+//		return null;
+//	}
 
 	@Override
 	public List<EdocFormDto> selectFormList() {
@@ -44,15 +45,12 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	public List<DeptDto> selectApprLine() {
 		return edsmProgDao.selectApprLine();
 	}
-	
-//	@Override
-//	public int selectAllListCount() {
-//		return edsmProgDao.selectAllListCount();
-//	}
-//
-//	@Override
-//	public List<EdocDto> selectAllList(PageInfoDto pi) {
-//		return edsmProgDao.selectAllList(pi);
-//	}
+
+	@Override
+	public int insertDoc(EdocDto edocDto) {
+		return edsmProgDao.insertDoc(edocDto);
+	}
+
+
 
 }

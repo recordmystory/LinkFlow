@@ -27,6 +27,7 @@
 	<result column="main_code" property="mainCode"/>
 	<result column="sub_code" property="subCode"/>
 	<result column="sub_name" property="subName"/>
+	<result column="main_name" property="mainName"/>
 </resultMap>
  
 
@@ -222,4 +223,23 @@
 	   </when>
 	   </choose>
 </select>
+
+<select id="selectAssCount" resultType="_int">
+	select count(*)
+	  from tb_assets 
+	where del_yn = 'N'
+</select>
+
+<select id="selectAssetsList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , sub_name
+		  , main_name
+	 from tb_assets a
+	 join tb_common c on a.main_code = c.main_code
+	where a.del_yn ='N'
+	  and a.sub_code = c.sub_code
+</select>
+
 </mapper>

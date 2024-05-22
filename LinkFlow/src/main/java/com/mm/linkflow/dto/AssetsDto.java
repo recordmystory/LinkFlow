@@ -21,4 +21,5 @@ public class AssetsDto extends CommonDto{
 	private String mainCode;
 	private String subCode;
 	private String subName;
+	private String mainName;
 }

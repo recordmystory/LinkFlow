@@ -3,11 +3,11 @@ package com.mm.linkflow.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.mm.linkflow.dto.AttachDto;
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -79,8 +79,46 @@ public class BoardDao {
 		return sqlSession.selectList("boardMapper.selectSearchList", search, rowBounds);
 	}
 
-	public List<BoardDto> selectTempSaveList(String userId) {
-		return sqlSession.selectList("boardMapper.selectTempSaveList",userId);
+	public List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sqlSession.selectList("boardMapper.selectTempSaveList", userId, rowBounds);
+	}
+
+	public int deleteBoard(List<Integer> no) {
+		return sqlSession.update("boardMapper.deleteBoard", no);
+	}
+
+	public int selectCurrnetTempSave() {
+		return sqlSession.selectOne("boardMapper.selectCurrnetTempSave");
+	}
+
+	public int selectTempSaveListCount(String userId) {
+		return sqlSession.selectOne("boardMapper.selectTempSaveListCount", userId);
+	}
+
+	public int removeBoard(List<Integer> no) {
+		return sqlSession.delete("boardMapper.removeBoarList", no);
+	}
+
+	public int selectTrashListCount(String userId) {
+		return sqlSession.selectOne("boardMapper.selectTrashListCount", userId);
+	}
+
+	public List<BoardDto> selectTrashList(PageInfoDto pi, String userId) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sqlSession.selectList("boardMapper.selectTrashList", userId, rowBounds);
+	}
+
+	public int restoreBoard(List<Integer> no) {
+		return sqlSession.update("boardMapper.restoreBoard", no);
 	}
 	
 

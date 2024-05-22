@@ -256,8 +256,7 @@
  		SELECT
  		       COUNT(*)
  		  FROM TB_MEMBER
- 		 WHERE RETIRE_DATE IS NULL
- 		   AND TO_CHAR(HIRE_DATE, 'YYYY-MM') <![CDATA[<=]]> #{date}
+ 		 WHERE TO_CHAR(HIRE_DATE, 'YYYY-MM') <![CDATA[<=]]> #{date}
  	</select>
  	<!-- 입사자 조회용 - 황민우 -->
  	<select id="selectHireMember" resultType="_int">
