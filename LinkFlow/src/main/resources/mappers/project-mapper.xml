@@ -59,4 +59,11 @@
 		  JOIN TB_DEPT USING (DEPT_CODE)
 		 WHERE P.DEL_YN = 'N'
 	</select>
+	
+	<select id="selectProjectCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_PROJECT
+		 WHERE DEL_YN = 'N'
+	</select>
 </mapper>

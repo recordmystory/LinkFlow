@@ -123,16 +123,22 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="pagination" style="display: flex; justify-content: center;">
-                                        <ul class="pagination">
-                                          <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+									<div class="pagination" style="display: flex; justify-content: center;">
+										<ul class="pagination">
+											<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
+												<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage -1}">&laquo;</a>
+											</li>
+											<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+												<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
+													<a class="page-link" href="${contextPath}/project/list.pj?page=${p}">${p}</a>
+												</li>
+											</c:forEach>
+											<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
+												<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage +1}">&raquo;</a>
+											</li>
+										</ul>
+									</div>
+								</div>
                                 <!-- The Modal -->
                                 <div class="modal" id="mapModal">
                                     <div class="modal-dialog">

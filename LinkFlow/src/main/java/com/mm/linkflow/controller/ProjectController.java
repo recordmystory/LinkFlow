@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mm.linkflow.dto.MemberDto;
+import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
 import com.mm.linkflow.service.service.ProjectService;
+import com.mm.linkflow.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/project")
 public class ProjectController {
 	private final ProjectService proService;
-
+	private final PagingUtil pagingUtil;
+	
 	// 프로젝트 목록 조회
 	@GetMapping("/list.pj")
-	public String listProject(HttpSession session) {
+	public String listProject(HttpSession session, @RequestParam(value="page", defaultValue="1")int currentPage) {
 		
-		session.setAttribute("list", proService.listProject());
+		int listCount = proService.selectProjectCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		session.setAttribute("list", proService.listProject(pi));
+		session.setAttribute("pi", pi);
 		return "project/list";
 	}
 	
