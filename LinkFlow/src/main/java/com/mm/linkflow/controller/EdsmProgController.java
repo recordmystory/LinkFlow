@@ -62,6 +62,7 @@ public class EdsmProgController {
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("search", search)
+		  .addObject("listCnt", listCount)
 		  .setViewName("edsm/prog/listAll");
 		
 		return mv;
