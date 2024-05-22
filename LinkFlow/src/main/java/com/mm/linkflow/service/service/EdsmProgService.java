@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
@@ -35,4 +36,9 @@ public interface EdsmProgService {
 
 	// 진행중인 문서 목록 조회 (전체)
 	List<EdocFormDto> selectAllList(PageInfoDto pi, String userId);
+	
+	// 진행중인 문서 목록 검색 (전체)
+	int selectSearchListCnt(Map<String, String> search);
+
+	List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
 }

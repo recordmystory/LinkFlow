@@ -73,27 +73,46 @@
                       <h1 class="m-0" id="header-title">전체 (${listCnt})</h1>
                   </div>
                 </div>
-                <div class="search d-flex justify-content-end">
-                  <select name="" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
-                    <option value="all">전체</option>
-                    <option value="wait">대기</option>
-                    <option value="complete">완료</option>
-                    <option value="progress">진행</option>
-                    <option value="confirm">확인</option>
-                  </select>
-                  <div class="input-group col-4" style="height: 100%;">
-                    <input type="search" class="form-control" placeholder="제목을 입력해주세요">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                  </div>
+                <form id="searchForm" action="${contextPath}/edsm/prog/search.prog" method="get">
+                <div class="search d-flex justify-content-end"> 
+	                  <input type="hidden" name="page" value="1">
+	                  <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
+	                    <option value="01">대기</option>
+	                    <option value="02">예정</option>
+	                    <option value="03">확인</option>
+	                    <option value="04">진행</option>
+	                  </select>
+	                  <div class="input-group col-4" style="height: 100%;">
+	                    <input type="search" class="form-control" name="keyword" value="${search.keyword}" placeholder="제목을 입력해주세요">
+	                    <div class="input-group-append">
+	                        <button type="submit" class="btn btn-primary">
+	                            <i class="fa fa-search"></i>
+	                        </button>
+	                    </div>
+	                  </div>
+                  </form>
+                  
                 </div>
           <!-- /.container-fluid -->
           
           </section>
-               
+          
+         <c:if test="${ not empty search }">
+	         <script>
+	         	$(document).ready(function(){
+	         		$("#searchForm select").val("${search.condition}");
+	         		
+	         		// 검색후 페이지일 경우 페이징바의 페이지 클릭시 
+	         		$("#pagingArea a").on("click", function(){
+	         			$("#searchForm input[name=page]").val($(this).text());
+	         			$("#searchForm").submit();
+	         		
+	         			return false; // 기본이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
+	         		})
+	         	})
+	         </script>
+         </c:if>
+         
                 <!-- Main content -->
                 <section class="content">
 	                <div class="container-fluid" style="display: flex; justify-content: center;"> 
