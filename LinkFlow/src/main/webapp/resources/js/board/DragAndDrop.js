@@ -190,11 +190,59 @@
 	  				data: formData,
 	  				traditinal:true,
 	  				success:function(result){
-	  					if(result == "SUCCESS") {
+	  					if(result > 0) {
+	  						console.log(result);
 	  						alert("임시저장 성공했습니다.");
-	  					}else if(result == "FAIL") {
-	  						alert("임시저장 성공했습니다.");
+	  						window.location.href = contextPath + "/board/tempSaveDetail.page?&no=" + result;
+	  					}else {
+	  						alert("임시저장 실패했습니다.");
 	  					}
+	  				},error:function(){
+	  					console.log("댓글 작성용 ajax 통신 실패");
+	  				}
+	  			})
+	  		}else {
+	  			alert("내용은 반드시 작성해야 합니다");
+					return false;
+	  		}
+	  	}
+	  	
+	  	function tempUpdate() {
+                    		
+	      const contentData = editor.getData();
+	
+				fileInput.files = dataTransfer.files;	
+				
+				const pathname = "/" + window.location.pathname.split("/")[1] + "/";
+				const origin = window.location.origin;
+				
+				const contextPath = origin + pathname;
+				
+				let formData = new FormData();
+        formData.append("boardNo", $("#boardNo").val());
+        formData.append("boardCategory", $("#select").val());
+        formData.append("boardTitle", $("#title").val());
+        formData.append("boardContent", contentData);
+        formData.append("noticeYN", $("#noticeCheckbox").val());
+        for(let i=0; i<fileInput.files.length; i++){
+        	formData.append("uploadFiles", fileInput.files[i]);
+        } 
+
+				if(contentData.trim().length != 0){
+	  			$.ajax({
+	  				url: contextPath + "/board/tempSaveUpdate.do",
+	  				type:"post",
+	  				enctype: 'multipart/form-data',
+	  				processData: false,
+            contentType: false,
+	  				data: formData,
+	  				traditinal:true,
+	  				success:function(result){
+	  					if(result == "SUCCESS") {
+    						alert("임시저장 성공했습니다.");
+    					}else if(result == "FAIL") {
+    						alert("임시저장 실패했습니다.");
+    					}
 	  				},error:function(){
 	  					console.log("댓글 작성용 ajax 통신 실패");
 	  				}

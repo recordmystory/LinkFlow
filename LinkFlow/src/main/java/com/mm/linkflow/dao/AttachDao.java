@@ -32,4 +32,8 @@ public class AttachDao {
 		return sqlSession.delete("attachMapper.deleteAttach", delFileNo);
 	}
 
+	public List<String> selectDelFileNo(int no) {
+		return sqlSession.selectList("attachMapper.selectDelFileNo", no);
+	}
+
 }
