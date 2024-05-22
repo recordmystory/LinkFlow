@@ -237,7 +237,7 @@ input[type="checkbox"]:checked {
 		                  </table>
 						</div>
 					</div>
-  			<!-- /.card-body -->
+  				<!-- /.card-body -->
   				</div>
 
 				<div class="text-right">

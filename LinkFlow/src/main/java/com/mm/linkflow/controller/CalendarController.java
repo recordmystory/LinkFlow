@@ -73,6 +73,7 @@ public class CalendarController {
 	}
   
 	//캘린더 메인 - 일정 전체조회
+	/*
 	    @ResponseBody
 	    @RequestMapping("/schList.do")
 	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
@@ -89,6 +90,12 @@ public class CalendarController {
 
 	        return result;
 	    }
+	    */
+	@ResponseBody
+    @RequestMapping("/schList.do")
+    public List<ScheduleDto> selectScheduleList(String schCalSubCodes) {
+        return calendarService.selectSchList(schCalSubCodes);
+    }
 	   
 	//휴지통 - 일정 상세
 	   @GetMapping("/schSelect.do")
