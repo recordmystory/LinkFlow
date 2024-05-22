@@ -186,11 +186,11 @@ input[type="checkbox"]:checked {
 						<div class="card-header">
 		                    <div class="card-tools">
 		                        <div class="input-group input-group-sm">
-		                            <select id="dropdownOptions" class="form-control main-cate">
-		                                <option value="">시설</option>
-		                                <option value="">비품</option>
+		                            <select id="dropdownOptions" class="form-control main-cate" name="mainName">
+		                                <option value="room">시설</option>
+		                                <option value="supplies">비품</option>
 		                            </select> &nbsp;
-		                            <select id="dropdownOptions" class="form-control middle-cate">
+		                            <select id="dropdownOptions" class="form-control middle-cate" name="subName">
 		                                <option value="">회의실</option>
 		                            </select> &nbsp;
 		                            <input type="text" name="table_search" class="form-control float-right"
@@ -208,33 +208,32 @@ input[type="checkbox"]:checked {
 		                  <table class="table table-hover text-nowrap">
 		                      <thead>
 		                          <tr>
-		                              <th style="width: 170px;">카테고리</th>
-		                              <th style="width: 170px;">자원</th>
+		                              <th style="width: 200px;">카테고리</th>
+		                              <th style="width: 200px;">자원</th>
 		                              <th>상품명</th>
 		                              <th style="width: 250px;">상태</th>
 		                          </tr>
 		                      </thead>
 		                      <tbody>
-		                          <tr>
-		                              <td>시설</td>
-		                              <td>회의실</td>
-		                              <td>A</td>
-		                              <td>
-		                                  <span data-toggle="modal" data-target="#acc-update">수정</span>
-		                                  |
-		                                  <span>삭제</span>
-		                              </td>
-		                          </tr>
-		                          <tr>
-		                              <td>시설</td>
-		                              <td>회의실</td>
-		                              <td>A</td>
-		                              <td>
-		                                  <span>수정</span>
-		                                  |
-		                                  <span onclick="assDel();">삭제</span>
-		                              </td>
-		                          </tr>
+		                      <c:choose>
+			                      <c:when test="${empty assList }">
+			                      	<tr><th>조회된 내역이 없습니다. </th></tr>
+			                      </c:when>
+			                      <c:otherwise>
+				                      <c:forEach var="ass" items="${ assList }">
+				                          <tr>
+				                              <td>${ ass.mainName }</td>
+				                              <td>${ ass.subName }</td>
+				                              <td>${ ass.assetsName }</td>
+				                              <td>
+				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify">수정</span>
+				                                  |
+				                                  <span onclick="assDel(${assets_no});">삭제</span>
+				                              </td>
+				                          </tr>
+			                          </c:forEach>
+		                          </c:otherwise>
+	                          </c:choose>
 		                      </tbody>
 		                  </table>
 						</div>
@@ -243,7 +242,7 @@ input[type="checkbox"]:checked {
   				</div>
 
 				<div class="text-right">
-	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update">자산 추가</button>
+	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update" id="assInsert">자산 추가</button>
 	            </div>
 			</div>
              <!-- 자산 추가/수정 모달 -->
@@ -255,16 +254,18 @@ input[type="checkbox"]:checked {
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="" style="width: 80px;">
-                                 <option value="">시설</option>
-                                 <option value="">비품</option>
+                             <select id="assMain" style="width: 80px;">
+                                 <option value="room">시설</option>
+                                 <option value="supplies">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
-                             <select id="" style="width: 100px;">
+                             <select id="roomSub" style="width: 100px;">
                                  <option value="">회의실</option>
                                  <!-- 비품일때 -->
+                                 </select>
+                             <select id="supSub" style="width: 100px;">
                                  <option value="">노트북</option>
                                  <option value="">마우스</option>
                                  <option value="">차량</option>
@@ -318,7 +319,7 @@ input[type="checkbox"]:checked {
 	        });
 	    });
 	
-	    function assDel(seq) {
+	    function assDel(assNo) {
 	        Swal.fire({
 	            //   title: '글을 삭제하시겠습니까???',
 	            text: "자원 삭제 시, 자원에 대한 모든 예약 기록이 삭제되어 복구할 수 없습니다.",
@@ -333,6 +334,20 @@ input[type="checkbox"]:checked {
 	                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
 	            }
 	        })
+	    }
+	    
+	    function changeBody() {
+	        var selectedValue = document.getElementById('assName').value;
+	        var room = document.getElementById('roomSub');
+	        var supplies = document.getElementById('supSub');
+
+	        if (selectedValue === 'room') {
+	            roomContent.style.display = 'block';
+	            suppliesContent.style.display = 'none';
+	        } else if (selectedValue === 'supplies') {
+	            roomContent.style.display = 'none';
+	            suppliesContent.style.display = 'block';
+	        }
 	    }
 
 	</script>

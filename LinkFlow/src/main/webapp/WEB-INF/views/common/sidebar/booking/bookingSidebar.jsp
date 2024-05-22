@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.util.Date" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -118,7 +120,7 @@
 					<!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
 					<div class="LinkFlowInsertBtnArea">
 						<button type="button" class="btn btn-block bg-primary btn-lg"
-							data-toggle="modal" data-target="#booking">+ 예약하기</button>
+							data-toggle="modal" data-target="#booking" onclick="dateSet();">+ 예약하기</button>
 					</div>
 
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -198,9 +200,16 @@
 							           
 		            <!-- Modal body for room -->
 		            <div id="room-content" class="modal-body-content">
-		                <span class="md-list">예약 날짜</span>
+		               <%--  <span class="md-list">예약 날짜</span>
+		                <c:set var="ymd" value="${bk.bkStartDate}" />
+						<c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
+						 --%>
+			        	
 		                <div class="md-div">
-		                    <select name="bk-year" id="bk-year" style="width:70px;" class="md-select">
+				        	<select id="year" name="year" class="form-control" style="width:100px;" class="md-select"></select> &nbsp;
+				        	<select id="month" name="month" class="form-control" style="width:80px;" class="md-select"></select>&nbsp;
+				        	<select id="day" name="day" class="form-control" style="width:100px;" class="md-select"></select>&nbsp;
+		                   <!--  <select name="bk-year" id="bk-year" style="width:70px;" class="md-select">
 		                        <option value="">2024</option>
 		                        <option value="">2025</option>
 		                    </select> &nbsp;&nbsp;
@@ -214,7 +223,7 @@
 		                        <option value="">17</option>
 		                        <option value="">18</option>
 		                        <option value="">19</option>
-		                    </select> &nbsp;&nbsp;
+		                    </select> &nbsp;&nbsp; -->
 		                </div>
 		                <span class="md-list">이용 시간</span>
 		                <div class="md-div">
@@ -300,7 +309,119 @@
 	        var selectedText = $(this).find('.spanCss').text();
 	        $('.resultArea').text(selectedText);
 	      });
+		})
+		
+      function dateSet(){
+      	var now = new Date();
+	    console.log(now);
+	    /***************************** 날짜 초기화 ***********************************/
+	  	$("#year").empty();
+	    $("#month").empty();
+	    $("#day").empty();
+	    
+	    //년도 셋팅
+	   $("#year").append("<option value='"+now.getYear()+"'>"+now.getYear()+"</option>");
+	 	if(now.getYear() == "11") {
+	 		var nextYear = Number(("#year").val())+1;
+	 		$("#year").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
+	    } 
+	 	
+	 	//월 셋팅
+	 	$("#month").append("<option value='"+(now.getMonth()+1)+"'>"+(now.getMonth()+1)+"</option>");
+		$("#month").append("<option value='"+Number(now.getMonth()+2)+"'>"+Number(now.getMonth()+2)+"</option>");
+		 
+	 	
+	 	//일 셋팅
+	 	$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
+	 	
+	 	for(var i=now.getDate(); i<=now.getDate(); i++){
+	 		if( i != detailDay){
+	 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+	 		}
+	 	} 
+	 	/***************************** 날짜 초기화 ***********************************/
+	 
+	 	
+	    $("#year").change(function(){
+	    	$("#day").empty();
+			var tempDate = new Date($(this).val(), $("#month").val()-1, 0);
+			for(var i=1; i<=tempDate.getDate(); i++){
+		 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
+		 	}
 	    });
+	    
+	    
+		$("#month").change(function(){
+			$("#day").empty();
+			var tempDate = new Date($("#year").val(), $(this).val(), 0);
+			
+			if(tempDate.getMonth() != now.getMonth()){
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+			}else{
+				$("#day").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+			 	
+			 	for(var i=now.getDate(); i<=now.getDate(); i++){
+			 		if( i != detailDay){
+			 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+			 		}
+			 	}
+			}
+	    });
+		/* 
+		$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>"); */
+      }
+
+		
+		function bkUpdate(){
+			let year = document.getElementById('year').value;
+			let month = document.getElementById('month').value;
+			let day = document.getElementById('day').value;
+			
+			let subName = document.getElementById('assType').value;
+			
+			let bkStartDate = year +'/' +month+ '/'+ day;
+			let bkStartTime = document.getElementById('start').value;
+			let bkEndTime = document.getElementById('end').value;
+			
+			let bkEndDate;
+			
+			if(subName == '회의실'){
+				bkEndDate = year +'/' +month+ '/'+ day;
+			}else if(subName == '차량'){
+				let dayE = document.getElementById('dayEnd').value;
+				let yearE = document.getElementById('yearEnd').value;
+				let monthE = document.getElementById('monthEnd').value;
+				bkEndDate = yearE +'/' +monthE + '/'+ dayE;
+			}
+			
+			let assetsName = document.getElementById('assName').value;
+			let bkContent = document.getElementById('bk-content').value;
+			let bookingNo = document.getElementById('bookingNo').value;
+			
+			$.ajax({
+				url:'${contextPath}/booking/modify.bk',
+				type:'post',
+				data:{
+					bkStartDate:bkStartDate,
+					bkStartTime:bkStartTime,
+					bkEndDate:bkEndDate,
+					bkEndTime:bkEndTime,
+					subName:subName,
+					assetsName:assetsName,
+					bkContent:bkContent,
+					bookingNo:bookingNo
+				},success:function(bk){
+					if(bk != null){
+						window.location.href = '${contextPath}/booking/mylist.bk'
+					}
+				},error:function(){
+					
+				}
+				
+			})
+	    }
 	    
 	    function changeBody() {
 	        var selectedValue = document.getElementById('bk-name').value;

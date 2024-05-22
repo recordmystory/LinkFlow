@@ -74,17 +74,19 @@
 	       </p>
 	       </a>
 	
-	       <ul class="nav nav-treeview" style="padding-left: 20px;">
+	      <ul class="nav nav-treeview" style="padding-left: 20px;">
 	       <li class="nav-item">
-	           <a href="#" class="nav-link">
+	           <a href="${contextPath}/hr/deptUpdate.do" class="nav-link">
 	           <i class="far fa-circle nav-icon"></i>
-	           <p>조직 추가</p>
+	           <p>부서 추가/수정</p>
 	           </a>
 	       </li>
 	     
 	     
 	
 	       </ul>
+	       
+	 >
 	     
 	     </li>
 	     

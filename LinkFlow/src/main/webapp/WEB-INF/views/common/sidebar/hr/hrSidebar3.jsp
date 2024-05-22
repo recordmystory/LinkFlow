@@ -30,7 +30,7 @@
 
        <li class="sidebarName">인사관리</li><br>
    
-       <li class="nav-item menu-open">
+       <li class="nav-item">
 
            <a href="#" class="nav-link middleName">
            <i class="nav-icon far fa-solid fa-user-group"></i>
@@ -43,7 +43,7 @@
 
            <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
-               <a href="${contextPath}/hr/hrPage" class="nav-link active">
+               <a href="${contextPath}/hr/hrPage" class="nav-link">
                <i class="far fa-circle nav-icon"></i>
                <p>구성원 조회/정보 변경</p>
                </a>
@@ -61,7 +61,7 @@
        </li>
 
        
-     	<li class="nav-item">
+     	<li class="nav-item menu-open">
 
 	       <a href="#" class="nav-link middleName">
 	       <i class="nav-icon fa-solid fa-layer-group"></i>
@@ -74,9 +74,9 @@
 	       </p>
 	       </a>
 	
-	       <ul class="nav nav-treeview" style="padding-left: 20px;">
+	      <ul class="nav nav-treeview" style="padding-left: 20px;">
 	       <li class="nav-item">
-	           <a href="${contextPath}/hr/deptUpdate.do" class="nav-link">
+	           <a href="${contextPath}/hr/deptUpdate.do" class="nav-link active">
 	           <i class="far fa-circle nav-icon"></i>
 	           <p>부서 추가/수정</p>
 	           </a>
@@ -86,7 +86,7 @@
 	
 	       </ul>
 	       
-	    
+	       
 	     
 	     </li>
 	     

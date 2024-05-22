@@ -66,6 +66,13 @@
 
 	</resultMap>
 	
+	<resultMap id="categoryResult" type="BoardCategoryDto" extends="commonMapper.commonResult">
+		<id column="board_category" property="boardCategory" />
+		<result column="category_name" property="categoryName" />
+		<result column="dept_code" property="deptCode" />
+		<result column="category_type" property="categoryType" />
+	</resultMap>
+	
 	<select id="selectMemberList" resultMap="memberResult">
 		SELECT 
 	    M.USER_ID,
@@ -357,6 +364,98 @@
       WHERE 
           M.DEL_YN = 'N'
       ORDER BY D.DEPT_CODE
+	<insert id="insertDept">
+		INSERT INTO tb_dept(
+     DEPT_CODE
+    ,DEPT_TITLE
+    ,REG_DATE
+    ,MOD_DATE
+    ,REG_ID
+    ,MOD_ID
+    ,DEL_YN 
+		)
+		VALUES
+		(
+		 #{deptCode}
+		,#{deptTitle}
+	  ,SYSDATE
+	  ,SYSDATE
+	  ,#{regId}
+	  ,#{modId}
+	  ,'N'
+		)
+	</insert>
+	<!-- 부서 추가시 카테고리 추가 -->
+	
+	<insert id="insertCategory">
+	INSERT INTO tb_category(
+     BOARD_CATEGORY
+    ,CATEGORY_NAME
+    ,DEPT_CODE
+    ,CATEGORY_TYPE
+    ,REG_DATE
+    ,MOD_DATE
+    ,REG_ID
+    ,MOD_ID
+    ,DEL_YN 
+		)VALUES(
+		 'CATEGORY-'|| seq_categoryno.nextval
+		 ,#{categoryName}
+		 ,#{deptCode}
+		 ,#{categoryType}
+		 ,SYSDATE
+		 ,SYSDATE
+		 ,#{regId}
+		 ,#{modId}
+		 ,'N'
+		)
+	
+	</insert>
+
+	
+	
+	<update id="updateDeptTable">
+	  UPDATE tb_dept
+    	SET 
+         DEPT_TITLE = #{deptTitle}
+       , MOD_DATE = SYSDATE
+       , MOD_ID = #{modId}
+     
+    WHERE DEPT_CODE = #{deptCode}
+	</update>
+	
+	<update id="updateDept">
+	UPDATE tb_category
+    SET 
+		     CATEGORY_NAME = #{categoryName}
+		    ,CATEGORY_TYPE = #{categoryType}
+		    ,MOD_DATE = SYSDATE
+		    ,MOD_ID =  #{modId}
+		WHERE DEPT_CODE = #{deptCode}  
+
+	</update>
+	
+	<update id="deleteDept">
+	UPDATE tb_category
+    SET 
+		 	 DEL_YN = 'Y'
+		 	,MOD_ID =  #{modId}
+		WHERE DEPT_CODE = #{deptCode}  
+
+	</update>
+	
+	<update id="DeleteDeptTable">
+	  UPDATE tb_dept
+    	SET 
+     	  DEL_YN = 'Y'
+     	 ,MOD_ID =  #{modId}	
+    WHERE DEPT_CODE = #{deptCode}
+	</update>
+	
+	<select id="checkCode" resultType="int">
+     SELECT COUNT(*) AS count
+    	FROM tb_dept
+    	WHERE dept_code = #{deptCode}
 	</select>
 	
 	
