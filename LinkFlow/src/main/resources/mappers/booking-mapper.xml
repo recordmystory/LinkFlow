@@ -242,4 +242,40 @@
 	  and a.sub_code = c.sub_code
 </select>
 
+<select id="selectSearchAssCount" resultType="_int">
+	select count(*)
+	  from tb_assets 
+	where del_yn = 'N'
+	<if test='mainName eq "시설"'>
+	  and main_code = '002-'
+	</if>
+	<if test='mainName eq "비품"'>
+	  and main_code = '003-'
+	</if>
+	<if test='keyword != null and keyword != ""'>
+	  and assets_name = #{keyword}
+	</if>
+</select>
+
+<select id="selectSearchAssetsList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , sub_name
+		  , main_name
+	 from tb_assets a
+	 join tb_common c on a.main_code = c.main_code
+	where a.del_yn ='N'
+	  and a.sub_code = c.sub_code
+	<if test='mainName eq "시설"'>
+	  and a.main_code = '002-'
+	</if>
+	<if test='mainName eq "비품"'>
+	  and a.main_code = '003-'
+	</if>
+	<if test='keyword != null and keyword != ""'>
+	  and assets_name = #{keyword}
+	</if>
+</select>
+
 </mapper>

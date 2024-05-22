@@ -51,6 +51,21 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 		return edsmProgDao.insertDoc(edocDto);
 	}
 
+	@Override
+	public int insertRef() {
+		return 0;
+	}
+
+	@Override
+	public int selectAllListCnt(String userId) {
+		return edsmProgDao.selectAllListCnt(userId);
+	}
+
+	@Override
+	public List<EdocFormDto> selectAllList(PageInfoDto pi, String userId) {
+		return edsmProgDao.selectAllList(pi, userId);
+	}
+
 
 
 }

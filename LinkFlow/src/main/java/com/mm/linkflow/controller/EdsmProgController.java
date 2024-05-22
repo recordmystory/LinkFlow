@@ -1,6 +1,6 @@
 package com.mm.linkflow.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,17 +10,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mm.linkflow.dto.AttachDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.EdocHistDto;
+import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.MemberDto;
+import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
@@ -38,6 +39,32 @@ public class EdsmProgController {
 	private final FileUtil fileUtil;
 	
 	
+	/** 진행중인 문서 목록 조회 (전체)
+	 * 
+	 * @param currentPage
+	 * @param session
+	 * @param memberDto
+	 * @param mv
+	 * @return mv
+	 * 
+	 * @author 김지우
+	 */
+	
+	@GetMapping("/listAll.prog")
+	public ModelAndView selectListAll(@RequestParam(value="page", defaultValue="1") int currentPage, HttpSession session, MemberDto memberDto, ModelAndView mv) {
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		
+		int listCount = edsmProgService.selectAllListCnt(loginUser.getUserId());
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		
+		List<EdocFormDto> list = edsmProgService.selectAllList(pi, loginUser.getUserId());
+		
+		mv.addObject("pi", pi).addObject("list", list).addObject("listCnt", listCount).setViewName("edsm/prog/listAll");
+		
+		return mv;
+	}
+	
 	/** 기안
 	 * 
 	 * @param edocDto
@@ -47,34 +74,55 @@ public class EdsmProgController {
 	 * @return 진행중문서 목록 페이지로 redirect
 	 */
 	@PostMapping("/draftingDoc.prog")
-	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String insertDoc(String approvalUserId1, String approvalUserId2, String refUserId,  EdocDto edocDto, EdocRefDto edocRefDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
+		
+		log.debug("approvalUserId1 : {}", approvalUserId1);
+		log.debug("approvalUserId2 : {}", approvalUserId2);
+		log.debug("refUserId : {}", refUserId);
 		log.debug("edocDto : {}", edocDto);
 		
+		Map<Object, Object> map = new HashMap<>();
+		
+		// 결재자
+		map.put("approvalUserId1", approvalUserId1);
+		map.put("approvalUserId2", approvalUserId2);
+		
+		if(refUserId.contains("/")) {
+			String[] refUserIdArr = refUserId.split("/");
+		}
+		map.put("approvalUserId1", approvalUserId1);
+		
+		// 결재이력 (결재자)
+		int result1 = 0;
+		
+		// 참조자
+		EdocRefDto edocRef = new EdocRefDto();
+		
+		edocRef.setUserId(refUserId);
+		edocRef.setRegId(refUserId);
+		edocRef.setModId(refUserId);
+		
+		// int result3 = edsmProgService.insertRef(edocRef);
+
+		// 결재작성문서
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 		edocDto.setRegId(loginUser.getUserId());
 		edocDto.setModId(loginUser.getUserId());
+
 		
-		// 결재이력 (결재자)
-		// 결재작성문서
-		// 참조자
+		int result2 = edsmProgService.insertDoc(edocDto);
+
+		
+		
 		// 첨부파일
+		int result4 = 0;
 		
 		// ** 휴가신청서일 경우 연차 insert
-		
 		
 		
 		return "redirect:/edsm/prog/listAll.prog";
 		
 	}
-	
-
-//	@ResponseBody
-//	@PostMapping("/apprLine.prog")
-//	public String ajaxApprLine(EdocHistDto edocHistDto){
-//		int result = edsmProgService.insertApprLine(edocHistDto);
-//		
-//		return result > 0 ? "SUCCESS" : "FAIL";
-//	}
 	
 	/** 문서 종류에 따른 문서 양식 에디터 내에 조회
 	 * 
@@ -110,11 +158,6 @@ public class EdsmProgController {
 		return mv;
 	}
 	
-//	@GetMapping("/apprEnrollForm.prog")
-//	public String apprEnrollForm() {
-//		return "/edsm/prog/apprEnrollForm";
-//	}
-
 	@GetMapping("/modifyForm.prog")
 	public String apprModifyForm() {
 		return "/edsm/prog/modifyForm";
@@ -125,10 +168,10 @@ public class EdsmProgController {
 		return "/edsm/prog/detail";
 	}
 
-	@GetMapping("/listAll.prog")
-	public String listAll() {
-		return "/edsm/prog/listAll";
-	}
+//	@GetMapping("/listAll.prog")
+//	public String listAll() {
+//		return "/edsm/prog/listAll";
+//	}
 
 	@GetMapping("/listCheck.prog")
 	public String listCheck() {
