@@ -24,6 +24,15 @@ public interface EdsmProgService {
 	// 결재선 설정 모달 조회
 	List<DeptDto> selectApprLine();
 	
-	// 기안서 작성 (결재 문서 insert)
+	// 기안서 작성 (결재 작성 문서 insert)
 	int insertDoc(EdocDto edocDto);
+	
+	// 기안서 작성 (참조자 insert)
+	int insertRef();
+	
+	// 진행중인 문서 목록 페이징 (전체)
+	int selectAllListCnt(String userId);
+
+	// 진행중인 문서 목록 조회 (전체)
+	List<EdocFormDto> selectAllList(PageInfoDto pi, String userId);
 }

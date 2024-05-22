@@ -2,14 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edsmProgMapper">
 	<resultMap type="EdocDto" id="edocResult" extends="commonMapper.commonResult">
-		<id column="ED_NO" property="userName"/>
-		<result column="ED_FORM_CODE" property="userName"/>
-		<result column="ED_TITLE" property="userName"/>
-		<result column="ED_CONTENT" property="userName"/>
-		<result column="PRES_DATE" property="userName"/>
-		<result column="SEC_CODE" property="userName"/>
-		<result column="STATUS" property="userName"/>
+		<id column="ED_NO" property="edNo"/>
+		<result column="ED_FORM_CODE" property="edFormCode"/>
+		<result column="ED_TITLE" property="edTitle"/>
+		<result column="ED_CONTENT" property="edContent"/>
+		<result column="PRES_DATE" property="presDate"/>
+		<result column="SEC_CODE" property="secCode"/>
+		<result column="STATUS" property="status"/>
 		<result column="TEMP_SAVE" property="tempSave"/>
+		
+		<collection property="attachList" ofType="AttachDto">
+			<id column="FILE_NO" property="fileNo"/>
+			<result column="REF_NO" property="refNo"/>
+			<result column="REF_CATEGORY" property="refCategory"/>
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="FILESYSTEM_NAME" property="filesystemName"/>
+			<result column="FILE_PATH" property="filePath"/>
+		</collection>
+		
+		<collection property="edocHistList" ofType="EdocHistDto">
+			<id column="USER_ID" property="userId"/>
+			<id column="ED_NO" property="edNo"/>
+			<result column="ED_HIST_ORDER" property="edHistOrder"/>
+			<result column="ED_HIST_SUB_CODE" property="edHistSubCode"/>
+			<result column="ED_HIST_DATE" property="edHistDate"/>
+			<result column="ED_HIST_COMMENT" property="edHistComment"/>
+		</collection>
+		
+		<collection property="edocRefList" ofType="EdocRefDto">
+			<id column="ED_NO" property="edNo"/>
+			<id column="USER_ID" property="userId"/>
+		</collection>
+		
 	</resultMap>
 	
 	<resultMap type="DeptDto" id="deptResult" extends="commonMapper.commonResult">
@@ -91,8 +115,47 @@
 		            )
 	</insert>
 	
+	<!-- 진행중인 문서 목록 조회 (전체) -->
+	<select id="selectAllList" resultMap="edocResult">
+		SELECT DISTINCT ED.ED_NO
+		     , ED.ED_TITLE
+		     , M.USER_NAME AS REG_ID
+		     , ED.MOD_ID
+		     , TO_CHAR(ED.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+		     , EF.ED_FR_NAME AS ED_FORM_CODE
+		     , DECODE(ED.STATUS, '01', '대기', '02', '예정', '03', '확인', '04', '진행') AS STATUS
+		     , ED.REG_DATE
+		FROM TB_EDOC ED
+		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
+		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
+        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+		WHERE ED.DEL_YN = 'N'
+            AND ED.REG_ID = #{userId} OR EH.USER_ID = #{userId}
+    ORDER BY ED.REG_DATE 
+	</select>
+	
+	<select id="selectAllListCnt" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM (
+		    SELECT DISTINCT ED.ED_NO
+		                 , ED.ED_TITLE
+		                 , M.USER_NAME AS REG_ID
+		                 , ED.MOD_ID
+		                 , TO_CHAR(ED.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+		                 , EF.ED_FR_NAME AS ED_FORM_CODE
+		                 , DECODE(ED.STATUS, '01', '대기', '02', '예정', '03', '확인', '04', '진행') AS STATUS
+		                 , ED.REG_DATE
+		    FROM TB_EDOC ED
+		    JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
+		    JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
+		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+		    WHERE ED.DEL_YN = 'N'
+		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+		    ORDER BY ED.REG_DATE 
+		) COUNT
+	</select>
 	<!-- 결재선 insert -->
-	<insert id="inserApprLine">
+	<!-- <insert id="inserApprLine">
 		INSERT INTO TB_EDOC_HIST
                         (
                               USER_ID
@@ -124,5 +187,5 @@
 		                        , #{userId}
 		                        , DEFAULT
                         )
-	</insert>
+	</insert> -->
 </mapper>

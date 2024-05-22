@@ -294,7 +294,7 @@
 	                <div class="container-fluid" style="display: flex; justify-content: center;"> 
 	                  <div class="contentArea">
 	
-	                   <form action="${contextPath}/edsm/prog/draftingDoc.prog" method="post">
+	                   <form id="draftingForm" action="${contextPath}/edsm/prog/draftingDoc.prog" method="post">
 	                    <div class="contentInElement">
 	                        <div class="btnArea">
                             <button type="submit" id="draftingBtn" class="btn btn-primary btn-sm">기안하기</button>
@@ -353,7 +353,9 @@
                                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;">${loginUser.userName}</th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
+                                  <input type="hidden" name="approvalUserId1" id="approvalUserId1">
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
+                                  <input type="hidden" name="approvalUserId2" id="approvalUserId2">
                                 </tr>
                                 <tr>
                                   <td height="200" width="300"></td>
@@ -363,6 +365,7 @@
                                 <tr>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;">참조</th>
                                   <td colspan="3" id="refSelectedArea"><!-- <input type="text" name="refMember" id="refMember" class="form-control" style="width: 300px;"> --></td>
+                                	<input type="hidden" name="refUserId" id="refUserId">
                                 </tr>
                               </table>
 
@@ -450,7 +453,7 @@
                          <h5 class="card-title">사원설정</h5>
                        </div>
                        
-                       <div class="card-body text-nowrap overflow-auto">
+                       <div class="card-body text-nowrap overflow-auto">`
                        
                          <div id="kt_docs_jstree_basic">
                            <ul>
@@ -464,7 +467,7 @@
 	                                         		<c:forEach var="apprPerson" items="${appr.memberList}" varStatus="status">
 	                                         			<li data-jstree='{ "type" : "person" }' data-userId="${apprPerson.userId}">
 	                                                 ${apprPerson.userName} ${apprPerson.subName}
-	                                                 <input type="hidden" id="userId" value="${apprPerson.userId}"/>
+	                                                 <input type="text" id="userId" value="${apprPerson.userId}" style="display: none;"/>
 	                                                 <input type="hidden" id="edHistOrder" value="${status.index + 1}"/>
 	                                             </li>
 	                                         		</c:forEach>
@@ -522,7 +525,7 @@
 
                        </div>
                        <div class="card-body approvalArea">
-                         
+                         <input type="hidden" value="" id="approvalUserId">
                        </div>
                      </div>
 
@@ -533,7 +536,7 @@
                         
                        </div>
                        <div class="card-body referenceArea overflow-auto">
-
+                         <input type="hidden" value="" id="approvalUserId">
                        </div>
                      </div>
                      </div>
@@ -587,12 +590,20 @@
      });
  		
     $(function(){
-    	$('#draftingBtn').click(function(){
-    		let edFrContent = editor.getData();
-    		
-    		$('#editorContent').val(edFrContent);
-    		$(this).submit();
-    	});
+    	 let approvalHiddenValues = [];
+ 	     let referenceHiddenValues = [];
+    	
+    	$('#draftingForm').on('submit', function(event) {
+	          // 폼이 실제로 제출되지 않도록 기본 동작을 막음
+	          event.preventDefault();
+						
+	          // 에디터 내용 담기
+		    		let edFrContent = editor.getData();
+		    		$('#editorContent').val(edFrContent);
+    		    
+	          // 폼을 실제로 제출
+	          this.submit();
+        });
     	
     	$('.documentTypeSelect').change(function(){
             // 휴가신청서 폼 뿌려지게
@@ -637,7 +648,9 @@
     
    // 결재선 설정 모달에서 저장 버튼을 누를 때 기안서 작성 페이지에 선택된 사람의 이름이 뿌려지는 function
   $('#saveData').click(function(){
-
+	  approvalHiddenValues = [];
+    referenceHiddenValues = [];
+    
     $('#approvalSelectedArea1').text($('.approvalName1').text());
     $('#approvalSelectedArea2').text($('.approvalName2').text());
 
@@ -658,21 +671,29 @@
     } else {
       $refUser = '';
     }
-
+		
     $('#refSelectedArea').text($refUser);
     
-    $.ajax({
-    	url: '${contextPath}/edsm/prog/apprLine.prog',
-    	type: 'post',
-    	data: {userId: $('#userId').val(), edFormCode: $('#documentTypeSelect').val(), edHistOrder: $('#edHistOrder').val()},
-    	success: function(result){
-    		console.log(result);
-    		console.log('ajax 통신 성공 및 TB_EDOC_HIST INSERT 성공');
-    	},
-    	error: function(){
-    		console.log('ajax 통신 실패');
-    	}
+    $('.approvalName1').each(function() {
+        approvalHiddenValues.push($(this).attr('data-hidden-value'));
     });
+
+    $('.approvalName2').each(function() {
+        approvalHiddenValues.push($(this).attr('data-hidden-value'));
+    });
+
+    $('.referenceName').each(function() {
+        referenceHiddenValues.push($(this).attr('data-hidden-value'));
+    });
+		
+    // approvalUserId1과 approvalUserId2 숨겨진 필드에 값 설정
+    $('#approvalUserId1').val(approvalHiddenValues[0] || '');
+    $('#approvalUserId2').val(approvalHiddenValues[1] || '');
+
+    // refUserId 숨겨진 필드에 값 설정
+    $('#refUserId').val(referenceHiddenValues.join('/')); // 여러 값을 ;로 구분하여 저장
+
+    
   });
 
 
@@ -724,16 +745,19 @@
         var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
         var maxApprovalCount = 2;
 
-    
+        approvalHiddenValues = [];
+        
         if (existingApprovalCount >= maxApprovalCount) return;
 
         var currentIndex = existingApprovalCount + 1;
-
+				
         nameAreas.forEach(function(nameArea) {
             var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
             if (checkbox && existingApprovalCount < maxApprovalCount) {
                 var nameValue = nameArea.textContent.trim();
-
+								
+                var hiddenInputValue = nameArea.querySelector('input[type="text"]').value;
+                approvalHiddenValues.push(hiddenInputValue);
             
                 var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
                 if (existingElement) return;
@@ -743,6 +767,7 @@
                 var newElement = document.createElement('div');
                 newElement.className = className;
                 newElement.textContent = nameValue;
+                newElement.setAttribute('data-hidden-value', hiddenInputValue);
 
                 document.querySelector('.approvalArea').appendChild(newElement);
 
@@ -752,6 +777,8 @@
                 currentIndex++;
             }
         });
+        
+        console.log('approvalHiddenValues:', approvalHiddenValues);
     });
 
   document.querySelector('.approvalOut').addEventListener('click', function() {
@@ -783,27 +810,35 @@
   
 
 document.querySelector('.referenceIn').addEventListener('click', function() {
-var nameAreas = document.querySelectorAll('.NameArea');
+	var nameAreas = document.querySelectorAll('.NameArea');
+	referenceHiddenValues = [];
+	
 
-nameAreas.forEach(function(nameArea) {
-    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-    if (checkbox) {
-        var nameValue = nameArea.textContent.trim();
-        
-       
-        var existingElement = document.querySelector('.referenceArea .referenceName');
-        if (existingElement && existingElement.textContent.trim() === nameValue) {
-            return; 
-        }
+	nameAreas.forEach(function(nameArea) {
+	    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+	    if (checkbox) {
+	        var nameValue = nameArea.textContent.trim();
+          var hiddenInputValue = nameArea.querySelector('input[type="text"]').value;
+          referenceHiddenValues.push(hiddenInputValue);
 
-        var referenceName = document.createElement('div');
-        referenceName.className = 'referenceName';
-        referenceName.textContent = nameValue;
-        document.querySelector('.referenceArea').appendChild(referenceName);
-        
-        nameArea.remove();
-        }
-    });
+	       
+	        var existingElement = document.querySelector('.referenceArea .referenceName');
+	        if (existingElement && existingElement.textContent.trim() === nameValue) {
+	            return; 
+	        }
+	
+	        var referenceName = document.createElement('div');
+	        referenceName.className = 'referenceName';
+	        referenceName.textContent = nameValue;
+	        referenceName.setAttribute('data-hidden-value', hiddenInputValue);
+	        
+	        document.querySelector('.referenceArea').appendChild(referenceName);
+	        
+	        nameArea.remove();
+	        }
+	    });
+	
+	 		console.log('referenceHiddenValues:', referenceHiddenValues);
 });
 
 document.querySelector('.referenceOut').addEventListener('click', function() {

@@ -70,7 +70,7 @@
           <section class="content-header content">
                   <div class="row mb-2">
                   <div class="col-sm-6">
-                      <h1 class="m-0" id="header-title">전체 </h1>
+                      <h1 class="m-0" id="header-title">전체 (${listCnt})</h1>
                   </div>
                 </div>
                 <div class="search d-flex justify-content-end">
@@ -82,7 +82,7 @@
                     <option value="confirm">확인</option>
                   </select>
                   <div class="input-group col-4" style="height: 100%;">
-                    <input type="search" class="form-control" placeholder="문서 제목을 입력해주세요">
+                    <input type="search" class="form-control" placeholder="제목을 입력해주세요">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-search"></i>
@@ -113,15 +113,36 @@
 	                            </tr>
 	                          </thead>
 	                          <tbody>
-	                            <tr>
+	                          		
+                      				
+	                          	<c:choose>
+	                          		<c:when test="${empty list}">
+	                          			<tr><td colspan="10" style="text-align: center;">조회된 문서가 없습니다.</td></tr>
+	                          		</c:when>
+	                          		
+	                          		<c:otherwise>
+	                          			<c:forEach var="ed" items="${list}">
+	                          			<!-- 로그인한 사용자 -->
+	                          				<tr>
+		                          					<td>${ed.edNo}</td>
+		                          					<td>${ed.edTitle}</td>
+		                          					<td>${ed.regId}</td>
+		                          					<td>${ed.regDate}</td>
+		                          					<td>${ed.edFormCode}</td>
+		                          					<td>${ed.status}</td>
+					                         </tr>
+	                          			</c:forEach>
+	                          		</c:otherwise>
+	                          	</c:choose>
+	                            <!-- <tr>
 	                              <td>LI-품의-20240429-0003</td>
 	                              <td>품의서 제출</td>
 	                              <td>김과장</td>
 	                              <td>2024-04-29</td>
 	                              <td>품의서</td>
 	                              <td>결재중</td>
-	                            </tr>
-	                            <tr>
+	                            </tr> -->
+	                            <!-- <tr>
 	                                <td>LI-지출-20240429-0002</td>
 	                                <td>지출결의서 제출</td>
 	                                <td>안차장</td>
@@ -136,17 +157,21 @@
 	                                <td>2024-04-29</td>
 	                                <td>품의서</td>
 	                                <td>대기</td>
-	                            </tr>
+	                            </tr> -->
 	                          </tbody>
 	                        </table>
 	    
-	                        <ul class="pagination justify-content-center">
-	                          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-	                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-	                          <li class="page-item active"><a class="page-link" href="#">2</a></li>
-	                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-	                          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-	                        </ul>
+	                        <div id="pagingArea">
+					                  <ul class="pagination justify-content-center">
+					                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/prog/listAll.prog?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
+					                    
+					                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+					                    	<li class="page-item ${pi.currentPage == p ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/prog/listAll.prog?page=${p}">${p}</a></li>
+					                    </c:forEach>
+					                    
+					                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/prog/listAll.prog?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
+				                		</ul>
+				                	</div>
 	                        
 	                      </div>
 	                    </div>
@@ -162,17 +187,13 @@
 	<script>
 		$(document).ready(function() {
 		
-		  let headOriginalValue = $('#header-title').text();
+		/*   let headOriginalValue = $('#header-title').text();
 		  let trCount = $('table tr').length - 1;
 		  
-		    $('.dropdown-item').click(function() {
-		        var selectedText = $(this).find('.spanCss').text();
-		        $('.resultArea').text(selectedText);
-		    });
 		
 		    // 추가
 		    // 테이블 내에 있는 행 개수 count
-		      $('#header-title').text(headOriginalValue + ' (' + trCount + ')');
+		      $('#header-title').text(headOriginalValue + ' (' + trCount + ')'); */
 		});
 	</script>
 
