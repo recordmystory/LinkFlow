@@ -10,6 +10,7 @@ import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
 import com.mm.linkflow.dto.EdocHistDto;
+import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,7 @@ public class EdsmProgDao {
 		return sqlSessionTemplate.selectList("edsmProgMapper.selectApprLine");
 	}
 
-	public int insertDoc(EdocDto edocDto) {
-		return sqlSessionTemplate.insert("edsmProgMapper.insertDoc", edocDto);
-	}
+
 
 	public int insertApprLine(EdocHistDto edocHistDto) {
 		return sqlSessionTemplate.insert("edsmProgMapper.inserApprLine", edocHistDto);
@@ -52,6 +51,20 @@ public class EdsmProgDao {
 
 		return sqlSessionTemplate.selectList("edsmProgMapper.selectAllList", userId, rowBounds);
 		
+	}
+
+	public int insertRef(EdocRefDto refDto) {
+		return sqlSessionTemplate.insert("edsmProgMapper.insertRef", refDto);
+	}
+
+	
+
+	public int insertEdocHist(EdocHistDto histDto) {
+		return sqlSessionTemplate.insert("edsmProgMapper.insertEdocHist", histDto);
+	}
+	
+	public int insertDoc(EdocDto edocDto) {
+		return sqlSessionTemplate.insert("edsmProgMapper.insertDoc", edocDto);
 	}
 	
 //	public int selectAllListCount() {

@@ -3,6 +3,7 @@ package com.mm.linkflow.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import javax.servlet.http.HttpSession;
 
@@ -74,51 +75,25 @@ public class EdsmProgController {
 	 * @return 진행중문서 목록 페이지로 redirect
 	 */
 	@PostMapping("/draftingDoc.prog")
-	public String insertDoc(String approvalUserId1, String approvalUserId2, String refUserId,  EdocDto edocDto, EdocRefDto edocRefDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String insertDoc(String approvalUserId1, String approvalUserId2, String refUserId,  EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
 		
 		log.debug("approvalUserId1 : {}", approvalUserId1);
 		log.debug("approvalUserId2 : {}", approvalUserId2);
-		log.debug("refUserId : {}", refUserId);
+		log.debug("userId : {}", refUserId);
 		log.debug("edocDto : {}", edocDto);
-		
-		Map<Object, Object> map = new HashMap<>();
-		
-		// 결재자
-		map.put("approvalUserId1", approvalUserId1);
-		map.put("approvalUserId2", approvalUserId2);
-		
-		if(refUserId.contains("/")) {
-			String[] refUserIdArr = refUserId.split("/");
-		}
-		map.put("approvalUserId1", approvalUserId1);
-		
-		// 결재이력 (결재자)
-		int result1 = 0;
-		
-		// 참조자
-		EdocRefDto edocRef = new EdocRefDto();
-		
-		edocRef.setUserId(refUserId);
-		edocRef.setRegId(refUserId);
-		edocRef.setModId(refUserId);
-		
-		// int result3 = edsmProgService.insertRef(edocRef);
-
-		// 결재작성문서
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		
 		edocDto.setRegId(loginUser.getUserId());
 		edocDto.setModId(loginUser.getUserId());
+		int result = edsmProgService.insertDoc(edocDto);
+		
+		if(result >0) {
+			redirectAttributes.addFlashAttribute("alertMsg","성공");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg","실패");
+		}
+	
 
-		
-		int result2 = edsmProgService.insertDoc(edocDto);
-
-		
-		
-		// 첨부파일
-		int result4 = 0;
-		
-		// ** 휴가신청서일 경우 연차 insert
-		
 		
 		return "redirect:/edsm/prog/listAll.prog";
 		

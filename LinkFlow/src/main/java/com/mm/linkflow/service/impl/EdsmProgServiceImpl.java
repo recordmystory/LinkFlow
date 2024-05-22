@@ -9,6 +9,7 @@ import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
 import com.mm.linkflow.dto.EdocHistDto;
+import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
 
@@ -46,16 +47,7 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 		return edsmProgDao.selectApprLine();
 	}
 
-	@Override
-	public int insertDoc(EdocDto edocDto) {
-		return edsmProgDao.insertDoc(edocDto);
-	}
-
-	@Override
-	public int insertRef() {
-		return 0;
-	}
-
+	
 	@Override
 	public int selectAllListCnt(String userId) {
 		return edsmProgDao.selectAllListCnt(userId);
@@ -65,6 +57,23 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	public List<EdocFormDto> selectAllList(PageInfoDto pi, String userId) {
 		return edsmProgDao.selectAllList(pi, userId);
 	}
+
+	@Override
+	public int insertRef(EdocRefDto RefDto) {
+		return edsmProgDao.insertRef(RefDto);
+	}
+
+
+	@Override
+	public int insertEdocHist(EdocHistDto HistDto) {
+		return edsmProgDao.insertEdocHist(HistDto);
+	}
+	@Override
+	public int insertDoc(EdocDto edocDto) {
+		return edsmProgDao.insertDoc(edocDto);
+	}
+
+	
 
 
 

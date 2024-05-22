@@ -6,6 +6,7 @@ import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
 import com.mm.linkflow.dto.EdocHistDto;
+import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 public interface EdsmProgService {
@@ -28,7 +29,13 @@ public interface EdsmProgService {
 	int insertDoc(EdocDto edocDto);
 	
 	// 기안서 작성 (참조자 insert)
-	int insertRef();
+	int insertRef(EdocRefDto RefDto);
+	
+
+	
+	//결제이력 insert
+	int insertEdocHist(EdocHistDto HistDto);
+	
 	
 	// 진행중인 문서 목록 페이징 (전체)
 	int selectAllListCnt(String userId);
