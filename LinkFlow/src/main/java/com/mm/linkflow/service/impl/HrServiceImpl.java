@@ -3,8 +3,11 @@ package com.mm.linkflow.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mm.linkflow.dao.HrDao;
+import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.CommonTableDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -83,5 +86,49 @@ public class HrServiceImpl implements HrService {
 	public int goJoinPathy(MemberDto m) {
 		return hDao.goJoinPathy(m);
 	}
+
+	@Override
+	public List<DeptDto> selectApprLine() {
+		return hDao.selectApprLine();
+	}
+
+	public int insertDept(DeptDto d) {
+		return hDao.insertDept(d);
+	}
+	
+	@Override
+	public int insertCategory(BoardCategoryDto bd) {
+		return hDao.insertCategory(bd);
+	}
+	
+	@Override
+	public int updateDeptTable(DeptDto d) {
+		return hDao.updateDeptTable(d);
+	}
+
+	
+	@Override
+	public int updateDept(BoardCategoryDto bd) {
+		return hDao.updateDept(bd);
+	}
+
+	@Override
+	public int deleteDept(BoardCategoryDto bd) {
+		return hDao.deleteDept(bd);
+	}
+
+	@Override
+	public int DeleteDeptTable(DeptDto d) {
+		return hDao.DeleteDeptTable(d);
+	}
+
+	@Override
+	public int checkCode(String deptCode) {
+		return hDao.checkCode(deptCode);
+	}
+
+	
+
+	
 
 }

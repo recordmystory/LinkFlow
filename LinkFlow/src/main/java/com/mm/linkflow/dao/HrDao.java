@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.CommonTableDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -64,6 +65,39 @@ public class HrDao {
 	public int goJoinPathy(MemberDto m) {
 		return sql.update("hrMapper.goJoinPathy",m);
 	}
+
+	public List<DeptDto> selectApprLine() {
+		return sql.selectList("hrMapper.selectApprLine");
+	}
+	public int insertDept(DeptDto d) {
+		return sql.insert("hrMapper.insertDept",d);
+	}
+
+	public int insertCategory(BoardCategoryDto bd) {
+		return sql.insert("hrMapper.insertCategory",bd);
+	}
+
+	public int updateDeptTable(DeptDto d) {
+		return sql.update("hrMapper.updateDeptTable",d);
+	}
+
+	public int updateDept(BoardCategoryDto bd) {
+		return sql.update("hrMapper.updateDept",bd);
+	}
+
+	public int deleteDept(BoardCategoryDto bd) {
+		return sql.update("hrMapper.deleteDept",bd);
+	}
+
+	public int DeleteDeptTable(DeptDto d) {
+		return sql.update("hrMapper.DeleteDeptTable",d);
+	}
+
+	public int checkCode(String deptCode) {
+		return sql.selectOne("hrMapper.checkCode",deptCode);
+	}
+
+	
 	
 	
 }

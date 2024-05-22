@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.CommonTableDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
+import com.mm.linkflow.service.service.GroupService;
 import com.mm.linkflow.service.service.HrService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class HRcontroller {
-	
+	private final GroupService gService;
 	private final HrService hService;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	@RequestMapping("/hrPage")
@@ -202,5 +205,82 @@ public class HRcontroller {
 		
 	}
 	
+	@RequestMapping("/deptUpdate.do")
+	public String deptUpdate(Model model) {
+		List<MemberDto> group =  gService.groupList();
+		
+		model.addAttribute("g",group);
+		
+		
+		
+		return "hr/deptUpdate";
+	}
+	
+	@PostMapping("/deptinsert.do")
+	public String updateDept(DeptDto d, Model model,RedirectAttributes redirectAttributes) {
+	
+		BoardCategoryDto bd = new BoardCategoryDto();
+		bd.setCategoryName(d.getDeptTitle());
+		bd.setDeptCode(d.getDeptCode());
+		bd.setCategoryType("DEPT");
+		bd.setRegId(d.getRegId());
+		bd.setModId(d.getModId());
+		
+		int result1 = hService.insertDept(d);
+		int result = hService.insertCategory(bd);
+		if(result * result1 > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 부서 등록이 완료되었습니다.");
+			
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "부서 등록에 실패하였습니다.");
+			
+		}
+		
+		
+		return "redirect:/hr/deptUpdate.do";
+	}
+	
+	@ResponseBody
+	@PostMapping("/UpdateDept")
+	public String UpdateDept(DeptDto d, HttpSession session,RedirectAttributes redirectAttributes) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		BoardCategoryDto bd = new BoardCategoryDto();
+		bd.setCategoryName(d.getDeptTitle());
+		bd.setDeptCode(d.getDeptCode());
+		bd.setCategoryType("DEPT");
+		bd.setModId(loginUser.getUserId());
+		
+		d.setModId(loginUser.getUserId());
+		int result1 = hService.updateDeptTable(d);
+		int result = hService.updateDept(bd);
+		
+		return result * result1 > 0 ? "YYYYY" : "NNNNN";
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("/deleteDept")
+	public String deleteDept(DeptDto d, HttpSession session,RedirectAttributes redirectAttributes) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		BoardCategoryDto bd = new BoardCategoryDto();
+		bd.setDeptCode(d.getDeptCode());
+		bd.setModId(loginUser.getUserId());
+		
+		d.setModId(loginUser.getUserId());
+		
+		int result = hService.DeleteDeptTable(d);
+		int result1 = hService.deleteDept(bd);
+		
+		return result * result1 > 0 ? "YYYYY" : "NNNNN";
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkCode")
+	public String checkCode(String deptCode) {
+		int result = hService.checkCode(deptCode);
+		
+		return result > 0 ? "NNNNN" : "YYYYY" ; 
+	}
 	
 }

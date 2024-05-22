@@ -61,7 +61,7 @@ input[type="checkbox"] {
             <section class="content-header">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">임시저장</h1>
+                        <h1 class="m-0">휴지통</h1>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -71,10 +71,11 @@ input[type="checkbox"] {
             <section class="content">
                 <div class="container-fluid" style="display: flex; justify-content: center;"> 
                     <div class="contentArea">
-                    <form id="deleteForm" action="${contextPath}/board/remove.do" method="get">
+                    <form id="deleteForm" action="" method="get">
                         <div class="contentInElement">
                             <div class="btnArea">
-                                <button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmDelete();">삭제하기</button>
+                            		<button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmRestore('${contextPath}/board/reStore.do');">복구</button>
+                                <button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmDelete('${contextPath}/board/remove.do');">삭제하기</button>
                             </div>
                             <div class="form-inline">
                                 <div class="input-group">
@@ -95,17 +96,17 @@ input[type="checkbox"] {
                                         </thead>
                                         <tbody>
                                         <c:choose>
-                                        		<c:when test="${empty tempSaveList }">
+                                        		<c:when test="${empty trashList }">
                                         			<tr>
 											                					<td colspan="6">조회된 게시글이 없습니다. </td>
 											                				<tr>
                                         		</c:when>
                                         		<c:otherwise>
-                                        			<c:forEach var="t" items="${tempSaveList}">
+                                        			<c:forEach var="t" items="${trashList}">
                                       						<tr>
-		                                               	<th style="padding:12px 12px 12px 24px;"><input name="no" type="checkbox" class="checkBox" value="${t.boardNo }" onclick="event.stopPropagation();"></th>
+		                                               	<th style="padding:12px 12px 12px 24px;"><input name="no" type="checkbox" class="checkBox" value="${t.boardNo }"></th>
 		                                                <td>${t.categoryName }</td>
-		                                                <td onclick="location.href='${contextPath}/board/tempSaveDetail.page?&no=${ t.boardNo }';">${t.boardTitle}</td>
+		                                                <td>${t.boardTitle}</td>
 		                                                <td>${t.modDate }</td>
 		                                            	</tr>
                                             		</c:forEach>
@@ -116,13 +117,13 @@ input[type="checkbox"] {
                                     <hr style="margin-top: 0px;">
                                     <div class="pagination" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
-                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/tempSave.page?page=${pi.currentPage -1}">&laquo;</a></li>
+                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/trash.page?page=${pi.currentPage -1}">&laquo;</a></li>
                     
 														                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/tempSave.page?page=${p}">${p}</a></li>
+														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/trash.page?page=${p}">${p}</a></li>
 														                </c:forEach>
 														                
-														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/tempSave.page?page=${pi.currentPage +1}">&raquo;</a></li>
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/trash.page?page=${pi.currentPage +1}">&raquo;</a></li>
 
                                         </ul>
                                     </div>
@@ -134,27 +135,27 @@ input[type="checkbox"] {
                 </div>
             </section>
              <script>
-					                	$(document).ready(function(){
-					                		$(".origin_del").on("click", function(){
-					                			// 삭제하고자 하는 해당 첨부파일 번호를 form submit시 넘기기 위한 작업
-					                			// => 해당 form요소내에 input type="hidden" 만들어서 append
-					                			let inputEl = document.createElement("input");
-					                			inputEl.type = "hidden";
-					                			inputEl.name = "delFileNo";
-					                			inputEl.value = $(this).data("fileno")
-					                			
-					                			document.getElementById("updateForm").append(inputEl);
-					                			
-					                			// 화면으로부터 사라지도록 작업
-					                			$(this).parent().remove();
-					                			
-					                			if ($('#oringFileTr td').children().length === 0) {
-					                	            $('#oringFileTr').remove();
-					                	    }
-					                		})
-					                	})
-					                </script>
-            <script>
+              	$(document).ready(function(){
+              		$(".origin_del").on("click", function(){
+              			// 삭제하고자 하는 해당 첨부파일 번호를 form submit시 넘기기 위한 작업
+              			// => 해당 form요소내에 input type="hidden" 만들어서 append
+              			let inputEl = document.createElement("input");
+              			inputEl.type = "hidden";
+              			inputEl.name = "delFileNo";
+              			inputEl.value = $(this).data("fileno")
+              			
+              			document.getElementById("updateForm").append(inputEl);
+              			
+              			// 화면으로부터 사라지도록 작업
+              			$(this).parent().remove();
+              			
+              			if ($('#oringFileTr td').children().length === 0) {
+              	            $('#oringFileTr').remove();
+              	    }
+              		})
+              	})
+              </script>
+            	<script>
                 function checkAllBoxes() {
                     var checkAll = document.getElementById('checkAll');
                     var checkBoxes = document.getElementsByClassName('checkBox');
@@ -164,7 +165,7 @@ input[type="checkbox"] {
                     }
                 }
                 
-                function confirmDelete() {
+                function confirmDelete(actionUrl) {
                     var checkBoxes = document.getElementsByClassName('checkBox');
                     var selected = false;
 
@@ -177,10 +178,32 @@ input[type="checkbox"] {
 
                     if (selected) {
                         if (confirm('정말 삭제하시겠습니까?')) {
+                        		document.getElementById('deleteForm').action = actionUrl;
                             document.getElementById('deleteForm').submit();
                         }
                     } else {
                         alert('삭제할 항목을 선택하세요.');
+                    }
+                }
+                
+                function confirmRestore(actionUrl) {
+                    var checkBoxes = document.getElementsByClassName('checkBox');
+                    var selected = false;
+
+                    for (var i = 0; i < checkBoxes.length; i++) {
+                        if (checkBoxes[i].checked) {
+                            selected = true;
+                            break;
+                        }
+                    }
+
+                    if (selected) {
+                        if (confirm('해당 게시물들을 복구하시겠습니까?')) {
+                        		document.getElementById('deleteForm').action = actionUrl;
+                            document.getElementById('deleteForm').submit();
+                        }
+                    } else {
+                        alert('복구할 항목을 선택하세요.');
                     }
                 }
             </script>

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -127,6 +128,8 @@ public class BoardController {
 
 		int result = boardService.insertBoard(board);
 		
+		log.debug("attachList : {}", attachList.isEmpty());
+		log.debug("result : {}", result);
 		if(attachList.isEmpty() && result == 1 || !attachList.isEmpty() && result == attachList.size()) {
 			redirectAttributes.addFlashAttribute("alertMsg", "게시글 작성에 성공하였습니다.");
 		}else {
@@ -193,9 +196,9 @@ public class BoardController {
 			for(AttachDto at : delFileList) {
 				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
 			}
-			redirectAttributes.addFlashAttribute("alertMsg", "게시글 수정에 성공하였습니다.");
+			redirectAttributes.addFlashAttribute("alertMsg", "작성에 성공하였습니다.");
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg", " 게시글 수정에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("alertMsg", " 작성에 실패하였습니다.");
 			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
 		}
 		
@@ -235,7 +238,7 @@ public class BoardController {
 	
 	@ResponseBody
 	@PostMapping("/insertTempSave.do")
-	public String tempSave(BoardDto board
+	public int tempSave(BoardDto board
 					   , List<MultipartFile> uploadFiles
 					   , HttpSession session
 					   , RedirectAttributes redirectAttributes) {
@@ -254,20 +257,37 @@ public class BoardController {
 			}
 		}
 
-		 List<AttachDto> attachList = new ArrayList<>(); if(uploadFiles != null) {
-		 attachList = fileUtil.setAttach(uploadFiles, "board", loginUser, 0, "B");
-		 board.setAttachList(attachList); }
+		 List<AttachDto> attachList = new ArrayList<>(); 
+		 if(uploadFiles != null) {
+			 attachList = fileUtil.setAttach(uploadFiles, "board", loginUser, 0, "B");
+			 board.setAttachList(attachList); 
+		 }
 		  
 		 int result = boardService.insertBoard(board);
-		  
-		 return result > 0 ? "SUCCESS" : "FAIL";
+		 int boardNo = 0;
+		 
+		 if(result > 0) {
+			 boardNo = boardService.selectCurrnetTempSave();
+		 }
+		 log.debug("boardNo : {}", boardNo);
+		 return boardNo;
 	}
 	
 	@GetMapping("/tempSave.page") // /board/detail.do?no=글번호
-	public String tempSaveForm(Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+	public String tempSaveForm(Model model, HttpSession session
+							, @RequestParam(value="page", defaultValue="1")int currentPage) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+		
 		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-		List<BoardDto> tempSaveList = boardService.selectTempSaveList(loginUser.getUserId());
+		
+		int listCount = boardService.selectTempSaveListCount(loginUser.getUserId());
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<BoardDto> tempSaveList = boardService.selectTempSaveList(pi, loginUser.getUserId());
+		
+		
+		model.addAttribute("pi", pi);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("tempSaveList", tempSaveList);
 		return "board/tempSave";
@@ -281,10 +301,110 @@ public class BoardController {
 		return "board/tempSaveRegist";
 	}
 	
-	@GetMapping("/delete.do") // /board/detail.do?no=글번호
-	public void delete(int[] no, Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
-		log.debug("no : ", no);
+	@ResponseBody
+	@PostMapping("/tempSaveUpdate.do")
+	public String tempSaveUpdate(BoardDto board, String[] delFileNo
+							   , List<MultipartFile> uploadFiles
+							   , HttpSession session) {
 		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		board.setModId(String.valueOf(loginUser.getUserId()));
+		board.setTempSave("01");
+		
+		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
+		
+		if(board.getNoticeYN() == null) {
+			if(board.getBoardCategory().equals("CATEGORY-8")) {
+				board.setNoticeYN("Y");
+			}
+			else {
+				board.setNoticeYN("N");
+			}
+		}
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		if(uploadFiles != null) {
+			attachList = fileUtil.setAttach(uploadFiles, "board", loginUser, board.getBoardNo(), "B");
+			board.setAttachList(attachList);
+		}
+		int result = boardService.updateBoard(board, delFileNo);
+		
+		if (result > 0) {
+			for(AttachDto at : delFileList) {
+				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+			}
+		}
+		return result > 0 ? "SUCCESS" : "FAIL";
+	}
+
+	@GetMapping("/delete.do") 
+	public String delete(@RequestParam(value = "no")List<Integer> no
+				     , @RequestParam(value="type", defaultValue="CATEGORY-8") String boardType
+				     , RedirectAttributes redirectAttributes) {
+
+		int result = boardService.deleteBoard(no);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:/board/list.do?page=1&type=" + boardType;
+	}
+	
+	@GetMapping("/remove.do") 
+	public String removeList(@RequestParam(value = "no")List<Integer> no
+						, HttpServletRequest request
+				        , RedirectAttributes redirectAttributes) {
+
+		int result = boardService.removeBoard(no);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:" + request.getHeader("referer");
+	}
+	
+	@GetMapping("/trash.page") // /board/detail.do?no=글번호
+	public String trashForm(Model model, HttpSession session
+						  , @RequestParam(value="page", defaultValue="1")int currentPage) { 
+		
+		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		int listCount = boardService.selectTrashListCount(loginUser.getUserId());
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<BoardDto> trashList = boardService.selectTrashList(pi, loginUser.getUserId());
+		
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("trashList", trashList);
+		return "board/trash";
+	}
+	
+	@GetMapping("/reStore.do") 
+	public String reStoreList(@RequestParam(value = "no")List<Integer> no
+				        , RedirectAttributes redirectAttributes) {
+
+		int result = boardService.restoreBoard(no);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "복구에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 복구에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:/board/trash.page";
 	}
 
 }
