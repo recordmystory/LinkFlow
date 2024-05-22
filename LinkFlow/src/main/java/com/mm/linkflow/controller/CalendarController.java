@@ -91,6 +91,7 @@ public class CalendarController {
 	        return result;
 	    }
 	    */
+	//캘린더 메인 - 일정 전체 조회
 	@ResponseBody
     @RequestMapping("/schList.do")
     public List<ScheduleDto> selectScheduleList(String schCalSubCodes) {
@@ -118,9 +119,9 @@ public class CalendarController {
 			 * int resultCalNo = calendarService.updateSchCalSubCode(map);
 			 */
 	       log.debug("updateResult: {}", resultSch);
-	       log.debug("schCalSubCode: {}", schedule.getSchCalSubCode());
 	       log.debug("address: {}", schedule.getAddress());
-	       
+	       log.debug("schNo: {}", schedule.getAddress());
+
 	       if (resultSch == 1) {
 	           return "success"; 
 	       } else {

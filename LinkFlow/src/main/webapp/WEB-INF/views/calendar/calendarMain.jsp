@@ -328,8 +328,9 @@
                 dataType: "text",
                 success: function(resultSch) {
                     if (resultSch === "success") {
-                        $('#schUpdateModal').modal('hide');
                         alert("일정 수정 성공.");
+                        $('#schUpdateModal').modal('hide');
+                        $('#schDetailModal').modal('hide');
                         calendar.refetchEvents();
                     } else {
                         alert("일정 수정 실패.");
@@ -348,12 +349,12 @@
 			  
 			 
     // 일정 삭제 *******************************
-    	//삭제 html text
+    	//삭제모달 html text
         $('.schDetailModal_grayBtn').click(function() {
           $('#detailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
         });
     
-    	//삭제 버튼 클릭시 
+    	//삭제모달에서 삭제 버튼 클릭시 
         $('#schDeleteBtn').click(function() {
         
             var schNo = $('#schDetailModal input[name="schNo"]').val();
@@ -379,7 +380,11 @@
             });
         });
     
-      
+      //삭제모달에서 취소버튼 클릭시
+       $('#schDeleteCancelBtn').click(function() {
+           $('#detailBtn').modal('hide');
+
+       });
 
      // 개인캘린더, 부서캘린더, 전사캘린더 체크박스 클릭 시 일정 목록 조회
         $(".calCheckbox").change(function() {
