@@ -57,6 +57,12 @@
 	<resultMap type="DeptDto" id="deptDtoResult" extends="commonMapper.commonResult">
 		<result column="DEPT_CODE" property="deptCode"/> 
 		<result column="DEPT_TITLE" property="deptTitle"/> 
+		
+		<collection property="memberList" ofType="MemberDto">
+			<id column="USER_ID" property="userId"/>
+			<result column="USER_NAME" property="userName"/>
+			<result column="sub_name" property="subName"/>
+		</collection>
 
 	</resultMap>
 	
@@ -332,6 +338,26 @@
 		WHERE USER_ID = #{userId}
 	</update>
 	
+	<!-- JS조직도 조회 쿼리 -->
+	<select id="selectApprLine" resultMap="deptDtoResult">
+		SELECT 
+         D.DEPT_CODE       
+       , D.DEPT_TITLE 
+       , M.USER_NAME 
+       , C.SUB_NAME 
+       , M.USER_ID
+      FROM 
+          TB_MEMBER M
+      JOIN 
+          TB_DEPT D ON M.DEPT_CODE = D.DEPT_CODE
+      LEFT JOIN 
+          TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+      JOIN
+        TB_COMMON C ON (C.MAIN_CODE = M.RANK_BCODE AND C.SUB_CODE = M.RANK_SCODE)
+      WHERE 
+          M.DEL_YN = 'N'
+      ORDER BY D.DEPT_CODE
+	</select>
 	
 	
 </mapper>

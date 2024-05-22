@@ -84,4 +84,9 @@ public class HrServiceImpl implements HrService {
 		return hDao.goJoinPathy(m);
 	}
 
+	@Override
+	public List<DeptDto> selectApprLine() {
+		return hDao.selectApprLine();
+	}
+
 }

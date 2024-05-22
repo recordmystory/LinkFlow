@@ -64,6 +64,10 @@ public class HrDao {
 	public int goJoinPathy(MemberDto m) {
 		return sql.update("hrMapper.goJoinPathy",m);
 	}
+
+	public List<DeptDto> selectApprLine() {
+		return sql.selectList("hrMapper.selectApprLine");
+	}
 	
 	
 }

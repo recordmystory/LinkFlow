@@ -36,4 +36,7 @@ public interface HrService {
 	//구성원 추가 및 수정에 직급 부서 종류 
 	List<DeptDto> selectDeftList();
 	List<CommonTableDto> selectCommonTableList();
+	
+	// JS트리용 조직도 조회하는 서비스 -구성모
+	List<DeptDto> selectApprLine();
 }
