@@ -364,6 +364,7 @@
       WHERE 
           M.DEL_YN = 'N'
       ORDER BY D.DEPT_CODE
+   </select>   
 	<insert id="insertDept">
 		INSERT INTO tb_dept(
      DEPT_CODE
