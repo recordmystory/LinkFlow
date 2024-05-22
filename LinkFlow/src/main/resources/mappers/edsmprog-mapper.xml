@@ -36,22 +36,22 @@
 	<!-- 결재선 설정 모달 내 팀명, 사원 조회 -->
 	<select id="selectApprLine" resultMap="deptResult">
 		SELECT 
-         D.DEPT_CODE       
-       , D.DEPT_TITLE 
-       , M.USER_NAME 
-       , C.SUB_NAME 
-       , M.USER_ID
-      FROM 
-          TB_MEMBER M
-      JOIN 
-          TB_DEPT D ON M.DEPT_CODE = D.DEPT_CODE
-      LEFT JOIN 
-          TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
-      JOIN
-        TB_COMMON C ON (C.MAIN_CODE = M.RANK_BCODE AND C.SUB_CODE = M.RANK_SCODE)
-      WHERE 
-          M.DEL_YN = 'N'
-      ORDER BY D.DEPT_CODE
+             D.DEPT_CODE       
+               , D.DEPT_TITLE 
+               , M.USER_NAME 
+               , C.SUB_NAME 
+               , M.USER_ID
+		FROM 
+		    TB_DEPT D 
+		LEFT OUTER JOIN 
+		    TB_MEMBER M ON D.DEPT_CODE = M.DEPT_CODE AND M.DEL_YN = 'N'
+		LEFT JOIN 
+		    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+		WHERE 
+		    D.DEL_YN = 'N'
+		
+		ORDER BY 
+        D.DEPT_CODE
 	</select>
 	
 	<!-- 기안서 작성 (결재 문서 insert)-->
