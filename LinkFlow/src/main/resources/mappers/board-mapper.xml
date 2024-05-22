@@ -232,5 +232,10 @@
 		ORDER BY 
 		    b.board_no DESC
   </select>
-
+	
+	
+	
+	
+	
+	
 </mapper>

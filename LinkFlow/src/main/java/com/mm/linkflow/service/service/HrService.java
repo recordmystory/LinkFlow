@@ -2,6 +2,9 @@ package com.mm.linkflow.service.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.CommonTableDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -27,8 +30,15 @@ public interface HrService {
 	int goJoinPathy(MemberDto m);
 	
 	//조직 추가 
-	
+	int insertDept(DeptDto d);
+	int insertCategory(BoardCategoryDto bd);
 	//조직 변경 
+	int updateDeptTable(DeptDto d);
+	int updateDept(BoardCategoryDto bd);
+	
+	//조직 삭제 
+	int deleteDept(BoardCategoryDto bd);
+	int DeleteDeptTable(DeptDto d);
 	
 	//아이디 중복확인 
 	int checkId(String checkId);
@@ -36,4 +46,6 @@ public interface HrService {
 	//구성원 추가 및 수정에 직급 부서 종류 
 	List<DeptDto> selectDeftList();
 	List<CommonTableDto> selectCommonTableList();
+	
+	
 }
