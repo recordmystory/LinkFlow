@@ -242,4 +242,22 @@
 	  and a.sub_code = c.sub_code
 </select>
 
+<select id="selectSearchAssCount" resultType="_int">
+	select count(*)
+	  from tb_assets 
+	where del_yn = 'N'
+</select>
+
+<select id="selectSearchAssetsList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , sub_name
+		  , main_name
+	 from tb_assets a
+	 join tb_common c on a.main_code = c.main_code
+	where a.del_yn ='N'
+	  and a.sub_code = c.sub_code
+</select>
+
 </mapper>

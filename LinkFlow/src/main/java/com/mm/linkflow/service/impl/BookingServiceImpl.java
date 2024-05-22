@@ -108,6 +108,17 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.selectSearchSupList(search,pi);
 	}
 
+
+	@Override
+	public int selectSearchAssCount(Map<String,String> search) {
+		return bkDao.selectSearchAssCout(search);
+	}
+
+	@Override
+	public List<AssetsDto> selectSearchAssetsList(PageInfoDto pi,Map<String,String> search) {
+		return bkDao.selectSearchAssList(pi,search);
+	}
+
 	@Override
 	public int insertBooking(BookingDto bk) {
 		return 0;

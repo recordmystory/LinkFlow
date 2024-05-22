@@ -193,10 +193,9 @@ input[type="checkbox"]:checked {
 		                            <select id="dropdownOptions" class="form-control middle-cate" name="subName">
 		                                <option value="">회의실</option>
 		                            </select> &nbsp;
-		                            <input type="text" name="table_search" class="form-control float-right"
-		                                placeholder="Search">
+		                            <input type="text" name="table_search" class="form-control float-right" name="keyword" placeholder="Search">
 		                            <div class="input-group-append">
-		                                <button type="submit" class="btn btn-default">
+		                                <button type="submit" class="btn btn-default" onclick="searchAssets();">
 		                                    <i class="fas fa-search"></i>
 		                                </button>
 		                            </div>
@@ -214,7 +213,7 @@ input[type="checkbox"]:checked {
 		                              <th style="width: 250px;">상태</th>
 		                          </tr>
 		                      </thead>
-		                      <tbody>
+		                      <tbody id="listTable">
 		                      <c:choose>
 			                      <c:when test="${empty assList }">
 			                      	<tr><th>조회된 내역이 없습니다. </th></tr>
@@ -318,6 +317,38 @@ input[type="checkbox"]:checked {
 	            $('.resultArea').text(selectedText);
 	        });
 	    });
+		
+		function searchAssets(){
+			let mainName = document.getElementById('mainName').value;
+			let subName = document.getElementById('subName').value;
+			
+			$.ajax({
+				url: '${contextPath}/booking/ass.search',
+				type:'get',
+				data:{
+					mainName: mainName,
+					subName: subName,
+					keyword: keyword
+				},success:function(searchResult){
+					let table="";
+					let list = searchResult.assList;
+					
+					for(let i=1; i<list.length; i++){
+						table +="<tr>"
+                        	  + "<td>"+ list[i].mainName +"</td>"
+                        	  + "<td>"+ list[i].subName +"</td>"
+                        	  + "<td>"+ list[i].assetsName +"</td>"
+                        	  + "<td>"
+                              + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\">수정</span>"
+                              + " | "
+                              + "<span onclick=\" assDel("+ list[i].assetsNo + ");\">삭제</span>"
+                        	  + "</td></tr>" ;
+					}
+					$("#listTable").html(table);
+				}
+				
+			})
+		}
 	
 	    function assDel(assNo) {
 	        Swal.fire({

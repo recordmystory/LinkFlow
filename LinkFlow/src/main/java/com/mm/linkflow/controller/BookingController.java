@@ -201,6 +201,21 @@ public class BookingController {
 		return mv;
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/ass.search", produces="applicstion/json; charset=utf-8") // 자산리스트 검색
+	public Map<String,Object> selectSearchAssList(@RequestParam Map<String, String> search, @RequestParam(value="page", defaultValue="1") int currentPage){
+		int listCount = bkServiceImpl.selectSearchAssCount(search);
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<AssetsDto> assList = bkServiceImpl.selectSearchAssetsList(pi,search);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("pi", pi);
+		map.put("assList",assList);
+		
+		return map;
+	}
+	
 	@PostMapping("/insert.ass") // 자산 추가 
 	public void insertAssets() {
 		
