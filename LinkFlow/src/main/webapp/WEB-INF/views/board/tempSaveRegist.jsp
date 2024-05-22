@@ -81,11 +81,11 @@
                 <div class="container-fluid" style="display: flex; justify-content: center;">
                     <div class="contentArea">
                         <form id="enrollForm" method="post" action="${contextPath }/board/modify.do" enctype="multipart/form-data">
-                            <input type="hidden" name="boardNo" value="${board.boardNo }"> 
+                            <input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo }"> 
                             <div class="contentInElement">
                                 <div class="btnArea">
                                     <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 6px;" id="enrollForm-submit">작성하기</button>
-                                    <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="tempSave();">임시저장</button>
+                                    <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="tempUpdate();">임시저장</button>
                                     <button class="btn btn-primary btn-sm" onclick="javascript:history.go(-1);">취소</button>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@
 					                			inputEl.name = "delFileNo";
 					                			inputEl.value = $(this).data("fileno")
 					                			
-					                			document.getElementById("updateForm").append(inputEl);
+					                			document.getElementById("enrollForm").append(inputEl);
 					                			
 					                			// 화면으로부터 사라지도록 작업
 					                			$(this).parent().remove();

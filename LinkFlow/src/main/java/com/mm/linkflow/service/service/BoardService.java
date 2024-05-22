@@ -38,6 +38,20 @@ public interface BoardService {
 
 	List<BoardDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
 
-	List<BoardDto> selectTempSaveList(String userId);
+	List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId);
+
+	int deleteBoard(List<Integer> no);
+
+	int selectCurrnetTempSave();
+
+	int selectTempSaveListCount(String userId);
+
+	int removeBoard(List<Integer> no);
+
+	int selectTrashListCount(String userId);
+
+	List<BoardDto> selectTrashList(PageInfoDto pi, String userId);
+
+	int restoreBoard(List<Integer> no);
 
 }

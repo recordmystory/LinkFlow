@@ -91,5 +91,12 @@
    	</foreach>
    </where>
   </select>
+  
+  <select id="selectDelFileNo" resultType="String">
+  	select
+  			  file_no
+  	from tb_attachment
+   where ref_no = #{no}
+  </select>
 	
 </mapper>

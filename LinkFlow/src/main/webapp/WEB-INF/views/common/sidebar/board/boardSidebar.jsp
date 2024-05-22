@@ -87,7 +87,7 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">임시저장</p>
               </a>
-              <a href="#" class="nav-link">
+              <a href="${contextPath }/board/trash.page" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p style="padding-left: 5px;">휴지통</p>
               </a>
