@@ -421,20 +421,11 @@
 
                   <form action="xxxxxxx" method="post">
                    <div class="searchUser">
-                     
-                     <div class="form-check form-check-inline">
-                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                       <label class="form-check-label" for="inlineRadio1">이름, 아이디</label>
-                   </div>
-                   <div class="form-check form-check-inline">
-                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                       <label class="form-check-label" for="inlineRadio2">조직</label>
-                   </div>
 
                      <div class="col-md-3" style="margin-top: 15px;">
                        <div class="form-group">
-                         <div class="input-group">
-                             <input type="search" class="form-control" placeholder="사원명을 입력하세요" value="" name="useName">
+                         <div class="input-group" style="width: 800px;">
+                             <input type="search" class="form-control" id="searchInput" placeholder="사원명이나 조직명으로 검색하세요" value="" name="useName">
                              <div class="input-group-append">
                                  <button type="submit" class="btn  btn-primary">
                                      <i class="fa fa-search"></i>
@@ -453,7 +444,7 @@
                          <h5 class="card-title">사원설정</h5>
                        </div>
                        
-                       <div class="card-body text-nowrap overflow-auto">`
+                       <div class="card-body text-nowrap overflow-auto">
                        
                          <div id="kt_docs_jstree_basic">
                            <ul>
@@ -719,7 +710,12 @@
                 "icon" : "fa-solid fa-person"
             }
         },
-        "plugins": ["types"]
+        "plugins": ["types", "search"],
+        "search" : {
+        	"show_only_matches" : true,
+        	"show_only_matches_children" : true,
+        }
+        
     }).on('select_node.jstree', function (e, data) {
         var node = data.node;
         
@@ -738,8 +734,16 @@
             }
         }
     });
-
-
+		
+   var to = false;
+   $('#searchInput').keyup(function () {
+       if(to) { clearTimeout(to); }
+       to = setTimeout(function () {
+           var v = $('#searchInput').val();
+           $('#kt_docs_jstree_basic').jstree(true).search(v);
+       }, 250);
+   });
+          
   document.querySelector('.approvalIn').addEventListener('click', function() {
         var nameAreas = document.querySelectorAll('.NameArea');
         var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
