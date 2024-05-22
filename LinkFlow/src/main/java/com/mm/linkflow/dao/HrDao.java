@@ -90,6 +90,10 @@ public class HrDao {
 		return sql.update("hrMapper.DeleteDeptTable",d);
 	}
 
+	public int checkCode(String deptCode) {
+		return sql.selectOne("hrMapper.checkCode",deptCode);
+	}
+
 	
 	
 	

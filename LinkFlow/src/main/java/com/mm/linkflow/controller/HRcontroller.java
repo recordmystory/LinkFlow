@@ -226,8 +226,8 @@ public class HRcontroller {
 		bd.setRegId(d.getRegId());
 		bd.setModId(d.getModId());
 		
-		int result = hService.insertCategory(bd);
 		int result1 = hService.insertDept(d);
+		int result = hService.insertCategory(bd);
 		if(result * result1 > 0) {
 			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 부서 등록이 완료되었습니다.");
 			
@@ -237,7 +237,7 @@ public class HRcontroller {
 		}
 		
 		
-		return "redirect:/hr/hrPage";
+		return "redirect:/hr/deptUpdate.do";
 	}
 	
 	@ResponseBody
@@ -273,6 +273,14 @@ public class HRcontroller {
 		int result1 = hService.deleteDept(bd);
 		
 		return result * result1 > 0 ? "YYYYY" : "NNNNN";
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkCode")
+	public String checkCode(String deptCode) {
+		int result = hService.checkCode(deptCode);
+		
+		return result > 0 ? "NNNNN" : "YYYYY" ; 
 	}
 	
 }

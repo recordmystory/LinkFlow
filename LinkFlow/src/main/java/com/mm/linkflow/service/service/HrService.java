@@ -42,6 +42,8 @@ public interface HrService {
 	
 	//아이디 중복확인 
 	int checkId(String checkId);
+	//부서 코드 중복확인 
+	int checkCode(String deptCode);
 	
 	//구성원 추가 및 수정에 직급 부서 종류 
 	List<DeptDto> selectDeftList();

@@ -118,6 +118,11 @@ public class HrServiceImpl implements HrService {
 		return hDao.DeleteDeptTable(d);
 	}
 
+	@Override
+	public int checkCode(String deptCode) {
+		return hDao.checkCode(deptCode);
+	}
+
 	
 
 	

@@ -293,12 +293,14 @@
 				                   
 				                },    
 				                success: function(response) {
+				                	
 				                    if (response ==='YYYYY') {
 				                        $('#resultArea').text('중복된 아이디가 없습니다'); 
 				                        $('#goPass').prop('disabled', false); 
 				                    } else if(response ==='NNNNN') {
 				                        $('#resultArea').text('중복된 아이디가 있습니다. 다른 아이디로 시도해주세요'); 
 				                        $('#goPass').prop('disabled', true); 
+				                        
 				                    }
 				                },
 				                error: function(xhr, status, error) {

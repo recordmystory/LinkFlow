@@ -427,5 +427,12 @@
     WHERE DEPT_CODE = #{deptCode}
 	</update>
 	
+	<select id="checkCode" resultType="int">
+     SELECT COUNT(*) AS count
+    	FROM tb_dept
+    	WHERE dept_code = #{deptCode}
+	</select>
+	
+	
 </mapper>
 	

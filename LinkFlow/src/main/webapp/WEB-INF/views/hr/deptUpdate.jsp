@@ -344,14 +344,47 @@
                           	
                                <input type="hidden" name="regId" value="${loginUser.userId }">
                                <input type="hidden" name="modId" value="${loginUser.userId }">
-                               <div class="col-6">
-                                   <div class="form-group">
-                                   <label>부서 코드</label>
-                                   <input type="text" class="form-control" required placeholder="부서명을 입력하세요" name="deptCode">   
-                                   </div>   
-                               </div>
+                               		 <div class="col-md-6">
+                                     <label>부서코드</label>
+                                     <div class="input-group input-group">
+                                         
+                                         <input type="text" class="form-control" placeholder="부서 코드를 확인하세요" name="deptCode" id="deptCode">
+                                         <span class="input-group-append">
+                                           <button type="button" class="btn btn-primary btn-flat" onclick="checkCode();">중복확인</button>
+                                         </span>
+                                     </div>
+                                     <div id="resultArea" style="font-size:15px"></div>
+                                     <br>
 
-                               <div class="col-6">
+                                    </div>
+																		<script>
+													      		 function checkCode(){
+																            var deptCode = $('#deptCode').val(); 
+																            $.ajax({
+																                url: '${contextPath}/hr/checkCode', 
+																                type: 'POST',
+																              
+																                data: {
+																                	deptCode: deptCode,
+																                   
+																                },    
+																                success: function(response) {
+																                    if (response ==='YYYYY') {
+																                        $('#resultArea').text('중복된 부서코드가 없습니다'); 
+																                        $('#goPass').prop('disabled', false); 
+																                    } else if(response ==='NNNNN') {
+																                        $('#resultArea').text('중복된 부서코드가 있습니다. 다른 코드이름으로 시도해주세요'); 
+																                        $('#goPass').prop('disabled', true); 
+																                    }
+																                },
+																                error: function(xhr, status, error) {
+																                    console.error('AJAX 오류');
+																                }
+																            });
+																        };
+																    
+																</script>
+                               <div class="col-md-6">
                                    <div class="form-group">
                                    <label>부서 이름</label>
                                    <input type="text"  name="deptTitle" class="form-control" required placeholder="부서이름을 입력하세요" >   
@@ -367,7 +400,7 @@
                            </div>
                            <!-- /.card-body -->
                            <div class="card-footer">
-                               <button type="submit" class="btn btn-primary"  id="goPass">등록하기</button>
+                               <button type="submit" class="btn btn-primary"  id="goPass" disabled="disabled">등록하기</button>
                                <a href="${contextPath}/hr/hrPage" class="btn btn-default float-right" style="margin-left: 10px;">등록취소</a>
                               
                            </div>
@@ -385,32 +418,7 @@
                                   
                              
                                    
-                                    
-                                   <!--  <div class="row">
-                                    	<div class="col-12">
-	                                      Default box
-	                                      <div class="card-info">
-	                                        <div class="card-header">
-	                                          <h3 class="card-title">부서 추가 도움말</h3>
-	                          
-	                                        
-	                                        </div>
-	                                        <div class="card-body">
-	                                          사원 추가시 비밀번호 초기값은 'linkflow123@' 입니다. 사용자에게 전달 부탁드립니다. 
-	                                          <br><br>
-	                                          사원 등록후 연차는 기본적으로 12개 생성됩니다. 추후 협의를 통해 사원 변경페이지에서 추가 등록 부탁드립니다.
-	                                          
-	                                        </div>
-	                                        /.card-body
-	                                    
-	                                        /.card-footer
-	                                      </div>
-	                                      /.card
-	                                    </div>
-	                                  </div> -->
-                                    
-
-                                <                    
+                    
 
                                 
                         </div><!-- /.card -->     
