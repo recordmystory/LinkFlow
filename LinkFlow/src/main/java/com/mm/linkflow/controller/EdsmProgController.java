@@ -38,7 +38,35 @@ public class EdsmProgController {
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
-	
+	/** 진행중인 문서 목록 (전체) 검색
+	 * 
+	 * @param currentPage
+	 * @param search
+	 * @param session
+	 * @param mv
+	 * @return mv
+	 */
+	@GetMapping("/search.prog")
+	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,
+			   @RequestParam Map<String, String> search, HttpSession session,
+			   ModelAndView mv) {
+		
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		search.put("userId", loginUser.getUserId());
+		// log.debug("search : {}", search);
+		
+		int listCount = edsmProgService.selectSearchListCnt(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		List<EdocDto> list = edsmProgService.selectSearchList(search, pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("search", search)
+		  .addObject("listCnt", listCount)
+		  .setViewName("edsm/prog/listAll");
+		
+		return mv;
+	}
 	/** 진행중인 문서 목록 조회 (전체)
 	 * 
 	 * @param currentPage

@@ -39,72 +39,74 @@
 </head>
 <body>
 	<div class="LinkFlowSidebar">
-                <!-- Main Sidebar Container -->
-                <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
-                    <!-- Sidebar -->
-                    <div class="sidebar">
-                        <!-- Sidebar Menu -->
-                        <nav class="linkfoiwsideMenu">
-                            <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
-                            <div class="LinkFlowInsertBtnArea">
-                                <a href="#" class="btn btn-block bg-primary btn-lg" style="color: white;">+ 프로젝트 등록</a>
-                            </div>
-                            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                                data-accordion="false">
-                                <li class="sidebarName">프로젝트 관리</li><br>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link middleName">
-                                        <i class="nav-icon far fa-solid fa-desktop"></i>
-                                        <p>
-                                            프로젝트 현황
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left: 20px;">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link active">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>프로젝트 목록 조회</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>프로젝트 인원 조회</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link middleName">
-                                        <i class="nav-icon far fa-solid fa-pen"></i>
-                                        <p>
-                                            일일작업 관리
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left: 20px;">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>일일작업 조회</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>직원별 일일작업 조회</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- /.sidebar-menu -->
-                    </div>
-                    <!-- /.sidebar -->
-                </aside>
-                <!--사이드바 끝-->
-            </div>
+	    <!-- Main Sidebar Container -->
+	    <aside class="sidebar-mini sidebar-dark-primary elevation-4 " style="height: 100%;">
+	        <!-- Sidebar -->
+	        <div class="sidebar">
+	            <!-- Sidebar Menu -->
+	            <nav class="linkfoiwsideMenu">
+	                <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
+	                <c:if test="${not empty loginUser and loginUser.position eq '팀장'}">
+	                <div class="LinkFlowInsertBtnArea">
+	                    <a href="${contextPath}/project/addForm.pj" class="btn btn-block bg-primary btn-lg" style="color: white;">+ 프로젝트 등록</a>
+	                </div>
+	                </c:if>
+	                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+	                    data-accordion="false">
+	                    <li class="sidebarName">프로젝트 관리</li><br>
+	                    <li class="nav-item">
+	                        <a href="#" class="nav-link middleName">
+	                            <i class="nav-icon far fa-solid fa-desktop"></i>
+	                            <p>
+	                                프로젝트 현황
+	                                <i class="fas fa-angle-left right"></i>
+	                            </p>
+	                        </a>
+	                        <ul class="nav nav-treeview" style="padding-left: 20px;">
+	                            <li class="nav-item">
+	                                <a href="#" class="nav-link">
+	                                    <i class="far fa-circle nav-icon"></i>
+	                                    <p>프로젝트 목록 조회</p>
+	                                </a>
+	                            </li>
+	                            <li class="nav-item">
+	                                <a href="#" class="nav-link">
+	                                    <i class="far fa-circle nav-icon"></i>
+	                                    <p>프로젝트 인원 조회</p>
+	                                </a>
+	                            </li>
+	                        </ul>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a href="#" class="nav-link middleName">
+	                            <i class="nav-icon far fa-solid fa-pen"></i>
+	                            <p>
+	                                일일작업 관리
+	                                <i class="fas fa-angle-left right"></i>
+	                            </p>
+	                        </a>
+	                        <ul class="nav nav-treeview" style="padding-left: 20px;">
+	                            <li class="nav-item">
+	                                <a href="#" class="nav-link">
+	                                    <i class="far fa-circle nav-icon"></i>
+	                                    <p>일일작업 조회</p>
+	                                </a>
+	                            </li>
+	                            <li class="nav-item">
+	                                <a href="#" class="nav-link">
+	                                    <i class="far fa-circle nav-icon"></i>
+	                                    <p>직원별 일일작업 조회</p>
+	                                </a>
+	                            </li>
+	                        </ul>
+	                    </li>
+	                </ul>
+	            </nav>
+	            <!-- /.sidebar-menu -->
+	        </div>
+	        <!-- /.sidebar -->
+	    </aside>
+	    <!--사이드바 끝-->
+	</div>
 </body>
 </html>
