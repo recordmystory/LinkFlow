@@ -88,6 +88,10 @@ public class HrServiceImpl implements HrService {
 	}
 
 	@Override
+	public List<DeptDto> selectApprLine() {
+		return hDao.selectApprLine();
+	}
+
 	public int insertDept(DeptDto d) {
 		return hDao.insertDept(d);
 	}

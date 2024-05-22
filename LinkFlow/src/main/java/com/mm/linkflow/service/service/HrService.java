@@ -49,5 +49,7 @@ public interface HrService {
 	List<DeptDto> selectDeftList();
 	List<CommonTableDto> selectCommonTableList();
 	
+	// JS트리용 조직도 조회하는 서비스 -구성모
+	List<DeptDto> selectApprLine();
 	
 }
