@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="projectMapper">
+	<resultMap type="ProjectDto" id="projectResult" extends="commonMapper.commonResult">
+		<id column="PRO_NO" property="proNo"/>
+		<result column="DEPT_CODE" property="deptCode"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="CLIENT" property="client"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="DETAIL_ADD" property="detailAdd"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="PRO_YN" property="proYn"/>
+		<result column="DEPT_NAME" property="deptName"/>
+	</resultMap>
+	
+	<insert id="addProject">
+		INSERT
+		  INTO TB_PROJECT
+		  (
+		  	PRO_NO
+		  , DEPT_CODE
+		  , PRO_TITLE
+		  , CLIENT
+		  , ADDRESS
+		  , DETAIL_ADD
+		  , START_DATE
+		  , END_DATE
+		  , REG_ID
+		  , MOD_ID
+		  )
+		  VALUES
+		  (
+		  	SEQ_PROJECT.NEXTVAL
+		  , #{deptCode}
+		  , #{proTitle}
+		  , #{client}
+		  , #{address}
+		  , #{detailAdd}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{regId}
+		  , #{modId}
+		  )
+	</insert>
+	
+	<select id="selectProjectList" resultMap="projectResult">
+		SELECT
+		       PRO_NO
+		     , PRO_TITLE
+		     , CLIENT
+		     , DEPT_TITLE AS DEPT_NAME
+		     , ADDRESS
+		     , DETAIL_ADD
+		     , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		     , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		     , PRO_YN
+		  FROM TB_PROJECT P
+		  JOIN TB_DEPT USING (DEPT_CODE)
+		 WHERE P.DEL_YN = 'N'
+	</select>
+</mapper>

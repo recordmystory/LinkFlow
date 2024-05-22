@@ -33,12 +33,7 @@
    padding: .0rem 0rem;
  }
  /*여기까지 메인 영역 요소  공용 스타일임 */
- #boardList{text-align: center;}
- #boardList>tbody>tr:hover{cursor:pointer;}
- #pagingArea{width:fit-content;margin:auto;}
- .readUser{
-   border-radius: 10px;
- }
+
 
 </style>
 </head>
@@ -109,76 +104,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            	<c:forEach var="p" items="${list}"> 
                                                 <tr>
-                                                    <td>3</td>
-                                                    <td>한국은행</td>
+                                                    <td>${p.proNo}</td>
+                                                    <td>${p.client}</td>
                                                     <td>
-                                                        <a href="dd">IT 통합 운영</a>
+                                                        <a href="dd">${p.proTitle}</a>
                                                     </td>
-                                                    <td>개발 1팀</td>
-                                                    <td>2024-01-01 ~ 2024-12-31</td>
+                                                    <td>${p.deptName}</td>
+                                                    <td>${p.startDate} ~ ${p.endDate}</td>
                                                     <td>
                                                         <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
                                                         <a id="map1" data-toggle="modal" href="#mapModal">위치보기</a>
                                                     </td>
-                                                    <td>진행</td>
+                                                    <td>${p.proYn eq 'N' ? '진행' : '완료'}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>한국은행</td>
-                                                    <td>
-                                                        <a href="dd">IT 통합 운영</a>
-                                                    </td>
-                                                    <td>개발 1팀</td>
-                                                    <td>2024-01-01 ~ 2024-12-31</td>
-                                                    <td>
-                                                        <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a id="map2" data-toggle="modal" href="#mapModal">위치보기</a>
-                                                    </td>
-                                                    <td>진행</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>한국은행</td>
-                                                    <td>
-                                                        <a href="dd">IT 통합 운영</a>
-                                                    </td>
-                                                    <td>개발 1팀</td>
-                                                    <td>2024-01-01 ~ 2024-12-31</td>
-                                                    <td>
-                                                        <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a id="map3" data-toggle="modal" href="#mapModal">위치보기</a>
-                                                    </td>
-                                                    <td>진행</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>한국은행</td>
-                                                    <td>
-                                                        <a href="dd">IT 통합 운영</a>
-                                                    </td>
-                                                    <td>개발 1팀</td>
-                                                    <td>2024-01-01 ~ 2024-12-31</td>
-                                                    <td>
-                                                        <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a id="map4" data-toggle="modal" href="#mapModal">위치보기</a>
-                                                    </td>
-                                                    <td>진행</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>한국은행</td>
-                                                    <td>
-                                                        <a href="dd">IT 통합 운영</a>
-                                                    </td>
-                                                    <td>개발 1팀</td>
-                                                    <td>2024-01-01 ~ 2024-12-31</td>
-                                                    <td>
-                                                        <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a id="map5" data-toggle="modal" href="#mapModal">위치보기</a>
-                                                    </td>
-                                                    <td>진행</td>
-                                                </tr>
+                                                </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
