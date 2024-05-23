@@ -23,6 +23,11 @@ public class EdocHistDto extends CommonDto {
 	private String edHistDate; 
 	private String edHistComment;  
 	
+	// 진행중인 문서 상세 페이지에서 조회할 쿼리
+	private String userName;
+	private String signUrl;
+	
+	
 	private List<EdocFormDto> edocFormList;
 	
 }

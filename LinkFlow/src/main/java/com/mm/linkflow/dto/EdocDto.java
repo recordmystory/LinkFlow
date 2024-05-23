@@ -25,6 +25,9 @@ public class EdocDto extends CommonDto {
 	private String status;
 	private String tempSave;
 	
+	private String deptTitle; // 진행중인 문서 상세 조회 페이지에서 부서명 담길 필드 추가 
+	private String edFrName; // 문서 이름
+	
 	// 첨부파일
 	private List<AttachDto> attachList;
 	

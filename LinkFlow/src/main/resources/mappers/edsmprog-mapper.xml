@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edsmProgMapper">
 	<resultMap type="EdocDto" id="edocResult" extends="commonMapper.commonResult">
-		<id column="ED_NO" property="edNo"/>
+		<id column="ED_NO" property="edNo"/>		
 		<result column="ED_FORM_CODE" property="edFormCode"/>
 		<result column="ED_TITLE" property="edTitle"/>
 		<result column="ED_CONTENT" property="edContent"/>
@@ -10,6 +10,8 @@
 		<result column="SEC_CODE" property="secCode"/>
 		<result column="STATUS" property="status"/>
 		<result column="TEMP_SAVE" property="tempSave"/>
+		<result column="DEPT_TITLE" property="deptTitle"/>
+		<result column="ED_FR_NAME" property="edFrName"/>
 		
 		<collection property="attachList" ofType="AttachDto">
 			<id column="FILE_NO" property="fileNo"/>
@@ -32,6 +34,7 @@
 		<collection property="edocRefList" ofType="EdocRefDto">
 			<id column="ED_NO" property="edNo"/>
 			<id column="USER_ID" property="userId[]"/>
+			<result column="USER_NAME" property="userName"/>
 		</collection>
 		
 	</resultMap>
@@ -48,6 +51,7 @@
 
 	</resultMap>
 	
+	<!-- 상세 페이지 조회할 때 쓸 resultMap -->
 	<resultMap type="EdocHistDto" id="edocHistResult" extends="commonMapper.commonResult">
 		<id column="USER_ID" property="userId"/>
 		<result column="ED_NO" property="edNo"/>
@@ -55,6 +59,23 @@
 		<result column="ED_HIST_SUB_CODE" property="edHistSubCode"/>
 		<result column="ED_HIST_DATE" property="edHistDate"/>
 		<result column="ED_HIST_COMMENT" property="edHistComment"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="SIGN_URL" property="signUrl"/>
+	</resultMap>
+	
+	<resultMap type="EdocRefDto" id="edocRefResult" extends="commonMapper.commonResult">
+		<id column="ED_NO" property="edNo"/>
+		<id column="USER_ID" property="userId"/>
+		<result column="USER_NAME" property="userName" />
+	</resultMap>
+	
+	<resultMap type="AttachDto" id="attachResult" extends="commonMapper.commonResult">
+		<id column="FILE_NO" property="fileNo"/>
+		<result column="REF_NO" property="refNo"/>
+		<result column="REF_CATEGORY" property="refCategory"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="FILESYSTEM_NAME" property="filesystemName"/>
+		<result column="FILE_PATH" property="filePath"/>
 	</resultMap>
 	
 	<!-- 결재선 설정 모달 내 팀명, 사원 조회 -->
@@ -197,6 +218,63 @@
 	     AND ED.STATUS = #{condition}
 	     AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
     ORDER BY ED.REG_DATE 
+	</select>
+	
+	<!-- 진행중인 문서 상세 조회 -->
+	
+	<!-- 기안문서 정보 + 기안자 정보 -->
+	<select id="selectEdocDetail" resultMap="edocResult">
+		SELECT ED_FR_NAME
+			    , ED_NO
+			    , D.DEPT_TITLE
+			    , M.USER_NAME AS REG_ID
+			    , ED.PRES_DATE
+			    , ED.SEC_CODE
+			    , ED.ED_TITLE
+			    , ED_CONTENT
+		FROM TB_EDOC ED
+		JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
+		JOIN TB_MEMBER M ON (M.USER_ID = ED.REG_ID)
+		JOIN TB_DEPT D ON (M.DEPT_CODE = D.DEPT_CODE)
+		WHERE ED.ED_NO = #{edNo}
+	</select>
+	
+	<!-- 결재자와 결재이력 -->
+	<select id="selectApprDetail" resultMap="edocHistResult">
+		SELECT EH.USER_ID
+		     , M.USER_NAME
+		     , M.SIGN_URL
+		     , EH.ED_NO
+		     , EH.ED_HIST_ORDER
+		     , EH.ED_HIST_SUB_CODE
+		     , EH.ED_HIST_DATE
+		     , EH.ED_HIST_COMMENT
+		     , EH.REG_ID
+		FROM TB_EDOC_HIST EH
+		JOIN TB_MEMBER M ON (M.USER_ID = EH.USER_ID)
+		WHERE ED_NO = #{edNo}
+	</select>
+	
+	<!-- 참조자 목록 -->
+	<select id="selectRefDetail" resultMap="edocRefResult">
+		SELECT ED_NO
+		     , USER_ID
+		     , M.USER_NAME
+		FROM TB_EDOC_REF ER
+		JOIN TB_MEMBER M USING (USER_ID)
+		WHERE ED_NO = #{edNo}
+	</select>
+	
+	<!-- 첨부파일 -->
+	<select id="selectAttachDetail" resultMap="attachResult">
+		SELECT FILE_NO 
+		     , FILE_PATH
+		     , FILESYSTEM_NAME
+		     , ORIGIN_NAME
+		FROM TB_EDOC ED
+		JOIN TB_ATTACHMENT AT ON (REF_CATEGORY = 'E' AND ED_NO = REF_NO)
+		WHERE ED.DEL_YN = 'N' AND AT.DEL_YN = 'N'
+		    AND ED_NO = #{edNo}
 	</select>
 	
 	<!-- 결재선 insert -->
