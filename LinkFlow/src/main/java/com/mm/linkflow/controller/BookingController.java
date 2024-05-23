@@ -218,16 +218,18 @@ public class BookingController {
 	
 	@PostMapping("/ass.in") // 자산 추가 
 	public String insertAssets(@RequestParam Map<String,String> assets, HttpSession session) {
-		AssetsDto ass = new AssetsDto().builder()
-									   .assetsName(assets.get("assetsName"))
-									   .mainCode(assets.get("mainCode"))
-									   .subName(assets.get("subName"))
-									   .build();
+		String mainCode = assets.get("updateMainCode");
+		AssetsDto ass = AssetsDto.builder()
+								   .assetsName(assets.get("assetsName"))
+								   .mainCode(assets.get("mainCode"))
+								   .subName(assets.get("subName"))
+								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
-		int result = bkServiceImpl.modAssets(mp);
+		mp.put("mainCode", mainCode);
+		int result = bkServiceImpl.insertAssets(mp);
 		
 		if(result >0) {
 			return "redirect:/booking/ass.list?ain=true";
@@ -238,20 +240,23 @@ public class BookingController {
 	}
 	@PostMapping("/ass.mod") // 자산 추가 
 	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
-		AssetsDto ass = new AssetsDto().builder()
-									   .assetsNo(assets.get("assetsNo"))
-									   .assetsName(assets.get("assetsName"))
-									   .mainCode(assets.get("mainCode"))
-									   .subName(assets.get("subName"))
-									   .build();
+		String mainCode = assets.get("updateMainCode");
+		AssetsDto ass = AssetsDto.builder()
+								   .assetsNo(assets.get("assetsNo"))
+								   .assetsName(assets.get("assetsName"))
+								   .subName(assets.get("subName"))
+								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
-		int result = bkServiceImpl.insertAssets(mp);
+		mp.put("mainCode", mainCode);
+		
+		log.debug("mp:{}",mp);
+		int result = bkServiceImpl.modAssets(mp);
 		
 		if(result >0) {
-			return "redirect:/booking/ass.list?amod=true";
+			return "redirect:/booking/ass.list";
 		}else {
 			return "redirect:/booking/ass.list";
 		}

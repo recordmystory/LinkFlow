@@ -264,9 +264,9 @@ input[type="checkbox"]:checked {
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="assMain" style="width: 80px;" name="mainCode" onchange="changeMod();">
-                                 <option id="room" value="002-">시설</option>
-                                 <option id="supplies" value="003-">비품</option>
+                             <select id="assMain" style="width: 80px;" name="updateMainCode" onchange="changeMod();">
+                                 <option id="roomOption" value="002-">시설</option>
+                                 <option id="suppliesOption" value="003-">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
@@ -334,12 +334,12 @@ input[type="checkbox"]:checked {
 	        // URL에서 success 파라미터를 확인하고 알림 표시
             const urlParams = new URLSearchParams(window.location.search);
             const ain = urlParams.get('ain');
-            const amod = urlParams.get('amod');
+            /* const amod = urlParams.get('amod'); */
             if (ain === 'true') {
                 Swal.fire('성공', '추가되었습니다.', 'success');
-            } else if(amod === 'true'){
+            }/*  else if(amod === 'true'){
             	Swal.fire('성공', '수정되었습니다.', 'success');
-            }
+            } */
 	    });
 		
 		function searchAssets() { // 검색
@@ -391,24 +391,27 @@ input[type="checkbox"]:checked {
 	
 		function modalType(no,main,sub,ass){
 			if(no != null){
+				/* document.getElementById('assMain').disabled = false; */
 				document.getElementById('modalTitle').innerText = "자산 수정";
 				var room = document.getElementById('roomSub');
 		        var supplies = document.getElementById('supSub');
 		        
 				if (main === "비품") {
-					$("#room").selected = false;
-					$("#supplies").selected = true;
+					console.log("왜안됨");
+					document.getElementById('roomOption').selected = false;
+					document.getElementById('suppliesOption').selected = true;
 		            room.style.display = 'none';
 		            supplies.style.display = 'block';
 		        } else if(main === "시설"){
-		        	$("#supplies").selected = false;
-		            $("#room").selected = true;
+		        	console.log("왜안되냐고 ");
+		        	document.getElementById('suppliesOption').selected = false;
+		            document.getElementById('roomOption').selected = true;
 		            
 		            room.style.display = 'block';
 		            supplies.style.display = 'none';
 		        	
 		        }
-				$("#assMain").prop("disabled",true);
+				/* document.getElementById('assMain').disabled = true; */
 		        document.getElementById(sub).selected = true;
 		        document.getElementById('assName').value = ass;
 		     	// hidden input 추가
@@ -418,18 +421,20 @@ input[type="checkbox"]:checked {
 		        hiddenInput.setAttribute("value", no);
 		        document.getElementById("updateAss").appendChild(hiddenInput);
 		        
-		        document.getElementById("updateAss").setAttribute("action", "${contextPath}/booking/ass.mod");
+		        document.getElementById('updateAss').action= "${contextPath}/booking/ass.mod";
 		   
 			}else{
 				 // assName 요소의 값을 비우기
 		        document.getElementById('assName').value = '';
 		        // modalTitle 초기화
 		        document.getElementById('modalTitle').innerText = "자산 추가";
-		        // 선택된 옵션 초기화
-		        $("#assMain").prop("disabled", false);
-		        $("#room").selected = false;
-		        $("#supplies").selected = false;
-		        // roomSub와 supSub의 스타일 초기화
+		        document.getElementById("updateAss").action= " ";
+				   
+
+		        /* document.getElementById('assMain').disabled = false; */
+		        document.getElementById('roomOption').selected = false;
+		        document.getElementById('suppliesOption').selected = false;
+
 		        document.getElementById('roomSub').style.display = 'block';
 		        document.getElementById('supSub').style.display = 'none';
 		        // hidden input 제거
@@ -438,8 +443,8 @@ input[type="checkbox"]:checked {
 		            hiddenInput.parentNode.removeChild(hiddenInput);
 		        }
 		        // action 설정
-				document.getElementById('modalTitle').innerText = "자산 추가";
-				document.getElementById("updateAss").action = "${contextPath}/booking/ass.in";
+				document.getElementById('updateAss').action= "${contextPath}/booking/ass.in";
+				   
 			}
 		}
 		

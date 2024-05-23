@@ -307,10 +307,10 @@
 	 values
 	 	   (
 	 		'ASS_'|| LPAD(SEQ_ASSNO.NEXTVAL, 3, '0')
-	 	   ,#{ass.mainCode}
+	 	   ,#{mainCode}
 	 	   ,(select sub_code
 	 	   		from tb_common
-	 	   	   where main_code = #{ass.mainCode}	
+	 	   	   where main_code = #{mainCode}	
 	 	   	     and sub_name = #{ass.subName}
 	 	   	 )
 	 	   	,#{ass.assetsName}
@@ -324,12 +324,12 @@
 	update tb_assets
 	   set sub_code = (select sub_code
 			 	   		from tb_common
-			 	   	   where main_code = #{ass.mainCode}	
+			 	   	   where main_code = #{mainCode}	
 			 	   	     and sub_name = #{ass.subName}
 			 	   	   ),
 			assets_name = #{ass.assetsName},
 			mod_id = #{userId}
-	where assets_no = ${ ass.assetsNo}
+	where assets_no = #{ ass.assetsNo}
 			
 </update>
 
