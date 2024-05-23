@@ -92,7 +92,7 @@
                 <p style="padding-left: 5px;">휴지통</p>
               </a>
               <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y' }">
-	              <a href="#" class="nav-link">
+	              <a href="${contextPath }/board/createBoard.page" class="nav-link">
 	                <i class="far fa-circle nav-icon"></i>
 	                <p style="padding-left: 5px;">게시판 만들기</p>
 	              </a>

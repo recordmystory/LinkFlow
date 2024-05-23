@@ -36,11 +36,11 @@ public interface BookingService {
 	int selectSearchAssCount(Map<String,String> search);
 	List<AssetsDto> selectSearchAssetsList(PageInfoDto pi,Map<String,String> search); // 자산 리스트 
 	
-	int insertAssets(AssetsDto ass); // 자산 추가 
+	int insertAssets(Map<String,Object> mp); // 자산 추가 
 	
-	int modssets(AssetsDto ass); // 자산 수정 
+	int modAssets(Map<String,Object> mp); // 자산 수정 
 	
-	int delAssets(int assetsNo); // 자산 삭제
+	int delAssets(String assetsNo); // 자산 삭제
     
     
     int insertBooking(BookingDto bk); // 예약하기 

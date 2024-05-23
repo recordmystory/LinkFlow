@@ -80,50 +80,31 @@
                                                     </div>
                                                     <!-- /.card-header -->
                                                     <div class="card-body table-responsive p-0" style="height: 300px;">
-                                                        <table class="table table-head-fixed text-nowrap">
+                                                        <table class="table table-head-fixed text-nowrap" style="text-align:center;">
                                                             <thead>
                                                                 <tr>
-                                                                    <th style="width:50px; text-align: center;">부서</th>
+                                                                    <th style="width:50px;">부서</th>
                                                                     <th style="width:50px;">직급</th>
-                                                                    <th style="width:200px; text-align: center;">이름</th>
+                                                                    <th style="width:150px;">이름</th>
+                                                                    <th>쓰기여부</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="text-align: center;">조성모</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>개발1부서</td>
-                                                                    <td>대리</td>
-                                                                    <td style="width:200px; text-align: center;">이름</td>
-                                                                </tr>
+                                                            	<c:forEach var="u" items="${normalUserList}">
+										                                            	<tr>
+										                                              	<th>${u.deptTitle }</th>
+										                                                <th>${u.subName}</th>
+										                                                <th>${u.userName }</th>
+										                                                <c:choose>
+										                                                	<c:when test="${u.writeYN == 'Y'}">
+										                                                		<th><i class="fa-solid fa-check"></i></th>
+										                                                	</c:when>
+										                                                	<c:otherwise>
+										                                                		<th><i class="fa-solid fa-xmark"></i></th>
+										                                                	</c:otherwise>
+										                                                </c:choose>
+										                                            	</tr>
+										                                           </c:forEach>
                                                             </tbody>
                                                         </table>
                                                     </div>

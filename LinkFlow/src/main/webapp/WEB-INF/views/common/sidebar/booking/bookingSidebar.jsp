@@ -169,10 +169,11 @@
 										<p>비품 예약 관리</p>
 									</a>
 								</li>
+								
 							</ul>
 						</li>
 						<li class="nav-item">
-							<a href="${ contextPath }/booking/assets.list" class="nav-link middleName"> 
+							<a href="${ contextPath }/booking/ass.list" class="nav-link middleName"> 
 								<iclass="nav-icon far-2xl fa-solid fa-wallet"></i>
 								<p>자산 관리</p>
 							</a>
@@ -209,21 +210,7 @@
 				        	<select id="year" name="year" class="form-control" style="width:100px;" class="md-select"></select> &nbsp;
 				        	<select id="month" name="month" class="form-control" style="width:80px;" class="md-select"></select>&nbsp;
 				        	<select id="day" name="day" class="form-control" style="width:100px;" class="md-select"></select>&nbsp;
-		                   <!--  <select name="bk-year" id="bk-year" style="width:70px;" class="md-select">
-		                        <option value="">2024</option>
-		                        <option value="">2025</option>
-		                    </select> &nbsp;&nbsp;
-		                    <select name="bk-month" id="bk-month" class="md-select">
-		                        <option value="">04</option>
-		                        <option value="">5</option>
-		                    </select> &nbsp;&nbsp;
-		                    <select name="bk-date" id="bk-day" class="md-select">
-		                        <option value="">15</option>
-		                        <option value="">16</option>
-		                        <option value="">17</option>
-		                        <option value="">18</option>
-		                        <option value="">19</option>
-		                    </select> &nbsp;&nbsp; -->
+		                  
 		                </div>
 		                <span class="md-list">이용 시간</span>
 		                <div class="md-div">

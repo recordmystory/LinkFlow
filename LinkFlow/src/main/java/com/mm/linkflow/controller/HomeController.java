@@ -2,7 +2,6 @@ package com.mm.linkflow.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.service.service.AttemdamceService;
 import com.mm.linkflow.service.service.BoardService;
@@ -42,42 +41,38 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/main")
-	public String mainfoward(HttpServletRequest req) {
-		req.getSession().setAttribute("list", boardService.selectNewNoticeList());
-		req.getSession().setAttribute("male", mService.selectMale());
-		req.getSession().setAttribute("female", mService.selectFemale());
-
-		req.getSession().setAttribute("oneMonth", monthUtil.monthReturn(1));
-		req.getSession().setAttribute("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(1)));
-		req.getSession().setAttribute("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(1)));
-		req.getSession().setAttribute("oneMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(1)));
+	public ModelAndView mainfoward(ModelAndView mv) {
 		
-		req.getSession().setAttribute("twoMonth", monthUtil.monthReturn(2));
-		req.getSession().setAttribute("twoMonthMember", mService.selectAllMember(monthUtil.monthReturn(2)));
-		req.getSession().setAttribute("twoMonthHire", mService.selectHireMember(monthUtil.monthReturn(2)));
-		req.getSession().setAttribute("twoMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(2)));
-		
-		req.getSession().setAttribute("threeMonth", monthUtil.monthReturn(3));
-		req.getSession().setAttribute("threeMonthMember", mService.selectAllMember(monthUtil.monthReturn(3)));
-		req.getSession().setAttribute("threeMonthHire", mService.selectHireMember(monthUtil.monthReturn(3)));
-		req.getSession().setAttribute("threeMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(3)));
-		
-		req.getSession().setAttribute("fourMonth", monthUtil.monthReturn(4));
-		req.getSession().setAttribute("fourMonthMember", mService.selectAllMember(monthUtil.monthReturn(4)));
-		req.getSession().setAttribute("fourMonthHire", mService.selectHireMember(monthUtil.monthReturn(4)));
-		req.getSession().setAttribute("fourMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(4)));
-		
-		req.getSession().setAttribute("fiveMonth", monthUtil.monthReturn(5));
-		req.getSession().setAttribute("fiveMonthMember", mService.selectAllMember(monthUtil.monthReturn(5)));
-		req.getSession().setAttribute("fiveMonthHire", mService.selectHireMember(monthUtil.monthReturn(5)));
-		req.getSession().setAttribute("fiveMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(5)));
-		
-		req.getSession().setAttribute("sixMonth", monthUtil.monthReturn(6));
-		req.getSession().setAttribute("sixMonthMember", mService.selectAllMember(monthUtil.monthReturn(6)));
-		req.getSession().setAttribute("sixMonthHire", mService.selectHireMember(monthUtil.monthReturn(6)));
-		req.getSession().setAttribute("sixMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(6)));
+		mv.addObject("list", boardService.selectNewNoticeList())
+		  .addObject("male", mService.selectMale())
+		  .addObject("female", mService.selectFemale())
+		  .addObject("oneMonth", monthUtil.monthReturn(1))
+		  .addObject("oneMonthMember", mService.selectAllMember(monthUtil.monthReturn(1)))
+		  .addObject("oneMonthHire", mService.selectHireMember(monthUtil.monthReturn(1)))
+		  .addObject("oneMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(1)))
+		  .addObject("twoMonth", monthUtil.monthReturn(2))
+		  .addObject("twoMonthMember", mService.selectAllMember(monthUtil.monthReturn(2)))
+		  .addObject("twoMonthHire", mService.selectHireMember(monthUtil.monthReturn(2)))
+		  .addObject("twoMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(2)))
+		  .addObject("threeMonth", monthUtil.monthReturn(3))
+		  .addObject("threeMonthMember", mService.selectAllMember(monthUtil.monthReturn(3)))
+		  .addObject("threeMonthHire", mService.selectHireMember(monthUtil.monthReturn(3)))
+		  .addObject("threeMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(3)))
+		  .addObject("fourMonth", monthUtil.monthReturn(4))
+		  .addObject("fourMonthMember", mService.selectAllMember(monthUtil.monthReturn(4)))
+		  .addObject("fourMonthHire", mService.selectHireMember(monthUtil.monthReturn(4)))
+		  .addObject("fourMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(4)))
+		  .addObject("fiveMonth", monthUtil.monthReturn(5))
+		  .addObject("fiveMonthMember", mService.selectAllMember(monthUtil.monthReturn(5)))
+		  .addObject("fiveMonthHire", mService.selectHireMember(monthUtil.monthReturn(5)))
+		  .addObject("fiveMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(5)))
+		  .addObject("sixMonth", monthUtil.monthReturn(6))
+		  .addObject("sixMonthMember", mService.selectAllMember(monthUtil.monthReturn(6)))
+		  .addObject("sixMonthHire", mService.selectHireMember(monthUtil.monthReturn(6)))
+		  .addObject("sixMonthRetire", mService.selectRetireMember(monthUtil.monthReturn(6)))
+		  .setViewName("mainpage/main");
 	
-		return "mainpage/main";
+		return mv;
 	}
 	
 	

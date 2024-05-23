@@ -110,4 +110,17 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectSearchAssList",search,rowBounds);
 	}
 
+	public int delAssets(String assetsNo) {
+		return sql.update("bkMapper.deleteAssets",assetsNo);
+	}
+
+	public int insertAssets(Map<String,Object> mp) {
+		
+		return sql.insert("bkMapper.insertAssets",mp);
+	}
+
+	public int modAssets(Map<String, Object> mp) {
+		return sql.update("bkMapper.modifyAssets",mp);
+	}
+
 }

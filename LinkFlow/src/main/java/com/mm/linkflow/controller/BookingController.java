@@ -188,7 +188,7 @@ public class BookingController {
 		}
 	}
 	
-	@GetMapping("/assets.list") // 자산리스트 조회 
+	@GetMapping("/ass.list") // 자산리스트 조회 
 	public ModelAndView selectAssetsList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		int listCount = bkServiceImpl.selectAssCount();
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -202,7 +202,7 @@ public class BookingController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value="/ass.search", produces="applicstion/json; charset=utf-8") // 자산리스트 검색
+	@GetMapping(value="/ass.search", produces="application/json; charset=utf-8") // 자산리스트 검색
 	public Map<String,Object> selectSearchAssList(@RequestParam Map<String, String> search, @RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = bkServiceImpl.selectSearchAssCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -216,9 +216,51 @@ public class BookingController {
 		return map;
 	}
 	
-	@PostMapping("/insert.ass") // 자산 추가 
-	public void insertAssets() {
+	@PostMapping("/ass.in") // 자산 추가 
+	public String insertAssets(@RequestParam Map<String,String> assets, HttpSession session) {
+		AssetsDto ass = new AssetsDto().builder()
+									   .assetsName(assets.get("assetsName"))
+									   .mainCode(assets.get("mainCode"))
+									   .subName(assets.get("subName"))
+									   .build();
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("ass", ass);
+		mp.put("userId", userId);
+		int result = bkServiceImpl.modAssets(mp);
 		
+		if(result >0) {
+			return "redirect:/booking/ass.list?ain=true";
+		}else {
+			return "redirect:/booking/ass.list";
+		}
+		
+	}
+	@PostMapping("/ass.mod") // 자산 추가 
+	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
+		AssetsDto ass = new AssetsDto().builder()
+									   .assetsNo(assets.get("assetsNo"))
+									   .assetsName(assets.get("assetsName"))
+									   .mainCode(assets.get("mainCode"))
+									   .subName(assets.get("subName"))
+									   .build();
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("ass", ass);
+		mp.put("userId", userId);
+		int result = bkServiceImpl.insertAssets(mp);
+		
+		if(result >0) {
+			return "redirect:/booking/ass.list?amod=true";
+		}else {
+			return "redirect:/booking/ass.list";
+		}
+	}
+	
+	@ResponseBody // 자산 삭제
+	@GetMapping(value="/ass.del", produces="application/json; charset=utf-8")
+	public int deleteAssets(@RequestParam(value="assetsNo")String assetsNo) {
+		return bkServiceImpl.delAssets(assetsNo);
 	}
 	
 }

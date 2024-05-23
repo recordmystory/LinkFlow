@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.BoardAuthDto;
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -119,6 +120,22 @@ public class BoardDao {
 
 	public int restoreBoard(List<Integer> no) {
 		return sqlSession.update("boardMapper.restoreBoard", no);
+	}
+
+	public int createBoardCategory(BoardCategoryDto newCategory) {
+		return sqlSession.insert("boardMapper.createBoardCategory", newCategory);
+	}
+
+	public String selectCurrentBoardCategory() {
+		return sqlSession.selectOne("boardMapper.selectCurrentBoardCategory");
+	}
+
+	public int setBoardAuth(BoardAuthDto at) {
+		return sqlSession.insert("boardMapper.setBoardAuth", at);
+	}
+
+	public List<BoardAuthDto> selectNormalUser(String boardType) {
+		return sqlSession.selectList("boardMapper.selectNormalUser", boardType);
 	}
 	
 
