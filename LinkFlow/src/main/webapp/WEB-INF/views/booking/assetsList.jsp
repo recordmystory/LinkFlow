@@ -234,7 +234,8 @@ input[type="checkbox"]:checked {
 				                              <td>${ ass.subName }</td>
 				                              <td>${ ass.assetsName }</td>
 				                              <td>
-				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify">수정</span>
+				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify" 
+				                                  		onclick="modalType(1);">수정</span>
 				                                  |
 				                                  <span onclick="assDel(this);" data-assNo="${ass.assetsNo}">삭제</span>
 				                              </td>
@@ -250,40 +251,40 @@ input[type="checkbox"]:checked {
   				</div>
 
 				<div class="text-right">
-	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update" id="assInsert">자산 추가</button>
+	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update" id="assInsert" onclick="modalType(2);">자산 추가</button>
 	            </div>
 			</div>
              <!-- 자산 추가/수정 모달 -->
              <div class="modal fade" id="acc-update">
                  <div class="modal-dialog">
                      <div class="modal-content">
-                     <form id="updateAss" action=${contextPath }/booking/ass.list" method="post">
+                     <form id="updateAss" action="" method="post">
                          <div class="bk-modal" style="padding-top: 40px;">
-                             <h4 id="modalTitle">자산 추가 </h4>
+                             <h4 id="modalTitle"></h4>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="assMain" style="width: 80px;" onchange="changeMod();">
-                                 <option value="002-">시설</option>
-                                 <option value="003-">비품</option>
+                             <select id="assMain" style="width: 80px;" name="mainCode" onchange="changeMod();">
+                                 <option id="room" value="002-">시설</option>
+                                 <option id="supplies" value="003-">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
                              <select id="roomSub" style="width: 100px;">
-                                 <option value="회의실">회의실</option>
+                                 <option id="회의실" value="회의실">회의실</option>
                                  <!-- 비품일때 -->
                                  </select>
-                             <select id="supSub" style="width: 100px; display:none;">
-                                 <option value="노트북">노트북</option>
-                                 <option value="차량">차량</option>
-                                 <option value="키보드">키보드</option>
-                                 <option value="마우스">마우스</option>
+                             <select id="supSub" name="subName" style="width: 100px; display:none;">
+                                 <option id="노트북" value="노트북">노트북</option>
+                                 <option id="차량" value="차량">차량</option>
+                                 <option id="키보드" value="키보드">키보드</option>
+                                 <option id="마우스" value="마우스">마우스</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>상품명 </p>&nbsp;&nbsp;
-                             <input type="text">
+                             <input id="assName" type="text" name="assetsName">
                          </div>
  
                          <div class="modal-footer justify-content-between">
@@ -320,6 +321,7 @@ input[type="checkbox"]:checked {
 	<!-- /.card -->
 
 	<!-- /.content-wrapper -->
+	
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script>
 			
@@ -328,6 +330,13 @@ input[type="checkbox"]:checked {
 	            var selectedText = $(this).find('.spanCss').text();
 	            $('.resultArea').text(selectedText);
 	        });
+	        
+	        // URL에서 success 파라미터를 확인하고 알림 표시
+            const urlParams = new URLSearchParams(window.location.search);
+            const success = urlParams.get('success');
+            if (success === 'true') {
+                Swal.fire('성공', '자산이 성공적으로 추가되었습니다.', 'success');
+            } 
 	    });
 		
 		function searchAssets() { // 검색
@@ -366,7 +375,8 @@ input[type="checkbox"]:checked {
 		                       + "<td>" + list[i].subName + "</td>"
 		                       + "<td>" + list[i].assetsName + "</td>"
 		                       + "<td>"
-		                       + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\">수정</span>"
+		                       + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\" onclick=\"modalType("
+		                       + list[i].assetsNo +","+ list[i].mainName+","+ list[i].subName+","+ list[i].assetsName+ ")\">수정</span>"
 		                       + " | "
 		                       + "<span onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</span>"
 		                       + "</td></tr>";
@@ -376,10 +386,19 @@ input[type="checkbox"]:checked {
 		    });
 		}
 	
+		function modalType(num){
+			if(num == 1){
+				document.getElementById('modalTitle').innerText = "자산 수정";
+				document.getElementById("updateAss").action = "${contextPath}/booking/ass.mod";
+				
+			}else{
+				document.getElementById('modalTitle').innerText = "자산 추가";
+				document.getElementById("updateAss").action = "${contextPath}/booking/ass.in";
+			}
+		}
 		
 	    function assDel(assNo) { // 삭제 
 	    	let assetsNo= assNo.getAttribute('data-assNo');
-	    	console.log("assetsNo");
 	    
 	        Swal.fire({
 	            //   title: '글을 삭제하시겠습니까???',
@@ -394,14 +413,14 @@ input[type="checkbox"]:checked {
 	            if (result.value) {
 	                
 	            	$.ajax({
-	            		url:'${contextPath}/booking/del.ass',
+	            		url:'${contextPath}/booking/ass.del',
 	            		type:'get',
 						data:{
 							assetsNo:assetsNo
 						},success:function(result){
 							if(result > 0 )
-								alert("자산이 삭제되었습니다.");
-								window.location.replace('${contextPath}/booking/ass.list);
+								Swal.fire("자산이 삭제되었습니다.");
+								window.location.replace('${contextPath}/booking/ass.list');
 						}            		
 	            	})
 	            }
@@ -412,13 +431,16 @@ input[type="checkbox"]:checked {
 	        var selectedValue = document.getElementById('assMain').value;
 	        var room = document.getElementById('roomSub');
 	        var supplies = document.getElementById('supSub');
-
+	     
 	        if (selectedValue === '002-') {
 	            room.style.display = 'block';
 	            supplies.style.display = 'none';
+	            document.getElementById('roomSub').setAttribute('name', 'subName');
+	            
 	        } else if (selectedValue === '003-') {
 	            room.style.display = 'none';
 	            supplies.style.display = 'block';
+	            document.getElementById('supSub').setAttribute('name', 'subName');
 	        }
 	    }
 	    

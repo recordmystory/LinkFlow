@@ -292,4 +292,31 @@
 	where assets_No = #{assetsNo}
 </update>
 
+<insert id="insertAssets">
+	insert
+	  into tb_assets
+	       (
+	        assets_no
+	       ,main_code
+	       ,sub_code
+	       ,assets_name
+	       ,enr_id
+	       ,mod_id
+	       )
+	 values
+	 	   (
+	 		seq_assno.nextval
+	 	   ,#{ass.mainCode}
+	 	   ,(select sub_code
+	 	   		from tb_common
+	 	   	   where main_code = #{ass.mainCode}	
+	 	   	     and sub_name = #{ass.subName}
+	 	   	 )
+	 	   	,#{ass.assetsName}
+	 	   	,#{userId}
+	 	   	,#{userId}
+	 	   )
+	 		
+</insert>
+
 </mapper>
