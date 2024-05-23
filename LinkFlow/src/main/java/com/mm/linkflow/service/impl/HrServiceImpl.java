@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -125,6 +126,12 @@ public class HrServiceImpl implements HrService {
 	@Override
 	public int checkCode(String deptCode) {
 		return hDao.checkCode(deptCode);
+	}
+
+	//캘린더추가
+	@Override
+	public int insertCal(Map<String, Object> cal) {
+		return hDao.insertCal(cal);
 	}
 
 	

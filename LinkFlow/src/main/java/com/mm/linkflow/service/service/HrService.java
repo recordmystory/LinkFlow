@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +52,8 @@ public interface HrService {
 	
 	// JS트리용 조직도 조회하는 서비스 -구성모
 	List<DeptDto> selectApprLine();
+	
+	//캘린더 추가 -이현아
+	int insertCal(Map<String, Object> cal);
 	
 }

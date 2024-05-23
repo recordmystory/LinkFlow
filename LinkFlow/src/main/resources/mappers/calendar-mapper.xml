@@ -165,5 +165,45 @@
 	 WHERE SCH_NO = ${schNo}
 	 AND DEL_YN = 'Y'
 	</delete>
-	 
+	
+	
+	<!-- 캘린더 insert *************************************** -->
+	<insert id="insertCal">
+
+		INSERT INTO TB_CALENDAR
+		    (
+		        CAL_NO,
+		        REG_ID,
+		        DEPT_CODE,
+		        CAL_SUB_CODE,
+		        REG_DATE,
+		        MOD_DATE,
+		        MOD_ID,
+		        DEL_YN,
+		        CAL_COLOR
+		    )
+		    SELECT 
+		        SEQ_CALNO.nextval,
+		        #{userId},
+		        #{deptCode},
+		        sub.CAL_SUB_CODE,
+		        SYSDATE,
+		        SYSDATE,
+		        #{userId},
+		        'N',
+		        CASE
+		            WHEN sub.CAL_SUB_CODE = '01' THEN '#a82626c3'
+		            WHEN sub.CAL_SUB_CODE = '02' THEN '#104fa1c3'
+		            WHEN sub.CAL_SUB_CODE = '03' THEN '#358657c3'
+		            ELSE null
+		        END
+		    FROM
+		        (SELECT '01' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '02' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '03' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '04' AS CAL_SUB_CODE FROM DUAL) sub	 
+	  </insert>
 </mapper>

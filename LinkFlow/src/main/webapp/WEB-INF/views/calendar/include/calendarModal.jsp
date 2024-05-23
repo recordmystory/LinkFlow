@@ -184,7 +184,7 @@
                   <div>
                     <div class="schDetailModal_content justify-content-end mx-1">
                       중요일정&nbsp;
-                      <input type="checkbox" class="weste-modal" id="schImport" name="schTitle" style="pointer-events: none;">
+                      <input type="checkbox" class="weste-modal" id="schImport" style="pointer-events: none;">
                     </div>
                    </div>
                    <div class="schDetailModal_content font-weight-bolder">
@@ -223,7 +223,6 @@
                 </div>
                 <input type="hidden" name="schNo" id="schNo">
             <div class="modal-footer justify-content-center">
-                
                 <button type="button" class="blue-button btn schDetailModal_blueBtn" data-toggle="modal" data-target="#schUpdateModal">수정</button>
 								<button type="button" class="gray-button btn schDetailModal_grayBtn" data-toggle="modal" data-target="#detailBtn">삭제</button>
             </div>
@@ -320,7 +319,9 @@
 		                <form id="scheduleForm">
 		                    <!-- 일정 제목 -->
 		                    <div class="modal-header justify-content-center">
-		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" placeholder="제목을 입력해주세요">		                    		
+		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" placeholder="제목을 입력해주세요" required >
+		                    		<div id="output-box"></div>
+		                    		
 		                    </div>
 		                    <!-- 중요일정 체크박스 -->
 		                    <div class="schDetailModal_content justify-content-end mx-1">
@@ -347,10 +348,13 @@
 												    <label for="startDate" class="col-form-label" style="width:32px;">일정 </label>
 												    <div class="dateInput text-sm">
 												        <label for="startDate" class="col-form-label" >시작</label>
-												        <input type="datetime-local" class="form-select startDate"  name="startDate" style="width: 170px; text-align: center;"><br>
+												        <input type="datetime-local" class="form-select" name="startDate" style="width: 170px; text-align: center;" required><br>
+												        <div id="output-box"></div>
 												        
 												        <label for="endDate" class="col-form-label">종료</label>
-												        <input type="datetime-local" class="form-select endDate" name="endDate" style="width: 170px; text-align: center;">												        
+												        <input type="datetime-local" class="form-select" name="endDate" style="width: 170px; text-align: center;" required>
+												        <div id="output-box"></div>
+												        
 												    </div>
 												</div>
 		                    <!-- 장소 -->
@@ -372,7 +376,8 @@
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
-		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" style="margin-left:67px;"></textarea>
+		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" style="margin-left:67px; " required ></textarea>
+		                        <div id="output-box"></div>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
                      		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
@@ -400,7 +405,7 @@
 		                <form id="scheduleForm">
 		                    <!-- 일정 제목 -->
 		                    <div class="modal-header justify-content-center">
-		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" id="schTitle" placeholder="제목을 입력해주세요">
+		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" id="schTitle" placeholder="제목을 입력해주세요" required >
 		                    </div>
 		                    <!-- 중요일정 체크박스 -->
 		                    <div class="schDetailModal_content justify-content-end mx-1">
@@ -412,14 +417,13 @@
 		                        <label for="calendarNo" class="col-form-label">캘린더</label>
 		                        <div class="form-group mt-1">
 		                           <select class="form-select" name="schCalSubCode">
-                                <option value="03">개인 캘린더</option>
+                                <option value="03" selected>개인 캘린더</option>
                                 <c:if test="${loginUser.spRight == 'Y'}">
                                     <option value="02">부서 캘린더</option>
                                 </c:if>
                                 <c:if test="${loginUser.boardRight == 'Y'}">
                                     <option value="01">전사 캘린더</option>
                                 </c:if>
-                                    
                             	</select>
 		                        </div>    
 		                    </div>
@@ -428,9 +432,9 @@
 												    <label for="startDate" class="col-form-label" style="width:32px;">일정 </label>
 												    <div class="dateInput text-sm">
 												        <label for="startDate" class="col-form-label" >시작</label>
-												        <input type="datetime-local" class="form-select" id="startDate12" name="startDate" id="startDate" style="width: 170px; text-align: center;"><br>
+												        <input type="datetime-local" class="form-select" name="startDate" id="startDate" style="width: 170px; text-align: center;" required><br>
 												        <label for="endDate" class="col-form-label">종료</label>
-												        <input type="datetime-local" class="form-select" id="endDate" name="endDate" id="endDate" style="width: 170px; text-align: center;">
+												        <input type="datetime-local" class="form-select" name="endDate" id="endDate" style="width: 170px; text-align: center;" required>
 												    </div>
 												</div>
 		                    <!-- 장소 -->
@@ -452,7 +456,7 @@
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
-		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" id="schContent" style="margin-left:67px;"></textarea>
+		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" id="schContent" style="margin-left:67px; " required ></textarea>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
                      		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
@@ -488,14 +492,14 @@
                     <form action="xxxxxxx" method="post">
                      <div class="searchUser">
                        
-	                     <div class="form-check form-check-inline text-align-center ml-5">
-	                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-	                         <label class="form-check-label" for="inlineRadio1">이름, 아이디</label>
-	                     </div>
-	                     <div class="form-check form-check-inline">
-	                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-	                         <label class="form-check-label" for="inlineRadio2">조직</label>
-	                     </div>
+                      <div class="form-check form-check-inline text-align-center ml-5">
+                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                         <label class="form-check-label" for="inlineRadio1">이름, 아이디</label>
+                     </div>
+                     <div class="form-check form-check-inline">
+                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                         <label class="form-check-label" for="inlineRadio2">조직</label>
+                     </div>
 
                        <div class="col-md-3" style="margin-top: 15px;">
                          <div class="form-group">
@@ -509,7 +513,6 @@
                            </div>
                          </div>
                        </div>
-                      </div>
                      </form>
 
                      </div><!--searchUser 끝-->
@@ -576,7 +579,7 @@
                           
                          
                          </div>
-                      </div>
+                       </div>
                        
                        <div class="btnArea">
                         <div class="downArea" >
@@ -589,15 +592,15 @@
                        
 
                        <div class="card card-info mr-3" style="width: 180px; height: 200px; margin-top: 100px;">
-	                       <div class="card-header">
-	                          <h5 class="card-title">조회 권한</h5>
-	                          
+                        <div class="card-header">
+                          <h5 class="card-title">조회 권한</h5>
+                          
                          </div>
-	                     	 <div class="card-body referenceArea overflow-auto">
-	
-                      	 </div>
+                         <div class="card-body referenceArea overflow-auto">
+
+                         </div>
                        </div>
-                      </div>
+                       </div>
 
 
                      </div>
@@ -606,10 +609,10 @@
             
               </div>
             </div>
-	            <div class="modal-footer justify-content-between">
-	              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	              <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveData">설정하기</button>
-	            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveData">설정하기</button>
+            </div>
           </div>
           <!-- /.modal-content -->
         </div>
@@ -776,7 +779,6 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
-     </div>
     <!-- /.modal -->
     <!--공유 캘린더 모달 end-->
     
@@ -796,7 +798,7 @@
                         </div>
                         <div class="schDetailModal_content font-weight-bolder">
                             <label for="recipient-name" class="col-form-label">캘린더</label>
-                            <div name="schCalSubCode" style="padding-right: 30px;"></div> 
+                            <p style="padding-right: 30px;">부서 캘린더</p> 
                         </div>
                         <div class="schDetailModal_content"> 
                           <label for="recipient-name" class="col-form-label">일정</label> 
@@ -829,16 +831,13 @@
                      </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-						        <!-- 기본 버튼 표시 -->
-						        <button type="button" class="btn blue-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;" id="recoveryButton">복구</button>
-						        <button type="button" class="btn gray-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;" id="deleteButton">삭제</button>					 
+                    <button type="button" class="btn blue-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">복구</button>
+                    <button type="button" class="btn gray-button" data-bs-target="#detailBtn" data-bs-toggle="modal" style="color: white;">삭제</button>
                 </div>
             </div>
           </div>
         </div>
         <!--일정 상세 정보 모달 end-->
-        
-        
         <!--상세 정보 모달_버튼 모달 start-->
         <div class="modal fade" id="detailBtn" aria-hidden="true" aria-labelledby="detailBtnLabel" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -1160,18 +1159,20 @@ $('#kt_docs_jstree_basic').jstree({
  //캘린더 일정등록 ajax
 			//일정등록 클릭시 모달 띄우기
 			 // 로그인 확인
-			 var mod = '${loginUser.userId}'; 
-        $('input[name="modId"]').val(mod); 
+	    var login = '${loginUser.userId}';
 	
 	    // 일정 등록 버튼 클릭 시 모달 띄우기
-	     $('.schInsertModalBtn').click(function() {
-		      if (mod === '') {
-		            alert("일정을 등록하려면 로그인을 해 주세요.");
-		            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
-		    	} else {
-		            $('#schInsertModal').modal('show');
-		   		}
-	     });
+	    if (login === '') {
+	        $('.schInsertModalBtn').click(function() {
+	            alert("일정을 등록하려면 로그인을 해 주세요.");
+	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
+	        });
+	    } else {
+	        $('.schInsertModalBtn').click(function() {
+	            $('#schInsertModal').modal('show');
+	            $('body').addClass('modal-open'); 
+	        });
+	    }
 
 		  // 중요일정 체크박스 클릭 시 조건
 	    $('#schImportInsertBtn').click(function() {
@@ -1184,10 +1185,21 @@ $('#kt_docs_jstree_basic').jstree({
 	        $('input[name="notifyYn"]').val(notify);
 	    });
 	    
-      
+	    var mod = '${loginUser.userId}'; 
+        $('input[name="modId"]').val(mod); 
+	    
+       
+
     	//등록 ajax
    		 $('#schInsertButton').click(function() {
-   			 
+   		  // 날짜 비교 시간까지 비교
+   		  var start = $('input[name="startDate"]').val();
+        var end = $('input[name="endDate"]').val();
+        if (start > end) {
+            alert("종료일이 시작일보다 작을 수 없습니다.");
+            return; 
+        }
+   	    	
         $.ajax({
             type: "POST",
             url: "${contextPath}/calendar/regist.do", // 일정 등록 컨트롤러의 엔드포인트
@@ -1198,31 +1210,13 @@ $('#kt_docs_jstree_basic').jstree({
                 console.log("일정 등록이 성공했습니다.");
                 alert("일정 등록이 성공했습니다."); 
                 $("#schInsertModal").modal("hide");
-                /* 
-                var eventData = {
-	           				title: $('input[name="schTitle"]').val(), //풀캠 필수속성
-	                   start: $('input[name="startDate"]').val(), 
-	                   end: $('input[name="endDate"]').val(), 
-	                   color: $('input[name="calColor"]').val(), 
-	                   extendedProps: { // 사용자 정의 속성
-	                       schTitle: $('input[name="schTitle"]').val(),
-	                       schImport: $('input[name="schImport"]').val(),
-	                       schCalSubCode: $('input[name="schCalSubCode"]').val(),
-	                       address: $('input[name="address"]').val(),
-	                       notifyYn: $('input[name="notifyYn"]').val(),
-	                       schContent: $('input[name="schContent"]').val(),
-	
-	                   }
-	          		 }; */
-	          
-	          	 calendar.addEvent(eventData);
-            
-
+                $('#scheduleForm')[0].reset(); //초기화
             	}
             },
             error: function(result) {
                 // 요청이 실패했을 때 
                 console.error("일정 등록에 실패했습니다.");
+                alert("일정 등록에 실패했습니다.");
 
             }
         });
@@ -1240,25 +1234,8 @@ $('#kt_docs_jstree_basic').jstree({
     	}); 
 
 	});
-	
-	//등록모달 required 조건처리
-	document.querySelector("#schInsertButton").addEventListener(
-	  "click",
-	  function (event) {
-		  if($('.schInsertModalTitle').val().trim() === ''){
-	    	alert("제목을 입력하세요");
-		  }else if($('.startDate').val().trim() === ''){
-		    alert("시작일을 입력하세요");
-		  }else if($('.endDate').val().trim() === ''){
-		    alert("종료일을 입력하세요");
-		  }
-	    event.preventDefault();
-	  },
-	  false,//false는 이벤트 버블링을 사용하고, true는 캡처링을 사용 ~
-	);
  
-// 캘린더 등록하기 모달(schInsertModal)end***********************************************
-
+    
  
   //네이버 지도 api start
     selectMapList();
