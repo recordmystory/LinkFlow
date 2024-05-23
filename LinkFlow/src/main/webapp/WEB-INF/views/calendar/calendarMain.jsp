@@ -49,7 +49,8 @@
       font-weight: bolder; 
       text-align: end;
       margin-bottom: 5px;
-    }
+			pointer-events: none;   
+	 }
 
     /*휴지통 스타일*/
     
@@ -80,7 +81,12 @@
     .schDetailModal_content > form {
       margin:auto;
    }
-
+	
+	/*캘인더메인에서 일반 일정 커서 포인더 설정*/
+	.fc-event {
+ 	   cursor: pointer;
+	}
+	
    </style>
 
     
@@ -147,7 +153,7 @@
             dayMaxEvents: true, 
             initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동할 수 있음
-            editable: true, // 이벤트를 드래그하여 이동할 수 있음
+            editable: false, // 이벤트를 드래그하여 이동할 수 있음(막기)
             selectable: true, // 날짜를 클릭하여 이벤트를 생성할 수 있음
             //more 갯수 제한
             views: {
@@ -156,32 +162,35 @@
                 
                 }
             },
-            eventOrder: [//03 02 01 순으로 해야함
-                'extendedProps.schCalSubCode',
-                '-start', // 시작 날짜 역순으로 정렬
-                '-duration' // 일정 기간 역순으로 정렬
-            ],
-
-		        /* eventDidMount: function(info) {
-		             if (info.event.extendedProps.schImport === 'Y') {
-		                 info.el.classList.add('important-event');
-		             }  
-		         },*/
-             eventClick: function(info) { //캘린더 메인에 있는 일정 클릭시에만 (나머지는 모달 버튼에 이벤트 걸어야함)
-		            var event = info.event; 
-		 						
-             	if(event.url === ''){ //공휴일만 url 값이 있음. 공휴일 눌렀을 시 상세일정 실행 막기
-		            //상세일정   
-		            schDetail(event);
-             	}
-		            // 일정 수정 폼 상세일정의 내용 끌어오기
-		            schUpdateForm(event);
-		            
-		            //공휴일 클릭시 링크 이동 막기(기본 이벤트 막기)
-	              info.jsEvent.preventDefault();
+            //전사 부서 개인 일정 순으로 정렬
+            eventOrder: function(a, b, info) {
+               var order = ['important-event','01', '02', '03']; //extendedProps.schCalSubCode.val()
+               return order.indexOf(a.extendedProps.schCalSubCode) - order.indexOf(b.extendedProps.schCalSubCode);
+          	},
+					
+      			eventDidMount: function(info) {
+              if (info.event.extendedProps.schImport === 'Y') {
+                 info.el.classList.add('important-event');
+           	  	
+              }  
+	         	},
+            eventClick: function(info) { //캘린더 메인에 있는 일정 클릭시에만 (나머지는 모달 버튼에 이벤트 걸어야함)
+	            var event = info.event; 
+	 						
+            	if(event.url === ''){ //공휴일만 url 값이 있음. 공휴일 눌렀을 시 상세일정 실행 막기
+	            //상세일정   
+	            $('body').addClass('overflow-hidden'); 
+	            schDetail(event);
+            	}
+	            // 일정 수정 폼 상세일정의 내용 끌어오기
+	            schUpdateForm(event);
+	            
+	            //공휴일 클릭시 링크 이동 막기(기본 이벤트 막기)
+              info.jsEvent.preventDefault();
 
 		        },
             eventSources: [
+            	
               //공휴일 
                 {
                     googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
@@ -189,7 +198,6 @@
                     //borderColor: 'black'
                     classNames: 'holiday',
                     textColor: 'rgba(190, 0, 50, 0.5)',
-                    
                     constraint: 'availableForMeeting' //일정 옮기지 못하게 제약조건 걸 때 필요
                 }
             ]
@@ -254,6 +262,7 @@
         $('#schNo').val(extendedProps.schNo); //삭제에서 쓰기위해 저장
 		    $('#schDetailTitle').text(event.title);
 		    $('#schImport').val(extendedProps.schImport);
+		    $('#schCalSubCode').val(extendedProps.schCalSubCode);
 		
 		    var startDateChange = new Date(event.start);
 		    var startDate = startDateChange.toLocaleString('ko-KR', {
@@ -312,10 +321,34 @@
 		        console.log("schNo:", extendedProps.schNo);
 		    });
 		}
-    
+		
+		//수정 모달 required 조건처리
+		document.querySelector("#schUpdateButton").addEventListener(
+		  "click",
+		  function (event) {
+			  if($('#schTitle').val().trim() === ''){
+		    	alert("제목을 입력하세요");
+			  }else if($('#startDate').val().trim() === ''){
+			    alert("시작일을 입력하세요");
+			  }else if($('#endDate').val().trim() === ''){
+			    alert("종료일을 입력하세요");
+			  }
+		    event.preventDefault();
+		  },
+		  false,//false는 이벤트 버블링을 사용하고, true는 캡처링을 사용 ~
+		);
+		
     //일정 삭제, 수정, 캘린더 체크박스 
 		  $(document).ready(function() {
-    // 일정 수정하기 모달에서 저장 버튼 클릭 시  ***************
+	  	  //일정 수정하기 모달 클릭시 more과 곂치지않도록 조정
+        $('#schDetailModal').on('show.bs.modal', function() {
+        	 $('.fc-popover').css({
+        	        'z-index': '-1',
+        	        'position': 'relative'
+        	    });
+	  	  });
+			  
+        // 일정 수정하기 모달에서 저장 버튼 클릭 시  ***************
 			  $('#schUpdateButton').click(function() {
             var data = {
                 calNo: $('#schUpdateModal input[name="calNo"]').val(),
@@ -343,13 +376,30 @@
                         alert("일정 수정 성공.");
                         $('#schUpdateModal').modal('hide');
                         $('#schDetailModal').modal('hide');
-                        calendar.refetchEvents();
-                    } else {
-                        alert("일정 수정 실패.");
-                    }
+                       
+                       /*  var eventData = {
+    	           				title: $('input[name="schTitle"]').val(), //풀캠 필수속성
+   	                    start: $('input[name="startDate"]').val(), 
+   	                    end: $('input[name="endDate"]').val(), 
+   	                    color: $('input[name="calColor"]').val(), 
+   	                    extendedProps: { // 사용자 정의 속성
+   	                       schTitle: $('input[name="schTitle"]').val(),
+   	                       schImport: $('input[name="schImport"]').val(),
+   	                       schCalSubCode: $('input[name="schCalSubCode"]').val(),
+   	                       address: $('input[name="address"]').val(),
+   	                       notifyYn: $('input[name="notifyYn"]').val(),
+   	                       schContent: $('input[name="schContent"]').val(),
+   	
+    	                   }
+    	          		 }; */
+    	          
+    	          	 calendar.addEvent(eventData);
+
+
+                	}
                 },
                 error: function() {
-                    alert("일정 수정 실패.");
+                    console.log("일정 수정 실패.");
                 }
             });
         });

@@ -11,12 +11,12 @@
 <style>
 
     /*휴지통 상세 정보 모달 스타일*/
-    .schDetailModal_content > p, .search {
-      margin:auto;
-   }
+  .schDetailModal_content > p, .search {
+   margin:auto;
+  }
    
-.table-striped tbody tr {
-    background-color: white !important;
+	.table-striped tbody tr {
+	 background-color: white !important;
 
 
 </style>
@@ -34,7 +34,7 @@
             <div class="LinkFlowMainContent">
               <!-- Content Header (Page header) -->
               <section class="content-header">
-                <p style="text-align: end;">삭제 일정은  <spen style="color: red;">30</spen>일 후  영구  삭제됩니다.</p>
+                <p style="text-align: end;">삭제 일정은 <spen style="color: red;">30</spen>일 후  영구  삭제됩니다.</p>
                 <div class="row mb-2">
                   <div class="col-sm-6">
                       <h1 class="m-0 mx-4">휴지통</h1>
@@ -72,7 +72,7 @@
                         <tbody>
                           <tr>
                             <td>1</td>
-                            <td><a href="#" class="open-modal" data-bs-toggle="modal" data-bs-target="#schDetailModal">점심 약속</a></td>
+                            <td><a href="#" class="open-modal" data-bs-toggle="modal" data-bs-target="#schDetailModal">${schedule.schTitle}</a></td>
                             <td>2024/04/11</td>
                             <td>개인 캘린더</td>
                             <td>
@@ -111,15 +111,13 @@
                   <!-- /.card -->
                 </div>
                 <!-- /.col -->
-              </div>
-              <!-- /.row -->
-            </div>
             <!-- /.container-fluid -->
           </section>
           <!-- /.content -->
         </div>
       <!-- /.content-wrapper -->
-       
+     </div>
+   </div>
        <jsp:include page="/WEB-INF/views/calendar/include/calendarModal.jsp"/>
 
         
