@@ -74,6 +74,10 @@ public class HRcontroller {
 		            switch (rights[i]) {
 		                case "1":
 		                    m.setSuperRight("Y");
+		                    m.setHrRight("Y");
+		                    m.setSpRight("Y");
+		                    m.setBoardRight("Y");
+		                    m.setDeptRight("Y");
 		                    break;
 		                case "2":
 		                    m.setHrRight("Y");
@@ -140,6 +144,10 @@ public class HRcontroller {
 	            switch (rights[i]) {
 	                case "1":
 	                    m.setSuperRight("Y");
+	                    m.setHrRight("Y");
+	                    m.setSpRight("Y");
+	                    m.setBoardRight("Y");
+	                    m.setDeptRight("Y");
 	                    break;
 	                case "2":
 	                    m.setHrRight("Y");
