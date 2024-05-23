@@ -421,20 +421,11 @@
 
                   <form action="xxxxxxx" method="post">
                    <div class="searchUser">
-                     
-                     <div class="form-check form-check-inline">
-                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                       <label class="form-check-label" for="inlineRadio1">이름, 아이디</label>
-                   </div>
-                   <div class="form-check form-check-inline">
-                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                       <label class="form-check-label" for="inlineRadio2">조직</label>
-                   </div>
 
                      <div class="col-md-3" style="margin-top: 15px;">
                        <div class="form-group">
-                         <div class="input-group">
-                             <input type="search" class="form-control" placeholder="사원명을 입력하세요" value="" name="useName">
+                         <div class="input-group" style="width: 800px;">
+                             <input type="search" class="form-control" id="searchInput" placeholder="사원명이나 조직명으로 검색하세요" value="" name="useName">
                              <div class="input-group-append">
                                  <button type="submit" class="btn  btn-primary">
                                      <i class="fa fa-search"></i>
@@ -719,7 +710,12 @@
                 "icon" : "fa-solid fa-person"
             }
         },
-        "plugins": ["types"]
+        "plugins": ["types", "search"],
+        "search" : {
+        	"show_only_matches" : true,
+        	"show_only_matches_children" : true,
+        }
+        
     }).on('select_node.jstree', function (e, data) {
         var node = data.node;
         
@@ -738,136 +734,189 @@
             }
         }
     });
+		
+   var to = false;
+   $('#searchInput').keyup(function () {
+       if(to) { clearTimeout(to); }
+       to = setTimeout(function () {
+           var v = $('#searchInput').val();
+           $('#kt_docs_jstree_basic').jstree(true).search(v);
+       }, 250);
+   });
+          
+  document.querySelector('.approvalIn').addEventListener('click', function() {
+        var nameAreas = document.querySelectorAll('.NameArea');
+        var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
+        var maxApprovalCount = 2;
+
+        approvalHiddenValues = [];
+        
+        if (existingApprovalCount >= maxApprovalCount) return;
+
+        var currentIndex = existingApprovalCount + 1;
+				
+        nameAreas.forEach(function(nameArea) {
+            var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+            if (checkbox && existingApprovalCount < maxApprovalCount) {
+                var nameValue = nameArea.textContent.trim();
+								
+                var hiddenInputValue = nameArea.querySelector('input[type="text"]').value;
+                approvalHiddenValues.push(hiddenInputValue);
+            
+                var existingElement = document.querySelector('.approvalArea .approvalName' + currentIndex);
+                if (existingElement) return;
+
+                var className = 'approvalName' + currentIndex;
+
+                var newElement = document.createElement('div');
+                newElement.className = className;
+                newElement.textContent = nameValue;
+                newElement.setAttribute('data-hidden-value', hiddenInputValue);
+
+                document.querySelector('.approvalArea').appendChild(newElement);
+
+                nameArea.remove();
+
+                existingApprovalCount++;
+                currentIndex++;
+            }
+        });
+        
+        console.log('approvalHiddenValues:', approvalHiddenValues);
+    });
+
+  document.querySelector('.approvalOut').addEventListener('click', function() {
+      var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
+      var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+
+      moveApprovalNames(approvalNames1);
+      moveApprovalNames(approvalNames2);
+  });
+
+  function moveApprovalNames(approvalNames) {
+      approvalNames.forEach(function(approvalName) {
+          var nameText = approvalName.textContent.trim();
+
+          var resultName = document.createElement('div');
+          resultName.className = 'NameArea';
+          resultName.textContent = nameText;
+
+          var newCheckbox = document.createElement('input');
+          newCheckbox.type = 'checkbox';
+          resultName.appendChild(newCheckbox);
+
+          document.querySelector('.resultNameArea').appendChild(resultName);
+
+          approvalName.remove();
+      });
+  }
+
+  
+
+document.querySelector('.referenceIn').addEventListener('click', function() {
+	var nameAreas = document.querySelectorAll('.NameArea');
+	referenceHiddenValues = [];
+	
+
+	nameAreas.forEach(function(nameArea) {
+	    var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+	    if (checkbox) {
+	        var nameValue = nameArea.textContent.trim();
+          var hiddenInputValue = nameArea.querySelector('input[type="text"]').value;
+          referenceHiddenValues.push(hiddenInputValue);
+
+	       
+	        var existingElement = document.querySelector('.referenceArea .referenceName');
+	        if (existingElement && existingElement.textContent.trim() === nameValue) {
+	            return; 
+	        }
+	
+	        var referenceName = document.createElement('div');
+	        referenceName.className = 'referenceName';
+	        referenceName.textContent = nameValue;
+	        referenceName.setAttribute('data-hidden-value', hiddenInputValue);
+	        
+	        document.querySelector('.referenceArea').appendChild(referenceName);
+	        
+	        nameArea.remove();
+	        }
+	    });
+	
+	 		console.log('referenceHiddenValues:', referenceHiddenValues);
+});
+
+document.querySelector('.referenceOut').addEventListener('click', function() {
+      
+      var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+
+      
+      approvalNames.forEach(function(referenceName) {
+          
+          var nameValue = referenceName.textContent.trim();
+          
+          var resultNameArea = document.querySelector('.resultNameArea');
+         
+          var nameArea = document.createElement('div');
+          nameArea.className = 'NameArea';
+          nameArea.textContent = nameValue;
+          
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          nameArea.appendChild(checkbox);
+          
+          resultNameArea.appendChild(nameArea);
+          
+          referenceName.remove();
+      });
+  });
+
+  document.querySelector('.approvalUpBtn').addEventListener('click', function() {
+      var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+      var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+      if (approvalName1 && approvalName2) {
+          var tempText = approvalName1.textContent;
+          approvalName1.textContent = approvalName2.textContent;
+          approvalName2.textContent = tempText;
+      }
+  });
+  document.querySelector('.approvalDownBtn').addEventListener('click', function() {
+      var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+      var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+      if (approvalName1 && approvalName2) {
+          var tempText = approvalName1.textContent;
+          approvalName1.textContent = approvalName2.textContent;
+          approvalName2.textContent = tempText;
+      }
+  });
+  document.getElementById('saveData').addEventListener('click', function() {
+    var approvalName1Element = document.querySelector('.approvalName1');
+    var approvalName2Element = document.querySelector('.approvalName2');
 
 
-          document.querySelector('.approvalIn').addEventListener('click', function() {
-        	    var nameAreas = document.querySelectorAll('.NameArea');
-        	    var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
-        	    var maxApprovalCount = 2;
+    var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
+    var frtApprovalElement = document.querySelector('.frtApproval');
+    frtApprovalElement.textContent = approvalName1Text;
 
-        	    var currentIndex = existingApprovalCount + 1;
+    
+    var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
+    var scdApprovalElement = document.querySelector('.scdApproval');
+    scdApprovalElement.textContent = approvalName2Text;
 
-        	    nameAreas.forEach(function(nameArea) {
-        	        if (existingApprovalCount >= maxApprovalCount) return;
+    var referenceNameElements = document.querySelectorAll('.referenceName');
+    var textToInsert = '';
 
-        	        var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-        	        if (checkbox) {
-        	            
-        	            var nameValue = nameArea.innerHTML.trim();
+    referenceNameElements.forEach(function(referenceNameElement, index) {
+        var text = referenceNameElement.textContent.trim();
+        if (index > 0) {
+            textToInsert += ', ';
+        }
+        textToInsert += text;
+    });
 
-        	            if (currentIndex > maxApprovalCount) return;
-
-        	            var className = 'approvalName' + currentIndex;
-
-        	            var newElement = document.createElement('div');
-        	            newElement.className = className;
-        	            newElement.innerHTML = nameValue; 
-
-        	            document.querySelector('.approvalArea').appendChild(newElement);
-
-        	            nameArea.remove();
-
-        	            existingApprovalCount++;
-        	            currentIndex++;
-        	        }
-        	    });
-        	});
-
-        	document.querySelector('.approvalOut').addEventListener('click', function() {
-        	    var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
-        	    var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
-
-        	    moveApprovalNames(approvalNames1);
-        	    moveApprovalNames(approvalNames2);
-        	});
-
-        	function moveApprovalNames(approvalNames) {
-        	    approvalNames.forEach(function(approvalName) {
-        	        var checkbox = approvalName.querySelector('input[type="checkbox"]:checked');
-        	        if (checkbox) {
-        	            var nameText = approvalName.innerHTML.trim();
-
-        	            var resultName = document.createElement('div');
-        	            resultName.className = 'NameArea';
-        	            resultName.innerHTML = nameText;
-
-        	            var newCheckbox = document.createElement('input');
-        	           
-
-        	            document.querySelector('.resultNameArea').appendChild(resultName);
-
-        	            approvalName.remove();
-        	        }
-        	    });
-        	}
-
-        	        
-
-   	        document.querySelector('.referenceIn').addEventListener('click', function() {
-   	          
-   	          var nameAreas = document.querySelectorAll('.NameArea');
-
-   	         
-   	          nameAreas.forEach(function(nameArea) {
-   	              
-   	              var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-   	              
-   	              if (checkbox) {
-   	                  
-   	                  var nameValue = nameArea.innerHTML.trim();
-   	                  
-   	                  var referenceName = document.createElement('div');
-   	                  referenceName.className = 'referenceName';
-   	                  referenceName.innerHTML = nameValue;
-   	                  document.querySelector('.referenceArea').appendChild(referenceName);
-   	                  
-   	                  nameArea.remove();
-   	              }
-   	          });
-   	      });
-
-   	      document.querySelector('.referenceOut').addEventListener('click', function() {
-   	          var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
-
-   	          approvalNames.forEach(function(referenceName) {
-   	              var checkbox = referenceName.querySelector('input[type="checkbox"]:checked');
-   	              if (checkbox) {
-   	                  var nameValue = referenceName.innerHTML.trim();
-
-   	                  var resultNameArea = document.querySelector('.resultNameArea');
-
-   	                  var nameArea = document.createElement('div');
-   	                  nameArea.className = 'NameArea';
-   	                  nameArea.innerHTML = nameValue;
-
-   	                  resultNameArea.appendChild(nameArea);
-
-   	                  referenceName.remove();
-   	              }
-   	          });
-   	      });
-
-   	        document.querySelector('.approvalUpBtn').addEventListener('click', function() {
-   	            var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-   	            var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-   	            if (approvalName1 && approvalName2) {
-   	                var tempText = approvalName1.textContent;
-   	                approvalName1.textContent = approvalName2.textContent;
-   	                approvalName2.textContent = tempText;
-   	            }
-   	        });
-   	        document.querySelector('.approvalDownBtn').addEventListener('click', function() {
-   	            var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-   	            var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-   	            if (approvalName1 && approvalName2) {
-   	                var tempText = approvalName1.textContent;
-   	                approvalName1.textContent = approvalName2.textContent;
-   	                approvalName2.textContent = tempText;
-   	            }
-   	        });
-
+    document.getElementById('refMember').value = textToInsert;
+});
 </script>
 </body>
 </html>

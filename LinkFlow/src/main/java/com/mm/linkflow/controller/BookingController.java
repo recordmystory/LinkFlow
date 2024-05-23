@@ -188,7 +188,7 @@ public class BookingController {
 		}
 	}
 	
-	@GetMapping("/assets.list") // 자산리스트 조회 
+	@GetMapping("/ass.list") // 자산리스트 조회 
 	public ModelAndView selectAssetsList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		int listCount = bkServiceImpl.selectAssCount();
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -202,7 +202,7 @@ public class BookingController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value="/ass.search", produces="applicstion/json; charset=utf-8") // 자산리스트 검색
+	@GetMapping(value="/ass.search", produces="application/json; charset=utf-8") // 자산리스트 검색
 	public Map<String,Object> selectSearchAssList(@RequestParam Map<String, String> search, @RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = bkServiceImpl.selectSearchAssCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -219,6 +219,12 @@ public class BookingController {
 	@PostMapping("/insert.ass") // 자산 추가 
 	public void insertAssets() {
 		
+	}
+	
+	@ResponseBody // 자산 삭제
+	@GetMapping(value="/del.ass", produces="application/json; charset=utf-8")
+	public int deleteAssets(@RequestParam(value="assetsNo")String assetsNo) {
+		return bkServiceImpl.delAssets(assetsNo);
 	}
 	
 }

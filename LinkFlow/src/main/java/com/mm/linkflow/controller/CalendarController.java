@@ -131,8 +131,9 @@ public class CalendarController {
 
 	   
 	   //캘린더 메인 - 삭제(상태변경)
+	   @ResponseBody
 	   @GetMapping(value="/deleteSch.do")
-	   public String deleteSch(String schNo) {
+	   public String deleteSch(@RequestParam String schNo) {
 			return calendarService.deleteSch(schNo) == 1 ? "success" : "fail";	
 	   }
 }

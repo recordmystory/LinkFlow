@@ -320,6 +320,8 @@
 		                    <!-- 일정 제목 -->
 		                    <div class="modal-header justify-content-center">
 		                        <input type="text" class="form-control schInsertModalTitle ml-4" name="schTitle" placeholder="제목을 입력해주세요" required >
+		                    		<div id="output-box"></div>
+		                    		
 		                    </div>
 		                    <!-- 중요일정 체크박스 -->
 		                    <div class="schDetailModal_content justify-content-end mx-1">
@@ -330,11 +332,15 @@
 		                    <div class="schDetailModal_content font-weight-bolder">
 		                        <label for="calendarNo" class="col-form-label">캘린더</label>
 		                        <div class="form-group mt-1">
-		                            <select class="form-select" name="schCalSubCode" >
-		                                <option value="03" selected>개인 캘린더</option>
-		                                <option value="02">부서 캘린더</option>
-		                                <option value="01">전사 캘린더</option>
-		                            </select>
+		                          <select class="form-select" name="schCalSubCode">
+                                <option value="03" selected>개인 캘린더</option>
+                                <c:if test="${loginUser.spRight == 'Y'}">
+                                    <option value="02">부서 캘린더</option>
+                                </c:if>
+                                <c:if test="${loginUser.boardRight == 'Y'}">
+                                    <option value="01">전사 캘린더</option>
+                                </c:if>
+                            	</select>
 		                        </div>    
 		                    </div>
 		                    <!-- 시작 날짜와 종료 날짜 -->
@@ -343,8 +349,12 @@
 												    <div class="dateInput text-sm">
 												        <label for="startDate" class="col-form-label" >시작</label>
 												        <input type="datetime-local" class="form-select" name="startDate" style="width: 170px; text-align: center;" required><br>
+												        <div id="output-box"></div>
+												        
 												        <label for="endDate" class="col-form-label">종료</label>
 												        <input type="datetime-local" class="form-select" name="endDate" style="width: 170px; text-align: center;" required>
+												        <div id="output-box"></div>
+												        
 												    </div>
 												</div>
 		                    <!-- 장소 -->
@@ -367,6 +377,7 @@
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
 		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" style="margin-left:67px; " required ></textarea>
+		                        <div id="output-box"></div>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
                      		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
@@ -405,11 +416,15 @@
 		                    <div class="schDetailModal_content font-weight-bolder">
 		                        <label for="calendarNo" class="col-form-label">캘린더</label>
 		                        <div class="form-group mt-1">
-		                            <select class="form-select" name="schCalSubCode" id="schCalSubCode" >
-		                                <option value="03" selected>개인 캘린더</option>
-		                                <option value="02">부서 캘린더</option>
-		                                <option value="01">전사 캘린더</option>
-		                            </select>
+		                           <select class="form-select" name="schCalSubCode">
+                                <option value="03" selected>개인 캘린더</option>
+                                <c:if test="${loginUser.spRight == 'Y'}">
+                                    <option value="02">부서 캘린더</option>
+                                </c:if>
+                                <c:if test="${loginUser.boardRight == 'Y'}">
+                                    <option value="01">전사 캘린더</option>
+                                </c:if>
+                            	</select>
 		                        </div>    
 		                    </div>
 		                    <!-- 시작 날짜와 종료 날짜 -->
@@ -1143,16 +1158,22 @@ $('#kt_docs_jstree_basic').jstree({
 	$(document).ready(function() {
  //캘린더 일정등록 ajax
 			//일정등록 클릭시 모달 띄우기
-			if('${loginUser.userId}'){
-				//경로이동 로그인으로 
-			}else{ //로그인 중이라면
-	 			$('.schInsertModalBtn').click(function() {
-	 	        $('#schInsertModal').modal('show');
-	 	        $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
-	 	    }); 
-				
-			}
- 
+			 // 로그인 확인
+	    var login = '${loginUser.userId}';
+	
+	    // 일정 등록 버튼 클릭 시 모달 띄우기
+	    if (login === '') {
+	        $('.schInsertModalBtn').click(function() {
+	            alert("일정을 등록하려면 로그인을 해 주세요.");
+	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
+	        });
+	    } else {
+	        $('.schInsertModalBtn').click(function() {
+	            $('#schInsertModal').modal('show');
+	            $('body').addClass('modal-open'); 
+	        });
+	    }
+
 		  // 중요일정 체크박스 클릭 시 조건
 	    $('#schImportInsertBtn').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
@@ -1173,9 +1194,9 @@ $('#kt_docs_jstree_basic').jstree({
     	if(start < end){
     		alert("start");
     	}	
+    	//등록 ajax
    		 $('#schInsertButton').click(function() {
-    	//수정자 == 로그인 아이디
-
+   			 
         $.ajax({
             type: "POST",
             url: "${contextPath}/calendar/regist.do", // 일정 등록 컨트롤러의 엔드포인트
@@ -1208,7 +1229,8 @@ $('#kt_docs_jstree_basic').jstree({
  	    $('#cencelBtn').click(function() {
         $('#schInsertModal').modal('hide');
     	}); 
-});
+
+	});
  
     
  

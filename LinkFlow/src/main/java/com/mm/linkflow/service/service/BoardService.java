@@ -3,6 +3,7 @@ package com.mm.linkflow.service.service;
 import java.util.List;
 import java.util.Map;
 
+import com.mm.linkflow.dto.BoardAuthDto;
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -53,5 +54,11 @@ public interface BoardService {
 	List<BoardDto> selectTrashList(PageInfoDto pi, String userId);
 
 	int restoreBoard(List<Integer> no);
+
+	String createBoardCategory(BoardCategoryDto newCategory);
+
+	int setBoardAuth(List<BoardAuthDto> listAuth, String userId);
+
+	List<BoardAuthDto> selectNormalUser(String boardType);
 
 }

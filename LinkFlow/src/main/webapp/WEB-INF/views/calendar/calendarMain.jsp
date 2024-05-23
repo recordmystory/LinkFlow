@@ -156,17 +156,29 @@
                 
                 }
             },
+            eventOrder: [//03 02 01 순으로 해야함
+                'extendedProps.schCalSubCode',
+                '-start', // 시작 날짜 역순으로 정렬
+                '-duration' // 일정 기간 역순으로 정렬
+            ],
+
+		        /* eventDidMount: function(info) {
+		             if (info.event.extendedProps.schImport === 'Y') {
+		                 info.el.classList.add('important-event');
+		             }  
+		         },*/
              eventClick: function(info) { //캘린더 메인에 있는 일정 클릭시에만 (나머지는 모달 버튼에 이벤트 걸어야함)
 		            var event = info.event; 
-		
-		            //상세일정
+		 						
+             	if(event.url === ''){ //공휴일만 url 값이 있음. 공휴일 눌렀을 시 상세일정 실행 막기
+		            //상세일정   
 		            schDetail(event);
-		
+             	}
 		            // 일정 수정 폼 상세일정의 내용 끌어오기
 		            schUpdateForm(event);
 		            
 		            //공휴일 클릭시 링크 이동 막기(기본 이벤트 막기)
-	              //info.jsEvent.preventDefault();
+	              info.jsEvent.preventDefault();
 
 		        },
             eventSources: [
@@ -192,7 +204,7 @@
     });
     //풀캘린더 
     
-         // 넘겨받은 그룹코드의 일정들을 조회해서 캘린더에 뿌리는 역할의함수
+    // 넘겨받은 그룹코드의 일정들을 조회해서 캘린더에 뿌리는 역할의함수
      function addEventAndShow(code){
       $.ajax({
           url: "${contextPath}/calendar/schList.do",
@@ -239,7 +251,7 @@
     // 일정 상세 ******************
 		function schDetail(event) {
         var extendedProps = event.extendedProps;
-
+        $('#schNo').val(extendedProps.schNo); //삭제에서 쓰기위해 저장
 		    $('#schDetailTitle').text(event.title);
 		    $('#schImport').val(extendedProps.schImport);
 		
@@ -357,8 +369,8 @@
     	//삭제모달에서 삭제 버튼 클릭시 
         $('#schDeleteBtn').click(function() {
         
-            var schNo = $('#schDetailModal input[name="schNo"]').val();
-           
+        	var schNo = $('#schNo').val(); 
+        	
             $.ajax({
                 url: "${contextPath}/calendar/deleteSch.do",
                 type: "get",
@@ -366,11 +378,16 @@
                     schNo: schNo
                 },
                 success: function(result) {
+                    console.log("success:", result);
+
                     if (result === "success") {
-                        alert("삭제 성공");
+                        alert("일정 삭제 성공");
                         $('#schDetailModal').modal('hide');
+                        $('#detailBtn').modal('hide');
                         calendar.refetchEvents();
-                    } 
+                    } else {
+                        alert("일정 삭제 실패.");
+                    }
                 },
                 error: function(result) {
                 	if (result === "fail") {

@@ -1,5 +1,10 @@
 package com.mm.linkflow.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -7,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
@@ -32,6 +38,32 @@ public class ProjectController {
 		session.setAttribute("list", proService.listProject(pi));
 		session.setAttribute("pi", pi);
 		return "project/list";
+	}
+	
+	// 프로젝트 목록 검색
+	@ResponseBody
+	@PostMapping("/search.pj")
+	public Map<String, Object> searchListProject(String startDate, String endDate, String category, String keyword
+			                    , @RequestParam(value="page", defaultValue="1")int currentPage
+			                    , HttpSession session) {
+		Map<String, String> search = new HashMap<>();
+		
+		search.put("startDate", startDate);
+		search.put("endDate", endDate);
+		search.put("category", category);
+		search.put("keyword", keyword);
+		
+		int listCount = proService.selectProjectCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<ProjectDto> list = new ArrayList<>();
+		list = proService.searchListProject(search, pi);
+		
+		Map<String, Object> response = new HashMap<>();
+	    response.put("pi", pi);
+	    response.put("list", list);
+	    
+	    return response;
+		
 	}
 	
 	// 프로젝트 등록 폼

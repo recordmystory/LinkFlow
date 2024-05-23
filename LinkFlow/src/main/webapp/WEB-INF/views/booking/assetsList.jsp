@@ -186,14 +186,23 @@ input[type="checkbox"]:checked {
 						<div class="card-header">
 		                    <div class="card-tools">
 		                        <div class="input-group input-group-sm">
-		                            <select id="dropdownOptions" class="form-control main-cate" name="mainName">
-		                                <option value="room">시설</option>
-		                                <option value="supplies">비품</option>
+		                            <select id="mainName" class="form-control main-cate" name="mainCode" onchange="changeSub();">
+		                                <option value="002-">시설</option>
+		                                <option value="003-">비품</option>
 		                            </select> &nbsp;
-		                            <select id="dropdownOptions" class="form-control middle-cate" name="subName">
-		                                <option value="">회의실</option>
+		                            
+		                            <select id="room-sub" class="form-control middle-cate room-sub" name="subName">
+		                                <option value="회의실">회의실</option>
+		                            </select> 
+		                            
+		                            <select id="sup-sub" class="form-control middle-cate" name="subName" style="display: none;">
+		                                <option value="노트북">노트북</option>
+		                                <option value="차량">차량</option>
+		                                <option value="키보드">키보드</option>
+		                                <option value="마우스">마우스</option>
 		                            </select> &nbsp;
-		                            <input type="text" name="table_search" class="form-control float-right" name="keyword" placeholder="Search">
+		                            
+		                            <input type="text" id="keyword" class="form-control float-right" name="keyword" placeholder="Search">
 		                            <div class="input-group-append">
 		                                <button type="submit" class="btn btn-default" onclick="searchAssets();">
 		                                    <i class="fas fa-search"></i>
@@ -227,7 +236,7 @@ input[type="checkbox"]:checked {
 				                              <td>
 				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify">수정</span>
 				                                  |
-				                                  <span onclick="assDel(${assets_no});">삭제</span>
+				                                  <span onclick="assDel(this);" data-assNo="${ass.assetsNo}">삭제</span>
 				                              </td>
 				                          </tr>
 			                          </c:forEach>
@@ -248,26 +257,28 @@ input[type="checkbox"]:checked {
              <div class="modal fade" id="acc-update">
                  <div class="modal-dialog">
                      <div class="modal-content">
+                     <form id="updateAss" action=${contextPath }/booking/ass.list" method="post">
                          <div class="bk-modal" style="padding-top: 40px;">
-                             <h4>자산 추가 </h4>
+                             <h4 id="modalTitle">자산 추가 </h4>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="assMain" style="width: 80px;">
-                                 <option value="room">시설</option>
-                                 <option value="supplies">비품</option>
+                             <select id="assMain" style="width: 80px;" onchange="changeMod();">
+                                 <option value="002-">시설</option>
+                                 <option value="003-">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
                              <select id="roomSub" style="width: 100px;">
-                                 <option value="">회의실</option>
+                                 <option value="회의실">회의실</option>
                                  <!-- 비품일때 -->
                                  </select>
-                             <select id="supSub" style="width: 100px;">
-                                 <option value="">노트북</option>
-                                 <option value="">마우스</option>
-                                 <option value="">차량</option>
+                             <select id="supSub" style="width: 100px; display:none;">
+                                 <option value="노트북">노트북</option>
+                                 <option value="차량">차량</option>
+                                 <option value="키보드">키보드</option>
+                                 <option value="마우스">마우스</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
@@ -277,8 +288,9 @@ input[type="checkbox"]:checked {
  
                          <div class="modal-footer justify-content-between">
                              <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-                             <button type="button" class="btn btn-outline-primary">SUBMIT</button>
+                             <button type="submit" class="btn btn-outline-primary" id="submitButton">SUBMIT</button>
                          </div>
+                         </form>
                      </div>
                      <!-- /.modal-content -->
                  </div>
@@ -318,39 +330,57 @@ input[type="checkbox"]:checked {
 	        });
 	    });
 		
-		function searchAssets(){
-			let mainName = document.getElementById('mainName').value;
-			let subName = document.getElementById('subName').value;
-			
-			$.ajax({
-				url: '${contextPath}/booking/ass.search',
-				type:'get',
-				data:{
-					mainName: mainName,
-					subName: subName,
-					keyword: keyword
-				},success:function(searchResult){
-					let table="";
-					let list = searchResult.assList;
-					
-					for(let i=1; i<list.length; i++){
-						table +="<tr>"
-                        	  + "<td>"+ list[i].mainName +"</td>"
-                        	  + "<td>"+ list[i].subName +"</td>"
-                        	  + "<td>"+ list[i].assetsName +"</td>"
-                        	  + "<td>"
-                              + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\">수정</span>"
-                              + " | "
-                              + "<span onclick=\" assDel("+ list[i].assetsNo + ");\">삭제</span>"
-                        	  + "</td></tr>" ;
-					}
-					$("#listTable").html(table);
-				}
-				
-			})
+		function searchAssets() { // 검색
+		    let mainName = document.getElementById('mainName').value;
+		    let subName = '';
+
+		    if (mainName === '002-') {
+		        let roomSubElement = document.getElementById('room-sub');
+		        if (roomSubElement) {
+		            subName = roomSubElement.value;
+		        }
+		    } else if (mainName === '003-') {
+		        let supSubElement = document.getElementById('sup-sub');
+		        if (supSubElement) {
+		            subName = supSubElement.value;
+		        }
+		    }
+
+		    let keyword = document.getElementById('keyword').value;
+
+		    $.ajax({
+		        url: `${contextPath}/booking/ass.search`,
+		        type: 'get',
+		        data: {
+		            mainName: mainName,
+		            subName: subName,
+		            keyword: keyword
+		        },
+		        success: function (searchResult) {
+		            let table = "";
+		            let list = searchResult.assList;
+
+		            for (let i = 0; i < list.length; i++) {
+		                table += "<tr>"
+		                       + "<td>" + list[i].mainName + "</td>"
+		                       + "<td>" + list[i].subName + "</td>"
+		                       + "<td>" + list[i].assetsName + "</td>"
+		                       + "<td>"
+		                       + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\">수정</span>"
+		                       + " | "
+		                       + "<span onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</span>"
+		                       + "</td></tr>";
+		            }
+		            $("#listTable").html(table);
+		        }
+		    });
 		}
 	
-	    function assDel(assNo) {
+		
+	    function assDel(assNo) { // 삭제 
+	    	let assetsNo= assNo.getAttribute('data-assNo');
+	    	console.log("assetsNo");
+	    
 	        Swal.fire({
 	            //   title: '글을 삭제하시겠습니까???',
 	            text: "자원 삭제 시, 자원에 대한 모든 예약 기록이 삭제되어 복구할 수 없습니다.",
@@ -362,22 +392,47 @@ input[type="checkbox"]:checked {
 	            confirmButtonText: '삭제'
 	        }).then((result) => {
 	            if (result.value) {
-	                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
+	                
+	            	$.ajax({
+	            		url:'${contextPath}/booking/del.ass',
+	            		type:'get',
+						data:{
+							assetsNo:assetsNo
+						},success:function(result){
+							if(result > 0 )
+								alert("자산이 삭제되었습니다.");
+								window.location.replace('${contextPath}/booking/ass.list);
+						}            		
+	            	})
 	            }
 	        })
 	    }
 	    
-	    function changeBody() {
-	        var selectedValue = document.getElementById('assName').value;
+	    function changeMod() { 
+	        var selectedValue = document.getElementById('assMain').value;
 	        var room = document.getElementById('roomSub');
 	        var supplies = document.getElementById('supSub');
 
-	        if (selectedValue === 'room') {
-	            roomContent.style.display = 'block';
-	            suppliesContent.style.display = 'none';
-	        } else if (selectedValue === 'supplies') {
-	            roomContent.style.display = 'none';
-	            suppliesContent.style.display = 'block';
+	        if (selectedValue === '002-') {
+	            room.style.display = 'block';
+	            supplies.style.display = 'none';
+	        } else if (selectedValue === '003-') {
+	            room.style.display = 'none';
+	            supplies.style.display = 'block';
+	        }
+	    }
+	    
+	    function changeSub() {
+	        var selectedValue = document.getElementById('mainName').value;
+	        var room = document.getElementById('room-sub');
+	        var supplies = document.getElementById('sup-sub');
+
+	        if (selectedValue === '002-') {
+	            room.style.display = 'block';
+	            supplies.style.display = 'none';
+	        } else if (selectedValue === '003-') {
+	            room.style.display = 'none';
+	            supplies.style.display = 'block';
 	        }
 	    }
 

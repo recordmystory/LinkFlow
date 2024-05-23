@@ -167,7 +167,8 @@ public class EdsmProgController {
 	}
 
 	@GetMapping("/detail.prog")
-	public String detail() {
+	public String detail(String edNo) {
+		log.debug("edNo : {}", edNo);
 		return "/edsm/prog/detail";
 	}
 

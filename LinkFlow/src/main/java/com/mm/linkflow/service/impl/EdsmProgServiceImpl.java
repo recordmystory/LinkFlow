@@ -76,12 +76,12 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 
 	@Override
 	public int selectSearchListCnt(Map<String, String> search) {
-		return 0;
+		return edsmProgDao.selectSearchListCnt(search);
 	}
 
 	@Override
 	public List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
-		return null;
+		return edsmProgDao.selectSearchList(search, pi);
 	}
 
 	

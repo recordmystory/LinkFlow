@@ -40,7 +40,7 @@ public interface BookingService {
 	
 	int modssets(AssetsDto ass); // 자산 수정 
 	
-	int delAssets(int assetsNo); // 자산 삭제
+	int delAssets(String assetsNo); // 자산 삭제
     
     
     int insertBooking(BookingDto bk); // 예약하기 

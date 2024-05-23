@@ -142,7 +142,7 @@
 	                          		<c:otherwise>
 	                          			<c:forEach var="ed" items="${list}">
 	                          			<!-- 로그인한 사용자 -->
-	                          				<tr>
+	                          				<tr onclick="location.href='${contextPath}/edsm/prog/detail.prog?edNo=' + '${ed.edNo}'">
 		                          					<td>${ed.edNo}</td>
 		                          					<td>${ed.edTitle}</td>
 		                          					<td>${ed.regId}</td>
