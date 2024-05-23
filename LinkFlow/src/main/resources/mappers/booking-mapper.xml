@@ -240,6 +240,7 @@
 	 join tb_common c on a.main_code = c.main_code
 	where a.del_yn ='N'
 	  and a.sub_code = c.sub_code
+	order by a.assets_no
 </select>
 
 <select id="selectSearchAssCount" resultType="_int">
@@ -290,6 +291,46 @@
 	update tb_assets
 	  set del_yn = 'Y'
 	where assets_No = #{assetsNo}
+</update>
+
+<insert id="insertAssets">
+	insert
+	  into tb_assets
+	       (
+	        assets_no
+	       ,main_code
+	       ,sub_code
+	       ,assets_name
+	       ,enr_id
+	       ,mod_id
+	       )
+	 values
+	 	   (
+	 		'ASS_'|| LPAD(SEQ_ASSNO.NEXTVAL, 3, '0')
+	 	   ,#{mainCode}
+	 	   ,(select sub_code
+	 	   		from tb_common
+	 	   	   where main_code = #{mainCode}	
+	 	   	     and sub_name = #{ass.subName}
+	 	   	 )
+	 	   	,#{ass.assetsName}
+	 	   	,#{userId}
+	 	   	,#{userId}
+	 	   )
+	 		
+</insert>
+
+<update id="modifyAssets">
+	update tb_assets
+	   set sub_code = (select sub_code
+			 	   		from tb_common
+			 	   	   where main_code = #{mainCode}	
+			 	   	     and sub_name = #{ass.subName}
+			 	   	   ),
+			assets_name = #{ass.assetsName},
+			mod_id = #{userId}
+	where assets_no = #{ ass.assetsNo}
+			
 </update>
 
 </mapper>

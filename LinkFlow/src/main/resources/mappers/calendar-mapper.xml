@@ -123,22 +123,47 @@
 	    WHERE SCH_NO = #{schNo}
 	</update>
 	
-	<!-- 일정삭제(상태변경) -->
-	<!-- <delete id="deleteSch">
-	 DELETE FROM TB_SCHEDULE
-	 WHERE SCH_NO = ${schNo}
-	</delete>
-	 -->
+	<!-- 캘린더 메인 일정 삭제(상태 변경) -->
 	<update id="deleteSch">
 	 UPDATE TB_SCHEDULE
 	 SET DEL_YN = 'Y'
 	 WHERE SCH_NO = ${schNo}
 	</update>
 
-<!--  캘린더 CAL_SUB_CODE 수정 
+	<!--  캘린더 CAL_SUB_CODE 수정 
     <update id="updateCalendarSubCode">
         UPDATE TB_CALENDAR
         SET CAL_SUB_CODE = #{schCalSubCode}
         WHERE CAL_NO = #{calNo}
     </update> -->
+    
+ <!-- 휴지통 쿼리************************************* -->  
+   <!-- 휴지통 리스트 상세조회 -->
+   <select id="schWasteList" resultMap="scheduleResult">
+       SELECT 
+           S.SCH_NO,
+           S.SCH_CONTENT,
+           TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+       		 TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+           S.ADDRESS,
+           S.SCH_IMPORT,
+           S.NOTIFY_YN,
+           S.SCH_TITLE,
+           C.CAL_COLOR,
+           C.CAL_SUB_CODE,
+           C.CAL_NO
+       FROM TB_SCHEDULE S
+       JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
+       WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
+       AND S.DEL_YN = 'Y'
+   </select> 
+   
+  <!-- 휴지통 일정삭제(스케줄러) -->
+	<delete id="deleteSchWaste">
+	 DELETE 
+	 		FROM TB_SCHEDULE
+	 WHERE SCH_NO = ${schNo}
+	 AND DEL_YN = 'Y'
+	</delete>
+	 
 </mapper>

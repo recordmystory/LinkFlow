@@ -37,4 +37,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<ProjectDto> searchListProject(Map<String, String> search, PageInfoDto pi) {
 		return proDao.searchListProject(search, pi);
 	}
+
+	@Override
+	public int searchProjectCount(Map<String, String> search) {
+		return proDao.searchProjectCount(search);
+	}
 }

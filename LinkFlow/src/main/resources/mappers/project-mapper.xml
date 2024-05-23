@@ -82,11 +82,11 @@
     	<if test="endDate != null and endDate != ''">
        	   AND END_DATE <![CDATA[<=]]> #{endDate}
     	</if>
-    	<if test="category == proName">
-    	   AND PRO_TITLE = #{keyword}
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
     	</if>
-    	<if test="category == client">
-    	   AND CLIENT = #{keyword}
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
     	</if>
 		  
 		 
@@ -97,5 +97,24 @@
 		       COUNT(*)
 		  FROM TB_PROJECT
 		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProjectCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_PROJECT
+		 WHERE DEL_YN = 'N'
+		<if test="startDate != null and startDate != ''">
+           AND START_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND END_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
+    	</if>
 	</select>
 </mapper>

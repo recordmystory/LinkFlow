@@ -1,8 +1,6 @@
 package com.mm.linkflow.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -103,7 +101,7 @@ public class CalendarController {
 	   public String detailSch(String schNo, Model model) {
 	       ScheduleDto schedule = calendarService.detailSch(schNo);
 	       model.addAttribute("schedule", schedule);
-	       return "calendar/calendarModal";
+	       return "calendar/schWasteList";
 	   }
 	   
 	//캘린더 메인 - 일정 수정

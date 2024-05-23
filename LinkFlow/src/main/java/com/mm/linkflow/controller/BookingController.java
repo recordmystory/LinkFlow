@@ -216,13 +216,54 @@ public class BookingController {
 		return map;
 	}
 	
-	@PostMapping("/insert.ass") // 자산 추가 
-	public void insertAssets() {
+	@PostMapping("/ass.in") // 자산 추가 
+	public String insertAssets(@RequestParam Map<String,String> assets, HttpSession session) {
+		String mainCode = assets.get("updateMainCode");
+		AssetsDto ass = AssetsDto.builder()
+								   .assetsName(assets.get("assetsName"))
+								   .mainCode(assets.get("mainCode"))
+								   .subName(assets.get("subName"))
+								   .build();
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("ass", ass);
+		mp.put("userId", userId);
+		mp.put("mainCode", mainCode);
+		int result = bkServiceImpl.insertAssets(mp);
 		
+		if(result >0) {
+			return "redirect:/booking/ass.list?ain=true";
+		}else {
+			return "redirect:/booking/ass.list";
+		}
+		
+	}
+	@PostMapping("/ass.mod") // 자산 추가 
+	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
+		String mainCode = assets.get("updateMainCode");
+		AssetsDto ass = AssetsDto.builder()
+								   .assetsNo(assets.get("assetsNo"))
+								   .assetsName(assets.get("assetsName"))
+								   .subName(assets.get("subName"))
+								   .build();
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("ass", ass);
+		mp.put("userId", userId);
+		mp.put("mainCode", mainCode);
+		
+		log.debug("mp:{}",mp);
+		int result = bkServiceImpl.modAssets(mp);
+		
+		if(result >0) {
+			return "redirect:/booking/ass.list";
+		}else {
+			return "redirect:/booking/ass.list";
+		}
 	}
 	
 	@ResponseBody // 자산 삭제
-	@GetMapping(value="/del.ass", produces="application/json; charset=utf-8")
+	@GetMapping(value="/ass.del", produces="application/json; charset=utf-8")
 	public int deleteAssets(@RequestParam(value="assetsNo")String assetsNo) {
 		return bkServiceImpl.delAssets(assetsNo);
 	}

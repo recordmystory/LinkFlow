@@ -69,23 +69,25 @@
                                     -->
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-	                                <div style="margin-bottom: 10px;">
-	                                    <input class="form-control form-control-sidebar" name="start_date" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="end_date" type="date">
-	                                </div>
-	                                <div class="input-group">
-	                                    <div class="select" style="margin-right: 15px;">
-	                                        <select name="category" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
-	                                            <option value="proName">프로젝트명</option>
-	                                            <option value="client">고객사명</option>
-	                                        </select>
-	                                    </div>
-	                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
-	                                    <div class="input-group-append">
-	                                        <button id="searchBotton" type="button" class="btn btn-primary">
-	                                            <i class="fas fa-search fa-fw"></i>
-	                                        </button>
-	                                    </div>
-	                                </div>
+                                	<form action="${contextPath}/project/search.pj" method="post">
+		                                <div style="margin-bottom: 10px;">
+		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date">
+		                                </div>
+		                                <div class="input-group">
+		                                    <div class="select" style="margin-right: 15px;">
+		                                        <select name="category" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
+		                                            <option value="proName">프로젝트명</option>
+		                                            <option value="client">고객사명</option>
+		                                        </select>
+		                                    </div>
+		                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
+		                                    <div class="input-group-append">
+		                                        <button type="submit" class="btn btn-primary">
+		                                            <i class="fas fa-search fa-fw"></i>
+		                                        </button>
+		                                    </div>
+		                                </div>
+	                                </form>
                                 </div>
                             </div>
                             <div style="min-height: 500px; min-width: 100%;">
@@ -103,7 +105,7 @@
                                                     <th style="width: 10%;">상태</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="project-list">
                                             	<c:forEach var="p" items="${list}"> 
                                                 <tr>
                                                     <td>${p.proNo}</td>
@@ -171,32 +173,7 @@
                 var selectedText = $(this).find('.spanCss').text();
                 $('.resultArea').text(selectedText);
             });
-            
-            $('#search-button').click(function(){
-
-            	var startDate = $('#start_date').val();
-                var endDate = $('#end_date').val();
-                var category = $('#bottom-menu').val();
-                var keyword = $('#keyword').val();
-
-                $.ajax({
-                    url: '${contextPath}/project/search.pj',
-                    method: 'POST',
-                    data: {
-                        start_date: startDate,
-                        end_date: endDate,
-                        category: category,
-                        keyword: keyword
-                    },
-                    success: function(response) {
-
-                    	var pi = response.pi;
-                    	var list = response.list;
-                    }
-                });
-            });
         });
-
         // 지도 api 시작
         //주소의 정보를 selectMapList 함수로 넘겨준다.
         function mapCreate(address){
