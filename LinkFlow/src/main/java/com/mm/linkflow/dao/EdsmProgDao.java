@@ -1,6 +1,7 @@
 package com.mm.linkflow.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -65,6 +66,16 @@ public class EdsmProgDao {
 	
 	public int insertDoc(EdocDto edocDto) {
 		return sqlSessionTemplate.insert("edsmProgMapper.insertDoc", edocDto);
+	}
+
+	public List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
+
+		return sqlSessionTemplate.selectList("edsmProgMapper.selectSearchList", search, rowBounds);
+	}
+
+	public int selectSearchListCnt(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("edsmProgMapper.selectSearchListCnt", search);
 	}
 	
 //	public int selectAllListCount() {

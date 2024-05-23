@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,16 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	@Override
 	public int insertDoc(EdocDto edocDto) {
 		return edsmProgDao.insertDoc(edocDto);
+	}
+
+	@Override
+	public int selectSearchListCnt(Map<String, String> search) {
+		return edsmProgDao.selectSearchListCnt(search);
+	}
+
+	@Override
+	public List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
+		return edsmProgDao.selectSearchList(search, pi);
 	}
 
 	
