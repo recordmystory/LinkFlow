@@ -103,11 +103,9 @@ public class EdsmProgController {
 	 * @return 진행중문서 목록 페이지로 redirect
 	 */
 	@PostMapping("/draftingDoc.prog")
-	public String insertDoc(String approvalUserId1, String approvalUserId2, String refUserId,  EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
 		
-		log.debug("approvalUserId1 : {}", approvalUserId1);
-		log.debug("approvalUserId2 : {}", approvalUserId2);
-		log.debug("userId : {}", refUserId);
+	
 		log.debug("edocDto : {}", edocDto);
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 		

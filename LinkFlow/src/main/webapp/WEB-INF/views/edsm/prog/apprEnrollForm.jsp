@@ -265,7 +265,7 @@
     .modal-body {
       padding: 0px 0px 0px 0px !important;
     }
-    
+
     
 </style>
 
@@ -674,12 +674,17 @@
     	var $referAreaContent = '';
     	$('.referenceName').each(function(index) {
     	    var referenceNameHtml = $(this)
-    	        .clone() 
-    	        .find('input[type="checkbox"]') 
-    	        .remove() 
-    	        .end() 
-    	        .html(); 
-    	    $referAreaContent += '<div class="referArea">' + referenceNameHtml + '</div>';
+            .clone() 
+            .find('input[type="checkbox"]') 
+            .remove() 
+            .end() 
+            .find('.userId')
+            .attr('name', 'edocRefList[' + index + ']') 
+            .css('display', 'none') 
+            .end() 
+            .html(); 
+
+        $referAreaContent += '<div class="referArea">' + referenceNameHtml + '</div>';
     	});
     	$('#refSelectedArea').html($referAreaContent);
 
