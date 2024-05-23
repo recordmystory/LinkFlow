@@ -1,13 +1,12 @@
 package com.mm.linkflow.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
-import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
@@ -38,6 +36,34 @@ public class EdsmProgController {
 	private final EdsmProgService edsmProgService;
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
+	
+
+	@GetMapping("/detail.prog")
+	public String detail(String edNo, Model model) {
+		log.debug("edNo : {}", edNo);
+		
+		model.addAttribute("edoc", edsmProgService.selectEdocDetail(edNo));
+		
+		/*
+		 * edoc:{edNo:문서번호,
+		 * 		 edFormCode:문서양식코드, 
+		 * 		 .. 
+		 * 		 attachList:[{AttachDto 객체},{AttachDto 객체},..],
+		 * 		 edocHistList:[{EdocHistDto},{EdocHistDto}, ..]
+		 *      }
+		 */
+	
+		
+		return "/edsm/prog/detail";
+		
+		/*
+		 * ${edoc.edNo} => 문서번호
+		 * ${edoc.attachList} => 배열 [AttachDto객체, AttachDto객체]
+		 * 		=> <c:forEach var="at" items="${edoc.attachList}">
+		 * 
+		 * 			
+		 */
+	}
 	
 	/** 진행중인 문서 목록 (전체) 검색
 	 * 
@@ -166,11 +192,6 @@ public class EdsmProgController {
 		return "/edsm/prog/modifyForm";
 	}
 
-	@GetMapping("/detail.prog")
-	public String detail(String edNo) {
-		log.debug("edNo : {}", edNo);
-		return "/edsm/prog/detail";
-	}
 
 //	@GetMapping("/listAll.prog")
 //	public String listAll() {
