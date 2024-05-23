@@ -94,8 +94,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public int delAssets(int assetsNo) {
-		return 0;
+	public int delAssets(String assetsNo) {
+		return bkDao.delAssets(assetsNo);
 	}
 
 	@Override

@@ -246,18 +246,22 @@
 	select count(*)
 	  from tb_assets 
 	where del_yn = 'N'
-	<if test='mainName eq "시설"'>
-	  and main_code = '002-'
+	<if test='mainName != null'>
+	  and main_code = #{mainName}
 	</if>
-	<if test='mainName eq "비품"'>
-	  and main_code = '003-'
+	<if test='subName != null'>
+	  and sub_code = (select sub_code
+	 					 from tb_common
+	 				    where main_code = #{mainName}
+	 				      and sub_name = #{subName}
+	 				      and del_yn = 'N')
 	</if>
-	<if test='keyword != null and keyword != ""'>
-	  and assets_name = #{keyword}
+	<if test='keyword != null'>
+	  and assets_name like '%'||#{keyword}||'%'
 	</if>
 </select>
 
-<select id="selectSearchAssetsList" resultMap="assResult">
+<select id="selectSearchAssList" resultMap="assResult">
 	select 
 			assets_no
 		  , assets_name
@@ -267,15 +271,25 @@
 	 join tb_common c on a.main_code = c.main_code
 	where a.del_yn ='N'
 	  and a.sub_code = c.sub_code
-	<if test='mainName eq "시설"'>
-	  and a.main_code = '002-'
+	<if test='mainName != null'>
+	  and a.main_code = #{mainName}
 	</if>
-	<if test='mainName eq "비품"'>
-	  and a.main_code = '003-'
+	<if test='subName != null'>
+	  and a.sub_code = (select sub_code
+	 					 from tb_common
+	 				    where main_code = #{mainName}
+	 				      and sub_name = #{subName}
+	 				      and del_yn = 'N')
 	</if>
-	<if test='keyword != null and keyword != ""'>
-	  and assets_name = #{keyword}
+	<if test='keyword != null'>
+	  and assets_name like '%'||#{keyword}||'%'
 	</if>
 </select>
+
+<update id="deleteAssets">
+	update tb_assets
+	  set del_yn = 'Y'
+	where assets_No = #{assetsNo}
+</update>
 
 </mapper>
