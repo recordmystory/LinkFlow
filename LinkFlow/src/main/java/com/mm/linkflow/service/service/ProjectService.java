@@ -20,4 +20,7 @@ public interface ProjectService {
 	
 	// 프로젝트 카운트
 	int selectProjectCount();
+	
+	// 프로젝트 검색 카운트
+	int searchProjectCount(Map<String, String> search);
 }

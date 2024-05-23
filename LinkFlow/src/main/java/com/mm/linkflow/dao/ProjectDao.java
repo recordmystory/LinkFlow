@@ -47,4 +47,9 @@ public class ProjectDao {
 	public int selectProjectCount() {
 		return sql.selectOne("projectMapper.selectProjectCount");
 	}
+	
+	// 프로젝트 검색 카운트 조회
+	public int searchProjectCount(Map<String, String> search) {
+		return sql.selectOne("projectMapper.searchProjectCount", search);
+	}
 }
