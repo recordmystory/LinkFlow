@@ -103,7 +103,7 @@
                 </a>
               </div>
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${contextPath}/project/list.pj" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-computer fa-2xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">프로젝트</span></div>
                 </a>

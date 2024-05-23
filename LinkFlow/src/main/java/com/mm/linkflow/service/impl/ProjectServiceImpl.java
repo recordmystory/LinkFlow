@@ -1,6 +1,7 @@
 package com.mm.linkflow.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int selectProjectCount() {
 		return proDao.selectProjectCount();
+	}
+
+	@Override
+	public List<ProjectDto> searchListProject(Map<String, String> search, PageInfoDto pi) {
+		return proDao.searchListProject(search, pi);
 	}
 }
