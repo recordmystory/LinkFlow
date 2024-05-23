@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mm.linkflow.dao.AttachDao;
 import com.mm.linkflow.dao.BoardDao;
 import com.mm.linkflow.dto.AttachDto;
+import com.mm.linkflow.dto.BoardAuthDto;
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -175,6 +176,37 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int restoreBoard(List<Integer> no) {
 		return boardDao.restoreBoard(no);
+	}
+
+	@Override
+	public String createBoardCategory(BoardCategoryDto newCategory) {
+		
+		int result1 = boardDao.createBoardCategory(newCategory);
+		String selectBoardCategory = "";
+		if (result1 > 0) {
+			selectBoardCategory = boardDao.selectCurrentBoardCategory();
+		}
+		
+		return selectBoardCategory;
+	}
+
+	@Override
+	public int setBoardAuth(List<BoardAuthDto> listAuth, String userId) {
+		int result = 0;
+		for(BoardAuthDto at : listAuth) {
+			at.setRegId(userId);
+			at.setModId(userId);
+			if(at.getWriteYN() == null) {
+				at.setWriteYN("N");
+			}
+			result += boardDao.setBoardAuth(at);
+		}
+		return result;
+	}
+
+	@Override
+	public List<BoardAuthDto> selectNormalUser(String boardType) {
+		return boardDao.selectNormalUser(boardType);
 	}
 
 	

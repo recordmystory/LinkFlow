@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,12 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.AttachDto;
+import com.mm.linkflow.dto.BoardAuthDto;
 import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.AttachService;
 import com.mm.linkflow.service.service.BoardService;
+import com.mm.linkflow.service.service.HrService;
 import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
 
@@ -41,6 +45,7 @@ public class BoardController {
 	
 	private final BoardService boardService;
 	private final AttachService attachService;
+	private final HrService hService;
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
@@ -71,6 +76,12 @@ public class BoardController {
 				normalYN = categoryList.get(i).getCategoryType();
 			}
 		}
+		
+		if(normalYN.equals("NORMAL")) {
+			List<BoardAuthDto> normalUserList = boardService.selectNormalUser(boardType);
+			mv.addObject("normalUserList", normalUserList);
+		}
+		
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("boardName", boardName);
@@ -371,7 +382,7 @@ public class BoardController {
 		return "redirect:" + request.getHeader("referer");
 	}
 	
-	@GetMapping("/trash.page") // /board/detail.do?no=글번호
+	@GetMapping("/trash.page")
 	public String trashForm(Model model, HttpSession session
 						  , @RequestParam(value="page", defaultValue="1")int currentPage) { 
 		
@@ -405,6 +416,50 @@ public class BoardController {
 		}
 		
 		return "redirect:/board/trash.page";
+	}
+	
+	@GetMapping("/createBoard.page")
+	public String createBoardForm(Model model, HttpSession session) { 
+		
+		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		List<DeptDto> apprList = hService.selectApprLine();
+		
+		model.addAttribute("apprList", apprList);
+		model.addAttribute("categoryList", categoryList);
+		return "board/createBoard";
+	}
+	
+	@PostMapping("/createBoard.do")
+	public String createBoard(BoardAuthDto newBoardCategory
+						  , HttpSession session, String categoryTitle
+						  , RedirectAttributes redirectAttributes) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		BoardCategoryDto newCategory = new BoardCategoryDto();
+		newCategory.setCategoryName(categoryTitle);
+		newCategory.setCategoryType("NORMAL");
+		newCategory.setRegId(loginUser.getUserId());
+		newCategory.setModId(loginUser.getUserId());
+		String categoryName = boardService.createBoardCategory(newCategory);
+		log.debug("카테고리 이름 : ", categoryName);
+		
+		List<BoardAuthDto> listAuth = newBoardCategory.getAuthList();
+		listAuth.add(BoardAuthDto.builder()
+								 .userId(loginUser.getUserId())
+								 .writeYN("Y")
+								 .build());
+		
+		int result = boardService.setBoardAuth(listAuth, loginUser.getUserId());
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시판 생성에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 게시판 생성에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+
+		return "redirect:/board/list.do?type=" + categoryName;
 	}
 
 }

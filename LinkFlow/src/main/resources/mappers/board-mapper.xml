@@ -25,6 +25,17 @@
 		<result column="category_type" property="categoryType" />
 	</resultMap>
 	
+	<resultMap id="authResult" type="BoardAuthDto" extends="commonMapper.commonResult">
+		<id column="user_id" property="userId" />
+		<result column="board_category" property="boardCategory" />
+		<result column="read_yn" property="readYN" />
+		<result column="write_yn" property="writeYN" />
+		<result column="user_name" property="userName"/>
+		<result column="sub_name" property="subName"/>
+		<result column="dept_title" property="deptTitle"/>
+	
+	</resultMap>
+	
 	<select id="selectBoardCategory" resultMap="categoryResult">
 		select 
       BOARD_CATEGORY
@@ -70,6 +81,23 @@
 		   </if>
   	 	 and ${condition} like '%' || #{keyword} || '%'
   	 	 and board_category = #{boardType}
+  </select>
+  
+   <select id="selectTempSaveListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_board
+  	 where 
+  	 			del_yn = 'N'
+  	 	and temp_save = '01'
+  	  and reg_id = #{userId}
+  </select>
+  
+  <select id="selectTrashListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_board
+  	 where 
+  	 			del_yn = 'Y'
+  	  and reg_id = #{userId}
   </select>
 	
 	<select id="selectBoardList" resultMap="boardResult">
@@ -233,8 +261,117 @@
 		    b.board_no DESC
   </select>
 	
+	  <update id="deleteBoard">
+      UPDATE tb_board
+      SET del_yn = 'Y'
+      WHERE board_no IN
+      <foreach item="item" collection="list" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+  </update>
+  
+  <select id="selectCurrnetTempSave" resultType="_int">
+  	select
+  	 	seq_boardno.currval
+		from dual
+  </select>
+  
+  <delete id="removeBoarList">
+     delete
+		  FROM tb_board
+		  where board_no in
+			  <foreach item="item" collection="list" open="(" separator="," close=")">
+	          #{item}
+	      </foreach>
+  </delete>
+  
+  <select id="selectTrashList" resultMap="boardResult">
+  	SELECT 
+	    b.board_no,
+	    b.board_category,
+	    c.category_name,
+	    b.board_title,
+	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
+	    c.category_type
+		FROM 
+		    tb_board b
+		JOIN 
+		    tb_category c ON b.board_category = c.board_category
+		WHERE 
+		    b.del_yn = 'Y'
+		    and b.reg_id = #{userId}
+		ORDER BY 
+		    b.board_no DESC
+  </select>
+  
+  <update id="restoreBoard">
+      UPDATE tb_board
+      SET del_yn = 'N'
+      WHERE board_no IN
+      <foreach item="item" collection="list" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+  </update>
+  
+  <insert id="createBoardCategory">
+  insert
+  		into tb_category
+  		(
+  		  board_category
+  		, category_name
+  		, category_type
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+  			'CATEGORY-'|| seq_categoryno.nextval
+  		 , #{categoryName}
+  		 , #{categoryType}
+  		 , #{regId}
+  		 , #{modId}
+  		)
+  </insert>
 	
-	
+	<select id="selectCurrentBoardCategory" resultType="string">
+  	select
+  	 	'CATEGORY-'|| seq_categoryno.currval
+		from dual
+  </select>
+  
+  <insert id="setBoardAuth">
+  insert
+  		into bod_auth
+  		(
+  		  user_id
+  		, board_category
+  		, write_yn
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+  			 #{userId}
+  		 , 'CATEGORY-'|| seq_categoryno.currval
+  		 , #{writeYN}
+  		 , #{regId}
+  		 , #{modId}
+  		)
+  </insert>
+  
+  <select id="selectNormalUser" resultMap="authResult">
+  	select 
+	    m.user_name
+	    ,c.sub_name
+	    ,d.dept_title
+	    ,write_yn
+		from bod_auth a
+		join tb_member m on (a.user_id = m.user_id)
+		join tb_dept d on (m.dept_code = d.dept_code)
+		join tb_common c on (c.main_code = m.rank_bcode and c.sub_code = m.rank_scode)
+		where a.board_category = #{boardType}
+  
+  </select>
 	
 	
 	
