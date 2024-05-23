@@ -119,4 +119,8 @@ public class BookingDao {
 		return sql.insert("bkMapper.insertAssets",mp);
 	}
 
+	public int modAssets(Map<String, Object> mp) {
+		return sql.update("bkMapper.modifyAssets",mp);
+	}
+
 }

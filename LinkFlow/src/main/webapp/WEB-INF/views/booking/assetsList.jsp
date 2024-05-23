@@ -235,7 +235,7 @@ input[type="checkbox"]:checked {
 				                              <td>${ ass.assetsName }</td>
 				                              <td>
 				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify" 
-				                                  		onclick="modalType(1);">수정</span>
+				                                  		onclick="modalType('${ass.assetsNo }','${ ass.mainName }','${ ass.subName }','${ ass.assetsName }');">수정</span>
 				                                  |
 				                                  <span onclick="assDel(this);" data-assNo="${ass.assetsNo}">삭제</span>
 				                              </td>
@@ -251,7 +251,7 @@ input[type="checkbox"]:checked {
   				</div>
 
 				<div class="text-right">
-	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update" id="assInsert" onclick="modalType(2);">자산 추가</button>
+	            	<button class="btn bg-gradient-secondary" data-toggle="modal" data-target="#acc-update" id="assInsert" onclick="modalType();">자산 추가</button>
 	            </div>
 			</div>
              <!-- 자산 추가/수정 모달 -->
@@ -333,10 +333,13 @@ input[type="checkbox"]:checked {
 	        
 	        // URL에서 success 파라미터를 확인하고 알림 표시
             const urlParams = new URLSearchParams(window.location.search);
-            const success = urlParams.get('success');
-            if (success === 'true') {
-                Swal.fire('성공', '자산이 성공적으로 추가되었습니다.', 'success');
-            } 
+            const ain = urlParams.get('ain');
+            const amod = urlParams.get('amod');
+            if (ain === 'true') {
+                Swal.fire('성공', '추가되었습니다.', 'success');
+            } else if(amod === 'true'){
+            	Swal.fire('성공', '수정되었습니다.', 'success');
+            }
 	    });
 		
 		function searchAssets() { // 검색
@@ -386,12 +389,55 @@ input[type="checkbox"]:checked {
 		    });
 		}
 	
-		function modalType(num){
-			if(num == 1){
+		function modalType(no,main,sub,ass){
+			if(no != null){
 				document.getElementById('modalTitle').innerText = "자산 수정";
-				document.getElementById("updateAss").action = "${contextPath}/booking/ass.mod";
-				
+				var room = document.getElementById('roomSub');
+		        var supplies = document.getElementById('supSub');
+		        
+				if (main === "비품") {
+					$("#room").selected = false;
+					$("#supplies").selected = true;
+		            room.style.display = 'none';
+		            supplies.style.display = 'block';
+		        } else if(main === "시설"){
+		        	$("#supplies").selected = false;
+		            $("#room").selected = true;
+		            
+		            room.style.display = 'block';
+		            supplies.style.display = 'none';
+		        	
+		        }
+				$("#assMain").prop("disabled",true);
+		        document.getElementById(sub).selected = true;
+		        document.getElementById('assName').value = ass;
+		     	// hidden input 추가
+		        var hiddenInput = document.createElement("input");
+		        hiddenInput.setAttribute("type", "hidden");
+		        hiddenInput.setAttribute("name", "assetsNo");
+		        hiddenInput.setAttribute("value", no);
+		        document.getElementById("updateAss").appendChild(hiddenInput);
+		        
+		        document.getElementById("updateAss").setAttribute("action", "${contextPath}/booking/ass.mod");
+		   
 			}else{
+				 // assName 요소의 값을 비우기
+		        document.getElementById('assName').value = '';
+		        // modalTitle 초기화
+		        document.getElementById('modalTitle').innerText = "자산 추가";
+		        // 선택된 옵션 초기화
+		        $("#assMain").prop("disabled", false);
+		        $("#room").selected = false;
+		        $("#supplies").selected = false;
+		        // roomSub와 supSub의 스타일 초기화
+		        document.getElementById('roomSub').style.display = 'block';
+		        document.getElementById('supSub').style.display = 'none';
+		        // hidden input 제거
+		        var hiddenInput = document.getElementById("updateAss").querySelector("input[name='assetsNo']");
+		        if (hiddenInput) {
+		            hiddenInput.parentNode.removeChild(hiddenInput);
+		        }
+		        // action 설정
 				document.getElementById('modalTitle').innerText = "자산 추가";
 				document.getElementById("updateAss").action = "${contextPath}/booking/ass.in";
 			}
@@ -419,7 +465,7 @@ input[type="checkbox"]:checked {
 							assetsNo:assetsNo
 						},success:function(result){
 							if(result > 0 )
-								Swal.fire("자산이 삭제되었습니다.");
+								Swal.fire('성공', '삭제되었습니다.', 'success');
 								window.location.replace('${contextPath}/booking/ass.list');
 						}            		
 	            	})

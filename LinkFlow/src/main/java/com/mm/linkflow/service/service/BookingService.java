@@ -38,7 +38,7 @@ public interface BookingService {
 	
 	int insertAssets(Map<String,Object> mp); // 자산 추가 
 	
-	int modssets(Map<String,Object> mp); // 자산 수정 
+	int modAssets(Map<String,Object> mp); // 자산 수정 
 	
 	int delAssets(String assetsNo); // 자산 삭제
     

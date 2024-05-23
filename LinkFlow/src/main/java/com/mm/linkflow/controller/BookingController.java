@@ -227,18 +227,34 @@ public class BookingController {
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
-		int result = bkServiceImpl.insertAssets(mp);
+		int result = bkServiceImpl.modAssets(mp);
 		
 		if(result >0) {
-			return "redirect:/booking/ass.list?success=true";
+			return "redirect:/booking/ass.list?ain=true";
 		}else {
 			return "redirect:/booking/ass.list";
 		}
 		
 	}
 	@PostMapping("/ass.mod") // 자산 추가 
-	public void modAssets() {
+	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
+		AssetsDto ass = new AssetsDto().builder()
+									   .assetsNo(assets.get("assetsNo"))
+									   .assetsName(assets.get("assetsName"))
+									   .mainCode(assets.get("mainCode"))
+									   .subName(assets.get("subName"))
+									   .build();
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("ass", ass);
+		mp.put("userId", userId);
+		int result = bkServiceImpl.insertAssets(mp);
 		
+		if(result >0) {
+			return "redirect:/booking/ass.list?amod=true";
+		}else {
+			return "redirect:/booking/ass.list";
+		}
 	}
 	
 	@ResponseBody // 자산 삭제

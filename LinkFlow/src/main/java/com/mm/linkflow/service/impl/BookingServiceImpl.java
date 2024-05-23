@@ -89,8 +89,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public int modssets(Map<String,Object> mp) {
-		return 0;
+	public int modAssets(Map<String,Object> mp) {
+		return bkDao.modAssets(mp);
 	}
 
 	@Override
