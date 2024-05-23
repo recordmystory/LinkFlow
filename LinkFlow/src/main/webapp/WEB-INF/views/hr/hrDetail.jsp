@@ -211,6 +211,28 @@
                                                 </div>
                                                
                                                 <!-- /.col -->
+                                                <br>
+                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>올해 지각횟수</label>
+                                                    <input type="number"  name="" class="form-control" readonly="readonly" value="${m.yearlateCount}">   
+                                                    </div>   
+                                                </div>
+                                                
+                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>올해 결근횟수</label>
+                                                    <input type="number"  name="" class="form-control" readonly="readonly" value="${m.yearAbsentCount}">   
+                                                    </div>   
+                                                </div>
+                                                
+                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>총 근무일수</label>
+                                                    <input type="number"  name="" class="form-control" readonly="readonly" value="${m.yearWalktime}">   
+                                                    </div>   
+                                                </div>
+                                                
                                             </div>
                                             <!-- /.row -->
                                 
