@@ -134,4 +134,15 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectBkWaitList",rowBounds);
 	}
 
+	public int selectSupStatusCount(Map<String, String> search) {
+		return sql.selectOne("bkMapper.selectSupStatusCount",search);
+	}
+
+	public List<BookingDto> selectSupStatusList(Map<String, String> search, PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1 )* limit;
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		return sql.selectList("bkMapper.selectSupStatusList",search,rowBounds);
+	}
+
 }

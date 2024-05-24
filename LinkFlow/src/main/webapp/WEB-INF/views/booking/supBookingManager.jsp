@@ -284,23 +284,6 @@
 										</tr>
 									</thead>
 									<tbody id="bkStatusTable">
-										<tr>
-											<td>노트북</td>
-											<td>맥북</td>
-											<td>조성모(개발1팀)</td>
-											<td>2024/04/25 - 2024/05/15</td>
-											<td>24/04/16 11:16:41</td>
-											<td><a>사용중</a> | <a data-toggle="modal"
-												data-target="#acc-return">반납</a></td>
-										</tr>
-										<tr data-toggle="modal" data-target="#acc-status">
-											<td>노트북</td>
-											<td>맥북</td>
-											<td>조성모(개발1팀)</td>
-											<td>2024/04/25 - 2024/05/15</td>
-											<td>24/04/16 11:16:41</td>
-											<td><a>사용중</a> | <a>반납</a></td>
-										</tr>
 										
 									</tbody>
 								</table>
@@ -400,6 +383,7 @@
 	<script>
 	$(document).ready(function () {
        bkWaitList();
+       bkStatusList();
       });
 	
 	function bkWaitList(){
@@ -409,7 +393,8 @@
 			data:{},success:function(result){
 				let table="";
 				let bk = result.bkWaitList;
-				for(let i=1; i<bk.length; i++){
+				let pi = result.pi;
+				for(let i=0; i<bk.length; i++){
 					table += "<tr>"
 						  + "<td>"+ bk[i].subName + "</td>"
 						  + "<td>"+ bk[i].assetsName + "</td>"
@@ -426,19 +411,24 @@
 						  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">반려</a>"
 						  + "</td></tr>";
 				}
-				
+				console.log(bk);
+				console.log(pi);
 				let page = "";
-			  	let pi = result.pi;
-				page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/supWait.list?page="+pi.currentPage -1+"\">&laquo;</a></li>";
-				
-				for(let i=pi.startPage; i<pi.endPage; i++){
-					page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/supWait.list?page="+i+">"+i +"</a></li>";
-				}
-				page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/supWait.list?page="+pi.currentPage +1+">&raquo;</a></li>";
+
+			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+
+			  	for(let i = pi.startPage; i <= pi.endPage; i++){
+			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + i + "\">" + i + "</a></li>";
+			  	}
+
+			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
 				
 				
 				$("#bkWaitTable").html(table);
 				$("#bkWaitPage").html(page);
+				
+			},error:function(){
+				console.log("에작 에러");
 			}
 			
 		})
@@ -449,7 +439,7 @@
 			url:'${contextPath}/booking/supStat.list',
 			type:'get',
 			data:{
-				keyword: keyword,
+				keyword: keyword !=null? ,
 				condition: condition
 			},success:function(result){
 				let table="";
@@ -465,22 +455,33 @@
 					}else{
 						table += "<td> - </td>";
 					}
-					table += "<td>24/04/16 11:16:41</td>"
-						  + "<td>"
-						  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">사용중</a>"
-						  + " | " 
-						  + "<a data-toggle=\"modal\" data-target=\"#acc-return\">반납</a>"
-						  + "</td></tr>";
+					table += "<td>24/04/16 11:16:41</td>";
+					if(bk[i].status == "COM" || bk[i].status == "USE"){
+						  page += "<td>"
+								  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">사용중</a>"
+								  + " | " 
+								  + "<a data-toggle=\"modal\" data-target=\"#acc-return\">반납</a>"
+								  + "</td></tr>";
+					}else if(bk[i].status == "REJ"){
+						page += "<td>"
+							  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반려</a>"
+							  + "</td></tr>";
+					}else{
+						page += "<td>"
+							  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반납완료</a>"
+							  + "</td></tr>";
+					}
 				}
 				let page = "";
 			  	let pi = result.pi;
-				page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/supStat.list?page="+(pi.currentPage -1)+"\">&laquo;</a></li>";
-				
-				for(let i=pi.startPage; i<pi.endPage; i++){
-					page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/supStat.list?page="+i+">"+i +"</a></li>";
-				}
-				page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/supStat.list?page="+(pi.currentPage +1)+">&raquo;</a></li>";
-				
+			  	
+			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+
+			  	for(let i = pi.startPage; i <= pi.endPage; i++){
+			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + i + "\">" + i + "</a></li>";
+			  	}
+
+			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
 				
 				$("#bkStatusTable").html(table);
 				$("#bkStatPage").html(page);
@@ -488,9 +489,6 @@
 		})
 	}
 	
-	function paging(pi){
-		
-	}
 	</script>
 
 </body>

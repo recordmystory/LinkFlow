@@ -371,4 +371,64 @@
 	order by booking_no desc
 </select>
 
+<select id="selectSupStatusCount" resultType="_int">
+	select count(*)
+	  from tb_booking b
+	  join tb_assets a on (a.assets_no = b.assets_no)
+	  join tb_common c on (a.main_code = c.main_code)
+	  join tb_member m on (m.user_id = b.booking_id)
+	where b.status not in ('WAI','CAN')
+	  and b.del_yn = 'N'
+	  and a.del_yn = 'N'
+	  and a.sub_code = c.sub_code
+	  and a.main_code = '003-'
+	  <choose>
+	  <when test='keyword != "0" and condition eq "자원종류"'>
+	  and c.sub_name like '%'|| {keyword} || '%'
+	  </when>
+	  <when test='keyword != "0" and condition eq "상품명"'>
+	  and a.assets_name like '%'|| {keyword} || '%'
+	  </when>
+	  <when test='keyword != "0" and condition eq "요청자"'>
+	  and user_name like '%'|| {keyword} || '%'
+	  </when>
+	  </choose>
+</select>
+
+<select id="selectSupStatusList" resultMap="bkResult">
+	select 
+		   booking_no
+		  ,m.user_name
+          ,d.dept_title
+		  ,b.assets_no
+		  ,bk_content
+		  ,assets_name
+		  ,sub_name
+		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
+		  ,NVL(to_char(bk_end_dt,'YYYY/MM/DD'), ' ') AS bk_end_date
+		  ,to_char(b.mod_date,'YYYY/MM/DD') AS enr_date
+	 from tb_booking b
+	 join tb_member m on (m.user_id = b.booking_id)
+     join tb_dept d on (m.dept_code = d.dept_code)
+	 join tb_assets a on (a.assets_no = b.assets_no)
+	 join tb_common c on (a.main_code = c.main_code)
+	where b.status not in ('WAI','CAN')
+	  and a.main_code = '003-'
+	  and a.sub_code = c.sub_code
+	  and b.del_yn = 'N'
+	  and a.del_yn = 'N'
+	  <choose>
+	  <when test='keyword != "0"  and condition eq "자원종류"'>
+	  and c.sub_name like '%'|| {keyword} || '%'
+	  </when>
+	  <when test='keyword != "0" and condition eq "상품명"'>
+	  and a.assets_name like '%'|| {keyword} || '%'
+	  </when>
+	  <when test='keyword != "0" and condition eq "요청자"'>
+	  and user_name like '%'|| {keyword} || '%'
+	  </when>
+	  </choose>
+	order by booking_no desc
+</select>
+
 </mapper>

@@ -141,12 +141,12 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public int selectSupStatusCount(Map<String, String> search) {
-		return 0;
+		return bkDao.selectSupStatusCount(search);
 	}
 
 	@Override
-	public List<BookingDto> selectSipStatusList(PageInfoDto pi, Map<String, String> search) {
-		return null;
+	public List<BookingDto> selectSupStatusList(PageInfoDto pi, Map<String, String> search) {
+		return bkDao.selectSupStatusList(search,pi);
 	}
 
 	
