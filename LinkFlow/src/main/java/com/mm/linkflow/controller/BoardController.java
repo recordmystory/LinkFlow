@@ -28,6 +28,7 @@ import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.ReplyDto;
 import com.mm.linkflow.service.service.AttachService;
 import com.mm.linkflow.service.service.BoardService;
 import com.mm.linkflow.service.service.HrService;
@@ -545,5 +546,33 @@ public class BoardController {
 		}
 		return "redirect:/board/list.do?";
 	}
-
+	
+	@ResponseBody
+	@PostMapping("/registReply.do")
+	public String ajaxInsertReply(ReplyDto reply, HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		reply.setRegId(loginUser.getUserId());
+		
+		return boardService.insertReply(reply) > 0 ? "SUCCESS" : "FAIL";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/replyList.do", produces="application/json; charset=UTF-8")
+	public List<ReplyDto> replyList(int no) {
+		return boardService.selectReplyList(no);
+	}
+	
+	@ResponseBody
+	@PostMapping("/deleteReply.do")
+	public String ajaxDeleteReply(int replyNo) {
+		return boardService.deleteReply(replyNo) > 0 ? "SUCCESS" : "FAIL";
+	}
+		
+	@ResponseBody
+	@PostMapping("/updateReply.do")
+	public String ajaxupdateReply(ReplyDto reply) {
+		
+		return boardService.updateReply(reply) > 0 ? "SUCCESS" : "FAIL";
+	}
 }

@@ -8,6 +8,7 @@ import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.ReplyDto;
 
 public interface BoardService {
 	
@@ -70,5 +71,13 @@ public interface BoardService {
 	int updateCategoryTitle(Map<String, String> map);
 
 	int deleteCategory(String boardType);
+
+	int insertReply(ReplyDto reply);
+
+	List<ReplyDto> selectReplyList(int no);
+
+	int deleteReply(int replyNo);
+
+	int updateReply(ReplyDto reply);
 
 }

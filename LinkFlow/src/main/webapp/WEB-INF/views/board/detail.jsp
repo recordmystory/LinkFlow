@@ -43,6 +43,10 @@
   border: none;
   background-color: transparent;
 }
+
+i {
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -120,90 +124,183 @@
                                 </tr>
                             </table>
                             <br>
-
-                            <!-- 댓글 기능은 나중에 ajax 배우고 접목시킬예정! 우선은 화면구현만 해놓음 -->
+														
+														<c:if test="${ board.noticeYN != 'Y'}">
                             <table id="replyArea" class="table" align="center">
                                 <thead>
                                     <tr>
-                                        <th colspan="4">댓글(3)</th>
+                                        <th colspan="4">댓글(<span id="rcount">0</span>) </th>
                                     </tr>
                                     <tr>
                                         <th colspan="3">
-                                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%"></textarea>
+                                            <textarea class="form-control" name="" id="replyContent" cols="55" rows="2" style="resize:none; width:100%"></textarea>
                                         </th>
-                                        <th style="vertical-align: middle">
-                                            <button class="btn btn-secondary">등록하기</button>
+                                        <th width="150px" style="vertical-align: middle">
+                                            <button class="btn btn-secondary" onclick="ajaxInsertReply();">등록하기</button>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th width="120" style="text-align: center;">user02</th>
-                                        <td style="padding-left: 50px;">
-                                            <span class="commentText">댓글입니다.너무웃</span>
-                                            <i class="fa-solid fa-pen origin_modify" style="padding-left: 20px;"></i>
-                                        </td>
-                                        <td width="100" style="text-align: center;">2020-04-10</td>
-                                        <td width="150">
-                                            <i class="fa-solid fa-xmark fa-xl"></i>
-                                        </td>
-                                    </tr>
 
-                                    <tr>
-                                        <th width="120" style="text-align: center;">user02</th>
-                                        <td style="padding-left: 50px;">
-                                            <span class="commentText">댓글입니다.너무웃기</span>
-                                            <i class="fa-solid fa-pen origin_modify" style="padding-left: 20px;"></i>
-                                        </td>
-                                        <td width="100" style="text-align: center;">2020-04-10</td>
-                                        <td width="150">
-                                            <i class="fa-solid fa-xmark fa-xl"></i>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <th width="120" style="text-align: center;">user02</th>
-                                        <td style="padding-left: 50px;">
-                                            <span class="commentText">댓글입니다.너무웃기다</span>
-                                            <i class="fa-solid fa-pen origin_modify" style="padding-left: 20px;"></i>
-                                        </td>
-                                        <td width="100" style="text-align: center;">2020-04-10</td>
-                                        <td width="150">
-                                            <i class="fa-solid fa-xmark fa-xl"></i>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
+                            </c:if>
                         </div>
                     </div>
                 </div>
             </section>
             
             <script>
+            		let commentHtml = "";
+            		let parentTd = "";
                 $(document).ready(function() {
-                    $(document).on("click", ".origin_modify", function() {
-                        const parentTd = $(this).closest("td");
-                        const commentHtml = parentTd.html();
-                        let inputEl = document.createElement("input");
-                        
-                        inputEl.type = 'text';
-                        inputEl.classList.add("reply_modifyinput");
-                        inputEl.value = parentTd.find(".commentText").text();
-
-                        parentTd.find(".commentText, .origin_modify").remove();
-                        parentTd.append(inputEl);
-
-                        inputEl.focus();
-
-                        $(document).on('blur', ".reply_modifyinput", function() {
+                	$(document).on('blur', ".reply_modifyinput", function() {
+                        setTimeout(function() {
                             parentTd.html(commentHtml);
-                        });
+                        }, 100); // 200ms 지연 추가
                     });
+
+                    $(document).on("click", ".cancleReply", function() {
+                    	parentTd.html(commentHtml);
+                    });
+  
+                    ajaxReplyList();
                 });
+                
+                function changeReplyContent(no, element) {
+
+            				const clickParentTd = $(element).closest("td");
+                    parentTd = clickParentTd;
+          					commentHtml = parentTd.html();
+                    let inputEl = document.createElement("input");
+                    
+                    
+                    inputEl.type = 'text';
+                    inputEl.classList.add("reply_modifyinput");
+                    inputEl.value = parentTd.find(".commentText").text();
+
+                    let editIcon = $('<i class="fa-solid fa-check" onclick="ajaxUpdateReply('+ no +')" style="padding: 0px 15px 0px 15px"></i>');
+                    let resetIcon = $('<i class="fa-solid fa-rotate-left cancleReply" ></i>');
+
+                    parentTd.find(".commentText, .origin_modify").remove();
+                    parentTd.append(inputEl).append(editIcon).append(resetIcon);
+
+                    inputEl.focus();     
+            		}
+                
+                function ajaxUpdateReply(no) {
+		            		if($(".reply_modifyinput").val().trim().length != 0) {
+		            			$.ajax({
+		            				url:"${contextPath}/board/updateReply.do",
+		            				type:"post",
+		            				data:{
+		            					replyContent:$(".reply_modifyinput").val(),
+		            					replyNo:no,
+		            				} ,
+		            				success:function(result){
+		            					if(result == "SUCCESS") {
+		            						ajaxReplyList();
+		            					}else if(result == "FAIL") {
+		            						alert("댓글 작성 서비스", "다시 입력해주세요.");
+		            						ajaxReplyList();
+		            					}
+		            				},error:function(){
+		            					console.log("댓글 작성용 ajax 통신 실패");
+		            				}
+		            			})
+		            		}else {
+		            			alert("댓글 작성 서비스 ", "빈문자");
+		            		}
+		        	 }
+                
+                function ajaxInsertReply() {
+	            		if($("#replyContent").val().trim().length != 0) {
+	            			$.ajax({
+	            				url:"${contextPath}/board/registReply.do",
+	            				type:"post",
+	            				data:{
+	            					replyContent:$("#replyContent").val(),
+	            					refNo:${board.boardNo}
+	            				} ,
+	            				success:function(result){
+	            					if(result == "SUCCESS") {
+	            						$("#replyContent").val("");
+	            						ajaxReplyList();
+	            					}else if(result == "FAIL") {
+	            						alert("댓글 작성 서비스", "다시 입력해주세요.");
+	            					}
+	            				},error:function(){
+	            					console.log("댓글 작성용 ajax 통신 실패");
+	            				}
+	            			})
+	            		}else {
+	            			alert("댓글 작성 서비스 ", "빈문자");
+	            		}
+            	 }
+                
+               function ajaxReplyList(){
+            		$.ajax({
+            			url:"${contextPath}/board/replyList.do",
+            			type:"get",
+            			data:"no=${board.boardNo}",
+            			success:function(resData){ // [{}, {}, {}, ..]
+            				$("#rcount").text(resData.length);
+            				
+            				let tr = "";
+            				for(let i=0; i<resData.length; i++) {
+
+            					tr += "<tr>"
+            							+ '<th width="150" style="text-align: center;">' + resData[i].userName + " " + resData[i].position +'</th>'
+            							+ '<td style="padding-left: 50px;"><span class="commentText">' 
+            							+ resData[i].replyContent;
+            							
+            					// 현재로그인한 회원이 해당 댓글의 작성일 경우
+         							if(resData[i].regId == "${loginUser.userId}") {
+         								tr += '</span><i class="fa-solid fa-pen origin_modify" style="padding-left: 20px;" onclick="changeReplyContent('+ resData[i].replyNo +', this)"></i></td>' 
+         								 +'<td width="100" style="text-align: center;">'
+         								 + resData[i].modCharDate
+         								 + '</td><td width="150"><i class="fa-solid fa-xmark fa-xl" onclick="confirmReplyDelete(' + resData[i].replyNo +')"></i></td>';
+         							}else{
+         								tr += '<td colspan="2" width="200" style="text-align: center;">'
+            								 + resData[i].modCharDate
+            								 + '</td>';
+         							}
+           						tr += "</tr>";	
+            				}
+            				
+            				$("#replyArea tbody").html(tr);
+            				
+            			},error:function(){
+            				console.log("댓글 목록 조회용 ajax통신 실패");
+            			}
+            		})
+            	}
+              
+              function confirmReplyDelete(no) {
+				        if (confirm('댓글을 삭제하시겠습니까? 삭제하시면 복구가 안됩니다')) {
+            			$.ajax({
+            				url:"${contextPath}/board/deleteReply.do",
+            				type:"post",
+            				data:{
+            					replyNo:no,
+            				} ,
+            				success:function(result){
+            					if(result == "SUCCESS") {
+            						alert("댓글 삭제했습니다");
+            						ajaxReplyList();
+            					}else if(result == "FAIL") {
+            						alert("댓글 삭제에 실패했습니다");
+            					}
+            				},error:function(){
+            					console.log("댓글 작성용 ajax 통신 실패");
+            				}
+            			})
+				        }
+					    }
             </script>
             <script>
 						    function confirmDelete(url) {
-						        if (confirm('정말 삭제하시겠습니까?')) {
+						        if (confirm('게시글을 삭제하시겠습니까?')) {
 						            window.location.href = url;
 						        }
 						    }
