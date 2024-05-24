@@ -152,21 +152,27 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int removeBoard(List<Integer> no) {
-		int result1 = boardDao.removeBoard(no);
-		int result2 = 0;
+		int result2 = 1;
+		int result3 = 1;
 		for(int index : no) {
-			List<String> delFileNo = attachDao.selectDelFileNo(index);
+			List<String> delFileNo = attachDao.selectDelFileNo(index); 
 			if(delFileNo != null) {
+				result2 = 0;
+				
 				String[] delFileNoArray = new String[delFileNo.size()];
 				delFileNo.toArray(delFileNoArray);
 				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
 				result2 += attachDao.deleteAttach(delFileNoArray);	
+				
 				for(AttachDto at : delFileList) {
 					new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
 				}
 			}
+			
+			result3 += boardDao.removeReply(index);
 		}
-		return result1 * result2;
+		int result1 = boardDao.removeBoard(no);
+		return result1;
 	}
 
 	@Override

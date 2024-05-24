@@ -170,4 +170,8 @@ public class BoardDao {
 	public int updateReply(ReplyDto reply) {
 		return sqlSession.update("boardMapper.updateReply", reply);
 	}
+
+	public int removeReply(int index) {
+		return sqlSession.delete("boardMapper.removeReply", index);
+	}
 }

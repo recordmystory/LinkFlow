@@ -484,4 +484,10 @@
       WHERE reply_no = #{replyNo}
 	</update>
 	
+	<delete id="removeReply">
+		delete
+		  FROM tb_reply
+		  where ref_no = #{index}
+	</delete>
+	
 </mapper>
