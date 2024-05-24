@@ -97,8 +97,8 @@
                                                 <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y' }">
                                                     <option value="CATEGORY-8">사내공지</option>
                                                 </c:if>
-                                                <c:forEach var="c" items="${categoryList}">
-                                                    <option value="${c.boardCategory }">${c.categoryName }게시판</option>
+                                                <c:forEach var="w" items="${writeList}">
+                                                    <option value="${w.boardCategory }">${w.categoryName }게시판</option>
                                                 </c:forEach>
                                             </select>
                                         </td>

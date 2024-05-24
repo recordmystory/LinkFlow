@@ -3,6 +3,7 @@ package com.mm.linkflow.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +31,7 @@ import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.AttachService;
 import com.mm.linkflow.service.service.BoardService;
 import com.mm.linkflow.service.service.HrService;
+import com.mm.linkflow.service.service.MemberService;
 import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
 
@@ -46,6 +47,7 @@ public class BoardController {
 	private final BoardService boardService;
 	private final AttachService attachService;
 	private final HrService hService;
+	private final MemberService memeberService;
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
@@ -87,7 +89,7 @@ public class BoardController {
 		map.put("boardName", boardName);
 		map.put("normalYN", normalYN);
 		map.put("currentType", boardType);
-		
+
 		mv.addObject("pi", pi)
 		  .addObject("boardList", boardList)
 		  .addObject("noticeList", noticeList)
@@ -100,7 +102,10 @@ public class BoardController {
 	@GetMapping("/registForm.page") 
 	public ModelAndView registForm(HttpSession session, ModelAndView mv) {
 		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		List<BoardCategoryDto> writeList = boardService.selectWriteCategory(loginUser);
 		mv.addObject("categoryList", categoryList)
+		  .addObject("writeList", writeList)
 		  .setViewName("board/registForm");
 		return mv;
 	}
@@ -139,8 +144,6 @@ public class BoardController {
 
 		int result = boardService.insertBoard(board);
 		
-		log.debug("attachList : {}", attachList.isEmpty());
-		log.debug("result : {}", result);
 		if(attachList.isEmpty() && result == 1 || !attachList.isEmpty() && result == attachList.size()) {
 			redirectAttributes.addFlashAttribute("alertMsg", "게시글 작성에 성공하였습니다.");
 		}else {
@@ -442,7 +445,6 @@ public class BoardController {
 		newCategory.setRegId(loginUser.getUserId());
 		newCategory.setModId(loginUser.getUserId());
 		String categoryName = boardService.createBoardCategory(newCategory);
-		log.debug("카테고리 이름 : ", categoryName);
 		
 		List<BoardAuthDto> listAuth = newBoardCategory.getAuthList();
 		listAuth.add(BoardAuthDto.builder()
@@ -460,6 +462,88 @@ public class BoardController {
 		}
 
 		return "redirect:/board/list.do?type=" + categoryName;
+	}
+	
+	@GetMapping("/updateBoard.page")
+	public String updateBoardForm(@RequestParam(value="type", defaultValue="CATEGORY-8") String boardType
+								 ,Model model, HttpSession session) { 
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		List<DeptDto> apprList = hService.selectApprLine();
+		MemberDto categoryMaster = memeberService.selectCategoryMaster(boardType);
+		
+		List<BoardAuthDto> normalUserList = boardService.selectNormalUser(boardType);
+		
+		String boardName ="";
+		for(int i=0; i<categoryList.size(); i++) {
+			if(categoryList.get(i).getBoardCategory().equals(boardType)) {
+				boardName = categoryList.get(i).getCategoryName();
+			}
+		}
+		
+		Iterator<BoardAuthDto> iterator = normalUserList.iterator();
+        while (iterator.hasNext()) {
+        	BoardAuthDto data = iterator.next();
+            if (data.getUserId().equals(categoryMaster.getUserId()) || 
+        		data.getUserId().equals(loginUser.getUserId())) {
+                iterator.remove();
+            }
+        }
+        
+		model.addAttribute("apprList", apprList);
+		model.addAttribute("boardName", boardName);
+		model.addAttribute("boardType", boardType);
+		model.addAttribute("masterCount", categoryMaster.getUserId().equals(loginUser.getUserId()) ? 1 : 2);
+		model.addAttribute("normalUserList", normalUserList);
+		model.addAttribute("categoryMaster", categoryMaster);
+		model.addAttribute("categoryList", categoryList);
+		
+		return "board/updateBoard";
+	}
+	
+	@PostMapping("/updateBoard.do")
+	public String updateBoard(@RequestParam(value="type", defaultValue="CATEGORY-8") String boardType
+						  , BoardAuthDto newBoardCategory
+						  , HttpSession session, String categoryTitle
+						  , RedirectAttributes redirectAttributes) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		List<BoardAuthDto> listAuth = newBoardCategory.getAuthList();
+		
+		int result1 = boardService.resetBoardUser(boardType);
+		Map<String, String> map = new HashMap<>();
+		map.put("categoryTitle", categoryTitle);
+		map.put("boardType", boardType);
+		int result2 = boardService.updateCategoryTitle(map);
+		int result3 = 0;
+		if( !listAuth.isEmpty() && result2 > 0) {
+			result3 = boardService.reallocationBoardAuth(listAuth, loginUser.getUserId());
+		}
+		
+		if(result3 == listAuth.size()) {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시판 수정에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 게시판 수정에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:/board/list.do?type=" + boardType;
+	}
+	
+	@GetMapping("deleteCategory.do")
+	public String deleteCategory(@RequestParam(value="type", defaultValue="CATEGORY-8") String boardType
+							 , RedirectAttributes redirectAttributes) {
+		
+		int result = boardService.deleteCategory(boardType);
+		
+		if(result > 0 ) {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시판 삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 게시판 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		return "redirect:/board/list.do?";
 	}
 
 }

@@ -67,11 +67,13 @@
                     <div class="contentArea">
                         <div class="contentInElement">
                             <div class="btnArea">
-                           		<c:if test="${(loginUser.superRight == 'Y' or loginUser.boardRight == 'Y') and map.normalYN == 'NORMAL'}">
+                           		<c:if test="${map.normalYN == 'NORMAL'}">
                                 <ul class="navbar-nav">
                                     <li class="nav-item dropdown" style="display: flex; flex-direction: row;">
                                         <a class="nav-link btn btn-lg btn-secondary readUser" data-toggle="dropdown" href="#" style="width: 70px;"><i class="fa-solid fa-book fa-lg"></i></a>
-                                        <a href="" style="padding: 10px 0 0 10px;"><i class="fa-solid fa-gear fa-2xl"></i></a>
+                                        <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y'}">
+                                        	<a href="${contextPath }/board/updateBoard.page?type=${map.currentType}" style="padding: 10px 0 0 10px;"><i class="fa-solid fa-gear fa-2xl"></i></a>
+                                        </c:if>
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left movePage">
                                             <div class="bk-table">
                                                 <div class="card">

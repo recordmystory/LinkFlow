@@ -86,16 +86,19 @@
         <div class="contentArea">
             <div class="contentInElement">
                 <div class="btnArea">
-                    <button  class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="submitForm()">생성</button>
-                    <button class="btn btn-secondary btn-sm">취소</button>
+                	<c:if test="${categoryMaster.userId == loginUser.userId }">
+                    <button type="button" class="btn btn-danger btn-sm" style="margin-right: 6px;" onclick="sendRequest()">삭제</button>
+                   </c:if>
+                    <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="submitForm()">수정하기</button>
+                    <button type="button" class="btn btn-secondary btn-sm">취소</button>
                 </div>
             </div>
             <div style="min-height: 500px; min-width: 100%;">
-                <form id="enrollForm" method="post" action="${contextPath }/board/createBoard.do">
+                <form id="enrollForm" method="post" action="${contextPath }/board/updateBoard.do?type=${boardType}">
                     <table>
                         <tr>
                             <th width="130"><label for="title">게시판 제목</label></th>
-                            <td><input type="text" id="title" class="form-control" name="categoryTitle" required placeholder="게시판 제목을 입력해주세요"></td>
+                            <td><input type="text" id="title" class="form-control" name="categoryTitle" value="${boardName }" required placeholder="게시판 제목을 입력해주세요"></td>
                         </tr>
                         <tr>
                             <th><label for="title">사용자 및 권한</label></th>
@@ -117,15 +120,52 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                        	<input type="hidden" id="writeId" value="${loginUser.userId }">
-                                        	<input type="hidden" id="boardRight" value="${loginUser.boardRight }">
-                                        	<input type="hidden" id="superRight" value="${loginUser.superRight }">
+                                 			<tr>
+                                       	<input type="hidden" name="AuthList[0].userId" value="${categoryMaster.userId}" id="masterUserId">
+                                       	<input type="hidden" name="AuthList[0].writeYN" value="Y" >
+                                       	<input type="hidden" name="AuthList[0].boardCategory" value="${boardType }" >
+		                                    <th>${categoryMaster.deptName }</th>
+		                                    <th>${categoryMaster.position }</th>
+		                                    <th>${categoryMaster.userName }</th>
+		                                    <th><i class="fa-solid fa-crown"></i></th>
+		                                  </tr>
+		                                  <c:if test="${categoryMaster.userId != loginUser.userId }">
+		                                  	<tr>
+	                                       	<input type="hidden" name="AuthList[1].userId" id="writeId" value="${loginUser.userId}">
+			                                    <input type="hidden" name="AuthList[1].writeYN" value="Y" >
+			                                    <input type="hidden" name="AuthList[1].boardCategory" value="${boardType }" >
 			                                    <th>${loginUser.deptName }</th>
 			                                    <th>${loginUser.position }</th>
 			                                    <th>${loginUser.userName }</th>
-			                                    <th><i class="fa-solid fa-crown"></i></th>
-			                                  </tr>
+			                                    <th><i class="fa-solid fa-check"></i></th>
+		                                  	</tr>
+		                                  </c:if>
+                                    	<c:forEach var="n" items="${normalUserList}" varStatus="status">
+                                    		<c:choose>
+                                    			<c:when test="${n.boardRight == 'Y' }">
+                                    				<tr>
+			                                       	<input type="hidden" name="AuthList[${status.index + masterCount}].userId" id="userId" value="${n.userId}">
+			                                       	<input type="hidden" name="AuthList[${status.index + masterCount}].writeYN" id="writeId" value="Y" >
+					                                    <input type="hidden" name="AuthList[${status.index + masterCount}].boardCategory" value="${boardType }" >
+					                                    <td>${n.deptTitle }</td>
+					                                    <td>${n.subName }</td>
+					                                    <td>${n.userName }</td>
+					                                    <td><i class="fa-solid fa-check"></i></td>
+				                                  	</tr>
+                                    			</c:when>
+                                    			<c:otherwise>
+                                    				<tr>
+			                                       	<input type="hidden" name="AuthList[${status.index + masterCount}].userId" id="userId" value="${n.userId}">
+					                                    <input type="hidden" name="AuthList[${status.index + masterCount}].boardCategory" value="${boardType }" >
+					                                    <td>${n.deptTitle }</td>
+					                                    <td>${n.subName }</td>
+					                                    <td>${n.userName }</td>
+					                                    <td><input value="<c:if test="${ n.writeYN eq 'Y' }"> Y </c:if>" type="checkbox" class="writeCheckBox" name="AuthList[${status.index + masterCount}].writeYN" onclick="toggleCheckbox(this)" <c:if test="${ n.writeYN eq 'Y' }"> checked </c:if>></td>
+				                                  	</tr>
+                                    			</c:otherwise>
+                                    		</c:choose>
+                                    		
+																			</c:forEach>
                                     </tbody>
                                 </table>
                                 <hr style="margin-top: 0px;">
@@ -211,7 +251,20 @@
                                                 <div class="card-header">
                                                     <h3 class="card-title">인원추가</h3>
                                                 </div>
-                                                <div class="card-body text-nowrap overflow-auto resultNameArea"></div>
+                                                <div class="card-body text-nowrap overflow-auto resultNameArea">
+                                                	<c:forEach var="n" items="${normalUserList}" varStatus="status">
+                                    									<div class="NameArea ${n.userId }">
+																												${n.userName } ${n.subName }
+																												<input type="hidden" id="userId" value="${n.userId }">
+																												<input type="hidden" id="userName" value="${n.userName }">
+																												<input type="hidden" id="subName" value="${n.subName }">
+																												<input type="hidden" id="deptTitle" value="${n.deptTitle }">
+																												<input type="hidden" id="boardRight" value="${n.boardRight }">
+																												<i class="fa-solid fa-xmark" onclick="removeParentElement(this)" aria-hidden="true"></i>
+																											</div>
+                                    						
+																									</c:forEach>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -231,21 +284,28 @@
     </div>
    </section>
    <script>
-   		
+	   const initialRowCount = ${masterCount};
+		 
+	   function sendRequest() {
+		    if (confirm('삭제시 복구가 안됩니다 정말로 삭제하시겠습니까?')) {
+		    	window.location.href = '${contextPath}/board/deleteCategory.do?type=${boardType}';
+		    }
+		}
+	   
 	   function toggleCheckbox(checkbox) {
 		   
 		   checkbox.value = checkbox.checked ? "Y" : "";
 		 }
 	   function submitForm() {
-       const titleInput = document.getElementById('title');
+	       const titleInput = document.getElementById('title');
 
-       if (!titleInput.value.trim()) {
-           alert('게시판 제목을 입력해주세요.');
-       }
+	       if (!titleInput.value.trim()) {
+	           alert('게시판 제목을 입력해주세요.');
+	       }
 
-       const form = document.getElementById('enrollForm');
-       form.submit();
-		 }
+	       const form = document.getElementById('enrollForm');
+	       form.submit();
+			 }
 	   function removeParentElement(button) {
 		    let parentElement = button.parentNode; // 클릭된 요소의 바로 부모 요소를 선택합니다.
 		    if (parentElement) {
@@ -255,8 +315,8 @@
 	   function executeScript() {
 			  const tableBody = document.querySelector('#createTable tbody');
 			   
-		    while (tableBody.rows.length > 1) {
-		     tableBody.deleteRow(1);
+		    while (tableBody.rows.length > initialRowCount) {
+		     tableBody.deleteRow(initialRowCount);
 			  }
 		    
 		    const nameAreas = document.querySelectorAll('.resultNameArea .NameArea');
@@ -268,15 +328,16 @@
 				    const hiddenInputs = nameAreas[i].querySelectorAll('input[type="hidden"]');
 			    	const newRow = document.createElement('tr');
 			    	newRow.innerHTML = 
-			    		'<input type="hidden" name="AuthList[' + i + '].userId" value='+ hiddenInputs[0].value + '>' +
+			    		'<input type="hidden" name="AuthList[' + (i + initialRowCount) + '].userId" value='+ hiddenInputs[0].value + '>' +
+			    		'<input type="hidden" name="AuthList[' + (i + initialRowCount) + '].boardCategory" value="${boardType }">' +
 			    		'<td>'+ hiddenInputs[3].value + '</td>' +
 			    		'<td>'+ hiddenInputs[2].value + '</td>' +
 			    		'<td style="padding:12px">'+ hiddenInputs[1].value + '</td>';
 			    		if(hiddenInputs[4].value == 'Y'){
 			    			newRow.innerHTML += '<th style="padding:12px 24px 12px 12px"><i class="fa-solid fa-check"></i></th>' +
-			    			'<input value="Y" type="hidden" class="writeCheckBox" name="AuthList[' + i +'].writeYN">';
+			    			'<input value="Y" type="hidden" class="writeCheckBox" name="AuthList[' + (i + initialRowCount) +'].writeYN">';
 			    		}else{
-			    			newRow.innerHTML += '<td style="padding:12px 24px 12px 12px"><input value="" type="checkbox" class="writeCheckBox" name="AuthList[' + i +'].writeYN" onclick="toggleCheckbox(this)"></td>';		    			
+			    			newRow.innerHTML += '<td style="padding:12px 24px 12px 12px"><input value="" type="checkbox" class="writeCheckBox" name="AuthList[' + (i + initialRowCount) +'].writeYN" onclick="toggleCheckbox(this)"></td>';		    			
 			    		}
 			    			
 			        
@@ -313,21 +374,17 @@
 		         if (node.type === "person") {
 		             var personName = node.text;
 		             var targetClass = node.id; 
-								 var elements = $('.resultNameArea .NameArea.' + targetClass);
-																	 
+								 var checkUserId = node.data.userid;
+								 var elements = $('.resultNameArea .NameArea.' + checkUserId);						 
 								 var isExisting = elements.length > 0;
 	
-								 var checkUserId = node.data.userid;
 								 var writeUserId = $("#writeId").val();
+								 var masterUserId = $("#masterUserId").val();
 
-								 
-		             if ((!isExisting) && checkUserId != writeUserId) {
-		                 var html = '<div class="NameArea ' + node.id + '">' + personName +'<i class="fa-solid fa-xmark" onclick="removeParentElement(this)"></i></div>';
-		                 
+		             if ((!isExisting) && checkUserId != writeUserId && checkUserId != masterUserId) {
+		                 var html = '<div class="NameArea ' + checkUserId + '">' + personName +'<i class="fa-solid fa-xmark" onclick="removeParentElement(this)"></i></div>';
 		                 $('.resultNameArea').append(html);
 		             } else {
-		                 // 이미 존재하는 이름이면 해당 이름을 삭제합니다.
-		                 //$('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
 		            	 	elements.remove();
 		             }
 		         }

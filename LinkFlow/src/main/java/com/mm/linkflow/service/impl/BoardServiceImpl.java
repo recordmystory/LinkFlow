@@ -209,5 +209,38 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectNormalUser(boardType);
 	}
 
-	
+	@Override
+	public List<BoardCategoryDto> selectWriteCategory(MemberDto loginUser) {
+		return boardDao.selectWriteCategory(loginUser);
+	}
+
+	@Override
+	public int resetBoardUser(String boardType) {
+		return boardDao.resetBoardUser(boardType);
+	}
+
+	@Override
+	public int reallocationBoardAuth(List<BoardAuthDto> listAuth, String userId) {
+		int result = 0;
+		for(BoardAuthDto at : listAuth) {
+			at.setRegId(userId);
+			at.setModId(userId);
+			if(at.getWriteYN() == null) {
+				at.setWriteYN("N");
+			}
+			result += boardDao.setBoardAuth(at);
+		}
+		return result;
+	}
+
+	@Override
+	public int updateCategoryTitle(Map<String, String> map) {
+		return boardDao.updateCategoryTitle(map);
+	}
+
+	@Override
+	public int deleteCategory(String boardType) {
+		return boardDao.deleteCategory(boardType);
+	}
+
 }

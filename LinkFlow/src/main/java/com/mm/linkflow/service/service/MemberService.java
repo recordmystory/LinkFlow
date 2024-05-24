@@ -43,4 +43,7 @@ public interface MemberService {
 	   int selectHireMember(String date);
 	   // 퇴사자 조회용 - 황민우
 	   int selectRetireMember(String date);
+
+	   // 카테고리마스터조회용 - 구성모
+	   MemberDto selectCategoryMaster(String boardType);
 }

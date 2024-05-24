@@ -137,6 +137,20 @@ public class BoardDao {
 	public List<BoardAuthDto> selectNormalUser(String boardType) {
 		return sqlSession.selectList("boardMapper.selectNormalUser", boardType);
 	}
-	
 
+	public List<BoardCategoryDto> selectWriteCategory(MemberDto loginUser) {
+		return sqlSession.selectList("boardMapper.selectWriteCategory", loginUser);
+	}
+
+	public int resetBoardUser(String boardType) {
+		return sqlSession.delete("boardMapper.resetBoardUser", boardType);
+	}
+
+	public int updateCategoryTitle(Map<String, String> map) {
+		return sqlSession.update("boardMapper.updateCategoryTitle", map);
+	}
+
+	public int deleteCategory(String boardType) {
+		return sqlSession.update("boardMapper.deleteCategory", boardType);
+	}
 }
