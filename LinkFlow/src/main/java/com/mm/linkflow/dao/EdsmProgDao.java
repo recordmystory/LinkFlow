@@ -69,6 +69,12 @@ public class EdsmProgDao {
 		return sqlSessionTemplate.insert("edsmProgMapper.insertDoc", edocDto);
 	}
 
+	
+	
+	
+	
+	
+	
 	public List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
 

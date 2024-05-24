@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
+import com.mm.linkflow.dto.EdocHistDto;
+import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
@@ -129,17 +132,36 @@ public class EdsmProgController {
 	 * @return 진행중문서 목록 페이지로 redirect
 	 */
 	@PostMapping("/draftingDoc.prog")
-	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles,HttpSession session, RedirectAttributes redirectAttributes) {
 		
 	
-		log.debug("edocDto : {}", edocDto);
+	
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		ArrayList<EdocHistDto> edocHistList = edocDto.getEdocHistList();
+		ArrayList<EdocRefDto> EdocRefList = edocDto.getEdocRefList();
+		
 		
 		edocDto.setRegId(loginUser.getUserId());
 		edocDto.setModId(loginUser.getUserId());
+
+		
+		
+		
+		for(EdocHistDto EdocHistDto : edocHistList) {
+			EdocHistDto.setModId(loginUser.getUserId());
+			EdocHistDto.setRegId(loginUser.getUserId());
+			EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
+			
+		}
+		for(EdocRefDto EdocRefDto : EdocRefList) {
+			EdocRefDto.setModId(loginUser.getUserId());
+			EdocRefDto.setRegId(loginUser.getUserId());
+			EdocRefDto.setEdFormCode(edocDto.getEdFormCode());
+			
+		}
 		int result = edsmProgService.insertDoc(edocDto);
 		
-		if(result >0) {
+		if(result>0) {
 			redirectAttributes.addFlashAttribute("alertMsg","성공");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg","실패");

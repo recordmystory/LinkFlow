@@ -136,6 +136,59 @@
           )
 	</insert>
 	
+	<!-- 결제자 참조자 테이블 insert -->
+	<insert id="insertRef">
+		insert into tb_edoc_REF
+		(
+     ED_NO
+    ,USER_ID
+    ,REG_DATE
+    ,MOD_DATE
+    ,REG_ID
+    ,MOD_ID
+    ,DEL_YN
+    )VALUES(
+    'LI' || '-' || (SELECT SUBSTR(EF.ED_FR_NAME, 1, 2)
+          FROM TB_EDOC_FORM EF
+          WHERE EF.ED_FR_CODE = #{edFormCode}
+          AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.CURRVAL
+    ,#{userId}
+    ,SYSDATE      
+    ,SYSDATE
+    , #{regId}
+    , #{modId}
+    , 'N'
+    )
+	</insert>
+	
+	<!-- 결제 이력 insert -->
+	<insert id="insertEdocHist">
+		insert into tb_edoc_hist
+		(
+     USER_ID
+    ,ED_NO
+    ,REG_DATE
+    ,MOD_DATE
+    ,REG_ID
+    ,MOD_ID
+    ,DEL_YN
+    )VALUES(
+     #{userId}
+    ,'LI' || '-' || (SELECT SUBSTR(EF.ED_FR_NAME, 1, 2)
+          FROM TB_EDOC_FORM EF
+          WHERE EF.ED_FR_CODE = #{edFormCode}
+          AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.CURRVAL
+    ,SYSDATE      
+    ,SYSDATE
+    , #{regId}
+    , #{modId}
+    , 'N'
+    )
+	
+	</insert>
+	
+	
+	
 	<!-- 진행중인 문서 목록 조회 (전체) -->
 	<select id="selectAllList" resultMap="edocResult">
 		SELECT DISTINCT ED.ED_NO

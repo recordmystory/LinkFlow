@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 public class EdocRefDto extends CommonDto {
 	private String edNo; 
 	private String userId;
+	private String edFormCode;
 	private String userName;
 	
 }
