@@ -15,6 +15,7 @@ import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.ReplyDto;
 import com.mm.linkflow.service.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -151,21 +152,27 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int removeBoard(List<Integer> no) {
-		int result1 = boardDao.removeBoard(no);
-		int result2 = 0;
+		int result2 = 1;
+		int result3 = 1;
 		for(int index : no) {
-			List<String> delFileNo = attachDao.selectDelFileNo(index);
+			List<String> delFileNo = attachDao.selectDelFileNo(index); 
 			if(delFileNo != null) {
+				result2 = 0;
+				
 				String[] delFileNoArray = new String[delFileNo.size()];
 				delFileNo.toArray(delFileNoArray);
 				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
 				result2 += attachDao.deleteAttach(delFileNoArray);	
+				
 				for(AttachDto at : delFileList) {
 					new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
 				}
 			}
+			
+			result3 += boardDao.removeReply(index);
 		}
-		return result1 * result2;
+		int result1 = boardDao.removeBoard(no);
+		return result1;
 	}
 
 	@Override
@@ -241,6 +248,26 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int deleteCategory(String boardType) {
 		return boardDao.deleteCategory(boardType);
+	}
+
+	@Override
+	public int insertReply(ReplyDto reply) {
+		return boardDao.insertReply(reply);
+	}
+
+	@Override
+	public List<ReplyDto> selectReplyList(int no) {
+		return boardDao.selectReplyList(no);
+	}
+
+	@Override
+	public int deleteReply(int replyNo) {
+		return boardDao.deleteReply(replyNo);
+	}
+
+	@Override
+	public int updateReply(ReplyDto reply) {
+		return boardDao.updateReply(reply);
 	}
 
 }

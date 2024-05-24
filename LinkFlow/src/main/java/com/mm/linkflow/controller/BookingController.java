@@ -268,4 +268,28 @@ public class BookingController {
 		return bkServiceImpl.delAssets(assetsNo);
 	}
 	
+	@GetMapping("/sup.mng") //비품관리페이지  
+	public String supBookingManager() {
+		return "booking/supBookingManager";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/supWait.list", produces="application/json; charset=utf-8")
+	public Map<String, Object> selectSupWaitList(@RequestParam(value="page", defaultValue="1") int currentPage){
+		int listCount = bkServiceImpl.selectSupWaitCount();
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 5);
+		List<BookingDto> bkWaitList = bkServiceImpl.selectSupWaitList(pi);
+		
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("pi",pi);
+		mp.put("bkWaitList",bkWaitList);
+		
+		return mp;
+	}
+	
+	@GetMapping("/room.mng")
+	public String roomBookingManager() {
+		return "booking/roomBookingManager";
+	}
+	
 }

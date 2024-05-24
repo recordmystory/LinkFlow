@@ -123,4 +123,15 @@ public class BookingDao {
 		return sql.update("bkMapper.modifyAssets",mp);
 	}
 
+	public int selectSupWaitCount() {
+		return sql.selectOne("bkMapper.selectBkWaitCount");
+	}
+
+	public List<BookingDto> selectSupWaitList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		return sql.selectList("bkMapper.selectBkWaitList",rowBounds);
+	}
+
 }
