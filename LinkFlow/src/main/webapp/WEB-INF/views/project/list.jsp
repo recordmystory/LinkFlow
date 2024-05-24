@@ -69,9 +69,10 @@
                                     -->
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                	<form action="${contextPath}/project/search.pj" method="post">
+                                	<form action="${contextPath}/project/search.pj" method="get" id="searchForm">
+                                		<input name="page" type="hidden" value="1">
 		                                <div style="margin-bottom: 10px;">
-		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date">
+		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
 		                                </div>
 		                                <div class="input-group">
 		                                    <div class="select" style="margin-right: 15px;">
@@ -80,7 +81,7 @@
 		                                            <option value="client">고객사명</option>
 		                                        </select>
 		                                    </div>
-		                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
+		                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search" value="${search.keyword}">
 		                                    <div class="input-group-append">
 		                                        <button type="submit" class="btn btn-primary">
 		                                            <i class="fas fa-search fa-fw"></i>
@@ -125,20 +126,22 @@
                                             </tbody>
                                         </table>
                                     </div>
-									<div class="pagination" style="display: flex; justify-content: center;">
-										<ul class="pagination">
-											<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
-												<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage -1}">&laquo;</a>
-											</li>
-											<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-												<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.pj?page=${p}">${p}</a>
+                                    <div id="pagingArea">
+										<div class="pagination" style="display: flex; justify-content: center;">
+											<ul class="pagination">
+												<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
+													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage -1}">&laquo;</a>
 												</li>
-											</c:forEach>
-											<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-												<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage +1}">&raquo;</a>
-											</li>
-										</ul>
+												<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+													<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
+														<a class="page-link" href="${contextPath}/project/list.pj?page=${p}">${p}</a>
+													</li>
+												</c:forEach>
+												<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
+													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage +1}">&raquo;</a>
+												</li>
+											</ul>
+										</div>
 									</div>
 								</div>
                                 <!-- The Modal -->
@@ -167,6 +170,21 @@
             </div>
         </div>
 	</div>
+	<c:if test="${ not empty search }">
+	<script>
+		$(document).ready(function () {
+			
+	        $("#searchForm select").val("${search.category}");
+			
+	        $("#pagingArea a").on("click", function(){
+     			$("#searchForm input[name=page]").val($(this).text());
+     			$("#searchForm").submit();
+     			//location.href = '${contextPath}/project/search.pj?category=${search.category}&keyword=${search.keyword}&page=' + $(this).text();
+     			return false;
+	   		});
+		});
+	</script>
+	</c:if>
 	<script>
         $(document).ready(function () {
             $('.dropdown-item').click(function () {

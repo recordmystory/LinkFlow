@@ -88,8 +88,8 @@
     	<if test="category != null and category != '' and category == 'client'">
     	   AND CLIENT LIKE '%' || #{keyword} || '%'
     	</if>
-		  
-		 
+    	 ORDER
+    	    BY PRO_NO DESC
 	</select>
 	
 	<select id="selectProjectCount" resultType="_int">

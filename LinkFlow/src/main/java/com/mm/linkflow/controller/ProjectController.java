@@ -45,7 +45,7 @@ public class ProjectController {
 	
 	// 프로젝트 목록 검색
 	
-	@PostMapping("/search.pj")
+	@GetMapping("/search.pj")
 	public ModelAndView searchListProject(String startDate, String endDate, String category, String keyword
 			                    , @RequestParam(value="page", defaultValue="1")int currentPage
 			                    , ModelAndView mv) {
@@ -67,6 +67,7 @@ public class ProjectController {
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("search", search)
 		  .setViewName("project/list");
 	    
 	    return mv;
