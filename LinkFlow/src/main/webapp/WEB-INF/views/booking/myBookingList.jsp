@@ -137,11 +137,17 @@ input[type="checkbox"]:checked {
 					</div>
 					<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
 						<ul class="pagination">
-							<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage -1}">&laquo;</a></li>
-							<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-								<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }><a class="page-link" href="${contextPath }/booking/mylist.bk?page=${p}">${p }</a></li>
-							</c:forEach>
-							<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage +1}">&raquo;</a></li>
+						    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}">
+						        <a class="page-link" href="${contextPath}/booking/mylist.bk?page=${pi.currentPage - 1}">&laquo;</a>
+						    </li>
+						    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+						        <li class="page-item ${pi.currentPage == p ? 'disabled' : ''}">
+						            <a class="page-link" href="${contextPath}/booking/mylist.bk?page=${p}">${p}</a>
+						        </li>
+						    </c:forEach>
+						    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+						        <a class="page-link" href="${contextPath}/booking/mylist.bk?page=${pi.currentPage + 1}">&raquo;</a>
+						    </li>
 						</ul>
 					</div>
 					</div>
@@ -174,7 +180,9 @@ input[type="checkbox"]:checked {
 					status: status
 				},success:function(result){
 					let table ="";
+					let page = "";
 					let list = result.bkList;
+					let pi = result.pi;
 					if(list != null){
 						for(let i=0; i<list.length; i++){
 							table +="<tr onclick=\"location.href='${contextPath}/booking/detail.bk?no=" + list[i].bookingNo + "&sup=" + list[i].supName + "'\">";
@@ -186,12 +194,21 @@ input[type="checkbox"]:checked {
 							table +="<td>"+ list[i].bkStartTime +" ~ "+ list[i].bkEndTime +"</td>";
 							table +="<td>"+ list[i].status +"</th></tr>";
 						}
+					  	
+						page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/mylist.search?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+
+						for (let i = pi.startPage; i <= pi.endPage; i++) {
+						    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/mylist.search?page=" + i + "\">" + i + "</a></li>";
+						}
+
+						page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/mylist.search?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
 					}
 					
 					$("#roomCheckbox").prop("checked",result.search.room == 'Y' ? true: false);
 					$("#supCheckbox").prop("checked",result.search.supplies == 'Y' ? true: false);
 					
 					$("#listBody").html(table);
+					$("#pageArea ul").html(page);
 				},error:function(){
 					console.log("에작 실패");
 				}

@@ -177,18 +177,7 @@
 										</tr>
 									</thead>
 									<tbody id="bkWaitTable">
-										<tr>
-											<td>노트북</td>
-											<td>맥북</td>
-											<td>조성모(개발1팀)</td>
-											<td>2024/04/25 - 2024/05/15</td>
-											<td>24/04/16 11:16:41</td>
-											<td>
-												<a data-toggle="modal" data-target="#acc-booking">승인</a>
-												 | 
-												<a data-toggle="modal" data-target="#acc-booking">반려</a>
-											</td>
-										</tr>
+										
 									</tbody>
 								</table>
 							</div>
@@ -239,12 +228,8 @@
 							<!-- /.modal -->
 						</div>
 						<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
-							<ul class="pagination">
-								<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/supplies.bk?page=${pi.currentPage -1}">&laquo;</a></li>
-								<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-									<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }><a class="page-link" href="${contextPath }/booking/supplies.bk?page=${p}">${p }</a></li>
-								</c:forEach>
-								<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/supplies.bk?page=${pi.currentPage +1}">&raquo;</a></li>
+							<ul class="pagination" id ="bkWaitPage">
+							<!-- 페이징 -->
 							</ul>
 						</div>
 						
@@ -271,15 +256,14 @@
 
 								<div class="card-tools">
 									<div class="input-group input-group-sm" style="width: 300px;">
-										<select id="dropdownOptions" class="form-control">
-											<option value="">자원종류</option>
-											<option value="">상품명</option>
-											<option value="">요청자</option>
-											<!-- <option value="">사용중</option> -->
-										</select> &nbsp; <input type="text" name="table_search"
-											class="form-control float-right" placeholder="Search">
+										<select id="dropdownOptions" class="form-control" name="condition">
+											<option value="subName">자원종류</option>
+											<option value="assetsName">상품명</option>
+											<option value="userName">요청자</option>
+										</select> &nbsp; 
+										<input type="text" name="keyword" class="form-control float-right" placeholder="Search">
 										<div class="input-group-append">
-											<button type="submit" class="btn btn-default">
+											<button type="button" class="btn btn-default">
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
@@ -404,12 +388,7 @@
 							<!-- /.modal -->
 						</div>
 						<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
-							<ul class="pagination">
-								<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/supplies.bk?page=${pi.currentPage -1}">&laquo;</a></li>
-								<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-									<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }><a class="page-link" href="${contextPath }/booking/supplies.bk?page=${p}">${p }</a></li>
-								</c:forEach>
-								<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }><a class="page-link" href="${contetxtPath }/booking/supplies.bk?page=${pi.currentPage +1}">&raquo;</a></li>
+							<ul class="pagination" id="bkStatPage">
 							</ul>
 						</div>
 					</div>
@@ -420,7 +399,7 @@
 	</div>
 	<script>
 	$(document).ready(function () {
-       bkWaritList();
+       bkWaitList();
       });
 	
 	function bkWaitList(){
@@ -429,14 +408,16 @@
 			type:'get',
 			data:{},success:function(result){
 				let table="";
-				
-				for(let i=1; i<result.length; i++){
+				let bk = result.bkWaitList;
+				for(let i=1; i<bk.length; i++){
 					table += "<tr>"
-						  + "<td>"+ result[i].subName + "</td>"
-						  + "<td>"+ result[i].assetsName + "</td>"
-						  + "<td>"+ result[i].userName + "</td>";
-					if(result[i].subName === '차량'){
+						  + "<td>"+ bk[i].subName + "</td>"
+						  + "<td>"+ bk[i].assetsName + "</td>"
+						  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
+					if(bk[i].subName === '차량'){
 						table += "<td>2024/04/25 - 2024/05/15</td>";
+					}else{
+						table += "<td> - </td>";
 					}
 					table += "<td>24/04/16 11:16:41</td>"
 						  + "<td>"
@@ -446,10 +427,69 @@
 						  + "</td></tr>";
 				}
 				
+				let page = "";
+			  	let pi = result.pi;
+				page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/supWait.list?page="+pi.currentPage -1+"\">&laquo;</a></li>";
+				
+				for(let i=pi.startPage; i<pi.endPage; i++){
+					page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/supWait.list?page="+i+">"+i +"</a></li>";
+				}
+				page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/supWait.list?page="+pi.currentPage +1+">&raquo;</a></li>";
+				
+				
 				$("#bkWaitTable").html(table);
+				$("#bkWaitPage").html(page);
 			}
 			
 		})
+	}
+	
+	function bkStatusList(){
+		$.ajax({
+			url:'${contextPath}/booking/supStat.list',
+			type:'get',
+			data:{
+				keyword: keyword,
+				condition: condition
+			},success:function(result){
+				let table="";
+				let bk= result.bkStatusList;
+				
+				for(let i=1; i<bk.length; i++){
+					table += "<tr>"
+						  + "<td>"+ bk[i].subName + "</td>"
+						  + "<td>"+ bk[i].assetsName + "</td>"
+						  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
+					if(bk[i].subName === '차량'){
+						table += "<td>2024/04/25 - 2024/05/15</td>";
+					}else{
+						table += "<td> - </td>";
+					}
+					table += "<td>24/04/16 11:16:41</td>"
+						  + "<td>"
+						  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">사용중</a>"
+						  + " | " 
+						  + "<a data-toggle=\"modal\" data-target=\"#acc-return\">반납</a>"
+						  + "</td></tr>";
+				}
+				let page = "";
+			  	let pi = result.pi;
+				page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/supStat.list?page="+(pi.currentPage -1)+"\">&laquo;</a></li>";
+				
+				for(let i=pi.startPage; i<pi.endPage; i++){
+					page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/supStat.list?page="+i+">"+i +"</a></li>";
+				}
+				page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/supStat.list?page="+(pi.currentPage +1)+">&raquo;</a></li>";
+				
+				
+				$("#bkStatusTable").html(table);
+				$("#bkStatPage").html(page);
+			}
+		})
+	}
+	
+	function paging(pi){
+		
 	}
 	</script>
 
