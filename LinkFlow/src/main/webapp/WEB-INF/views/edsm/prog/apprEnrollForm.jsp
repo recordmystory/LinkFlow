@@ -355,7 +355,7 @@
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
                                 
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
-                                  
+                               
                                 </tr>
                                 <tr>
                                   <td height="200" width="300"></td>
@@ -369,16 +369,11 @@
                                 </tr>
                               </table>
 
-                          <!-- 별첨 -->
-                          <div class="attachment" style="margin-bottom: 25px;">
-                            <h6>별첨</h6>
-                            <input class="form-control" type="file" id="formFileMultiple" name="uploadFiles" multiple>
-                          </div>
-
+                          
                           <!-- 제목 -->
                           <div class="drafting-title" style="margin-bottom: 25px;">
                             <h6>제목</h6>
-                            <input type="text" name="edTitle" id="" class="form-control" style="width: 1000px;">
+                            <input type="text" name="edTitle" id="" class="form-control" style="width: 1000px;" required="required">
                           </div>
 
                           <!-- 휴가신청서 폼이 뿌려질 곳-->
@@ -403,7 +398,7 @@
             </div>
             <!-- /.content-wrapper -->
     </div>
-    
+  
       
     <!-- 모달 영역 -->
     <div class="modal fade" id="modal-xl">
@@ -737,10 +732,10 @@
         if (node.type === "person") {
             var personName = node.text;
             var userId = node.li_attr['data-userid']; 
-            console.log(userId);
+           
            
             var existNameArea = $('.resultNameArea [data-userid="' + userId + '"]');
-						console.log(existNameArea);
+					
             if (existNameArea.length >0) { 
                 existNameArea.remove(); 
             }else{
