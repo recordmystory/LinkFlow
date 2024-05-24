@@ -1,5 +1,6 @@
 package com.mm.linkflow.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -32,8 +33,8 @@ public class EdocDto extends CommonDto {
 	private List<AttachDto> attachList;
 	
 	// 결재이력 (결재자)
-	private List<EdocHistDto> edocHistList;
+	private ArrayList<EdocHistDto> edocHistList;
 	
 	// 참조자
-	private List<EdocRefDto> edocRefList;
+	private ArrayList<EdocRefDto> edocRefList;
 }	
