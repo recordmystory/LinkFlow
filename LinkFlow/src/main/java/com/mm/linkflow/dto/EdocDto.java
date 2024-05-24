@@ -37,4 +37,8 @@ public class EdocDto extends CommonDto {
 	
 	// 참조자
 	private ArrayList<EdocRefDto> edocRefList;
+	
+	private List<EdocHistDto> docHistList;
+	private List<EdocRefDto> docRefList;
+	
 }	
