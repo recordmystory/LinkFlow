@@ -1,6 +1,8 @@
 package com.mm.linkflow.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -50,8 +52,8 @@ public class CalendarController {
 		log.debug(userId);
 		log.debug("schImport:{}",schedule.getSchImport());
 		log.debug("notifyYn:{}",schedule.getNotifyYn());
+		log.debug("notifyYn:{}",schedule.getSchCalSubCode());
 
-		
 		/*
 		 * String schCalSubCode = schedule.getCalSubCode();
 		 * 
@@ -92,8 +94,14 @@ public class CalendarController {
 	//캘린더 메인 - 일정 전체 조회
 	@ResponseBody
     @RequestMapping("/schList.do")
-    public List<ScheduleDto> selectScheduleList(String schCalSubCodes) {
-        return calendarService.selectSchList(schCalSubCodes);
+    public List<ScheduleDto> selectScheduleList(String schCalSubCode,  HttpSession session) {
+		String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
+		Map<String, Object> sch = new HashMap<>();
+			sch.put("userId", userId);
+			sch.put("schCalSubCode", schCalSubCode);
+			log.debug("ddd:{}",sch);
+        return 	calendarService.selectSchList(sch);
+
     }
 	   
 	//휴지통 - 일정 상세

@@ -49,7 +49,7 @@
 	            SELECT CAL_NO
 	            FROM TB_CALENDAR
 	            WHERE CAL_SUB_CODE = #{schCalSubCode}
-	            AND REG_ID = #{modId}
+	            AND REG_ID = #{modId} <!-- userId -->
 	        ),
 	        #{schContent},
 	        TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI'),
@@ -67,23 +67,44 @@
 
 	<!-- 전체일정 조회(특정 캘린더)  -->
 	<select id="selectScheduleList" resultMap="scheduleResult">
-	        SELECT 
-	            S.SCH_NO,
-	            S.SCH_CONTENT,
-	            TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-	        		TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
-	            S.ADDRESS,
-	            S.SCH_IMPORT,
-	            S.NOTIFY_YN,
-	            S.SCH_TITLE,
-	            C.CAL_COLOR,
-	            C.CAL_SUB_CODE,
-	            C.CAL_NO
-	        FROM TB_SCHEDULE S
-	        JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
-	        WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
-	        AND S.DEL_YN = 'N'
-	    </select> 
+    SELECT 
+        S.SCH_NO,
+        S.SCH_CONTENT,
+        TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+        TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+        S.ADDRESS,
+        S.SCH_IMPORT,
+        S.NOTIFY_YN,
+        S.SCH_TITLE,
+        C.CAL_COLOR,
+        C.CAL_SUB_CODE,
+        C.CAL_NO
+    FROM TB_SCHEDULE S
+    LEFT JOIN TB_CALENDAR C ON C.CAL_NO = S.CAL_NO
+    LEFT JOIN TB_MEMBER M ON C.REG_ID = M.USER_ID
+    WHERE 
+         <choose>
+            <when test="schCalSubCode == '01'">
+                 M.SP_RIGHT = 'Y' 
+                 AND S.DEL_YN = 'N'
+                 AND C.CAL_SUB_CODE = '01'
+            </when>
+            <when test="schCalSubCode == '02'">
+                 M.DEPT_CODE IN (
+                    SELECT DEPT_CODE 
+                    FROM TB_MEMBER 
+                    WHERE USER_ID = #{userId}                     
+                )AND M.DEPT_RIGHT = 'Y' 
+                AND S.DEL_YN = 'N'
+                AND C.CAL_SUB_CODE = '02'
+            </when>
+            <when test="schCalSubCode == '03'">
+              	 S.MOD_ID = #{userId} 
+              	 AND S.DEL_YN = 'N'
+              	 AND C.CAL_SUB_CODE = '03'
+            </when>
+        </choose>
+</select>
 	    
 	<!-- 상세조회 -->
 	<select id="detailSch" resultMap="scheduleResult">

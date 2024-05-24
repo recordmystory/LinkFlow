@@ -219,7 +219,7 @@
           type: "get",
           //traditional: true,
           data: {
-              schCalSubCodes: code
+              schCalSubCode: code
           },
           contentType: "application/json",
           dataType: "json",
@@ -302,15 +302,15 @@
 		    }
 		
 		    //버튼 표시여부 처리(직급에 따라)
-		    var spRight = '${loginUser.spRight}';
-		    var boardRight = '${loginUser.boardRight}';
+		    var spRight = '${loginUser.spRight}'; //전사
+		    var deptRight = '${loginUser.deptRight}';//부서
 		    var subCode = extendedProps.schCalSubCode;
 		
-		    if (spRight === 'Y' && (subCode === '02' || subCode === '03')) {
+		    if (spRight === 'Y' && subCode === '01' || subCode === '03' ) {
 		        $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').show();
-		    } else if (boardRight === 'Y' && (subCode === '01' || subCode === '03')) {
+		    } else if (deptRight === 'Y' && subCode === '02' || subCode === '03') {
 		        $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').show();
-		    } else {
+    		}else {
 		        $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').hide();
 		    }
 		    

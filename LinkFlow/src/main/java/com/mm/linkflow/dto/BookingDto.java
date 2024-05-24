@@ -19,6 +19,7 @@ public class BookingDto extends CommonDto {
 	
 	private String bookingNo;
 	private String bookingId;
+	private String userName;
 	private String deptCode;
 	private String assetsNo;
 	private String bkContent;
@@ -31,4 +32,6 @@ public class BookingDto extends CommonDto {
 	private String assetsName;
 	private String mainName;
 	private String subName;
+	private String enrDate;
+	private String deptName;
 }

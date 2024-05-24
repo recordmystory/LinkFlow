@@ -28,8 +28,8 @@ public class CalendarServiceImpl implements CalendarService {
 
 	//캘린더 메인 - 일정 전체조회
 	@Override
-	public List<ScheduleDto> selectSchList(String schCalSubCode) {
-		return calendarDao.selectSchList(schCalSubCode);
+	public List<ScheduleDto> selectSchList(Map<String, Object> sch) {
+		return calendarDao.selectSchList(sch);
 	}
 
 	//휴지통 - 일정 상세

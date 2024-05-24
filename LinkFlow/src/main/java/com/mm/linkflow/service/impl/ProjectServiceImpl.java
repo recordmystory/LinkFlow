@@ -42,4 +42,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public int searchProjectCount(Map<String, String> search) {
 		return proDao.searchProjectCount(search);
 	}
+
+	@Override
+	public ProjectDto selectDetailProject(int no) {
+		return proDao.selectDetailProject(no);
+	}
 }

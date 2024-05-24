@@ -299,19 +299,18 @@ input[type="checkbox"]:checked {
              </div>
              <!-- /.modal -->
 
-		<div class="pagination" id="pageArea"
-			style="display: flex; justify-content: center;">
+		<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
 			<ul class="pagination">
 				<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }>
-					<a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage -1}">&laquo;</a>
+					<a class="page-link" href="${contetxtPath }/booking/ass.list?page=${pi.currentPage -1}">&laquo;</a>
 				</li>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
 					<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }>
-						<a class="page-link" href="${contextPath }/booking/mylist.bk?page=${p}">${p }</a>
+						<a class="page-link" href="${contextPath }/booking/ass.list?page=${p}">${p }</a>
 					</li>
 				</c:forEach>
 				<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }>
-					<a class="page-link" href="${contetxtPath }/booking/mylist.bk?page=${pi.currentPage +1}">&raquo;</a>
+					<a class="page-link" href="${contetxtPath }/booking/ass.list?page=${pi.currentPage +1}">&raquo;</a>
 				</li>
 			</ul>
 		</div>
@@ -361,7 +360,7 @@ input[type="checkbox"]:checked {
 		    let keyword = document.getElementById('keyword').value;
 
 		    $.ajax({
-		        url: `${contextPath}/booking/ass.search`,
+		        url: '${contextPath}/booking/ass.search',
 		        type: 'get',
 		        data: {
 		            mainName: mainName,
@@ -371,6 +370,8 @@ input[type="checkbox"]:checked {
 		        success: function (searchResult) {
 		            let table = "";
 		            let list = searchResult.assList;
+		            let page = "";
+				  	let pi = result.pi;
 
 		            for (let i = 0; i < list.length; i++) {
 		                table += "<tr>"
@@ -384,7 +385,16 @@ input[type="checkbox"]:checked {
 		                       + "<span onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</span>"
 		                       + "</td></tr>";
 		            }
+		            
+					page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/ass.search?page="+pi.currentPage -1+"\">&laquo;</a></li>";
+					
+					for(let i=pi.startPage; i<pi.endPage; i++){
+						page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/ass.search?page="+i+">"+i +"</a></li>";
+					}
+					page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/ass.search?page="+pi.currentPage +1+">&raquo;</a></li>";
+					
 		            $("#listTable").html(table);
+		            $("#pageArea ul").html(page);
 		        }
 		    });
 		}

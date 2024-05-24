@@ -21,8 +21,8 @@ public class CalenderDao {
 	}
 	
 	//캘린더 메인 - 일정 전체조회
-	public List<ScheduleDto> selectSchList(String schCalSubCode) {
-        return sqlSessionTemplate.selectList("calendarMapper.selectScheduleList", schCalSubCode);
+	public List<ScheduleDto> selectSchList(Map<String, Object> sch) {
+        return sqlSessionTemplate.selectList("calendarMapper.selectScheduleList", sch);
 	}
 
 	//휴지통 - 일정 상세조회

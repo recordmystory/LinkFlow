@@ -218,7 +218,14 @@
                    <tr>
                      <th class="table-active">보존 연한</th>
                      <td>
-                       ${edoc.presDate}년
+                       <c:choose>
+		                    <c:when test="${edoc.presDate == 0}">
+		                        영구
+		                    </c:when>
+		                    <c:otherwise>
+		                        ${edoc.presDate}년
+		                    </c:otherwise>
+		                	</c:choose>
                      </td>
                      <th class="table-active">보안 등급</th>
                      <td>
@@ -242,12 +249,12 @@
                <table class="table table-bordered" style="margin-top: 10px;">
 	                 <tr>
 	                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
-		                 <c:forEach var="edocHist" items="${edoc.edocHistList}">
+		                 <c:forEach var="edocHist" items="${edoc.docHistList}">
 			                <th class="table-active" style="text-align: center; vertical-align: middle;">${edocHist.userName}</th>
 			               </c:forEach>
 	                 </tr>
                  <tr>
-	                <c:forEach var="edocHist" items="${edoc.edocHistList}">
+	                <c:forEach var="edocHist" items="${edoc.docHistList}">
 		                 <c:choose>
 		                 	<c:when test="${edocHist.edHistSubCode != null}">
 		                 		<td class="sign-img-area">
@@ -265,11 +272,11 @@
 	                 </c:forEach>
                  </tr>
                  <!-- 참조자가 있을 때만 보일 영역 -->
-                 <c:if test="${edoc.edocRefList != null}">
+                 <c:if test="${edoc.docRefList != null}">
 	                 <tr>
 	                   <th class="table-active" style="text-align: center; vertical-align: middle;">참조</th>
 	                   <td colspan="3">
-	                     <c:forEach var="edocRef" items="${edoc.edocRefList}" varStatus="status">
+	                     <c:forEach var="edocRef" items="${edoc.docRefList}" varStatus="status">
 	                     	${edocRef.userName}
 	                     	<c:if test="${!status.last}">
 													/	                     	
@@ -407,7 +414,7 @@
                  이력
                </div>
                <div class="document-comment-content">
-                 <c:forEach var="edocHist" items="${edoc.edocHistList}">
+                 <c:forEach var="edocHist" items="${edoc.docHistList}">
                  	<c:if test="${edocHist.edHistSubCode != null}">
 		                 <div>
 		                   <span class="document-approval-user-name">${edocHist.userName}</span>

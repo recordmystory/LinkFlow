@@ -11,11 +11,6 @@ import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.PageInfoDto;
 
 public interface EdsmProgService {
-
-//	int selectAllListCount();
-//
-//	List<EdocDto> selectAllList(PageInfoDto pi);
-//	
 	
 	// 문서 종류 (양식) 리스트 조회 용도
 	List<EdocFormDto> selectFormList();
@@ -26,13 +21,8 @@ public interface EdsmProgService {
 	// 결재선 설정 모달 조회
 	List<DeptDto> selectApprLine();
 	
-	
-	
 	// 기안서 작성 (결재 작성 문서 insert)
 	int insertDoc(EdocDto edocDto);
-	
-	
-	
 	
 	// 진행중인 문서 목록 페이징 (전체)
 	int selectAllListCnt(String userId);
