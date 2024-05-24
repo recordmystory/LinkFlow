@@ -112,7 +112,7 @@
                                                     <td>${p.proNo}</td>
                                                     <td>${p.client}</td>
                                                     <td>
-                                                        <a href="dd">${p.proTitle}</a>
+                                                        <a href="${contextPath}/project/detail.pj?no=${p.proNo}">${p.proTitle}</a>
                                                     </td>
                                                     <td>${p.deptName}</td>
                                                     <td>${p.startDate} ~ ${p.endDate}</td>

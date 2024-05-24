@@ -117,4 +117,20 @@
     	   AND CLIENT LIKE '%' || #{keyword} || '%'
     	</if>
 	</select>
+	
+	<select id="selectDetailProject" resultMap="projectResult">
+		SELECT
+		       PRO_NO
+		     , PRO_TITLE
+		     , CLIENT
+		     , DEPT_TITLE AS DEPT_NAME
+		     , ADDRESS
+		     , DETAIL_ADD
+		     , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		     , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		     , PRO_YN
+		  FROM TB_PROJECT
+		  JOIN TB_DEPT USING (DEPT_CODE)
+		 WHERE PRO_NO = #{no}
+	</select>
 </mapper>
