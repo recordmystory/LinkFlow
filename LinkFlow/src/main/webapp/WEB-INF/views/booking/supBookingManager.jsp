@@ -256,14 +256,14 @@
 
 								<div class="card-tools">
 									<div class="input-group input-group-sm" style="width: 300px;">
-										<select id="dropdownOptions" class="form-control" name="condition">
+										<select id="condition" class="form-control" name="condition">
 											<option value="subName">자원종류</option>
 											<option value="assetsName">상품명</option>
 											<option value="userName">요청자</option>
 										</select> &nbsp; 
-										<input type="text" name="keyword" class="form-control float-right" placeholder="Search">
+										<input type="text" id="keyword" name="keyword" class="form-control float-right" placeholder="Search">
 										<div class="input-group-append">
-											<button type="button" class="btn btn-default">
+											<button type="button" class="btn btn-default" onclick="bkStatusList();">
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
@@ -296,21 +296,21 @@
 										<div class="bk-modal" style="padding-top: 40px;">
 											<p>예약 비품 :</p>
 											&nbsp;
-											<p>노트북 / 맥북</p>
+											<p id="sub-ass">노트북 / 맥북</p>
 										</div>
 										<div class="bk-modal bk-time">
 											<p>예약 시간</p>
 											<!-- 차량일 때만 -->
-											<p>2024 / 04 / 25 ~ 2024 / 05 / 15</p>
+											<p id="bkTime">2024 / 04 / 25 ~ 2024 / 05 / 15</p>
 										</div>
 										<div class="bk-modal">
 											<p>요청자 :
 											<p>&nbsp;
-											<p>조성모(개발1팀)</p>
+											<p id="bkName-Dept">조성모(개발1팀)</p>
 										</div>
 										<div class="modal-body">
 											<h6>사용 용도</h6>
-											<input type="text" class="can-coment" placeholder="부서 회의">
+											<input type="text" class="can-coment" placeholder="" id="bookingContent">
 										</div>
 										<div class="bk-modal bk-content">
 											<h5>상세 내용을 확인하였으며, 반납완료 처리합니다.</h5>
@@ -394,25 +394,28 @@
 				let table="";
 				let bk = result.bkWaitList;
 				let pi = result.pi;
-				for(let i=0; i<bk.length; i++){
-					table += "<tr>"
-						  + "<td>"+ bk[i].subName + "</td>"
-						  + "<td>"+ bk[i].assetsName + "</td>"
-						  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
-					if(bk[i].subName === '차량'){
-						table += "<td>2024/04/25 - 2024/05/15</td>";
-					}else{
-						table += "<td> - </td>";
+				if(!bk || bk.length === 0){
+					table+= "<tr><td colspan='6'>조회된 내역이 없습니다.</td></tr>";
+				}else{
+					for(let i=0; i<bk.length; i++){
+						table += "<tr>"
+							  + "<td>"+ bk[i].subName + "</td>"
+							  + "<td>"+ bk[i].assetsName + "</td>"
+							  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
+						if(bk[i].subName === '차량'){
+							table += "<td>2024/04/25 - 2024/05/15</td>";
+						}else{
+							table += "<td> - </td>";
+						}
+						table += "<td>24/04/16 11:16:41</td>"
+							  + "<td>"
+							  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">승인</a>"
+							  + " | " 
+							  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">반려</a>"
+							  + "</td></tr>";
 					}
-					table += "<td>24/04/16 11:16:41</td>"
-						  + "<td>"
-						  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">승인</a>"
-						  + " | " 
-						  + "<a data-toggle=\"modal\" data-target=\"#acc-booking\">반려</a>"
-						  + "</td></tr>";
 				}
-				console.log(bk);
-				console.log(pi);
+				
 				let page = "";
 
 			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
@@ -435,56 +438,69 @@
 	}
 	
 	function bkStatusList(){
+		let keywordElement = document.getElementById('keyword');
+	    let keyword = (keywordElement != null && keywordElement.value != null) ? keywordElement.value : "";
+	    let conditionElement = document.getElementById('condition');
+	    let condition = (conditionElement != null && conditionElement.value != null) ? conditionElement.value : "";
+		
+	    $("#bkStatusTable").empty();
+	    $("#bkStatPage").empty();
+	    
 		$.ajax({
 			url:'${contextPath}/booking/supStat.list',
 			type:'get',
 			data:{
-				keyword: keyword !=null? ,
+				keyword: keyword,
 				condition: condition
 			},success:function(result){
 				let table="";
 				let bk= result.bkStatusList;
-				
-				for(let i=1; i<bk.length; i++){
-					table += "<tr>"
-						  + "<td>"+ bk[i].subName + "</td>"
-						  + "<td>"+ bk[i].assetsName + "</td>"
-						  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
-					if(bk[i].subName === '차량'){
-						table += "<td>2024/04/25 - 2024/05/15</td>";
-					}else{
-						table += "<td> - </td>";
-					}
-					table += "<td>24/04/16 11:16:41</td>";
-					if(bk[i].status == "COM" || bk[i].status == "USE"){
-						  page += "<td>"
+				if(!bk || bk.length === 0){
+					table+= "<tr><td colspan='6'>조회된 내역이 없습니다.</td></tr>";
+				}else{
+					for(let i=0; i<bk.length; i++){
+						table += "<tr>"
+							  + "<td>"+ bk[i].subName + "</td>"
+							  + "<td>"+ bk[i].assetsName + "</td>"
+							  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
+						if(bk[i].subName === '차량'){
+							table += "<td>2024/04/25 - 2024/05/15</td>";
+						}else{
+							table += "<td> - </td>";
+						}
+						table += "<td>24/04/16 11:16:41</td>";
+						if(bk[i].status == "COM" || bk[i].status == "USE"){
+							table += "<td>"
 								  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">사용중</a>"
 								  + " | " 
 								  + "<a data-toggle=\"modal\" data-target=\"#acc-return\">반납</a>"
 								  + "</td></tr>";
-					}else if(bk[i].status == "REJ"){
-						page += "<td>"
-							  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반려</a>"
-							  + "</td></tr>";
-					}else{
-						page += "<td>"
-							  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반납완료</a>"
-							  + "</td></tr>";
+						}else if(bk[i].status == "REJ"){
+							table += "<td>"
+								  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반려</a>"
+								  + "</td></tr>";
+						}else{
+							table += "<td>"
+								  + "<a data-toggle=\"modal\" data-target=\"#acc-status\">반납완료</a>"
+								  + "</td></tr>";
+						}
 					}
 				}
 				let page = "";
-			  	let pi = result.pi;
-			  	
-			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+	            let pi = result.pi;
 
-			  	for(let i = pi.startPage; i <= pi.endPage; i++){
-			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + i + "\">" + i + "</a></li>";
-			  	}
+	            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
 
-			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
-				
+	            for (let i = pi.startPage; i <= pi.endPage; i++) {
+	                page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + i + "\">" + i + "</a></li>";
+	            }
+
+	            page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
+
 				$("#bkStatusTable").html(table);
 				$("#bkStatPage").html(page);
+			},error:function(){
+				console.log("에작 에러");
 			}
 		})
 	}

@@ -291,10 +291,6 @@ public class BookingController {
 	@GetMapping(value="/supStat.list", produces="application/json; charset=utf-8")
 	public Map<String, Object> selectSupStatList(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage){
 		log.debug("search.keyword:{}",search);
-		if(search.get("keyword")==null) {
-			search.put("keyword", "0");
-			log.debug("new keyword:{}",search.get("keyword"));
-		}
 		
 		int listCount = bkServiceImpl.selectSupStatusCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 5);

@@ -383,14 +383,14 @@
 	  and a.sub_code = c.sub_code
 	  and a.main_code = '003-'
 	  <choose>
-	  <when test='keyword != "0" and condition eq "자원종류"'>
-	  and c.sub_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "subName"'>
+	  and c.sub_name like '%'|| #{keyword} || '%'
 	  </when>
-	  <when test='keyword != "0" and condition eq "상품명"'>
-	  and a.assets_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "assetsName"'>
+	  and a.assets_name like '%'|| #{keyword} || '%'
 	  </when>
-	  <when test='keyword != "0" and condition eq "요청자"'>
-	  and user_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "userName"'>
+	  and user_name like '%'|| #{keyword} || '%'
 	  </when>
 	  </choose>
 </select>
@@ -418,14 +418,14 @@
 	  and b.del_yn = 'N'
 	  and a.del_yn = 'N'
 	  <choose>
-	  <when test='keyword != "0"  and condition eq "자원종류"'>
-	  and c.sub_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "subName"'>
+	  and c.sub_name like '%'|| #{keyword} || '%'
 	  </when>
-	  <when test='keyword != "0" and condition eq "상품명"'>
-	  and a.assets_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "assetsName"'>
+	  and a.assets_name like '%'|| #{keyword} || '%'
 	  </when>
-	  <when test='keyword != "0" and condition eq "요청자"'>
-	  and user_name like '%'|| {keyword} || '%'
+	  <when test='(keyword != "" or keyword != null) and condition eq "userName"'>
+	  and user_name like '%'|| #{keyword} || '%'
 	  </when>
 	  </choose>
 	order by booking_no desc
