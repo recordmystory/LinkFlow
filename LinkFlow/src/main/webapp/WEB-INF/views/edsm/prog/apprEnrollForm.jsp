@@ -648,7 +648,7 @@
     	    .remove() 
     	    .end() 
     	    .find('.userId')
-    	    .attr('name', 'edocHistList[0]') 
+    	    .attr('name', 'edocHistList[0].userId') 
     	    .css('display', 'none') 
     	    .end() 
     	    .html(); 
@@ -660,7 +660,7 @@
     	var approvalName2Html = $('.approvalName2')
         .clone() 
         .find('.userId')
-        .attr('name', 'edocHistList[1]') 
+        .attr('name', 'edocHistList[1].userId') 
         .css('display', 'none') 
         .end() 
         .find('input[type="checkbox"]') 
@@ -679,7 +679,7 @@
             .remove() 
             .end() 
             .find('.userId')
-            .attr('name', 'edocRefList[' + index + ']') 
+            .attr('name', 'edocRefList[' + index + '].userId') 
             .css('display', 'none') 
             .end() 
             .html(); 
