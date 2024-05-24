@@ -1188,15 +1188,18 @@ $('#kt_docs_jstree_basic').jstree({
 	    var mod = '${loginUser.userId}'; 
         $('input[name="modId"]').val(mod); 
 	    
-      var start = $('input[name="notifyYn"]').val(startDate);
-    	var end = $('input[name="notifyYn"]').val(endDate);
-    		
-    	if(start < end){
-    		alert("start");
-    	}	
+       
+
     	//등록 ajax
    		 $('#schInsertButton').click(function() {
-   			 
+   		  // 날짜 비교 시간까지 비교
+   		  var start = $('input[name="startDate"]').val();
+        var end = $('input[name="endDate"]').val();
+        if (start > end) {
+            alert("종료일이 시작일보다 작을 수 없습니다.");
+            return; 
+        }
+   	    	
         $.ajax({
             type: "POST",
             url: "${contextPath}/calendar/regist.do", // 일정 등록 컨트롤러의 엔드포인트
@@ -1207,7 +1210,7 @@ $('#kt_docs_jstree_basic').jstree({
                 console.log("일정 등록이 성공했습니다.");
                 alert("일정 등록이 성공했습니다."); 
                 $("#schInsertModal").modal("hide");
-
+                $('#scheduleForm')[0].reset(); //초기화
             	}
             },
             error: function(result) {

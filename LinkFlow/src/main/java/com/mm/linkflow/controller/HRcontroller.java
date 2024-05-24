@@ -1,7 +1,9 @@
 package com.mm.linkflow.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,7 +62,13 @@ public class HRcontroller {
 	
 	@PostMapping("/insertMember.do")
 	public String insertMember(MemberDto m,RedirectAttributes redirectAttributes) {
-		 String[] rights = m.getRight();
+	    //캘린더 추가
+	    Map<String, Object> cal = new HashMap<>();
+	    cal.put("userId", m.getUserId());
+	    cal.put("deptCode", m.getDeptCode());
+	    hService.insertCal(cal);
+	    
+		String[] rights = m.getRight();
 		    
 		    m.setSuperRight("N");
 		    m.setHrRight("N");

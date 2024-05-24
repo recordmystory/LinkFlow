@@ -84,13 +84,13 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public int insertAssets(AssetsDto ass) {
-		return 0;
+	public int insertAssets(Map<String,Object> mp) {
+		return bkDao.insertAssets(mp);
 	}
 
 	@Override
-	public int modssets(AssetsDto ass) {
-		return 0;
+	public int modAssets(Map<String,Object> mp) {
+		return bkDao.modAssets(mp);
 	}
 
 	@Override

@@ -48,4 +48,7 @@ public interface EdsmProgService {
 	int selectSearchListCnt(Map<String, String> search);
 
 	List<EdocDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
+	
+	// 진행중인 문서 상세 (기안문서 정보 + 기안자 정보 조회)
+	EdocDto selectEdocDetail(String edNo);
 }

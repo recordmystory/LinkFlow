@@ -58,6 +58,38 @@
 		  FROM TB_PROJECT P
 		  JOIN TB_DEPT USING (DEPT_CODE)
 		 WHERE P.DEL_YN = 'N'
+		 ORDER
+		    BY PRO_NO DESC
+	</select>
+	
+	<select id="searchListProject" resultMap="projectResult">
+		SELECT
+			   PRO_NO
+			 , PRO_TITLE
+			 , CLIENT
+		     , DEPT_TITLE AS DEPT_NAME
+		     , ADDRESS
+		     , DETAIL_ADD
+		     , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		     , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		     , PRO_YN
+		  FROM TB_PROJECT P
+		  JOIN TB_DEPT USING (DEPT_CODE)
+		 WHERE P.DEL_YN = 'N'
+		<if test="startDate != null and startDate != ''">
+           AND START_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND END_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
+    	</if>
+		  
+		 
 	</select>
 	
 	<select id="selectProjectCount" resultType="_int">
@@ -65,5 +97,24 @@
 		       COUNT(*)
 		  FROM TB_PROJECT
 		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProjectCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_PROJECT
+		 WHERE DEL_YN = 'N'
+		<if test="startDate != null and startDate != ''">
+           AND START_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND END_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
+    	</if>
 	</select>
 </mapper>

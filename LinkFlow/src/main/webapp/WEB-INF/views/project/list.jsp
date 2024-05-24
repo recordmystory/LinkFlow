@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- 네이버 지도 api -->
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wfsx6d3wj7&submodules=geocoder"></script>
 <style>
 .wrapper{
  min-height: 100%;
@@ -67,25 +69,25 @@
                                     -->
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                    <form action="dddddddddd">
-                                        <div style="margin-bottom: 10px;">
-                                            <input class="form-control form-control-sidebar" name="start_date" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="end_date" type="date">
-                                        </div>
-                                        <div class="input-group">
-                                            <div class="select" style="margin-right: 15px;">
-                                                <select name="category" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
-                                                    <option value="proName">프로젝트명</option>
-                                                    <option value="client">고객사명</option>
-                                                </select>
-                                            </div>
-                                            <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="fas fa-search fa-fw"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                	<form action="${contextPath}/project/search.pj" method="post">
+		                                <div style="margin-bottom: 10px;">
+		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date">
+		                                </div>
+		                                <div class="input-group">
+		                                    <div class="select" style="margin-right: 15px;">
+		                                        <select name="category" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
+		                                            <option value="proName">프로젝트명</option>
+		                                            <option value="client">고객사명</option>
+		                                        </select>
+		                                    </div>
+		                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
+		                                    <div class="input-group-append">
+		                                        <button type="submit" class="btn btn-primary">
+		                                            <i class="fas fa-search fa-fw"></i>
+		                                        </button>
+		                                    </div>
+		                                </div>
+	                                </form>
                                 </div>
                             </div>
                             <div style="min-height: 500px; min-width: 100%;">
@@ -103,7 +105,7 @@
                                                     <th style="width: 10%;">상태</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="project-list">
                                             	<c:forEach var="p" items="${list}"> 
                                                 <tr>
                                                     <td>${p.proNo}</td>
@@ -115,7 +117,7 @@
                                                     <td>${p.startDate} ~ ${p.endDate}</td>
                                                     <td>
                                                         <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a id="map1" data-toggle="modal" href="#mapModal">위치보기</a>
+                                                        <a data-toggle="modal" href="#mapModal" onclick="mapCreate('${p.address}')">위치보기</a>
                                                     </td>
                                                     <td>${p.proYn eq 'N' ? '진행' : '완료'}</td>
                                                 </tr>
@@ -144,12 +146,12 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <!-- Modal Header -->
-                                            <div class="modal-header">
+                                            <div class="modal-header" style="justify-content: center;">
                                             <h4 class="modal-title">위치보기</h4>
                                             </div>
                                             <!-- Modal body -->
-                                            <div class="modal-body">
-                                            <div id="map" style="width:400px;height:300px;"></div>
+                                            <div class="modal-body" style="display:flex; justify-content: center;">
+                                            <div id="map" style="width:450px; height:300px; display: flex;"></div>
                                             </div>
                                             <!-- Modal footer -->
                                             <div class="modal-footer">
@@ -165,5 +167,41 @@
             </div>
         </div>
 	</div>
+	<script>
+        $(document).ready(function () {
+            $('.dropdown-item').click(function () {
+                var selectedText = $(this).find('.spanCss').text();
+                $('.resultArea').text(selectedText);
+            });
+        });
+        // 지도 api 시작
+        //주소의 정보를 selectMapList 함수로 넘겨준다.
+        function mapCreate(address){
+        naver.maps.Service.geocode({
+                query: address
+            }, function(status, response) {
+            
+                var item = response.v2.addresses[0]
+        
+                selectMapList(item.x, item.y);
+                
+            });
+        };
+
+        //검색정보로 지도를 만들고, 지도에 마커를 찍어준다.
+        function selectMapList(latitude, longitude) {
+
+            var map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(longitude, latitude),
+                zoom: 14
+            });
+            var marker = new naver.maps.Marker({
+                map: map,
+                position: new naver.maps.LatLng(longitude, latitude),
+            });
+        };
+        // 지도 api 끝
+
+    </script>
 </body>
 </html>

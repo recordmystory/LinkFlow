@@ -1,6 +1,7 @@
 package com.mm.linkflow.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -97,7 +98,10 @@ public class HrDao {
 		return sql.selectOne("hrMapper.checkCode",deptCode);
 	}
 
-	
+	//캘린더 추가
+	public int insertCal(Map<String, Object> cal) {
+		return sql.insert("calendarMapper.insertCal", cal);
+	} 
 	
 	
 }

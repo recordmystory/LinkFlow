@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.AttachDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.EdocDto;
 import com.mm.linkflow.dto.EdocFormDto;
@@ -77,6 +78,23 @@ public class EdsmProgDao {
 	public int selectSearchListCnt(Map<String, String> search) {
 		return sqlSessionTemplate.selectOne("edsmProgMapper.selectSearchListCnt", search);
 	}
+
+	public EdocDto selectEdocDetail(String edNo) {
+		return sqlSessionTemplate.selectOne("edsmProgMapper.selectEdocDetail", edNo);
+	}
+
+	public List<EdocHistDto> selectApprDetail(String edNo) {
+		return sqlSessionTemplate.selectList("edsmProgMapper.selectApprDetail", edNo);
+	}
+
+	public List<EdocRefDto> selectRefDetail(String edNo) {
+		return sqlSessionTemplate.selectList("edsmProgMapper.selectRefDetail", edNo);
+	}
+
+	public List<AttachDto> selectAttachDetail(String edNo) {
+		return sqlSessionTemplate.selectList("edsmProgMapper.selectAttachDetail", edNo);
+	}
+	
 	
 //	public int selectAllListCount() {
 //		return sqlSessionTemplate.selectOne("edsmProgMapper.selectAllListCount");

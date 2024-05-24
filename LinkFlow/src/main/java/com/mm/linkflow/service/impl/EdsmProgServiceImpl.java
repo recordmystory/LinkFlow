@@ -84,6 +84,21 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 		return edsmProgDao.selectSearchList(search, pi);
 	}
 
+	@Override
+	public EdocDto selectEdocDetail(String edNo) {
+		
+		//1. 기안정보조회하는 dao 호출 (dao반환타입은 EdocDto) => EdocDto doc 변수로 받기
+		EdocDto doc = edsmProgDao.selectEdocDetail(edNo);
+		//2. 결재이력리스트조회하는 dao호출 (List<EdocHistDto>) => doc.setEdocHistList(담기);
+		doc.setEdocHistList(edsmProgDao.selectApprDetail(edNo));
+		//3. 참조자리스트조회하는 dao호출 (List<ㅠㅠㅠ>) => doc.setEdocRefList(담기);
+		doc.setEdocRefList(edsmProgDao.selectRefDetail(edNo));
+		//4. 첨부파일리스트조회하는 dao호출 (List<ㄴㄴㄴ>) => doc.setAttachList(담기);
+		doc.setAttachList(edsmProgDao.selectAttachDetail(edNo));	
+		
+		return doc;
+	}
+
 	
 
 

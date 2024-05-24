@@ -123,22 +123,87 @@
 	    WHERE SCH_NO = #{schNo}
 	</update>
 	
-	<!-- 일정삭제(상태변경) -->
-	<!-- <delete id="deleteSch">
-	 DELETE FROM TB_SCHEDULE
-	 WHERE SCH_NO = ${schNo}
-	</delete>
-	 -->
+	<!-- 캘린더 메인 일정 삭제(상태 변경) -->
 	<update id="deleteSch">
 	 UPDATE TB_SCHEDULE
 	 SET DEL_YN = 'Y'
 	 WHERE SCH_NO = ${schNo}
 	</update>
 
-<!--  캘린더 CAL_SUB_CODE 수정 
+	<!--  캘린더 CAL_SUB_CODE 수정 
     <update id="updateCalendarSubCode">
         UPDATE TB_CALENDAR
         SET CAL_SUB_CODE = #{schCalSubCode}
         WHERE CAL_NO = #{calNo}
     </update> -->
+    
+ <!-- 휴지통 쿼리************************************* -->  
+   <!-- 휴지통 리스트 상세조회 -->
+   <select id="schWasteList" resultMap="scheduleResult">
+       SELECT 
+           S.SCH_NO,
+           S.SCH_CONTENT,
+           TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
+       		 TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+           S.ADDRESS,
+           S.SCH_IMPORT,
+           S.NOTIFY_YN,
+           S.SCH_TITLE,
+           C.CAL_COLOR,
+           C.CAL_SUB_CODE,
+           C.CAL_NO
+       FROM TB_SCHEDULE S
+       JOIN TB_CALENDAR C ON (C.CAL_NO = S.CAL_NO)
+       WHERE C.CAL_SUB_CODE =  #{schCalSubCode}
+       AND S.DEL_YN = 'Y'
+   </select> 
+   
+  <!-- 휴지통 일정삭제(스케줄러) -->
+	<delete id="deleteSchWaste">
+	 DELETE 
+	 		FROM TB_SCHEDULE
+	 WHERE SCH_NO = ${schNo}
+	 AND DEL_YN = 'Y'
+	</delete>
+	
+	
+	<!-- 캘린더 insert *************************************** -->
+	<insert id="insertCal">
+
+		INSERT INTO TB_CALENDAR
+		    (
+		        CAL_NO,
+		        REG_ID,
+		        DEPT_CODE,
+		        CAL_SUB_CODE,
+		        REG_DATE,
+		        MOD_DATE,
+		        MOD_ID,
+		        DEL_YN,
+		        CAL_COLOR
+		    )
+		    SELECT 
+		        SEQ_CALNO.nextval,
+		        #{userId},
+		        #{deptCode},
+		        sub.CAL_SUB_CODE,
+		        SYSDATE,
+		        SYSDATE,
+		        #{userId},
+		        'N',
+		        CASE
+		            WHEN sub.CAL_SUB_CODE = '01' THEN '#a82626c3'
+		            WHEN sub.CAL_SUB_CODE = '02' THEN '#104fa1c3'
+		            WHEN sub.CAL_SUB_CODE = '03' THEN '#358657c3'
+		            ELSE null
+		        END
+		    FROM
+		        (SELECT '01' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '02' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '03' AS CAL_SUB_CODE FROM DUAL
+		         UNION ALL
+		         SELECT '04' AS CAL_SUB_CODE FROM DUAL) sub	 
+	  </insert>
 </mapper>
