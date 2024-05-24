@@ -129,6 +129,26 @@ public class BookingServiceImpl implements BookingService {
 		return 0;
 	}
 
+	@Override
+	public int selectSupWaitCount() {
+		return bkDao.selectSupWaitCount();
+	}
+
+	@Override
+	public List<BookingDto> selectSupWaitList(PageInfoDto pi) {
+		return bkDao.selectSupWaitList(pi);
+	}
+
+	@Override
+	public int selectSupStatusCount(Map<String, String> search) {
+		return 0;
+	}
+
+	@Override
+	public List<BookingDto> selectSipStatusList(PageInfoDto pi, Map<String, String> search) {
+		return null;
+	}
+
 	
 	
 

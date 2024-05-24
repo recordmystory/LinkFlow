@@ -159,12 +159,12 @@
 
 							<ul class="nav nav-treeview" style="padding-left: 20px;">
 								<li class="nav-item"><a
-									href="/facility-reservation-management" class="nav-link"> <i
+									href="${contextPath }/booking/room.mng" class="nav-link"> <i
 										class="far far-2xs fa-circle nav-icon"></i>
 										<p>시설 예약 관리</p>
 								</a></li>
 								<li class="nav-item">
-									<a href="/equipment-reservation-management" class="nav-link">
+									<a href="${contextPath }/booking/sup.mng" class="nav-link">
 										<i class="far far-2xs fa-circle nav-icon"></i>
 										<p>비품 예약 관리</p>
 									</a>
@@ -306,6 +306,7 @@
 	    $("#month").empty();
 	    $("#day").empty();
 	    
+	    var setDate = new Date(now.getYear(),now.getMonth()+1,0);
 	    //년도 셋팅
 	   $("#year").append("<option value='"+now.getYear()+"'>"+now.getYear()+"</option>");
 	 	if(now.getYear() == "11") {
@@ -321,8 +322,8 @@
 	 	//일 셋팅
 	 	$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
 	 	
-	 	for(var i=now.getDate(); i<=now.getDate(); i++){
-	 		if( i != detailDay){
+	 	for(var i=now.getDate(); i<=setDate.getDate(); i++){
+	 		if( i != now.getDate()){
 	 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
 	 		}
 	 	} 
@@ -347,13 +348,13 @@
 			 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
 			 	}
 			}else{
-				$("#day").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+				$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
 			 	
-			 	for(var i=now.getDate(); i<=now.getDate(); i++){
-			 		if( i != detailDay){
+			 	for(var i=now.getDate(); i<=tempDate.getDate(); i++){
+			 		if( i != now.getDate()){
 			 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
 			 		}
-			 	}
+			 	} 
 			}
 	    });
 		/* 
