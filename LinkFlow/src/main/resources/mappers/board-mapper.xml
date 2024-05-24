@@ -36,6 +36,14 @@
 		<result column="board_right" property="boardRight"/>
 	</resultMap>
 	
+	<resultMap id="replyResultMap" type="ReplyDto" extends="commonMapper.commonResult">
+		<id column="reply_no" property="replyNo" />
+		<result column="reply_content" property="replyContent" />
+		<result column="ref_no" property="refNo" />
+		<result column="user_name" property="userName" />
+		<result column="sub_name" property="position" />
+	</resultMap>
+	
 	<select id="selectBoardCategory" resultMap="categoryResult">
 		select 
       BOARD_CATEGORY
@@ -286,13 +294,13 @@
 		    b.board_no DESC
   </select>
 	
-	  <update id="deleteBoard">
-      UPDATE tb_board
-      SET del_yn = 'Y'
-      WHERE board_no IN
-      <foreach item="item" collection="list" open="(" separator="," close=")">
-          #{item}
-      </foreach>
+  <update id="deleteBoard">
+     UPDATE tb_board
+     SET del_yn = 'Y'
+     WHERE board_no IN
+     <foreach item="item" collection="list" open="(" separator="," close=")">
+         #{item}
+     </foreach>
   </update>
   
   <select id="selectCurrnetTempSave" resultType="_int">
@@ -425,4 +433,55 @@
       SET del_yn = 'Y'
       WHERE board_category = #{boardType}
 	</update>
+	
+	<insert id="insertReply">
+		insert
+  		into tb_reply
+  		(
+  			reply_no
+  		, reply_content
+  		, ref_no
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+  			seq_replyno.nextval
+  		, #{replyContent}
+  		, #{refNo}
+  		, #{regId}
+  		, #{regId}
+  		)
+	</insert>
+	
+	<select id="selectReplyList" resultMap="replyResultMap">
+  	select
+  				reply_no
+  			, reply_content
+  			, r.reg_id
+  			, r.mod_id
+  			, m.user_name 
+  			, c.sub_name
+  			, to_char(r.mod_date, 'YYYY-MM-DD') as modCharDate
+  	from tb_reply r
+  	join tb_member m on(r.reg_id = user_id)
+    join tb_common c on (c.sub_code = m.rank_scode)
+   where r.del_yn = 'N'
+   	 and ref_no = #{no}
+   order
+   		by reply_no
+  </select>
+	
+	<update id="deleteReply">
+	UPDATE tb_reply
+      SET del_yn = 'Y'
+      WHERE reply_no = #{replyNo}
+	</update>
+	
+	<update id="updateReply">
+	UPDATE tb_reply
+      SET reply_content= #{replyContent}
+      WHERE reply_no = #{replyNo}
+	</update>
+	
 </mapper>

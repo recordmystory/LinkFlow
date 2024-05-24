@@ -15,6 +15,7 @@ import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.ReplyDto;
 import com.mm.linkflow.service.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -241,6 +242,26 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int deleteCategory(String boardType) {
 		return boardDao.deleteCategory(boardType);
+	}
+
+	@Override
+	public int insertReply(ReplyDto reply) {
+		return boardDao.insertReply(reply);
+	}
+
+	@Override
+	public List<ReplyDto> selectReplyList(int no) {
+		return boardDao.selectReplyList(no);
+	}
+
+	@Override
+	public int deleteReply(int replyNo) {
+		return boardDao.deleteReply(replyNo);
+	}
+
+	@Override
+	public int updateReply(ReplyDto reply) {
+		return boardDao.updateReply(reply);
 	}
 
 }

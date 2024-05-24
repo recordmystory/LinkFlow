@@ -13,6 +13,7 @@ import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.dto.ReplyDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -152,5 +153,21 @@ public class BoardDao {
 
 	public int deleteCategory(String boardType) {
 		return sqlSession.update("boardMapper.deleteCategory", boardType);
+	}
+
+	public int insertReply(ReplyDto reply) {
+		return sqlSession.insert("boardMapper.insertReply", reply);
+	}
+
+	public List<ReplyDto> selectReplyList(int no) {
+		return sqlSession.selectList("boardMapper.selectReplyList", no);
+	}
+
+	public int deleteReply(int replyNo) {
+		return sqlSession.update("boardMapper.deleteReply", replyNo);
+	}
+
+	public int updateReply(ReplyDto reply) {
+		return sqlSession.update("boardMapper.updateReply", reply);
 	}
 }
