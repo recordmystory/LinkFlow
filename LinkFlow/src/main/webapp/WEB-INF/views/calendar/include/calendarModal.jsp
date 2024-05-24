@@ -334,10 +334,10 @@
 		                        <div class="form-group mt-1">
 		                          <select class="form-select" name="schCalSubCode">
                                 <option value="03" selected>개인 캘린더</option>
-                                <c:if test="${loginUser.spRight == 'Y'}">
+                                <c:if test="${loginUser.deptRight == 'Y'}">
                                     <option value="02">부서 캘린더</option>
                                 </c:if>
-                                <c:if test="${loginUser.boardRight == 'Y'}">
+                                <c:if test="${loginUser.spRight == 'Y'}">
                                     <option value="01">전사 캘린더</option>
                                 </c:if>
                             	</select>
@@ -418,10 +418,10 @@
 		                        <div class="form-group mt-1">
 		                           <select class="form-select" name="schCalSubCode">
                                 <option value="03" selected>개인 캘린더</option>
-                                <c:if test="${loginUser.spRight == 'Y'}">
+                                <c:if test="${loginUser.deptRight == 'Y'}">
                                     <option value="02">부서 캘린더</option>
                                 </c:if>
-                                <c:if test="${loginUser.boardRight == 'Y'}">
+                                <c:if test="${loginUser.spRight == 'Y'}">
                                     <option value="01">전사 캘린더</option>
                                 </c:if>
                             	</select>
@@ -1187,8 +1187,6 @@ $('#kt_docs_jstree_basic').jstree({
 	    
 	    var mod = '${loginUser.userId}'; 
         $('input[name="modId"]').val(mod); 
-	    
-       
 
     	//등록 ajax
    		 $('#schInsertButton').click(function() {

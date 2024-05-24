@@ -11,7 +11,7 @@ public interface CalendarService {
 	int insertSch(ScheduleDto schedule);
 	
 	//캘린더 메인 - 일정 전체조회
-	List<ScheduleDto> selectSchList(String schCalSubCode);
+	List<ScheduleDto> selectSchList(Map<String, Object> sch);
 	
 	//휴지통 - 일정 상세
 	ScheduleDto detailSch(String schNo);

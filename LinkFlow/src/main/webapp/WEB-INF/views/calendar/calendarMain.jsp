@@ -219,7 +219,7 @@
           type: "get",
           //traditional: true,
           data: {
-              schCalSubCodes: code
+              schCalSubCode: code
           },
           contentType: "application/json",
           dataType: "json",
