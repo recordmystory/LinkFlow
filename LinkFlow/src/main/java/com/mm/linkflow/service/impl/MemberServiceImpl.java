@@ -75,8 +75,9 @@ public class MemberServiceImpl implements MemberService {
 	public int selectRetireMember(String date) {
 		return mDao.selectRetireMember(date);
 	}
-	
-	
+	@Override
+	public MemberDto selectCategoryMaster(String boardType) {
+		return mDao.selectCategoryMaster(boardType);
+	}
 
-	
 }

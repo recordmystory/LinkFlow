@@ -24,6 +24,7 @@ public class BoardAuthDto extends CommonDto {
 	private String userName;
 	private String subName;
 	private String deptTitle;
+	private String boardRight;
 	
 	private ArrayList<BoardAuthDto> AuthList;
 }

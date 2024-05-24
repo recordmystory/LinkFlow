@@ -61,4 +61,14 @@ public interface BoardService {
 
 	List<BoardAuthDto> selectNormalUser(String boardType);
 
+	List<BoardCategoryDto> selectWriteCategory(MemberDto loginUser);
+
+	int resetBoardUser(String boardType);
+
+	int reallocationBoardAuth(List<BoardAuthDto> listAuth, String userId);
+
+	int updateCategoryTitle(Map<String, String> map);
+
+	int deleteCategory(String boardType);
+
 }

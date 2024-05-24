@@ -74,6 +74,11 @@ public class MemberDao {
 	public int selectRetireMember(String date) {
 		return sql.selectOne("memberMapper.selectRetireMember", date);
 	}
+	
+	// 카테고리마스터 조회용 - 구성모
+	public MemberDto selectCategoryMaster(String boardType) {
+		return sql.selectOne("memberMapper.selectCategoryMaster", boardType);
+	}
 
 
 

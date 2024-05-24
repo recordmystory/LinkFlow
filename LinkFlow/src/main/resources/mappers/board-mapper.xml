@@ -33,10 +33,46 @@
 		<result column="user_name" property="userName"/>
 		<result column="sub_name" property="subName"/>
 		<result column="dept_title" property="deptTitle"/>
-	
+		<result column="board_right" property="boardRight"/>
 	</resultMap>
 	
 	<select id="selectBoardCategory" resultMap="categoryResult">
+		select 
+      BOARD_CATEGORY
+    , CATEGORY_NAME
+    , DEPT_CODE
+    , CATEGORY_TYPE
+    , REG_ID
+	from tb_category c
+	    where
+	    del_yn ='N'
+	    and CATEGORY_TYPE not in ('COMPANY')
+    <if test='superRight != "Y" and boardRight != "Y"'>
+	    and   (case 
+	            WHEN C.CATEGORY_TYPE = 'DEPT' AND c.dept_code = #{deptCode} THEN 'Y'
+	            WHEN C.CATEGORY_TYPE = 'NORMAL' 
+	                AND (SELECT COUNT(1) FROM BOD_AUTH a
+	                WHERE a.BOARD_CATEGORY = c.BOARD_CATEGORY
+	                AND USER_ID = #{userId}
+	                AND READ_YN = 'Y') > 0 THEN 'Y'
+	            ELSE 'N'
+	        END) = 'Y'
+    </if>
+    	order by dept_code
+	</select>
+	
+	<select id="selectBoardListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_board
+  	 where 
+  	 			del_yn = 'N'
+  	 	 <if test='boardCategory != "CATEGORY-8"'>
+		    		and notice_yn = 'N'
+	    	</if>
+  	  and board_category = #{boardType}
+  </select>
+  
+  <select id="selectWriteCategory" resultMap="categoryResult">
 		select 
       BOARD_CATEGORY
     , CATEGORY_NAME
@@ -53,23 +89,12 @@
 	                AND (SELECT COUNT(1) FROM BOD_AUTH a
 	                WHERE a.BOARD_CATEGORY = c.BOARD_CATEGORY
 	                AND USER_ID = #{userId}
-	                AND READ_YN = 'Y') > 0 THEN 'Y'
+	                AND WRITE_YN = 'Y') > 0 THEN 'Y'
 	            ELSE 'N'
 	        END) = 'Y'
     </if>
     	order by board_category
 	</select>
-	
-	<select id="selectBoardListCount" resultType="_int">
-  	select count(*) 
-  	  from tb_board
-  	 where 
-  	 			del_yn = 'N'
-  	 	 <if test='boardCategory != "CATEGORY-8"'>
-		    		and notice_yn = 'N'
-	    	</if>
-  	  and board_category = #{boardType}
-  </select>
   
   <select id="selectSearchListCount" resultType="_int">
   	select count(*) 
@@ -352,7 +377,14 @@
   		values
   		(
   			 #{userId}
-  		 , 'CATEGORY-'|| seq_categoryno.currval
+  		 <choose>
+  		 	<when test ="boardCategory != null">
+  		 		, #{boardCategory}
+  		 	</when>
+  		 	<otherwise>
+  		 		, 'CATEGORY-'|| seq_categoryno.currval  		 	
+  		 	</otherwise>
+  		 </choose>
   		 , #{writeYN}
   		 , #{regId}
   		 , #{modId}
@@ -360,19 +392,37 @@
   </insert>
   
   <select id="selectNormalUser" resultMap="authResult">
-  	select 
-	    m.user_name
+  	select
+  		 m.user_id 
+	    ,m.user_name
 	    ,c.sub_name
 	    ,d.dept_title
+	    ,m.board_right
 	    ,write_yn
 		from bod_auth a
 		join tb_member m on (a.user_id = m.user_id)
 		join tb_dept d on (m.dept_code = d.dept_code)
 		join tb_common c on (c.main_code = m.rank_bcode and c.sub_code = m.rank_scode)
 		where a.board_category = #{boardType}
-  
+		order by c.sub_code desc
   </select>
 	
+	<delete id="resetBoardUser">
+		delete
+		  from bod_auth
+		  where board_category = #{boardType}
+	</delete>
 	
+	<update id="updateCategoryTitle">
+		update
+  				tb_category
+ 			set category_name = #{categoryTitle}
+ 			where board_category = #{boardType}
+	</update>
 	
+	<update id="deleteCategory">
+	UPDATE tb_category
+      SET del_yn = 'Y'
+      WHERE board_category = #{boardType}
+	</update>
 </mapper>

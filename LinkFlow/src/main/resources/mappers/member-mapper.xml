@@ -272,4 +272,19 @@
  		  FROM TB_MEMBER
  		 WHERE TO_CHAR(RETIRE_DATE, 'YYYY-MM') = #{date}
  	</select>
+ 	
+ 	<!-- 게시판 마스터 조회용 - 구성모 -->
+ 	<select id="selectCategoryMaster" resultMap="memberResult">
+ 	select 
+ 			 m.user_id
+	    ,m.user_name
+	    ,c.sub_name position
+	    ,d.dept_title DEPT_NAME
+		from tb_member m
+		join tb_category ct on (ct.reg_id = m.user_id)
+		join tb_dept d on (m.dept_code = d.dept_code)
+		join tb_common c on (c.main_code = m.rank_bcode and c.sub_code = m.rank_scode)
+		where board_category = #{boardType}
+ 	</select>
+ 	
 </mapper>
