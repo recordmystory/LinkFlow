@@ -310,11 +310,12 @@
 	 values
 	 	   (
 	 		'ASS_'|| LPAD(SEQ_ASSNO.NEXTVAL, 3, '0')
-	 	   ,#{mainCode}
+	 	   ,#{ass.mainCode}
 	 	   ,(select sub_code
 	 	   		from tb_common
-	 	   	   where main_code = #{mainCode}	
+	 	   	   where main_code = #{ass.mainCode}	
 	 	   	     and sub_name = #{ass.subName}
+	 	   	     group by sub_code
 	 	   	 )
 	 	   	,#{ass.assetsName}
 	 	   	,#{userId}
@@ -327,8 +328,9 @@
 	update tb_assets
 	   set sub_code = (select sub_code
 			 	   		from tb_common
-			 	   	   where main_code = #{mainCode}	
+			 	   	   where main_code = #{ass.mainCode}	
 			 	   	     and sub_name = #{ass.subName}
+			 	   	   group by sub_code
 			 	   	   ),
 			assets_name = #{ass.assetsName},
 			mod_id = #{userId}

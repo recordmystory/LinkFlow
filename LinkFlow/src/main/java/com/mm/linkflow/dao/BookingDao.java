@@ -120,6 +120,7 @@ public class BookingDao {
 	}
 
 	public int modAssets(Map<String, Object> mp) {
+		log.debug("mpmpmpmpmp:{}",mp);
 		return sql.update("bkMapper.modifyAssets",mp);
 	}
 

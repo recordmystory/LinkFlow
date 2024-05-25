@@ -234,10 +234,10 @@ input[type="checkbox"]:checked {
 				                              <td>${ ass.subName }</td>
 				                              <td>${ ass.assetsName }</td>
 				                              <td>
-				                                  <span data-toggle="modal" data-target="#acc-update" id="assModify" 
-				                                  		onclick="modalType('${ass.assetsNo }','${ ass.mainName }','${ ass.subName }','${ ass.assetsName }');">수정</span>
+				                                  <a data-toggle="modal" data-target="#acc-update" id="assModify" 
+				                                  		onclick="modalType('${ass.assetsNo }','${ ass.mainName }','${ ass.subName }','${ ass.assetsName }');">수정</a>
 				                                  |
-				                                  <span onclick="assDel(this);" data-assNo="${ass.assetsNo}">삭제</span>
+				                                  <a onclick="assDel(this);" data-assNo="${ass.assetsNo}">삭제</a>
 				                              </td>
 				                          </tr>
 			                          </c:forEach>
@@ -325,11 +325,7 @@ input[type="checkbox"]:checked {
 	<script>
 			
 		$(document).ready(function () {
-	        $('.dropdown-item').click(function () {
-	            var selectedText = $(this).find('.spanCss').text();
-	            $('.resultArea').text(selectedText);
-	        });
-	        
+	      
 	        // URL에서 success 파라미터를 확인하고 알림 표시
             const urlParams = new URLSearchParams(window.location.search);
             const ain = urlParams.get('ain');
@@ -379,10 +375,10 @@ input[type="checkbox"]:checked {
 		                       + "<td>" + list[i].subName + "</td>"
 		                       + "<td>" + list[i].assetsName + "</td>"
 		                       + "<td>"
-		                       + "<span data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\" onclick=\"modalType("
-		                       + list[i].assetsNo +","+ list[i].mainName+","+ list[i].subName+","+ list[i].assetsName+ ")\">수정</span>"
+		                       + "<a data-toggle=\"modal\" data-target=\"#acc-update\" id=\"assModify\" onclick=\"modalType("
+		                       + list[i].assetsNo +","+ list[i].mainName+","+ list[i].subName+","+ list[i].assetsName+ ")\">수정</a>"
 		                       + " | "
-		                       + "<span onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</span>"
+		                       + "<a onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</a>"
 		                       + "</td></tr>";
 		            }
 		            
