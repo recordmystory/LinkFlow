@@ -79,6 +79,11 @@ public class MemberDao {
 	public MemberDto selectCategoryMaster(String boardType) {
 		return sql.selectOne("memberMapper.selectCategoryMaster", boardType);
 	}
+	
+	// 메일수신때 유저있는지 체크용 - 구성모
+	public int selectCheckUser(String[] email) {
+		return sql.selectOne("memberMapper.selectCheckUser", email);
+	}
 
 
 

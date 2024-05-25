@@ -25,4 +25,8 @@ public interface MailService {
 
 	int updateMailRead(int no);
 
+	int insertSendMail(SendMailDto sendMail);
+
+	int insertReceiveeMail(String[] receivceEmailId);
+
 }

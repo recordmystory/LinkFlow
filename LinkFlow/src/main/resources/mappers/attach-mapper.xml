@@ -43,6 +43,9 @@
   					<when test='refCategory == "E"'>
   						, seq_edoc.currval
   					</when>
+  					<when test='refCategory == "M"'>
+  						, seq_mailno.currval
+  					</when>
   				</choose>
   			</when>
   			<otherwise>
