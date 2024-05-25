@@ -39,7 +39,7 @@ public class ProjectController {
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		mv.addObject("list", proService.listProject(pi))
 		  .addObject("pi", pi)
-		  .setViewName("project/list");
+		  .setViewName("project/listProject");
 		return mv;
 	}
 	
@@ -68,7 +68,7 @@ public class ProjectController {
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("search", search)
-		  .setViewName("project/list");
+		  .setViewName("project/listProject");
 	    
 	    return mv;
 		
@@ -90,6 +90,16 @@ public class ProjectController {
 		proService.addProject(pro);
 		
 		return "redirect:/project/list.pj";
+	}
+	
+	// 프로젝트 상세 조회
+	@GetMapping("detail.pj")
+	public ModelAndView detailProject(int no, ModelAndView mv) {
+		
+		mv.addObject("pro", proService.selectDetailProject(no))
+		  .setViewName("project/detailProject");
+		
+		return mv;
 	}
 	
 }

@@ -51,7 +51,7 @@ public interface BookingService {
     List<BookingDto> selectSupWaitList(PageInfoDto pi);
     
     int selectSupStatusCount(Map<String,String> search); // 비품 예약 완료 리스트 + 검색  
-    List<BookingDto> selectSipStatusList(PageInfoDto pi, Map<String,String> search);
+    List<BookingDto> selectSupStatusList(PageInfoDto pi, Map<String,String> search);
     
     
     

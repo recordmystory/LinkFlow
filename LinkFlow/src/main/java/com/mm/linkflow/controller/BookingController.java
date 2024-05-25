@@ -287,6 +287,22 @@ public class BookingController {
 		return mp;
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/supStat.list", produces="application/json; charset=utf-8")
+	public Map<String, Object> selectSupStatList(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage){
+		log.debug("search.keyword:{}",search);
+		
+		int listCount = bkServiceImpl.selectSupStatusCount(search);
+		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 5);
+		List<BookingDto> bkStatusList = bkServiceImpl.selectSupStatusList(pi,search);
+		
+		Map<String, Object> mp = new HashMap<>();
+		mp.put("pi",pi);
+		mp.put("bkStatusList",bkStatusList);
+		
+		return mp;
+	}
+	
 	@GetMapping("/room.mng")
 	public String roomBookingManager() {
 		return "booking/roomBookingManager";

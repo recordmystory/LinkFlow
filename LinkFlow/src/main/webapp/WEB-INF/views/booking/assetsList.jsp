@@ -407,13 +407,11 @@ input[type="checkbox"]:checked {
 		        var supplies = document.getElementById('supSub');
 		        
 				if (main === "비품") {
-					console.log("왜안됨");
 					document.getElementById('roomOption').selected = false;
 					document.getElementById('suppliesOption').selected = true;
 		            room.style.display = 'none';
 		            supplies.style.display = 'block';
 		        } else if(main === "시설"){
-		        	console.log("왜안되냐고 ");
 		        	document.getElementById('suppliesOption').selected = false;
 		            document.getElementById('roomOption').selected = true;
 		            
