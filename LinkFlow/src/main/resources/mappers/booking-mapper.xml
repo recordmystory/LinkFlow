@@ -404,6 +404,8 @@
 		  ,bk_content
 		  ,assets_name
 		  ,sub_name
+		  ,b.status
+		  ,rej_content
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_end_dt,'YYYY/MM/DD'), ' ') AS bk_end_date
 		  ,to_char(b.mod_date,'YYYY/MM/DD') AS enr_date
@@ -430,5 +432,22 @@
 	  </choose>
 	order by booking_no desc
 </select>
+
+<update id="updateSupBkConfirm">
+	update tb_booking
+	   set reg_id = #{userId},
+	   	   mod_id = #{userId},
+	  <choose>
+          <when test='rejContent != "" and rejContent != null'> 
+          status = 'REJ' ,
+          rej_content = #{rejContent}
+          </when>
+          <otherwise>
+          status = 'USE' 
+		  </otherwise>
+       </choose>
+	   	  
+	 where booking_no = #{bookingNo}
+</update>
 
 </mapper>

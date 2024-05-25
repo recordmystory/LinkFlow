@@ -145,4 +145,8 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectSupStatusList",search,rowBounds);
 	}
 
+	public int updateSupBkConfirm(Map<String, String> bk) {
+		return sql.update("bkMapper.updateSupBkConfirm",bk);
+	}
+
 }
