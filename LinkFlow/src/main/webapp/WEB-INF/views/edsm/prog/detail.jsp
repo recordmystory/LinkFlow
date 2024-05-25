@@ -187,9 +187,13 @@
 
                <div class="contentInElement">
                	<div class="btnArea">
-                 <button class="btn btn-primary btn-sm">수정</button>
+               	<c:forEach var="edocHist" items="${edoc.docHistList}">
+               	<c:if test="${edocHist.userId == loginUser.userId}">
+                 <button class="btn btn-primary btn-sm" onclick="modifySecCode();">수정</button>
+                 <button class="btn btn-danger btn-sm" onclick="modifyDelYn();">기안취소</button>
+               	</c:if>
+               	</c:forEach>
                  <button class="btn btn-info btn-sm" onclick="docPrint();">인쇄</button>
-                 <button class="btn btn-danger btn-sm">기안취소</button>
                </div>
                
              <!-- 기본 설정-->
@@ -229,7 +233,7 @@
                      </td>
                      <th class="table-active">보안 등급</th>
                      <td>
-                       <select class="form-control security-level">
+                       <select name="secCode" id="selectedSecCode" class="form-control security-level">
                          <option value="S" <c:if test="${edoc.secCode == 'S'}">selected</c:if>>S등급</option>
                          <option value="A" <c:if test="${edoc.secCode == 'A'}">selected</c:if>>A등급</option>
                          <option value="B" <c:if test="${edoc.secCode == 'B'}">selected</c:if>>B등급</option>
@@ -263,8 +267,10 @@
 		                 	</c:when>
 		                 	
 		                 	<c:otherwise>
-			                	<td class="sign-img-area">		                   		
+			                	<td class="sign-img-area">	
+			                		<c:if test="${edocHist.userId != loginUser.userId}">	                   		
 				                     <button class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+				                 	</c:if>
 				                 </td>
 		                 	</c:otherwise>
 		                 	
@@ -391,7 +397,7 @@
              </script> -->
              <hr>
 						
-						<c:if test="${edoc.attachList != null}">
+						<%-- <c:if test="${edoc.attachList != null}">
 							<c:forEach var="at" items="${edoc.attachList}">
 		             <div class="attachment">
 		               <div class="attachment-title" style="margin-bottom: 10px;">
@@ -407,7 +413,7 @@
 		               </div>
 		             </div>
 	             </c:forEach>
-             </c:if>
+             </c:if> --%>
              
              <div class="document-comment">
                <div class="document-comment-title">
@@ -439,7 +445,17 @@
 	</div>
 	
 	<script>
-
+	
+				// 보안등급 수정
+				function modifySecCode(){
+					location.href = '${contextPath}/edsm/prog/modifySecCode.prog?edNo=' + '${edoc.edNo}' + '&secCode=' + $('#selectedSecCode').val();
+					
+				};
+				
+				function modifyDelYn(){
+					location.href = '${contextPath}/edsm/prog/modifyDelYn.prog?edNo=' + '${edoc.edNo}';	
+				};
+				
         // 인쇄
         function docPrint(){
           /*let initBody = document.body.innerHTML;

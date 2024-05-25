@@ -204,7 +204,7 @@
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
         JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
 		WHERE ED.DEL_YN = 'N'
-            AND ED.REG_ID = #{userId} OR EH.USER_ID = #{userId}
+            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
     ORDER BY ED.REG_DATE 
 	</select>
 	
@@ -306,6 +306,7 @@
 		FROM TB_EDOC_HIST EH
 		JOIN TB_MEMBER M ON (M.USER_ID = EH.USER_ID)
 		WHERE ED_NO = #{edNo}
+		ORDER BY ED_HIST_ORDER DESC
 	</select>
 	
 	<!-- 참조자 목록 -->
@@ -330,6 +331,17 @@
 		    AND ED_NO = #{edNo}
 	</select>
 	
+	<update id="updateSecCode">
+		UPDATE TB_EDOC
+		SET SEC_CODE = #{secCode}
+		WHERE ED_NO = #{edNo}
+	</update>
+	
+	<update id="modifyDelYn">
+		UPDATE TB_EDOC
+		SET DEL_YN = 'Y'
+		WHERE ED_NO = #{edNo}
+	</update>
 	<!-- 결재선 insert -->
 	<!-- <insert id="inserApprLine">
 		INSERT INTO TB_EDOC_HIST

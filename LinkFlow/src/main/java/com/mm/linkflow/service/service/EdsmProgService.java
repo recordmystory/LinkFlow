@@ -37,4 +37,10 @@ public interface EdsmProgService {
 	
 	// 진행중인 문서 상세 (기안문서 정보 + 기안자 정보 조회)
 	EdocDto selectEdocDetail(String edNo);
+	
+	// 진행중인 문서 상세 (보안등급 수정)
+	int updateSecCode(EdocDto edocDto);
+
+	// 진행중인 문서 상세 (기안 취소)
+	int modifyDelYn(String edNo);
 }
