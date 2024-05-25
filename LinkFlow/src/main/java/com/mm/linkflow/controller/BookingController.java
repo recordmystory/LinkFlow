@@ -273,7 +273,7 @@ public class BookingController {
 		return "booking/supBookingManager";
 	}
 	
-	@ResponseBody
+	@ResponseBody // 비품 예약 대기 리스트
 	@GetMapping(value="/supWait.list", produces="application/json; charset=utf-8")
 	public Map<String, Object> selectSupWaitList(@RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = bkServiceImpl.selectSupWaitCount();
@@ -287,10 +287,9 @@ public class BookingController {
 		return mp;
 	}
 	
-	@ResponseBody
+	@ResponseBody // 비품 예약 완료 리스트 + 검색
 	@GetMapping(value="/supStat.list", produces="application/json; charset=utf-8")
 	public Map<String, Object> selectSupStatList(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage){
-		log.debug("search.keyword:{}",search);
 		
 		int listCount = bkServiceImpl.selectSupStatusCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 5);
@@ -301,6 +300,16 @@ public class BookingController {
 		mp.put("bkStatusList",bkStatusList);
 		
 		return mp;
+	}
+	
+	@PostMapping("/supcon.bk") // 비품예약 승인,반려 
+	public String updateSupBkConfirm(@RequestParam Map<String,String> bk, HttpSession session) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		log.debug("bk:{}", bk);
+		int result = bkServiceImpl.updateSupBkConfirm(bk);
+		
+		return "redirect:/booking/sup.mng";
 	}
 	
 	@GetMapping("/room.mng")
