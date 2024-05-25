@@ -43,7 +43,7 @@
  	<div class="sidebar">
  		<nav class="linkfoiwsideMenu">
       <div class="LinkFlowInsertBtnArea">
-        <a href="#" class="btn btn-block bg-primary btn-lg">메일 작성하기</a>
+        <a href="${contextPath }/mail/registForm.page" class="btn btn-block bg-primary btn-lg">메일 작성하기</a>
           </div>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     

@@ -59,4 +59,12 @@ public class MailDao {
 	public int updateMailRead(int no) {
 		return sqlSession.update("mailMapper.updateMailRead", no);
 	}
+
+	public int insertSendMail(SendMailDto sendMail) {
+		return sqlSession.insert("mailMapper.insertSendMail", sendMail);
+	}
+
+	public int insertReceiveeMail(String emailId) {
+		return sqlSession.insert("mailMapper.insertReceiveeMail", emailId);
+	}
 }

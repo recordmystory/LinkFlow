@@ -287,4 +287,17 @@
 		where board_category = #{boardType}
  	</select>
  	
+ 	<!-- 메일수신할때 유저있는지 체크용 - 구성모 -->
+ 	<select id="selectCheckUser" resultType="_int">
+  	select
+  				 count(*)
+  	from tb_member
+   <where>
+   	<foreach item="item" collection="array"
+   					 open="user_id in (" separator="," close=")">
+   		#{item}
+   	</foreach>
+   </where>
+  </select>
+ 	
 </mapper>

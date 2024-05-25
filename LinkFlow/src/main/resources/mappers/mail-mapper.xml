@@ -12,6 +12,7 @@
 		
 		<result column="user_name" property="userName" />
 		
+		<collection resultMap="attachMapper.attachResult" property="attachList" />
 	</resultMap>
 	
 		<resultMap id="receiveMailResult" type="ReceiveMailDto">
@@ -91,9 +92,15 @@
 	  , s.trans_time
 	  , s.reg_id
 	  , m.user_name
-		from tb_mail s
+	  , file_no
+    , file_path
+    , filesystem_name
+    , origin_name
+	from tb_mail s
+	left join tb_attachment on (ref_category ='M' and ref_no = s.mail_no)
 	join tb_member m on(s.reg_id = m.user_id)
-	where mail_no = ${no}
+		where mail_no = ${no}
+			and s.del_yn ='N'
 	</select>
 
 	<update id="updateMailRead">
@@ -103,5 +110,41 @@
 			     read_yn = 'Y'
 		 where mail_no = #{no} 
 	</update>
+	
+	<insert id="insertSendMail">
+  	insert
+  		into tb_mail
+  		(
+  			mail_no
+  		, mail_title
+  		, mail_content
+  		, temp_save
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+				seq_mailno.nextval
+			, #{mailTitle}
+			, #{mailContent}
+			, #{tempSave}
+			, #{regId}
+			, #{modId}
+  		)
+  </insert>
+  
+  <insert id="insertReceiveeMail">
+  	insert
+  		into re_mail
+  		(
+  			mail_no
+  		, user_id
+  		)
+  		values
+  		(
+				seq_mailno.currval
+			, #{emailId}
+  		)
+  </insert>
 
 </mapper>

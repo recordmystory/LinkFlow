@@ -79,5 +79,9 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto selectCategoryMaster(String boardType) {
 		return mDao.selectCategoryMaster(boardType);
 	}
+	@Override
+	public int selectCheckUser(String[] email) {
+		return mDao.selectCheckUser(email);
+	}
 
 }
