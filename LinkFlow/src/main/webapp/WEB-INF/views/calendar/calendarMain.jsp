@@ -204,17 +204,18 @@
         });
         calendar.render();
         
-        $(".calCheckbox").each(function(index, checkboxEl){
+      /*   $(".calCheckbox").each(function(index, checkboxEl){
         	if($(checkboxEl).is(":checked")){
         		addEventAndShow($(checkboxEl).val());
         	}
-        })
+        }) */
+       
     });
     //풀캘린더 
     
     // 넘겨받은 그룹코드의 일정들을 조회해서 캘린더에 뿌리는 역할의함수
      function addEventAndShow(code){
-      $.ajax({
+    	$.ajax({
           url: "${contextPath}/calendar/schList.do",
           type: "get",
           //traditional: true,
@@ -249,9 +250,7 @@
               //successCallback(events);
               //calendar.refetchEvents();
           },
-          error: function(result) {
-              failureCallback(result);
-          	
+          error: function() {
           }
       });
 		}
