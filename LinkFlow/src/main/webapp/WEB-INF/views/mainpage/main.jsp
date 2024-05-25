@@ -148,7 +148,7 @@
 					<div class="menuBar">
 						<span style="margin-left: 150px;"></span> 
 						<span class="menubar_category"> 
-							<a href="" class="category_link">
+							<a href="${ contextPath }/mail/receiveList.do" class="category_link">
 								<i class="fa-regular fa-envelope" style="font-size: 43px; padding-left: 11px; padding-top: 10px;"></i>
 								<p class="category_content" style="padding-left: 13.5px; padding-top: 25px;">메일</p>
 							</a>

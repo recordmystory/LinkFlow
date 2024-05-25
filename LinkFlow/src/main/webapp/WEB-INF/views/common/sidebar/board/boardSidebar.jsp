@@ -102,11 +102,6 @@
   		</nav>
 	  </div>
 	</aside>
-	
-	<script>
-		
-	</script>
-
 </div>
 </body>
 </html>

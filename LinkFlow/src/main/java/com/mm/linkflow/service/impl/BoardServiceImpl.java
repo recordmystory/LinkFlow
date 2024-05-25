@@ -21,7 +21,6 @@ import com.mm.linkflow.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -71,15 +70,12 @@ public class BoardServiceImpl implements BoardService {
 		
 		int result2 = 1;
 		List<AttachDto> attachList = board.getAttachList();
-		log.debug("attachList : {}", attachList);
 		if(!attachList.isEmpty()) {
 			result2 = 0;
 			for(AttachDto at : attachList) {
 				result2 += attachDao.insertAttach(at);
 			}
 		}
-		log.debug("result1 : {}", result1);
-		log.debug("result2 : {}", result2);
 		return result1 * result2;
 	}
 
