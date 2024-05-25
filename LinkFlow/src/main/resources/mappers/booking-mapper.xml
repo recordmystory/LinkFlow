@@ -437,6 +437,7 @@
 	update tb_booking
 	   set reg_id = #{userId},
 	   	   mod_id = #{userId},
+	   	   status_date = sysdate,
 	  <choose>
           <when test='rejContent != "" and rejContent != null'> 
           status = 'REJ' ,
@@ -448,6 +449,14 @@
        </choose>
 	   	  
 	 where booking_no = #{bookingNo}
+</update>
+
+<update id="updateSupBkReturn">
+	update tb_booking
+	   set mod_id = #{userId},
+	   	   status_date = sysdate,
+	   	   status = 'END'
+	where booking_no = #{bookingNo}
 </update>
 
 </mapper>

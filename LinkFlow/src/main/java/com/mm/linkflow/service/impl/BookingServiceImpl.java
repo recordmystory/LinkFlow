@@ -154,6 +154,11 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.updateSupBkConfirm(bk);
 	}
 
+	@Override
+	public int updateSupBkReturn(Map<String, String> bk) {
+		return bkDao.updateSupBkReturn(bk);
+	}
+
 	
 	
 

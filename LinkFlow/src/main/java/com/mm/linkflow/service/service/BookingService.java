@@ -55,6 +55,8 @@ public interface BookingService {
     
     int updateSupBkConfirm(Map<String,String> bk); // 비품예약신청 승인반려 
     
+    int updateSupBkReturn(Map<String,String> bk); // 비품 반납
+    
     
     
 }

@@ -302,7 +302,7 @@ public class BookingController {
 		return mp;
 	}
 	
-	@PostMapping("/supcon.bk") // 비품예약 승인,반려 
+	@PostMapping("/supCon.bk") // 비품예약 승인,반려 
 	public String updateSupBkConfirm(@RequestParam Map<String,String> bk, HttpSession session) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
@@ -311,6 +311,17 @@ public class BookingController {
 		
 		return "redirect:/booking/sup.mng";
 	}
+	
+	@PostMapping("/supEnd.bk") // 비품예약 승인,반려 
+	public String updateSupBkReturn(@RequestParam Map<String,String> bk, HttpSession session) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		log.debug("bk:{}", bk);
+		int result = bkServiceImpl.updateSupBkReturn(bk);
+		
+		return "redirect:/booking/sup.mng";
+	}
+	
 	
 	@GetMapping("/room.mng")
 	public String roomBookingManager() {

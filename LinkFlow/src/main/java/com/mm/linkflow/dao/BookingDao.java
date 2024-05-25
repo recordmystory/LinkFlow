@@ -149,4 +149,8 @@ public class BookingDao {
 		return sql.update("bkMapper.updateSupBkConfirm",bk);
 	}
 
+	public int updateSupBkReturn(Map<String, String> bk) {
+		return sql.update("bkMapper.updateSupBkReturn",bk);
+	}
+
 }
