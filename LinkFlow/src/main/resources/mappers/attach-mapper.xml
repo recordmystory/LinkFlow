@@ -95,11 +95,12 @@
    </where>
   </select>
   
-  <select id="selectDelFileNo" resultType="String">
+  <select id="selectDelBoardFileNo" resultType="String">
   	select
   			  file_no
   	from tb_attachment
    where ref_no = #{no}
+   	 and ref_category = 'B'
   </select>
 	
 </mapper>

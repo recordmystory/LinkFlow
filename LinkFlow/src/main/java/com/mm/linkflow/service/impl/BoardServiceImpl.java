@@ -151,7 +151,7 @@ public class BoardServiceImpl implements BoardService {
 		int result2 = 1;
 		int result3 = 1;
 		for(int index : no) {
-			List<String> delFileNo = attachDao.selectDelFileNo(index); 
+			List<String> delFileNo = attachDao.selectDelBoardFileNo(index); 
 			if(delFileNo != null) {
 				result2 = 0;
 				

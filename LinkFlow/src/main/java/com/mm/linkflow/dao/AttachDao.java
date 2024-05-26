@@ -1,6 +1,5 @@
 package com.mm.linkflow.dao;
 
-import java.io.File;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -32,8 +31,8 @@ public class AttachDao {
 		return sqlSession.delete("attachMapper.deleteAttach", delFileNo);
 	}
 
-	public List<String> selectDelFileNo(int no) {
-		return sqlSession.selectList("attachMapper.selectDelFileNo", no);
+	public List<String> selectDelBoardFileNo(int no) {
+		return sqlSession.selectList("attachMapper.selectDelBoardFileNo", no);
 	}
 
 }
