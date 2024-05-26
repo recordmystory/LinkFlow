@@ -58,7 +58,7 @@ input[type="checkbox"] {
             <section class="content-header">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">보낸편지함</h1>
+                        <h1 class="m-0">임시저장</h1>
                     </div>
                 </div>
             </section>
@@ -104,14 +104,14 @@ input[type="checkbox"] {
                                         </thead>
                                         <tbody>
                                         <c:choose>
-                                        		<c:when test="${empty sendMailList }">
+                                        		<c:when test="${empty tempSaveList }">
                                         			<tr>
 											                					<td colspan="5"> 조회된 메일이 없습니다 </td>
 											                				<tr>
                                         		</c:when>
                                         		<c:otherwise>
-                                            <c:forEach var="m" items="${sendMailList}">
-                                     					<tr onclick="location.href='${contextPath}/mail/detail.page?&no=${ m.mailNo }';">
+                                            <c:forEach var="m" items="${tempSaveList}">
+                                     					<tr onclick="location.href='${contextPath}/mail/tempSaveDetail.page?&no=${ m.mailNo }';">
                                                 <td><input type="checkbox" class="checkBox"></td>
                                                 <td><i class="fa-solid fa-envelope-open fa-xl"></i></td>
                                                 <td>${m.userName }</td>
@@ -126,13 +126,13 @@ input[type="checkbox"] {
                                     <hr style="margin-top: 0px;">
                                     <div class="pagination" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
-                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/sendList.do?page=${pi.currentPage -1}">&laquo;</a></li>
+                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${pi.currentPage -1}">&laquo;</a></li>
                     
 														                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/sendList.do?page=${p}">${p}</a></li>
+														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${p}">${p}</a></li>
 														                </c:forEach>
 														                
-														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/sendList.do?page=${pi.currentPage +1}">&raquo;</a></li>
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${pi.currentPage +1}">&raquo;</a></li>
 
                                         </ul>
                                     </div>

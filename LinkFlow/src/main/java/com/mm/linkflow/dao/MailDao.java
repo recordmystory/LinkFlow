@@ -1,11 +1,13 @@
 package com.mm.linkflow.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ReceiveMailDto;
@@ -64,7 +66,35 @@ public class MailDao {
 		return sqlSession.insert("mailMapper.insertSendMail", sendMail);
 	}
 
-	public int insertReceiveeMail(String emailId) {
+	public int insertReceiveMail(String emailId) {
 		return sqlSession.insert("mailMapper.insertReceiveeMail", emailId);
+	}
+
+	public int selectCurrnetTempSave() {
+		return sqlSession.selectOne("mailMapper.selectCurrnetTempSave");
+	}
+
+	public int updateTempSaveMail(SendMailDto mail) {
+		return sqlSession.update("mailMapper.updateTempSaveMail", mail);
+	}
+
+	public int selectTempSaveListCount(String userId) {
+		return sqlSession.selectOne("mailMapper.selectTempSaveListCount", userId);
+	}
+
+	public List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sqlSession.selectList("mailMapper.selectTempSaveList", userId, rowBounds);
+	}
+
+	public int insertTempSaveMail(int mailNo, String emailId) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("mailNo", mailNo);
+		map.put("emailId", emailId);		
+		return sqlSession.insert("mailMapper.insertTempSaveMail", map);
 	}
 }

@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.AttachDto;
+import com.mm.linkflow.dto.BoardCategoryDto;
+import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ReceiveMailDto;
@@ -95,7 +99,7 @@ public class MailController {
 		return mv;
 	}
 	
-	@GetMapping("/detail.do") 
+	@GetMapping("/detail.page") 
 	public String detail(int no, Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		Map<String, Integer> countMap = selectSidebarCount(loginUser);
@@ -107,7 +111,7 @@ public class MailController {
 	@GetMapping("/readMail.do")
 	public String updateMailRead(int no) {
 		mailService.updateMailRead(no);	
-		return "redirect:/mail/detail.do?no=" + no;
+		return "redirect:/mail/detail.page?no=" + no;
 	}
 	
 	@GetMapping("/registForm.page") 
@@ -146,10 +150,9 @@ public class MailController {
 		}
 
 		int result1 = mailService.insertSendMail(sendMail);
-		int result2 = mailService.insertReceiveeMail(receivceEmailId);
-		log.debug("result1 : {}", result1);
-		log.debug("result2 : {}", result2);
-		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result1 == receivceEmailId.length)) {
+		int result2 = mailService.insertReceiveMail(receivceEmailId);
+
+		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
 			redirectAttributes.addFlashAttribute("alertMsg", "메일 전송에 성공하였습니다.");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", " 메일 전송에 실패하였습니다.");
@@ -175,4 +178,137 @@ public class MailController {
 
         return usernameList.toArray(new String[0]);
     }
+	 @ResponseBody
+	 @PostMapping("/insertTempSave.do")
+	 public int insertTempSave(SendMailDto sendMail
+							   , String receiveUser
+							   , List<MultipartFile> uploadFiles
+							   , HttpSession session
+							   , RedirectAttributes redirectAttributes) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		sendMail.setRegId(String.valueOf(loginUser.getUserId()));
+		sendMail.setModId(String.valueOf(loginUser.getUserId()));
+		sendMail.setTempSave("01");
+
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		if(uploadFiles != null) {
+			attachList = fileUtil.setAttach(uploadFiles, "mail", loginUser, 0, "M");
+			sendMail.setAttachList(attachList);
+		}
+
+		int result = mailService.insertSendMail(sendMail);
+		int mailNo = 0;
+		 
+		 if(result > 0) {
+			 mailNo = mailService.selectCurrnetTempSave();
+		 }
+		 
+		 return mailNo;
+	}
+	 
+	@GetMapping("/tempSaveDetail.page") 
+	public String tempSaveDetail(int no, Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		model.addAttribute("countMap", countMap);
+		model.addAttribute("mail", mailService.selectMail(no));
+		return "mail/tempSaveRegist";
+	}
+	
+	@ResponseBody
+	@PostMapping("/tempSaveUpdate.do")
+	public String tempSaveUpdate(SendMailDto mail, String[] delFileNo
+							   , List<MultipartFile> uploadFiles
+							   , HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		mail.setModId(loginUser.getUserId());
+		mail.setTempSave("01");
+
+		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
+		
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		if(uploadFiles != null) {
+			attachList = fileUtil.setAttach(uploadFiles, "mail", loginUser, mail.getMailNo(), "M");
+			mail.setAttachList(attachList);
+		}
+		int result = mailService.updateTempSaveMail(mail, delFileNo);
+		
+		if (result > 0) {
+			for(AttachDto at : delFileList) {
+				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+			}
+		}
+		return result > 0 ? "SUCCESS" : "FAIL";
+	}
+	
+	@GetMapping("/tempSave.page")
+	public String tempSaveForm(Model model, HttpSession session
+							, @RequestParam(value="page", defaultValue="1")int currentPage) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+		
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		int listCount = mailService.selectTempSaveListCount(loginUser.getUserId());
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<BoardDto> tempSaveList = mailService.selectTempSaveList(pi, loginUser.getUserId());
+		
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("countMap", countMap);
+		model.addAttribute("tempSaveList", tempSaveList);
+		return "mail/tempSave";
+	}
+	
+	@PostMapping("/registTempSave.do")
+	public String registTempSave(SendMailDto sendMail
+					   , String receiveUser, String[] delFileNo
+					   , List<MultipartFile> uploadFiles
+					   , HttpSession session
+					   , RedirectAttributes redirectAttributes) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		sendMail.setModId(String.valueOf(loginUser.getUserId()));
+		sendMail.setTempSave("02");
+		log.debug("receiveUser : {}", receiveUser);
+		String[] receivceEmailId = parseEmails(receiveUser);
+		
+		for(int i=0; i<receivceEmailId.length; i++) {
+			log.debug("receivceEmailId[{}] : {}",i ,receivceEmailId[i]);
+		}
+		
+		int count = memberService.selectCheckUser(receivceEmailId);
+		
+		if(count != receivceEmailId.length || receivceEmailId.length == 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "존재하지않는 이메일입니다");
+			return "redirect:/mail/tempSaveDetail.page?no=" + sendMail.getMailNo();
+		}
+		
+		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		if(uploadFiles != null) {
+			attachList = fileUtil.setAttach(uploadFiles, "mail", loginUser, sendMail.getMailNo(), "M");
+			sendMail.setAttachList(attachList);
+		}
+
+		int result1 = mailService.updateTempSaveMail(sendMail, delFileNo);
+		int result2 = mailService.insertTempSaveMail(sendMail.getMailNo(), receivceEmailId);
+
+		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
+			for(AttachDto at : delFileList) {
+				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+			}
+			redirectAttributes.addFlashAttribute("alertMsg", "메일 전송에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 메일 전송에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:/mail/detail.page?no=" + sendMail.getMailNo();
+	}
 }

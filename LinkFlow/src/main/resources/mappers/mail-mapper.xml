@@ -81,6 +81,7 @@
       join tb_member m on ( m.user_id = s.reg_id)
 			where s.del_yn = 'N'
 				and s.reg_id = #{userId}
+				and s.temp_save = '02'
 				order by mail_no desc
 	</select>
 	
@@ -143,6 +144,62 @@
   		values
   		(
 				seq_mailno.currval
+			, #{emailId}
+  		)
+  </insert>
+  
+  <select id="selectCurrnetTempSave" resultType="_int">
+  	select
+  	 	seq_mailno.currval
+		from dual
+  </select>
+  
+  <update id="updateTempSaveMail">
+  	update
+  				tb_mail
+			 set
+			 	 	 mail_title= #{mailTitle}
+			   , mail_content = #{mailContent}
+			   , mod_id = #{modId}
+			   , temp_save = #{tempSave}
+			   , trans_time = sysdate
+		 where mail_no = #{mailNo} 
+  </update>
+  
+  <select id="selectTempSaveListCount" resultType="_int">
+  	select count(*) 
+  	  from tb_mail
+  	 where 
+  	 			del_yn = 'N'
+  	 	and temp_save = '01'
+  	  and reg_id = #{userId}
+  </select>
+  
+  <select id="selectTempSaveList" resultMap="sendMailResult">
+		select
+				  s.reg_id
+				, s.mail_no
+				, m.user_name
+				, s.mail_title
+				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+			from tb_mail s	
+      join tb_member m on ( m.user_id = s.reg_id)
+			where s.del_yn = 'N'
+				and s.reg_id = #{userId}
+				and s.temp_save = '01'
+				order by mail_no desc
+	</select>
+	
+	<insert id="insertTempSaveMail">
+  	insert
+  		into re_mail
+  		(
+  			mail_no
+  		, user_id
+  		)
+  		values
+  		(
+				#{mailNo}
 			, #{emailId}
   		)
   </insert>

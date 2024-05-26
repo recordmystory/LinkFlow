@@ -101,7 +101,7 @@
 	            ELSE 'N'
 	        END) = 'Y'
     </if>
-    	order by board_category
+    	order by dept_code
 	</select>
   
   <select id="selectSearchListCount" resultType="_int">

@@ -2,6 +2,7 @@ package com.mm.linkflow.service.service;
 
 import java.util.List;
 
+import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ReceiveMailDto;
@@ -27,6 +28,16 @@ public interface MailService {
 
 	int insertSendMail(SendMailDto sendMail);
 
-	int insertReceiveeMail(String[] receivceEmailId);
+	int insertReceiveMail(String[] receivceEmailId);
+
+	int selectCurrnetTempSave();
+
+	int updateTempSaveMail(SendMailDto mail, String[] delFileNo);
+
+	int selectTempSaveListCount(String userId);
+
+	List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId);
+
+	int insertTempSaveMail(int mailNo, String[] receivceEmailId);
 
 }

@@ -1,5 +1,6 @@
 package com.mm.linkflow.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mm.linkflow.dao.AttachDao;
 import com.mm.linkflow.dao.MailDao;
 import com.mm.linkflow.dto.AttachDto;
+import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ReceiveMailDto;
@@ -79,12 +81,58 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int insertReceiveeMail(String[] receivceEmailId) {
+	public int insertReceiveMail(String[] receivceEmailId) {
 		int result=0;
 		for(int i=0; i< receivceEmailId.length; i++) {
-			result += mailDao.insertReceiveeMail(receivceEmailId[i]);
+			result += mailDao.insertReceiveMail(receivceEmailId[i]);
 		}
 		
+		return result;
+	}
+
+	@Override
+	public int selectCurrnetTempSave() {
+		return mailDao.selectCurrnetTempSave();
+	}
+
+	@Override
+	public int updateTempSaveMail(SendMailDto mail, String[] delFileNo) {
+		int result1 = mailDao.updateTempSaveMail(mail);
+		int result2 = delFileNo == null ? 1
+										: attachDao.deleteAttach(delFileNo);
+		
+		List<AttachDto> list = mail.getAttachList();
+		int result3 = 0;
+		if(list != null) {
+			for(AttachDto at : list) {
+				result3 += attachDao.insertAttach(at);
+			}
+		}else {
+			list = new ArrayList<>();
+		}
+		
+		return result1 == 1
+				&& result2 > 0
+					&& result3 == list.size() 
+						? 1 : -1 ;
+	}
+
+	@Override
+	public int selectTempSaveListCount(String userId) {
+		return mailDao.selectTempSaveListCount(userId);
+	}
+
+	@Override
+	public List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId) {
+		return mailDao.selectTempSaveList(pi, userId);
+	}
+
+	@Override
+	public int insertTempSaveMail(int mailNo, String[] receivceEmailId) {
+		int result=0;
+		for(int i=0; i< receivceEmailId.length; i++) {
+			result += mailDao.insertTempSaveMail(mailNo, receivceEmailId[i]);
+		}
 		return result;
 	}
 }

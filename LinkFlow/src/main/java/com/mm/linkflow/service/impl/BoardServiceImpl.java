@@ -92,28 +92,24 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int updateBoard(BoardDto board, String[] delFileNo) {
 		
-		// 게시글 정보 update
-				int result1 = boardDao.updateBoard(board);
-				
-				// 삭제할 첨부파일 정보 delete
-				int result2 = delFileNo == null ? 1
-												: attachDao.deleteAttach(delFileNo);
-				
-				// 새로운 첨부파일 정보 insert
-				List<AttachDto> list = board.getAttachList();
-				int result3 = 0;
-				if(list != null) {
-					for(AttachDto at : list) {
-						result3 += attachDao.insertAttach(at);
-					}
-				}else {
-					list = new ArrayList<>();
-				}
-				
-				return result1 == 1
-						&& result2 > 0
-							&& result3 == list.size() 
-								? 1 : -1 ;
+		int result1 = boardDao.updateBoard(board);
+		int result2 = delFileNo == null ? 1
+										: attachDao.deleteAttach(delFileNo);
+		
+		List<AttachDto> list = board.getAttachList();
+		int result3 = 0;
+		if(list != null) {
+			for(AttachDto at : list) {
+				result3 += attachDao.insertAttach(at);
+			}
+		}else {
+			list = new ArrayList<>();
+		}
+		
+		return result1 == 1
+				&& result2 > 0
+					&& result3 == list.size() 
+						? 1 : -1 ;
 	}
 
 	@Override

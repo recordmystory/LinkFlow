@@ -66,7 +66,7 @@
             </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link middleName">
+            <a href="${ contextPath }/mail/tempSave.page" class="nav-link middleName">
               <i class="nav-icon far-2xl fa-solid fa-file"></i>
               <p>임시저장</p>
             </a>

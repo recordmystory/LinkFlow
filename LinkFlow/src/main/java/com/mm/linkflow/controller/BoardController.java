@@ -284,11 +284,11 @@ public class BoardController {
 		 if(result > 0) {
 			 boardNo = boardService.selectCurrnetTempSave();
 		 }
-		 log.debug("boardNo : {}", boardNo);
+		 
 		 return boardNo;
 	}
 	
-	@GetMapping("/tempSave.page") // /board/detail.do?no=글번호
+	@GetMapping("/tempSave.page")
 	public String tempSaveForm(Model model, HttpSession session
 							, @RequestParam(value="page", defaultValue="1")int currentPage) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
 		
@@ -308,8 +308,8 @@ public class BoardController {
 		return "board/tempSave";
 	}
 	
-	@GetMapping("/tempSaveDetail.page") // /board/detail.do?no=글번호
-	public String tempSaveDetail(int no, Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
+	@GetMapping("/tempSaveDetail.page") 
+	public String tempSaveDetail(int no, Model model, HttpSession session) {
 		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("board", boardService.selectBoard(no));

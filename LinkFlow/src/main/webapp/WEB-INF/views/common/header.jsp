@@ -50,7 +50,7 @@
             
             <div class="row mainMenuSelect">
               <div class="info-box-content">
-                <a href="#" class="dropdown-item slimMenu">
+                <a href="${ contextPath }/mail/receiveList.do" class="dropdown-item slimMenu">
                   <div class="box-icon slimMenuicon"><i class="fa-solid fa-envelope fa-2xl"></i></div>
                   <div class="box-text"><span class="info-box-text spanCss">메일</span></div>
                 </a>

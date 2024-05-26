@@ -123,7 +123,7 @@ input[type="checkbox"] {
 			                                            </tr>
                                         				</c:when>
                                         				<c:otherwise>
-                                        					<tr onclick="location.href='${contextPath}/mail/detail.do?&no=${ m.mailNo }';">
+                                        					<tr onclick="location.href='${contextPath}/mail/detail.page?&no=${ m.mailNo }';">
 			                                                <td><input type="checkbox" class="checkBox" onclick="event.stopPropagation();"></td>
 			                                                <td><i class="fa-solid fa-envelope-open fa-xl"></i></td>
 			                                                <td>${m.userName }</td>

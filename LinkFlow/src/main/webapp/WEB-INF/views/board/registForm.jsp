@@ -9,9 +9,30 @@
 <title>Insert title here</title>
 <script src="${ contextPath}/resources/ckeditor5/board/build/ckeditor.js"></script>
 <style>
+.wrapper{
+ min-height: 100%;
+ width: 100%;
+}
+.LinkFlowMainSection{
+    width: 100%;
+    min-height: 1500px;
+   
+    display: flex;
+}
+.LinkFlowMainContent{
+    width: 100%;
+    min-width: 1260px;
+    background-color: #f4f6f9;
+    min-height: 400px;
+    padding: 30px;
+}
+.contentArea{ 
+ width: 100%;
+}
+.contentInElement{display: flex; justify-content: space-between; margin-bottom: 30px;}
 	.LinkFlowMainContent section{
-    padding-left: 8%;
-    padding-right: 8%;
+    padding-left: 4%;
+    padding-right: 4%;
   }
   .registTitle{
     padding-right: 10px; 
