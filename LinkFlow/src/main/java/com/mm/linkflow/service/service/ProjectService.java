@@ -28,12 +28,18 @@ public interface ProjectService {
 	// 프로젝트 상세 조회
 	ProjectDto selectDetailProject(int no);
 	
-	// 프로젝트 투입인원 조회
+	// 파견인원 조회
 	List<DispatchDto> selectProjectDispatch(int no);
 	
-	// 프로젝트 투입인원 추가
+	// 파견인원 추가
 	void addDispatch(DispatchDto dis);
 	
-	// 프로젝트 투입인원 체크
+	// 파견인원 등록 체크
 	int checkDispatch(DispatchDto dis);
+	
+	// 파견인원 수정
+	void modifyDispatch(DispatchDto dis);
+	
+	// 파견인원 삭제
+	int deleteDispatch(DispatchDto dis);
 }

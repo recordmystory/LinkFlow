@@ -117,8 +117,8 @@ public class ProjectController {
 		return mv;
 	}
 	
-	// 프로젝트 투입인원 등록
-	@PostMapping("addmember.dis")
+	// 파견인원 등록
+	@PostMapping("addMember.dis")
 	public String addDispatch(DispatchDto dis, HttpSession session) throws UnsupportedEncodingException {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		dis.setRegId(loginUser.getUserId());
@@ -130,10 +130,30 @@ public class ProjectController {
 		return "redirect:/project/detail.pj?no=" + no + "&title=" + title;
 	}
 	
-	// 프로젝트 투입인원 체크
+	// 파견인원 등록 체크
 	@ResponseBody
 	@PostMapping("checkMember.dis")
 	public String checkDispatch(DispatchDto dis) {
 		return proService.checkDispatch(dis) > 0 ? "YES" : "NO";
+	}
+	
+	// 파견인원 수정
+	@PostMapping("modify.dis")
+	public String modifyDispatch(DispatchDto dis, HttpSession session) throws UnsupportedEncodingException {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		dis.setModId(loginUser.getUserId());
+		proService.modifyDispatch(dis);
+		int no = dis.getProNo();
+		String title = URLEncoder.encode(loginUser.getDeptName(), StandardCharsets.UTF_8.toString());
+		return "redirect:/project/detail.pj?no=" + no + "&title=" + title;
+	}
+	
+	// 파견인원 삭제
+	@ResponseBody
+	@PostMapping("delete.dis")
+	public String deleteDispatch(DispatchDto dis, HttpSession session){
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		dis.setModId(loginUser.getUserId());
+		return proService.deleteDispatch(dis) > 0 ? "SUCCESS" : "FAIL";
 	}
 }

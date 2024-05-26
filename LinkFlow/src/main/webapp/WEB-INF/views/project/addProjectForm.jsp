@@ -56,7 +56,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid" style="display: flex; justify-content: center;">
+                    <div class="container-fluid">
                         <form action="${contextPath}/project/add.pj" method="post">
                             <div class="contentArea">
                                 <div class="contentInElement">
@@ -68,7 +68,7 @@
                                 <div style="display: flex;">
                                     <div class="card" style="min-height: 500px; min-width: 500px; width: 700px; text-align: left;">
                                         <div class="card-header" style="background-color: #007bff;">
-                                            <h4 style="color: white;">프로젝트 정보</h4>
+                                            <h4>　</h4>
                                         </div>
                                         <table class="table" style="margin-top: 50px; width: 80%; margin-left: 80px;">
                                             <tr>

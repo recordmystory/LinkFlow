@@ -59,18 +59,28 @@ public class ProjectDao {
 		return sql.selectOne("projectMapper.selectDetailProject", no);
 	}
 	
-	// 프로젝트 투입인원 조회
+	// 파견인원 조회
 	public List<DispatchDto> selectProjectDispatch(int no){
 		return sql.selectList("projectMapper.selectProjectDispatch", no);
 	}
 	
-	// 프로젝트 투입인원 추가
+	// 파견인원 추가
 	public void addDispatch(DispatchDto dis) {
 		sql.insert("projectMapper.addDispatch", dis);
 	}
 	
-	// 프로젝트 투입인원 체크
+	// 파견인원 등록 체크
 	public int checkDispatch(DispatchDto dis) {
 		return sql.selectOne("projectMapper.checkDispatch", dis);
+	}
+	
+	// 파견인원 수정
+	public void modifyDispatch(DispatchDto dis) {
+		sql.update("projectMapper.modifyDispatch", dis);
+	}
+	
+	// 파견인원 삭제
+	public int deleteDispatch(DispatchDto dis) {
+		return sql.delete("projectMapper.deleteDispatch", dis);
 	}
 }
