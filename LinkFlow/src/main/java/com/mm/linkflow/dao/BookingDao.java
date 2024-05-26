@@ -153,4 +153,8 @@ public class BookingDao {
 		return sql.update("bkMapper.updateSupBkReturn",bk);
 	}
 
+	public List<AssetsDto> modalSetDtoList() {
+		return sql.selectList("bkMapper.selectAssetsList");
+	}
+
 }

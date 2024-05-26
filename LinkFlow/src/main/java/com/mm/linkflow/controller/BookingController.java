@@ -201,8 +201,8 @@ public class BookingController {
 		return mv;
 	}
 	
-	@ResponseBody
-	@GetMapping(value="/ass.search", produces="application/json; charset=utf-8") // 자산리스트 검색
+	@ResponseBody // 자산리스트 검색
+	@GetMapping(value="/ass.search", produces="application/json; charset=utf-8") 
 	public Map<String,Object> selectSearchAssList(@RequestParam Map<String, String> search, @RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = bkServiceImpl.selectSearchAssCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -306,7 +306,6 @@ public class BookingController {
 	public String updateSupBkConfirm(@RequestParam Map<String,String> bk, HttpSession session) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
-		log.debug("bk:{}", bk);
 		int result = bkServiceImpl.updateSupBkConfirm(bk);
 		
 		return "redirect:/booking/sup.mng";
@@ -322,10 +321,18 @@ public class BookingController {
 		return "redirect:/booking/sup.mng";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/setDto.bk", produces="application/json; charset=utf-8") // 예약하기 모달 세팅
+	public List<AssetsDto> modalSetDtoList() {
+		return bkServiceImpl.modalSetDtoList();
+	}
 	
-	@GetMapping("/room.mng")
+	
+	
+	@GetMapping("/room.mng") // 시설예약페이지 이동
 	public String roomBookingManager() {
 		return "booking/roomBookingManager";
 	}
+	
 	
 }

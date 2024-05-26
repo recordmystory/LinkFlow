@@ -57,6 +57,7 @@ public interface BookingService {
     
     int updateSupBkReturn(Map<String,String> bk); // 비품 반납
     
+    List<AssetsDto> modalSetDtoList();
     
     
 }

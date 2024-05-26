@@ -159,6 +159,11 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.updateSupBkReturn(bk);
 	}
 
+	@Override
+	public List<AssetsDto> modalSetDtoList() {
+		return bkDao.modalSetDtoList();
+	}
+
 	
 	
 

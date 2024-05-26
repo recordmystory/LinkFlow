@@ -210,8 +210,8 @@
 					                    </div> 
 					                    <!-- 반려일 때 -->
 										<div class="modal-body" id="con-rejDiv" style="margin-bottom: 20px;">
-											<h6>비고</h6>
-											<input type="text" class="rej-coment" name="rejContent" id="rej-content">
+											<h6>반려 사유</h6>
+											<input type="text" class="rej-coment" name="rejContent" id="rej-content" required>
 										</div>
 
 										<div class="modal-footer justify-content-between">
@@ -311,8 +311,8 @@
 										
 										<!-- 반려일때  -->
 										<div class="modal-body" id="de-rejDiv">
-											<h6>비고</h6>
-											<input type="text" class="rej-coment" id="de-rejContent" placeholder="" disabled style="margin-bottom: 20px;">
+											<h6>반려 사유</h6>
+											<input type="text" class="rej-coment" id="de-rejContent" placeholder="" disabled style="margin-bottom: 20px;" disabled>
 										</div>
 										
 										<!-- 반납일때 -->

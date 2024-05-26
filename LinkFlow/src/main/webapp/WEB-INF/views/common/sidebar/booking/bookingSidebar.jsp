@@ -70,14 +70,12 @@
 
 .md-select {
 	text-align: center;
-	height: 30px;
 	width: 60px;
 }
 
 .md-div {
 	display: flex;
 	padding-left: 40px;
-	padding-top: 13px;
 }
 
 .bk-coment {
@@ -100,7 +98,16 @@
 .modal-content {
 	width: 400px;
 }
-
+.carTime{
+	display:flex;
+}
+.timeH4{
+	padding-right:70px;
+	text-align :center;
+}
+select{
+	height:100px;
+}
 
 </style>
 </head>
@@ -120,7 +127,7 @@
 					<!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
 					<div class="LinkFlowInsertBtnArea">
 						<button type="button" class="btn btn-block bg-primary btn-lg"
-							data-toggle="modal" data-target="#booking" onclick="dateSet();">+ 예약하기</button>
+							data-toggle="modal" data-target="#booking" onclick="bookingSet();">+ 예약하기</button>
 					</div>
 
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -159,8 +166,7 @@
 
 							<ul class="nav nav-treeview" style="padding-left: 20px;">
 								<li class="nav-item"><a
-									href="${contextPath }/booking/room.mng" class="nav-link"> <i
-										class="far far-2xs fa-circle nav-icon"></i>
+									href="${contextPath }/booking/room.mng" class="nav-link"> <i class="far far-2xs fa-circle nav-icon"></i>
 										<p>시설 예약 관리</p>
 								</a></li>
 								<li class="nav-item">
@@ -192,7 +198,7 @@
 				<div class="modal-content">
 				<form id="insertBooking" action="${contextPath }/booking/insert.bk" method="post">
 					<div class="md-header">
-						<select name="bk-name" id="bk-name" class="md-type" onchange="changeBody();">
+						<select name="bk-name" id="bk-name" class="md-type form-control" style="width:80px;" onchange="changeBody();">
 							<option value="room">시설</option>
 							<option value="supplies">비품</option>
 						</select> &nbsp;&nbsp;
@@ -201,20 +207,19 @@
 							           
 		            <!-- Modal body for room -->
 		            <div id="room-content" class="modal-body-content">
-		               <%--  <span class="md-list">예약 날짜</span>
+		               <%-- 
 		                <c:set var="ymd" value="${bk.bkStartDate}" />
 						<c:set var="ymdArr" value="${fn:split(ymd, '/')}" />
 						 --%>
-			        	
+			        	<p class="md-list">예약 날짜</p>
 		                <div class="md-div">
-				        	<select id="year" name="year" class="form-control" style="width:100px;" class="md-select"></select> &nbsp;
-				        	<select id="month" name="month" class="form-control" style="width:80px;" class="md-select"></select>&nbsp;
-				        	<select id="day" name="day" class="form-control" style="width:100px;" class="md-select"></select>&nbsp;
-		                  
+		               		<select name="year" class="form-control setYear" style="width:100px;" class="md-select"></select> &nbsp;
+				        	<select name="month" class="form-control setMonth" style="width:80px;" class="md-select"></select>&nbsp;
+				        	<select name="day" class="form-control setDay" style="width:100px;" class="md-select"></select>&nbsp;
 		                </div>
-		                <span class="md-list">이용 시간</span>
+		                <p class="md-list">이용 시간</p>
 		                <div class="md-div">
-		                    <select name="bkStartTime" id="bk-sTime" style="width:90px;" class="md-select">
+		                    <select name="bkStartTime" id="bk-sTime" style="width:90px;" class="md-select form-control">
 		                        <c:forEach var="hour" begin="9" end="17">
                                     <c:forEach var="minute" begin="0" end="30" step="30">
                                         <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
@@ -223,8 +228,8 @@
                                     </c:forEach>
                                 </c:forEach>
 		                    </select> &nbsp;&nbsp;
-		                    <span>~</span>&nbsp;&nbsp;
-		                    <select name="bkEndime" id="bk-eTime" style="width:90px;" class="md-select">
+		                    <p>~</p>&nbsp;&nbsp;
+		                    <select name="bkEndime" id="bk-eTime" style="width:90px;" class="md-select form-control">
 		                        <c:forEach var="hour" begin="10" end="18">
                                     <c:forEach var="minute" begin="0" end="30" step="30">
                                         <option value="${hour}:${minute == 0 ? '00' : minute}">
@@ -234,9 +239,9 @@
                                 </c:forEach>
 		                    </select> &nbsp;&nbsp;
 		                </div>
-		                <span class="md-list">이용 시설</span>
+		                <p class="md-list">이용 시설</p>
 		                <div class="md-div">
-		                    <select name="bk-room" id="bk-room" style="width:100px;" class="md-select">
+		                    <select name="subName" id="bk-room" style="width:auto;" class="md-select form-control">
 		                        <option value="A">회의실A</option>
 		                        <option value="B">회의실B</option>
 		                        <option value="C">회의실C</option>
@@ -246,36 +251,37 @@
 		            
 		            <!-- Modal body for supplies -->
 		            <div id="supplies-content" class="modal-body-content" style="display: none;">
-		                <span class="md-list">상품 명</span>
+		                <p class="md-list">상품 명</p>
 		                <div class="md-div">
-		                    <select name="supplies" id="supplies" style="width: 100px;" class="md-select">
-		                        <option value="notebook">노트북</option>
-		                        <option value="car">차량</option>
-		                        <option value="keyboard">키보드</option>
-		                        <option value="mouse">마우스</option>
+		                    <select name="subName" id="bk-subName" style="width: 100px;" class="md-select form-control" onchange="changeSup();">
+		                        <option value="노트북">노트북</option>
+		                        <option value="차량">차량</option>
+		                        <option value="키보드">키보드</option>
+		                        <option value="마우스">마우스</option>
 		                    </select> &nbsp;&nbsp;&nbsp;
-		                    <select name="bk-name" id="bk-name" style="width: 110px;" class="md-select">
-		                        <option value="">맥북</option>
-		                        <option value="">LG그램</option>
-		                    </select>
+		                    <select name="assetsName" id="bk-assName" style="width: auto;" class="md-select form-control"></select>
 		                </div>
-		                <span class="md-list">이용 시간</span>
-		                <div id="car-time-content" class="md-div" style="display: none;">
-		                    <select name="bkStartDate" id="bk-date" style="width: 120px;" class="md-select">
-		                        <option value="">2024/04/22</option>
-		                        <option value="">2024/04/23</option>
-		                    </select> &nbsp;&nbsp;
-		                    <span>~</span>&nbsp;&nbsp;
-		                    <select name="bkEndDate" id="bk-eDate" style="width: 120px;" class="md-select">
-		                        <option value="">2024/04/23</option>
-		                        
-		                    </select> &nbsp;&nbsp;
+		                <p class="md-list">이용 시간</p>
+		                <div id="notCar" class="md-div" > <h4> - </h4></div>
+		                <div class="md-div bkTime" id="sup-car" style="display:none;">
+		                	<div class="carTime">
+			                	<select name="year" class="form-control setYear" style="width:100px;" class="md-select"></select> &nbsp;
+					        	<select name="month" class="form-control setMonth" style="width:80px;" class="md-select"></select>&nbsp;
+					        	<select name="day" class="form-control setDay" style="width:100px;" class="md-select"></select>&nbsp;
+		                	</div>
+		                   
+		                     <div class="timeH4"><h2> - </h2></div>
+		                    <div class="carTime">
+			                	<select name="year" class="form-control setYear" style="width:100px;" class="md-select"></select> &nbsp;
+					        	<select name="month" class="form-control setMonth" style="width:80px;" class="md-select"></select>&nbsp;
+					        	<select name="day" class="form-control setDay" style="width:100px;" class="md-select"></select>&nbsp;
+		                	</div>
 		                </div>
 		            </div>
 		            
 					<div class="modal-body">
 						<h6>사유</h6>
-						<input type="text" class="bk-coment" name="bkContent" placeholder="예약 사유">
+						<input type="text" class="bk-coment" name="bkContent" placeholder="예약 사유" required>
 					</div>
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
@@ -298,117 +304,112 @@
 	      });
 		})
 		
-      function dateSet(){
-      	var now = new Date();
-	    console.log(now);
-	    /***************************** 날짜 초기화 ***********************************/
-	  	$("#year").empty();
-	    $("#month").empty();
-	    $("#day").empty();
-	    
-	    var setDate = new Date(now.getYear(),now.getMonth()+1,0);
-	    //년도 셋팅
-	   $("#year").append("<option value='"+now.getYear()+"'>"+now.getYear()+"</option>");
-	 	if(now.getYear() == "11") {
-	 		var nextYear = Number(("#year").val())+1;
-	 		$("#year").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
-	    } 
-	 	
-	 	//월 셋팅
-	 	$("#month").append("<option value='"+(now.getMonth()+1)+"'>"+(now.getMonth()+1)+"</option>");
-		$("#month").append("<option value='"+Number(now.getMonth()+2)+"'>"+Number(now.getMonth()+2)+"</option>");
-		 
-	 	
-	 	//일 셋팅
-	 	$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
-	 	
-	 	for(var i=now.getDate(); i<=setDate.getDate(); i++){
-	 		if( i != now.getDate()){
-	 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
-	 		}
-	 	} 
-	 	/***************************** 날짜 초기화 ***********************************/
-	 
-	 	
-	    $("#year").change(function(){
-	    	$("#day").empty();
-			var tempDate = new Date($(this).val(), $("#month").val()-1, 0);
-			for(var i=1; i<=tempDate.getDate(); i++){
-		 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
-		 	}
-	    });
-	    
-	    
-		$("#month").change(function(){
-			$("#day").empty();
-			var tempDate = new Date($("#year").val(), $(this).val(), 0);
-			
-			if(tempDate.getMonth() != now.getMonth()){
-				for(var i=1; i<=tempDate.getDate(); i++){
-			 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-			}else{
-				$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
-			 	
-			 	for(var i=now.getDate(); i<=tempDate.getDate(); i++){
-			 		if( i != now.getDate()){
-			 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
-			 		}
-			 	} 
-			}
-	    });
-		/* 
-		$("#day").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>"); */
-      }
-
 		
-		function bkUpdate(){
-			let year = document.getElementById('year').value;
-			let month = document.getElementById('month').value;
-			let day = document.getElementById('day').value;
-			
-			let subName = document.getElementById('assType').value;
-			
-			let bkStartDate = year +'/' +month+ '/'+ day;
-			let bkStartTime = document.getElementById('start').value;
-			let bkEndTime = document.getElementById('end').value;
-			
-			let bkEndDate;
-			
-			if(subName == '회의실'){
-				bkEndDate = year +'/' +month+ '/'+ day;
-			}else if(subName == '차량'){
-				let dayE = document.getElementById('dayEnd').value;
-				let yearE = document.getElementById('yearEnd').value;
-				let monthE = document.getElementById('monthEnd').value;
-				bkEndDate = yearE +'/' +monthE + '/'+ dayE;
-			}
-			
-			let assetsName = document.getElementById('assName').value;
-			let bkContent = document.getElementById('bk-content').value;
-			let bookingNo = document.getElementById('bookingNo').value;
-			
-			$.ajax({
-				url:'${contextPath}/booking/modify.bk',
-				type:'post',
-				data:{
-					bkStartDate:bkStartDate,
-					bkStartTime:bkStartTime,
-					bkEndDate:bkEndDate,
-					bkEndTime:bkEndTime,
-					subName:subName,
-					assetsName:assetsName,
-					bkContent:bkContent,
-					bookingNo:bookingNo
-				},success:function(bk){
-					if(bk != null){
-						window.location.href = '${contextPath}/booking/mylist.bk'
-					}
-				},error:function(){
-					
-				}
+		function bookingSet(){
+	    	
+	    	dateSet();
+	    	setDto();
+	    	
+	    }
+	    
+        function dateSet(){
+	      	var now = new Date();
+		    console.log(now);
+		    /***************************** 날짜 초기화 ***********************************/
+		  	$(".setYear").empty();
+		    $(".setMonth").empty();
+		    $(".setDay").empty();
+		    
+		    var setDate = new Date(now.getFullYear(),now.getMonth()+1,0);
+		    //년도 셋팅
+		   $(".setYear").append("<option value='"+now.getFullYear()+"'>"+now.getFullYear()+"</option>");
+		 	if(now.getMonth() == "11") {
+		 		var nextYear = Number((".setYear").val())+1;
+		 		$(".setYear").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
+		    } 
+		 	
+		 	//월 셋팅
+		 	$(".setMonth").append("<option value='"+(now.getMonth()+1)+"'>"+(now.getMonth()+1)+"</option>");
+			$(".setMonth").append("<option value='"+Number(now.getMonth()+2)+"'>"+Number(now.getMonth()+2)+"</option>");
+			 
+		 	
+		 	//일 셋팅
+		 	$(".setDay").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
+		 	
+		 	for(var i=now.getDate(); i<=setDate.getDate(); i++){
+		 		if( i != now.getDate()){
+		 			$(".setDay").append("<option value='"+i+"'>"+i+"</option>");
+		 		}
+		 	} 
+		 	/***************************** 날짜 초기화 ***********************************/
+		 
+		 	
+		    $(".setYear").change(function(){
+		    	$(".setDay").empty();
+				var tempDate = new Date($(this).val(), $(".setMonth").val()-1, 0);
+				for(var i=1; i<=tempDate.getDate(); i++){
+			 		$(".setDay").append("<option value='"+i+"'>"+i+"</option>");
+			 	}
+		    });
+		    
+		    
+			$(".setMonth").change(function(){
+				$(".setDay").empty();
+				var tempDate = new Date($(".setYear").val(), $(this).val(), 0);
 				
-			})
+				if(tempDate.getMonth() != now.getMonth()){
+					for(var i=1; i<=tempDate.getDate(); i++){
+				 		$(".setDay").append("<option value='"+i+"'>"+i+"</option>");
+				 	}
+				}else{
+					$(".setDay").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>");
+				 	
+				 	for(var i=now.getDate(); i<=tempDate.getDate(); i++){
+				 		if( i != now.getDate()){
+				 			$(".setDay").append("<option value='"+i+"'>"+i+"</option>");
+				 		}
+				 	} 
+				}
+		    });
+			/* 
+			$(".setDay").append("<option value='"+now.getDate()+"'>"+now.getDate()+"</option>"); */
+	      }
+
+	    function setDto(){
+	    	let supplies = $("#bk-subName").val();
+	    	$("#bk-room").empty();
+	    	$("#bk-assName").empty();
+	    	
+	    	$.ajax({
+	    		url : '${contextPath}/booking/setDto.bk',
+	    		success:function(result){
+	    			
+	    			for(let i=0; i<result.length; i++){
+    					if(result[i].mainName === '시설'){
+	    					 /* room += "<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>"; */
+	    					$("#bk-room").append("<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>");
+    					}else if(result[i].subName === supplies){
+    						$("#bk-assName").append("<option value='"+ result[i].assetsName +"'>"+ result[i].assetsName +"</option>")
+    					
+    					}
+    				}
+	    			
+	    		}
+	    	})
+	    }
+	    
+	    function changeSup(){
+	    	setDto();
+	    	dateSet();
+	    	
+	    	let supplies = $("#bk-subName").val();
+	    	if(supplies === '차량'){
+	    		$("#notCar").css('display','none');
+	    		$("#sup-car").css('display','block');
+	    	}else{
+	    		$("#notCar").css('display','block');
+	    		$("#sup-car").css('display','none');
+	    	}
 	    }
 	    
 	    function changeBody() {
