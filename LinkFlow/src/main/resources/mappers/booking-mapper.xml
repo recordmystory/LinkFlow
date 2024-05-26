@@ -463,5 +463,56 @@
 	where booking_no = #{bookingNo}
 </update>
 
+<insert id="insertBooking">
+	insert
+	  into tb_booking
+	  		(
+	  		 booking_no
+	  		,booking_id
+	  		,dept_code
+	  		,assets_no
+	  		,bk_content
+	  		,bk_start_dt
+	  		,bk_end_dt
+	  		,status
+	  		,reg_date
+	  		,mod_date
+	  		,status_date
+	  		)
+	  values
+	  		(
+	  		 'BK_'|| LPAD(SEQ_BKNO.NEXTVAL, 3, '0')
+	  		,#{userId}
+	  		,( select dept_code
+	  		     from tb_member
+	  		    where user_id = #{userId}
+	  		    group by dept_code
+	  		  )
+	  		 ,( select assets_no
+	  		 	  from tb_assets
+	  		 	 where assets_name = #{assetsName}
+	  		 	 group by assets_no
+	  		  )
+	  		 ,#{bkContent}
+	  		 <choose>
+	  		 <when test='mainName == "시설"'>
+	         , TO_DATE(#{bkStartDate} || #{bkStartTime}, 'YYYY/MM/DD HH24:MI')
+	         , TO_DATE(#{bkStartDate}|| #{bkEndTime}, 'YYYY/MM/DD HH24:MI')
+		     </when>
+		     <when test='subName == "차량"'>
+	         , TO_DATE(#{bkStartDate}, 'YYYY/MM/DD')
+	         , TO_DATE(#{bkEndDate}, 'YYYY/MM/DD')
+		    </when>
+	  		 <otherwise>
+	  		 ,null
+	  		 ,null
+	  		 </otherwise>
+	  		 </choose>
+	  		 ,'WAI'
+	  		 ,sysdate
+	  		 ,sysdate
+	  		 ,sysdate
+	  		)
+</insert>
 
 </mapper>

@@ -43,9 +43,7 @@ public interface BookingService {
 	int delAssets(String assetsNo); // 자산 삭제
     
     
-    int insertBooking(BookingDto bk); // 예약하기 
-    
-    int modBooking(BookingDto bk); // 예약 수정 
+    int insertBooking(Map<String,String> bk); // 예약하기 
     
     int selectSupWaitCount();  // 비품 예약 신청 리스트 
     List<BookingDto> selectSupWaitList(PageInfoDto pi);

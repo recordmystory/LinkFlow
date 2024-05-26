@@ -157,4 +157,8 @@ public class BookingDao {
 		return sql.selectList("bkMapper.selectAssetsList");
 	}
 
+	public int insertBooking(Map<String, String> bk) {
+		return sql.insert("bkMapper.insertBooking",bk);
+	}
+
 }

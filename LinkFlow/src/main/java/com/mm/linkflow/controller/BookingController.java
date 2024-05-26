@@ -315,19 +315,39 @@ public class BookingController {
 	public String updateSupBkReturn(@RequestParam Map<String,String> bk, HttpSession session) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
-		log.debug("bk:{}", bk);
 		int result = bkServiceImpl.updateSupBkReturn(bk);
 		
 		return "redirect:/booking/sup.mng";
 	}
 	
-	@ResponseBody
-	@GetMapping(value="/setDto.bk", produces="application/json; charset=utf-8") // 예약하기 모달 세팅
+	@ResponseBody // 예약하기 모달 세팅
+	@GetMapping(value="/setDto.bk", produces="application/json; charset=utf-8") 
 	public List<AssetsDto> modalSetDtoList() {
 		return bkServiceImpl.modalSetDtoList();
 	}
 	
-	
+	@PostMapping("/insert.bk")
+	public String insertBooking(@RequestParam Map<String,String> bk, HttpSession session) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		log.debug("bk 수정 전 :{}", bk);
+		if(bk.get("mainName").equals("시설")) {
+			String bkStartDate = bk.get("year")+"/"+bk.get("month")+"/"+bk.get("day");
+			bk.put("bkStartDate",bkStartDate);
+			
+		}else if(bk.get("subName").equals("차량")) {
+			String bkStartDate = bk.get("startYear")+"/"+bk.get("startMonth")+"/"+bk.get("startDay");
+			String bkEndDate = bk.get("endYear")+"/"+bk.get("endMonth")+"/"+bk.get("endDay");
+			
+			bk.put("bkStartDate",bkStartDate);
+			bk.put("bkEndDate",bkEndDate);
+		}
+		log.debug("bk 수정 후 :{}", bk);
+		
+		int result = bkServiceImpl.insertBooking(bk);
+		
+		return "redirect:/booking/room.bk";
+	}
 	
 	@GetMapping("/room.mng") // 시설예약페이지 이동
 	public String roomBookingManager() {

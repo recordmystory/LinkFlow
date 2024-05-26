@@ -120,13 +120,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public int insertBooking(BookingDto bk) {
-		return 0;
-	}
-
-	@Override
-	public int modBooking(BookingDto bk) {
-		return 0;
+	public int insertBooking(Map<String,String> bk) {
+		return bkDao.insertBooking(bk);
 	}
 
 	@Override
