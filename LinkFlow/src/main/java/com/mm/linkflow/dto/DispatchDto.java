@@ -13,12 +13,13 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class DispatchDto {
+public class DispatchDto extends CommonDto {
 	private int proNo;
 	private String userId;
 	private String role;
 	private String task;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private String disYn;
+	private String userName;
 }
