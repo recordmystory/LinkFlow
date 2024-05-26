@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -81,10 +82,7 @@
     text-align: left;   
 }
 .detailContent{
-	color: black;
-}
-.btn-primary:hover {
-	background: #007bff;
+	color: black !important;
 }
 </style>
 </head>
@@ -161,13 +159,15 @@
                                     </div>
                                     <div style="margin-top: 150px; margin-left: 130px;">
                                         <h4>투입인원</h4>
+                                        <c:if test="${not empty loginUser and loginUser.position eq '팀장' and pro.deptName eq loginUser.deptName}">
                                         <div style="transform: translateX(1008px); width: 300px;">
-                                        <button class="btn btn-primary" style="width: 80px; color: white;" 
-                                                data-toggle="modal" data-target="#addMemberModal">추가</button>
-                                        <button class="btn btn-outline-dark" style="width: 80px;"
-                                                data-toggle="modal" data-target="#modMemberModal">수정</button>
-                                        <button class="btn btn-danger" style="width: 80px;">삭제</button>
+	                                        <button class="btn btn-primary" style="width: 80px; color: white;" 
+	                                                data-toggle="modal" data-target="#addMemberModal">추가</button>
+	                                        <button class="btn btn-outline-dark" style="width: 80px;"
+	                                                data-toggle="modal" data-target="#modMemberModal">수정</button>
+	                                        <button class="btn btn-danger" style="width: 80px;">삭제</button>
                                         </div>
+                                        </c:if>
                                         <!-- 테이블 시작 -->
                                         <div id="projectMember" class="card-body">
                                             <table class="table table-hover text-nowrap">
@@ -183,83 +183,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" name="selectRadio" id="">
-                                                        </td>
-                                                        <td>김지민</td>
-                                                        <td>개발자</td>
-                                                        <td>기록관리 시스템</td>
-                                                        <td>2024-01-01</td>
-                                                        <td></td>
-                                                        <td>투입</td>
-                                                    </tr>
+                                                	<c:forEach var="d" items="${dis}">
+	                                                    <tr>
+	                                                        <td>
+	                                                            <input type="radio" name="selectRadio">
+	                                                        </td>
+	                                                        <td>${d.userName}</td>
+	                                                        <td>${d.role}</td>
+	                                                        <td>${d.task}</td>
+	                                                        <td>${d.startDate}</td>
+	                                                        <td>${d.endDate}</td>
+	                                                        <td>${d.disYn == 'N' ? '투입' : '복귀'}</td>
+	                                                    </tr>
+                                                    </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -287,57 +223,61 @@
                         </div>
                 
                         <!-- Modal body -->
-                        <div class="modal-body" style="text-align: left;">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <h5>이름
-                                            <button class="btn btn-outline-secondary btn-sm" style="transform: translateY(-2.5px);"
-                                                    data-toggle="modal" data-target="#searchMemberModal">인원 찾기</button>
-                                        </h5>
-                                        <input type="text" id="chooseMember1" class="form-control" readonly>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>역할</h5>
-                                        <input type="radio" name="role">&nbsp; 개발자
-                                        <input type="radio" style="margin-left: 20px;" name="role">&nbsp; PM
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>상태</h5>
-                                        <input type="radio" name="status" checked>&nbsp; 투입
-                                        <input type="radio" style="margin-left: 20px;" name="status" disabled>&nbsp;    복귀
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>담당 업무</h5>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>파견 시작일</h5>
-                                        <input type="date" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>파견 종료일</h5>
-                                        <input type="date" class="form-control">
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                
-                        <!-- Modal footer -->
-                        <div class="modal-footer" style="display: flex; justify-content: center;">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">등록</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-                        </div>
+                        <form id="addMemberForm" action="${contextPath}/project/addmember.dis" method="post" onsubmit="return validateForm();">
+                        	<input type="hidden" name="proNo" value="${pro.proNo}">
+	                        <div class="modal-body" style="text-align: left;">
+	                            <table class="table">
+	                                <tr>
+	                                    <td>
+	                                        <h5>이름
+	                                            <button type="button" class="btn btn-outline-secondary btn-sm" style="transform: translateY(-2.5px);"
+	                                                    data-toggle="modal" data-target="#searchMemberModal">인원 찾기</button>
+	                                        </h5>
+	                                        <input type="text" id="chooseMember1" class="form-control" style="background-color: white;" readonly required>
+	                                        <input type="hidden" name="userId" id="chooseMemberId1" required>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                        <h5>역할</h5>
+	                                        <input type="radio" name="role" value="개발자" required>&nbsp; 개발자
+	                                        <input type="radio" style="margin-left: 20px;" name="role" value="PM" required>&nbsp; PM
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                        <h5>상태</h5>
+	                                        <input type="radio" name="disYn" value="N" checked required>&nbsp; 투입
+	                                        <input type="radio" style="margin-left: 20px;" name="disYn" value="Y" disabled>&nbsp;    복귀
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                        <h5>담당 업무</h5>
+	                                        <input type="text" name="task" class="form-control" required>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                        <h5>파견 시작일</h5>
+	                                        <input type="date" name="startDate" class="form-control" required>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                        <h5>파견 종료일</h5>
+	                                        <input type="date" name="endDate" class="form-control">
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                        </div>
+	                
+	                        <!-- Modal footer -->
+	                        <div class="modal-footer" style="display: flex; justify-content: center;">
+	                        <button type="submit" class="btn btn-primary">등록</button>
+	                        <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+	                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -349,7 +289,7 @@
                     <div class="modal-content">
                         <!-- Modal Header -->
                         <div class="modal-header">
-                        <h4 class="modal-title">프로젝트 인원 등록</h4>
+                        <h4 class="modal-title">프로젝트 인원 수정</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                 
@@ -358,11 +298,10 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <h5>이름
-                                            <button class="btn btn-outline-secondary btn-sm" style="transform: translateY(-2.5px);"
-                                                    data-toggle="modal" data-target="#searchMemberModal">인원 찾기</button>
+                                        <h5>
+                                        	이름
                                         </h5>
-                                        <input type="text" id="chooseMember1" class="form-control" readonly>
+                                        <input type="text" id="chooseMember1" class="form-control" style="background-color: white;" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -420,19 +359,20 @@
                             <div style="display: flex;">
                                 <div class="selectMember">
                                     <h5 style="margin-top: 10px; margin-left: 10px;">LinkFlow</h5>
-                                    <p style="margin-left: 20px;">개발 1팀</p>
+                                    <p style="margin-left: 20px;">${loginUser.deptName}</p>
                                 </div>
                                 <div class="selectMember" style="overflow-y: auto;">
                                     <p style="margin-top: 10px;"></p>
-                                    <p style="margin-left: 10px; cursor: pointer;" onclick="chooseMember(this);">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
-                                    <p style="margin-left: 10px;" onclick="">이개발</p>
+                                    <c:forEach var="t" items="${teamMem}">
+                                    	<table>
+                                    		<tr>
+                                    			<td style="cursor: pointer;" onclick="chooseMember(this);">
+                                    				<p style="margin-left: 10px">${t.userName}</p>
+                                    				<input type="hidden" value="${t.userId}">
+                                    			</td>
+                                    		</tr>
+                                    	</table> 
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
@@ -448,10 +388,41 @@
 	</div>
 	<script>
         function chooseMember(element){
-            var memberName = $(element).text();
-            $("#chooseMember1").val(memberName);
+        	var userName = element.querySelector('p').textContent;
+        	var userId = element.querySelector('input').value;
+            $("#chooseMember1").val(userName);
+            $("#chooseMemberId1").val(userId);
             $('#searchMemberModal').modal('hide');
-        }
+        };
+        
+        function validateForm() {
+            var chooseMember = document.getElementById('chooseMember1').value;
+            var chooseMemberId = document.getElementById('chooseMemberId1').value;
+            var proNo = document.querySelector('input[name="proNo"]').value;
+            
+            if (!chooseMember) {
+                alert('인원을 선택해주세요.');
+                return false; // 폼 제출 중지
+            };
+            
+            $.ajax({
+            	url: "${contextPath}/project/checkMember.dis",
+            	type: "post",
+            	data: {
+            		userId : chooseMemberId,
+            		proNo : proNo
+            	},
+            	success: function(result) {
+                    if (result == 'YES') {
+                        alert('해당 인원은 이미 투입되어 있습니다.');
+                    } else {
+                        // Ajax 요청이 완료되고 인원이 추가되지 않은 경우 폼을 제출합니다.
+                        document.getElementById("addMemberForm").submit();
+                    }
+                }
+            });
+            return false; // 폼 제출 중지 (Ajax 요청의 응답을 기다리기 위해)
+        };
 
     </script>
 </body>

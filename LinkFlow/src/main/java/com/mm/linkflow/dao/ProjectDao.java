@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
 
@@ -56,5 +57,20 @@ public class ProjectDao {
 	// 프로젝트 상세 조회
 	public ProjectDto selectDetailProject(int no) {
 		return sql.selectOne("projectMapper.selectDetailProject", no);
+	}
+	
+	// 프로젝트 투입인원 조회
+	public List<DispatchDto> selectProjectDispatch(int no){
+		return sql.selectList("projectMapper.selectProjectDispatch", no);
+	}
+	
+	// 프로젝트 투입인원 추가
+	public void addDispatch(DispatchDto dis) {
+		sql.insert("projectMapper.addDispatch", dis);
+	}
+	
+	// 프로젝트 투입인원 체크
+	public int checkDispatch(DispatchDto dis) {
+		return sql.selectOne("projectMapper.checkDispatch", dis);
 	}
 }

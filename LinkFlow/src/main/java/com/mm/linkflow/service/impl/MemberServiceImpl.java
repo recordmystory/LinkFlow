@@ -83,5 +83,9 @@ public class MemberServiceImpl implements MemberService {
 	public int selectCheckUser(String[] email) {
 		return mDao.selectCheckUser(email);
 	}
+	@Override
+	public List<MemberDto> selectTeamMember(String title) {
+		return mDao.selectTeamMember(title);
+	}
 
 }

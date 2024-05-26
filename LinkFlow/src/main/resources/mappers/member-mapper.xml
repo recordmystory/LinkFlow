@@ -272,6 +272,16 @@
  		  FROM TB_MEMBER
  		 WHERE TO_CHAR(RETIRE_DATE, 'YYYY-MM') = #{date}
  	</select>
+ 	<!-- 팀별 인원 조회용 - 황민우 -->
+ 	<select id="selectTeamMember" resultMap="memberResult">
+ 		SELECT
+ 		       USER_ID
+ 		     , USER_NAME
+ 		  FROM TB_MEMBER M
+ 		  JOIN TB_DEPT USING (DEPT_CODE)
+ 		 WHERE M.DEL_YN = 'N'
+ 		   AND DEPT_TITLE = #{title}
+ 	</select>
  	
  	<!-- 게시판 마스터 조회용 - 구성모 -->
  	<select id="selectCategoryMaster" resultMap="memberResult">

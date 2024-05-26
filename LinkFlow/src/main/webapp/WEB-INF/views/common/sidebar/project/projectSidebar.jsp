@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -46,7 +47,7 @@
 	            <!-- Sidebar Menu -->
 	            <nav class="linkfoiwsideMenu">
 	                <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
-	                <c:if test="${not empty loginUser and loginUser.position eq '팀장'}">
+	                <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발')}">
 	                <div class="LinkFlowInsertBtnArea">
 	                    <a href="${contextPath}/project/addForm.pj" class="btn btn-block bg-primary btn-lg" style="color: white;">+ 프로젝트 등록</a>
 	                </div>

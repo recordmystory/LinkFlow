@@ -14,6 +14,17 @@
 		<result column="DEPT_NAME" property="deptName"/>
 	</resultMap>
 	
+	<resultMap type="DispatchDto" id="disResult" extends="commonMapper.commonResult">
+		<result column="PRO_NO" property="proNo"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="ROLE" property="role"/>
+		<result column="TASK" property="task"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="DIS_YN" property="disYn"/>
+		<result column="USER_NAME" property="userName"/>
+	</resultMap>
+	
 	<insert id="addProject">
 		INSERT
 		  INTO TB_PROJECT
@@ -60,6 +71,44 @@
 		 WHERE P.DEL_YN = 'N'
 		 ORDER
 		    BY PRO_NO DESC
+	</select>
+	
+	<select id="selectPrivateProjectList" resultMap="projectResult">
+		SELECT
+		       PRO_NO
+		     , PRO_TITLE
+		     , CLIENT
+		     , DEPT_TITLE AS DEPT_NAME
+		     , ADDRESS
+		     , DETAIL_ADD
+		     , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		     , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		     , PRO_YN
+		  FROM TB_PROJECT P
+		  JOIN TB_DEPT USING (DEPT_CODE)
+		  JOIN TB_DISPATH USING (PRO_NO)
+		 WHERE P.DEL_YN = 'N'
+		   AND USER_ID = #{id}
+		 ORDER
+		    BY PRO_NO DESC
+	</select>
+	
+	<select id="selectProjectDispatch" resultMap="disResult">
+		SELECT
+			   PRO_NO
+		     , USER_NAME
+		     , USER_ID
+		     , ROLE
+		     , TASK
+		     , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		     , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		     , DIS_YN
+		  FROM TB_DISPATCH D
+		  JOIN TB_MEMBER USING (USER_ID)
+		 WHERE PRO_NO = #{no}
+		   AND D.DEL_YN = 'N'
+		 ORDER
+		    BY ROLE
 	</select>
 	
 	<select id="searchListProject" resultMap="projectResult">
@@ -132,5 +181,41 @@
 		  FROM TB_PROJECT
 		  JOIN TB_DEPT USING (DEPT_CODE)
 		 WHERE PRO_NO = #{no}
+	</select>
+	
+	<insert id="addDispatch">
+		INSERT
+		  INTO TB_DISPATCH
+		  (
+		  	PRO_NO
+		  , USER_ID
+		  , ROLE
+		  , TASK
+		  , START_DATE
+		  , END_DATE
+		  , DIS_YN
+		  , REG_ID
+		  , MOD_ID
+		  )
+		  VALUES
+		  (
+		  	#{proNo}
+		  , #{userId}
+		  , #{role}
+		  , #{task}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{disYn}
+		  , #{regId}
+		  , #{modId}
+		  )
+	</insert>
+	
+	<select id="checkDispatch" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_DISPATCH
+		 WHERE PRO_NO = #{proNo}
+	       AND USER_ID = #{userId}
 	</select>
 </mapper>

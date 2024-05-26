@@ -69,7 +69,7 @@
                                     -->
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                	<form action="${contextPath}/project/search.pj" method="get" id="searchForm">
+                                	<form action="${contextPath}/project/search.pj" method="post" id="searchForm">
                                 		<input name="page" type="hidden" value="1">
 		                                <div style="margin-bottom: 10px;">
 		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
@@ -112,7 +112,7 @@
                                                     <td>${p.proNo}</td>
                                                     <td>${p.client}</td>
                                                     <td>
-                                                        <a href="${contextPath}/project/detail.pj?no=${p.proNo}">${p.proTitle}</a>
+                                                        <a href="${contextPath}/project/detail.pj?no=${p.proNo}&title=${loginUser.deptName}">${p.proTitle}</a>
                                                     </td>
                                                     <td>${p.deptName}</td>
                                                     <td>${p.startDate} ~ ${p.endDate}</td>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.dao.ProjectDao;
+import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
 import com.mm.linkflow.service.service.ProjectService;
@@ -46,5 +47,20 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public ProjectDto selectDetailProject(int no) {
 		return proDao.selectDetailProject(no);
+	}
+
+	@Override
+	public List<DispatchDto> selectProjectDispatch(int no) {
+		return proDao.selectProjectDispatch(no);
+	}
+
+	@Override
+	public void addDispatch(DispatchDto dis) {
+		proDao.addDispatch(dis);
+	}
+
+	@Override
+	public int checkDispatch(DispatchDto dis) {
+		return proDao.checkDispatch(dis);
 	}
 }
