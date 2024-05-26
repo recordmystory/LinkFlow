@@ -271,10 +271,10 @@ input[type="checkbox"]:checked {
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
-                             <select id="roomSub" style="width: 100px;">
+                             <select id="roomSub" name="subName" style="width: 100px;">
                                  <option id="회의실" value="회의실">회의실</option>
                                  <!-- 비품일때 -->
-                                 </select>
+                             </select>
                              <select id="supSub" name="subName" style="width: 100px; display:none;">
                                  <option id="노트북" value="노트북">노트북</option>
                                  <option id="차량" value="차량">차량</option>
@@ -367,7 +367,7 @@ input[type="checkbox"]:checked {
 		            let table = "";
 		            let list = searchResult.assList;
 		            let page = "";
-				  	let pi = result.pi;
+				  	let pi = searchResult.pi;
 
 		            for (let i = 0; i < list.length; i++) {
 		                table += "<tr>"
@@ -382,13 +382,14 @@ input[type="checkbox"]:checked {
 		                       + "</td></tr>";
 		            }
 		            
-					page +="<li class=\"page-item "+( pi.currentPage ==1 ? 'disabled' : '') +"><a class=\"page-link\" href=\"${contetxtPath }/booking/ass.search?page="+pi.currentPage -1+"\">&laquo;</a></li>";
-					
-					for(let i=pi.startPage; i<pi.endPage; i++){
-						page += "<li class=\"page-item " +( pi.currentPage == p ? 'disabled' : '' )+"><a class=\"page-link\" href=\"${contextPath }/booking/ass.search?page="+i+">"+i +"</a></li>";
+		            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+
+					for (let i = pi.startPage; i <= pi.endPage; i++) {
+					    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + i + "\">" + i + "</a></li>";
 					}
-					page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '')+"><a class=\"page-link\" href=\"${contetxtPath }/booking/ass.search?page="+pi.currentPage +1+">&raquo;</a></li>";
-					
+
+					page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
+				
 		            $("#listTable").html(table);
 		            $("#pageArea ul").html(page);
 		        }

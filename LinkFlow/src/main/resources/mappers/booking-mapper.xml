@@ -288,6 +288,7 @@
 	<if test='keyword != null'>
 	  and assets_name like '%'||#{keyword}||'%'
 	</if>
+	 order by a.assets_no desc
 </select>
 
 <update id="deleteAssets">
@@ -311,11 +312,11 @@
 	 	   (
 	 		'ASS_'|| LPAD(SEQ_ASSNO.NEXTVAL, 3, '0')
 	 	   ,#{ass.mainCode}
-	 	   ,(select sub_code
+	 	   ,( select sub_code
 	 	   		from tb_common
 	 	   	   where main_code = #{ass.mainCode}	
 	 	   	     and sub_name = #{ass.subName}
-	 	   	     group by sub_code
+	 	   	   group by sub_code
 	 	   	 )
 	 	   	,#{ass.assetsName}
 	 	   	,#{userId}
@@ -330,10 +331,11 @@
 			 	   		from tb_common
 			 	   	   where main_code = #{ass.mainCode}	
 			 	   	     and sub_name = #{ass.subName}
-			 	   	   group by sub_code
+			 	   	  group by sub_code
 			 	   	   ),
 			assets_name = #{ass.assetsName},
-			mod_id = #{userId}
+			mod_id = #{userId},
+			main_code = #{ass.mainCode}
 	where assets_no = #{ ass.assetsNo}
 			
 </update>
