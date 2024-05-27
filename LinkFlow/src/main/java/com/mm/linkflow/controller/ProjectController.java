@@ -156,4 +156,34 @@ public class ProjectController {
 		dis.setModId(loginUser.getUserId());
 		return proService.deleteDispatch(dis) > 0 ? "SUCCESS" : "FAIL";
 	}
+	
+	// 프로젝트 수정 양식
+	@GetMapping("modifyForm.pj")
+	public ModelAndView modifyProjectForm(int no, ModelAndView mv) {
+		int proNo = no;
+		mv.addObject("pro", proService.selectDetailProject(proNo))
+		  .setViewName("project/modifyProjectForm");
+		
+		return mv;
+	}
+	
+	// 프로젝트 수정
+	@PostMapping("modify.pj")
+	public String modifyProject(ProjectDto pro, HttpSession session) throws UnsupportedEncodingException {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		pro.setModId(loginUser.getUserId());
+		proService.modifyProject(pro);
+		int no = pro.getProNo();
+		String title = URLEncoder.encode(loginUser.getDeptName(), StandardCharsets.UTF_8.toString());
+		
+		return "redirect:/project/detail.pj?no=" + no + "&title=" + title;
+	}
+	
+	// 프로젝트 삭제
+	@GetMapping("delete.pj")
+	public String deleteProject(int no) {
+		proService.deleteProject(no);
+		
+		return "redirect:/project/list.pj";
+	}
 }

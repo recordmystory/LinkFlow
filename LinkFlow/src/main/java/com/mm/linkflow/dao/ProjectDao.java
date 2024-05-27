@@ -83,4 +83,14 @@ public class ProjectDao {
 	public int deleteDispatch(DispatchDto dis) {
 		return sql.delete("projectMapper.deleteDispatch", dis);
 	}
+	
+	// 프로젝트 수정
+	public void modifyProject(ProjectDto pro) {
+		sql.update("projectMapper.modifyProject", pro);
+	}
+	
+	// 프로젝트 삭제
+	public void deleteProject(int proNo) {
+		sql.update("projectMapper.deleteProject", proNo);
+	}
 }

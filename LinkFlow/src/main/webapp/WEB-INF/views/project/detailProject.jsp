@@ -110,8 +110,8 @@
                         <div class="contentArea">
                             <div class="contentInElement">
                                 <div class="btnArea">
-                                    <button class="btn btn-primary btn-sm">프로젝트 수정</button>
-                                    <button class="btn btn-danger btn-sm">프로젝트 삭제</button>
+                                    <a href="${contextPath}/project/modifyForm.pj?no=${pro.proNo}" class="btn btn-primary btn-sm">프로젝트 수정</a>
+                                    <a href="${contextPath}/project/delete.pj?no=${pro.proNo}" class="btn btn-danger btn-sm">프로젝트 삭제</a>
                                 </div>
                             </div>
                             <div style="min-height: 500px;">

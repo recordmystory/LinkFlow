@@ -394,6 +394,9 @@
 	                    start: '', 
 	                    center: '',
 	                    end: ''
+	                },
+	                eventClick: function(info) {
+	               		info.jsEvent.preventDefault(); 
 	                }
 	            
 	            });
