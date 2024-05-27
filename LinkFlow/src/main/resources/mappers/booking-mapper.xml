@@ -106,7 +106,7 @@
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
-		  ,status
+		  ,b.status
      from tb_booking b
      join tb_assets a using (assets_no)
      join tb_common c using (main_code)

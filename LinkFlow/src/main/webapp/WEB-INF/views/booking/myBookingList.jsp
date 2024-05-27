@@ -215,15 +215,12 @@ input[type="checkbox"]:checked {
 				
 			})
 		}
-		
-		$(document).ready(function(){
-            /* search(); */
-        });
-		
 		 $(document).ready(function() {
 		 	$('#roomCheckbox, #supCheckbox, #status').change(function() {
 		    	search(); // 변경 사항이 감지되면 검색 실행
 		    });
+		 	
+		 	console.log("머야 왜 안댐?");
 	    });
 		</script>
 	

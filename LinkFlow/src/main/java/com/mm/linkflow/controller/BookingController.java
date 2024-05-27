@@ -91,7 +91,7 @@ public class BookingController {
 		mv.addObject("pi",pi)
 		  .addObject("bkList",bkList)
 		  .setViewName("booking/myBookingList");
-		
+		log.debug("mvvvvvvvvvvvv : {} ",mv);
 		return mv;
 	}
 	

@@ -442,19 +442,19 @@ select{
 
 	            endSelect.innerHTML = ""; // Clear existing options
 
-	            var initialHour = startHour + 1;
-	            var initialMinute = startMinute;
-
-	            if (initialHour >= 18) {
-	                initialHour = 18;
-	                initialMinute = 0;
-	            }
-
-	            for (var hour = initialHour; hour <= 18; hour++) {
-	                for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
-	                    if (hour === 18 && minute > 0) continue; // No need to go beyond 18:00
-	                    var optionHour = hour < 10 ? '0' + hour : hour;
-	                    var optionMinute = minute === 0 ? '00' : minute;
+	            for (var hour = startHour; hour < 18; hour++) {
+	                for (var minute = 0; minute <= 30; minute += 30) {
+	                    var endHour = hour;
+	                    var endMinute = minute;
+	                    if (endMinute === 0) {
+	                        endMinute = '00';
+	                    } else {
+	                        endHour += 1;
+	                        endMinute = '00';
+	                    }
+	                    if (endHour === 18 && endMinute > 0) continue; // No need to go beyond 18:00
+	                    var optionHour = endHour < 10 ? '0' + endHour : endHour;
+	                    var optionMinute = endMinute;
 	                    var optionValue = optionHour + ':' + optionMinute;
 	                    var option = document.createElement("option");
 	                    option.value = optionValue;
