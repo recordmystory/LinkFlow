@@ -306,7 +306,7 @@
 		FROM TB_EDOC_HIST EH
 		JOIN TB_MEMBER M ON (M.USER_ID = EH.USER_ID)
 		WHERE ED_NO = #{edNo}
-		ORDER BY ED_HIST_ORDER DESC
+		ORDER BY ED_HIST_ORDER
 	</select>
 	
 	<!-- 참조자 목록 -->
@@ -331,17 +331,48 @@
 		    AND ED_NO = #{edNo}
 	</select>
 	
+	<!-- 보안등급 수정 -->
 	<update id="updateSecCode">
 		UPDATE TB_EDOC
 		SET SEC_CODE = #{secCode}
 		WHERE ED_NO = #{edNo}
 	</update>
 	
+	<!-- 기안 취소 -->
 	<update id="modifyDelYn">
 		UPDATE TB_EDOC
 		SET DEL_YN = 'Y'
 		WHERE ED_NO = #{edNo}
 	</update>
+	
+	<!-- 진행중인 문서 상세 (결재) -->
+	<update id="updateEdocHist">
+		UPDATE TB_EDOC_HIST
+		SET ED_HIST_SUB_CODE = #{edHistSubCode},
+				ED_HIST_COMMENT = #{edHistComment},
+				MOD_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 결재 count -->
+	<select id="selectEdHistSubCodeCnt" resultType="_int">
+		SELECT COUNT(ED_HIST_SUB_CODE)
+		FROM TB_EDOC_HIST
+		WHERE ED_NO = #{edNo}
+	</select>
+	
+	<update id="updateEdocStatusAppr">
+		UPDATE TB_EDOC
+		SET STATUS = '05' 
+		WHERE ED_NO = #{edNo}
+	</update>
+	
+	<update id="updateEdocStatusCxl">
+		UPDATE TB_EDOC
+		SET STATUS = '06' 
+		WHERE ED_NO = #{edNo}
+	</update>
+	
 	<!-- 결재선 insert -->
 	<!-- <insert id="inserApprLine">
 		INSERT INTO TB_EDOC_HIST
