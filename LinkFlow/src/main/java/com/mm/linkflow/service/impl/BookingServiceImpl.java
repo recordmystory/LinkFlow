@@ -164,6 +164,13 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.selectRoomWaitList();
 	}
 
+	@Override
+	public int updateRoomBooking(Map<String, String> bk) {
+		return bkDao.updateRoomBooking(bk);
+	}
+	
+	
+
 	
 	
 

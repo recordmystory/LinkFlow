@@ -259,23 +259,24 @@ input[type="checkbox"] {
 						<div class="modal fade" id="bk-result">
 							<div class="modal-dialog">
 								<div class="modal-content">
-								<form id="" action="" method="post">
-									<div class="bk-modal" style="padding-top: 40px;">
-										<p>예약 시설 :</p>
+								<form id="roomConForm" action="${contextPath }/booking/upRoom.bk" method="post">
+									<input type="hidden" name="bookingNo" id="room-bkNo">
+									<div class="bk-modal" id="room-name" style="padding-top: 40px;">
+										<p>예약 시설 :</p> &nbsp;
 										<p>회의실A</p>
 									</div>
-									<div class="bk-modal bk-time">
+									<div class="bk-modal bk-time" id="room-time">
 										<p>예약 시간</p>
 										<p>20204 / 04 / 25 14:00 ~ 16:00</p>
 									</div>
-									<div class="bk-modal">
+									<div class="bk-modal" id="bkId">
 										<p>요청자 :</p>
 										&nbsp;
 										<p>조성모(개발1팀)</p>
 									</div>
 									<div class="modal-body">
 										<h6>사용 용도</h6>
-										<input type="text" class="can-coment" placeholder="부서 회의">
+										<input type="text" id="room-bkContent" class="can-coment" placeholder="부서 회의" disabled>
 									</div>
 
 									<!-- 승인일 때 -->
@@ -284,14 +285,13 @@ input[type="checkbox"] {
                                     </div>
 									<!-- 반려일 때 -->
 									<div class="modal-body" id="roomRej">
-										<h6>비고</h6>
-										<input type="text" class="rej-coment" id="roomRejContent" placeholder=" 반려 사유">
+										<h6>반려 사유 </h6>
+										<input type="text" class="rej-coment" name="rejContent" id="roomRejContent" placeholder=" 반려 사유">
 									</div>
 
 									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">CANCEL</button>
-										<button type="button" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+										<button type="submit" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
 									</div>
 								</form>
 								</div>
@@ -373,11 +373,12 @@ input[type="checkbox"] {
 			})
 		}
 		
-		function roomConfirm(){
+		function roomConfirm(type,bk){
 			$('#roomRejContent').val('');
 			if(type === 1){ // 승인
 				$('#roomCon').css('display', 'block');
 				$('#roomRej').css('display', 'none');
+				
 				$('#roomRejContent').removeAttr('required');
 				
 			}else{ // 반려
@@ -387,23 +388,17 @@ input[type="checkbox"] {
 				$('#roomRejContent').attr('required','required');
 			}
 			
-			$("#con-bkNo").val(bk.bookingNo);
+			$("#room-bkNo").val(bk.bookingNo);
 			
-			$("#con-supUser").empty();
-			$("#con-supUser").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><p>" + bk.userName + "(" + bk.deptName + ")</p>");
+			$("#rommName").empty();
+			$("#rommName").append("<p>예약 시설 :</p> &nbsp; <p> 회의실 " + bk.assetsName + "</p>");
 
-			$("#con-sub-ass").empty();
-			$("#con-sub-ass").append("<p>예약비품 :</p> &nbsp; <p>"+ bk.subName + " / " + bk.assetsName + "</p>");
+			$("#bkId").empty();
+			$("#bkId").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><p>" + bk.userName + "(" + bk.deptName + ")</p>");
 			
-			$("#con-supTime").empty();
-			$("#con-supTime").append("<p>예약시간</p>");
-			if(bk.subName === "차량"){
-				$("#con-supTime").append("<p>"+ bk.bkStartDate +" ~ " + bk.bkEndDate + "</p>");
-			}else{
-				$("#con-supTime").append("<p> - </p>");
-			}
-			
-			$('#con-bkContent').prop('placeholder', bk.bkContent);
+			$("#room-time").empty();
+			$("#room-time").append("<p>예약 시간</p> <p>" + bk.bkStartDate + " " + bk.bkStartTime + " ~ " + bk.bkEndTime + "</p>");
+			$('#room-bkContent').prop('placeholder', bk.bkContent);
 			
 		}
 	

@@ -254,6 +254,11 @@ input[type="checkbox"] {
                                 // if so, remove the element from the "Draggable Events" list
                                 info.draggedEl.parentNode.removeChild(info.draggedEl);
                             }
+                        },
+                        views:{
+                        	timeGrid:{
+                        		
+                        	}
                         }
                     });
 

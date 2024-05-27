@@ -547,4 +547,21 @@
 	 order by b.mod_date asc
 </select>
 
+<update id="updateRoomBooking">
+	update tb_booking
+	  set
+	      <choose>
+	      <when test='rejContent !="" and rejContent != null'>
+	      status = 'REJ',
+	      rej_content = #{rejContent}
+	      </when>
+	      <otherwise>
+	      status = 'COM'
+	      </otherwise>
+	      </choose>
+	      , status_date = sysdate
+	      , reg_id = sysdate
+	      , mod_id = #{userId}
+	where booking_no = #{bookingNo}
+</update>
 </mapper>

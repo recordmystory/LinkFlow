@@ -220,24 +220,26 @@ select{
 		                <p class="md-list">이용 시간</p>
 		                <div class="md-div">
 		                    <select name="bkStartTime" id="bk-sTime" style="width:90px;" class="md-select form-control">
-		                        <c:forEach var="hour" begin="9" end="17">
-                                    <c:forEach var="minute" begin="0" end="30" step="30">
-                                        <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
-                                            ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
-                                        </option>
-                                    </c:forEach>
-                                </c:forEach>
-		                    </select> &nbsp;&nbsp;
-		                    <p>~</p>&nbsp;&nbsp;
-		                    <select name="bkEndTime" id="bk-eTime" style="width:90px;" class="md-select form-control">
-		                        <c:forEach var="hour" begin="10" end="18">
-                                    <c:forEach var="minute" begin="0" end="30" step="30">
-                                        <option value="${hour}:${minute == 0 ? '00' : minute}">
-                                            ${hour}:${minute == 0 ? '00' : minute}
-                                        </option>
-                                    </c:forEach>
-                                </c:forEach>
-		                    </select> &nbsp;&nbsp;
+							    <c:forEach var="hour" begin="9" end="17"> <!-- 17시까지만 반복 -->
+							        <c:forEach var="minute" begin="0" end="30" step="30">
+							            <c:if test="${hour != 17 || minute == 0}"> <!-- 17시일 때는 분이 30인 경우만 선택 -->
+							                <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
+							                    ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
+							                </option>
+							            </c:if>
+							        </c:forEach>
+							    </c:forEach>
+							</select>&nbsp;&nbsp;
+							<p>~</p>&nbsp;&nbsp;
+							<select name="bkEndTime" id="bk-eTime" style="width:90px;" class="md-select form-control">
+							    <c:forEach var="hour" begin="10" end="18">
+							        <c:forEach var="minute" begin="0" end="30" step="30">
+							            <option value="${hour}:${minute == 0 ? '00' : minute}">
+							                ${hour}:${minute == 0 ? '00' : minute}
+							            </option>
+							        </c:forEach>
+							    </c:forEach>
+							</select> &nbsp;&nbsp;
 		                </div>
 		                <p class="md-list">이용 시설</p>
 		                <div class="md-div">
@@ -393,6 +395,7 @@ select{
     						$("#bk-assName").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].assetsName +"</option>")
     					
     					}
+    					
     				}
 	    			
 	    		}
@@ -426,6 +429,41 @@ select{
 	            suppliesContent.style.display = 'block';
 	        }
 	    }
+	    
+	    document.addEventListener("DOMContentLoaded", function() {
+	        var startSelect = document.getElementById("bk-sTime");
+	        var endSelect = document.getElementById("bk-eTime");
+
+	        startSelect.addEventListener("change", function() {
+	            var selectedStartTime = this.value.trim();
+	            var startTimeParts = selectedStartTime.split(':');
+	            var startHour = parseInt(startTimeParts[0]);
+	            var startMinute = parseInt(startTimeParts[1]);
+
+	            endSelect.innerHTML = ""; // Clear existing options
+
+	            var initialHour = startHour + 1;
+	            var initialMinute = startMinute;
+
+	            if (initialHour >= 18) {
+	                initialHour = 18;
+	                initialMinute = 0;
+	            }
+
+	            for (var hour = initialHour; hour <= 18; hour++) {
+	                for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
+	                    if (hour === 18 && minute > 0) continue; // No need to go beyond 18:00
+	                    var optionHour = hour < 10 ? '0' + hour : hour;
+	                    var optionMinute = minute === 0 ? '00' : minute;
+	                    var optionValue = optionHour + ':' + optionMinute;
+	                    var option = document.createElement("option");
+	                    option.value = optionValue;
+	                    option.textContent = optionValue;
+	                    endSelect.appendChild(option);
+	                }
+	            }
+	        });
+	    });
 	    
 	    function submit(){
 	    	

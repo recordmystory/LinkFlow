@@ -59,4 +59,5 @@ public interface BookingService {
     
     List<BookingDto> selectRoomWaitList();
     
+    int updateRoomBooking(Map<String,String> bk);
 }
