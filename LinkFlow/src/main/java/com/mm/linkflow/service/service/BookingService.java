@@ -53,6 +53,10 @@ public interface BookingService {
     int selectSupStatusCount(Map<String,String> search); // 비품 예약 완료 리스트 + 검색  
     List<BookingDto> selectSupStatusList(PageInfoDto pi, Map<String,String> search);
     
+    int updateSupBkConfirm(Map<String,String> bk); // 비품예약신청 승인반려 
+    
+    int updateSupBkReturn(Map<String,String> bk); // 비품 반납
+    
     
     
 }

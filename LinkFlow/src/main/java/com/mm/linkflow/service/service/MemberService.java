@@ -46,4 +46,6 @@ public interface MemberService {
 
 	   // 카테고리마스터조회용 - 구성모
 	   MemberDto selectCategoryMaster(String boardType);
+	   // 메일수신할때 유저있는지 체크용 - 구성모
+	   int selectCheckUser(String[] email);
 }

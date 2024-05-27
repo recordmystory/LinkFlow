@@ -100,6 +100,14 @@ public class EdsmProgDao {
 	public List<AttachDto> selectAttachDetail(String edNo) {
 		return sqlSessionTemplate.selectList("edsmProgMapper.selectAttachDetail", edNo);
 	}
+
+	public int updateSecCode(EdocDto edocDto) {
+		return sqlSessionTemplate.update("edsmProgMapper.updateSecCode", edocDto);
+	}
+
+	public int modifyDelYn(String edNo) {
+		return sqlSessionTemplate.update("edsmProgMapper.modifyDelYn", edNo);
+	}
 	
 	
 //	public int selectAllListCount() {

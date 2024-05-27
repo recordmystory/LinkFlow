@@ -117,6 +117,16 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	  
 	  return doc; 
 	}
+
+	@Override
+	public int updateSecCode(EdocDto edocDto) {
+		return edsmProgDao.updateSecCode(edocDto);
+	}
+
+	@Override
+	public int modifyDelYn(String edNo) {
+		return edsmProgDao.modifyDelYn(edNo);
+	}
 	 
 
 	

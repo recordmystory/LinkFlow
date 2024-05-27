@@ -120,6 +120,7 @@ public class BookingDao {
 	}
 
 	public int modAssets(Map<String, Object> mp) {
+		log.debug("mpmpmpmpmp:{}",mp);
 		return sql.update("bkMapper.modifyAssets",mp);
 	}
 
@@ -143,6 +144,14 @@ public class BookingDao {
 		int offset = (pi.getCurrentPage()-1 )* limit;
 		RowBounds rowBounds = new RowBounds(offset,limit);
 		return sql.selectList("bkMapper.selectSupStatusList",search,rowBounds);
+	}
+
+	public int updateSupBkConfirm(Map<String, String> bk) {
+		return sql.update("bkMapper.updateSupBkConfirm",bk);
+	}
+
+	public int updateSupBkReturn(Map<String, String> bk) {
+		return sql.update("bkMapper.updateSupBkReturn",bk);
 	}
 
 }

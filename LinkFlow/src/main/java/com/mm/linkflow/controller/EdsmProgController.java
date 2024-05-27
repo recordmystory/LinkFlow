@@ -40,6 +40,42 @@ public class EdsmProgController {
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
+	@GetMapping("/modifyDelYn.prog")
+	public String modifyDelYn(String edNo, RedirectAttributes redirectAttribute) {
+		log.debug(edNo);
+		
+		int result = edsmProgService.modifyDelYn(edNo);
+		
+		if(result > 0) {
+			redirectAttribute.addFlashAttribute("alertMsg", "기안 취소가 완료되었습니다.");
+		} else {			
+			redirectAttribute.addFlashAttribute("alertMsg", "기안 취소에 실패했습니다.");
+		}
+		
+		return "redirect:/edsm/prog/listAll.prog";
+	}
+	
+	/** 진행중인 문서 상세 조회 - 보안등급 수정
+	 * 
+	 * @param edocDto
+	 * @param redirectAttribute
+	 * @return detail 페이지로 redirect
+	 * 
+	 * @author 김지우
+	 */
+	@GetMapping("/modifySecCode.prog")
+	public String modifySecCode(EdocDto edocDto, RedirectAttributes redirectAttribute) {
+		// log.debug("edocDto : {}", edocDto);
+		
+		int result = edsmProgService.updateSecCode(edocDto);
+		
+		if(result > 0) {
+			redirectAttribute.addFlashAttribute("alertMsg", "보안등급 수정이 완료되었습니다.");
+		} else {
+			redirectAttribute.addFlashAttribute("alertMsg", "보안등급 수정에 실패했습니다.");			
+		}
+		return "redirect:/edsm/prog/listAll.prog";
+	}
 
 	@GetMapping("/detail.prog")
 	public String detail(String edNo, Model model) {
@@ -47,25 +83,7 @@ public class EdsmProgController {
 		
 		model.addAttribute("edoc", edsmProgService.selectEdocDetail(edNo));
 		
-		/*
-		 * edoc:{edNo:문서번호,
-		 * 		 edFormCode:문서양식코드, 
-		 * 		 .. 
-		 * 		 attachList:[{AttachDto 객체},{AttachDto 객체},..],
-		 * 		 edocHistList:[{EdocHistDto},{EdocHistDto}, ..]
-		 *      }
-		 */
-	
-		
 		return "/edsm/prog/detail";
-		
-		/*
-		 * ${edoc.edNo} => 문서번호
-		 * ${edoc.attachList} => 배열 [AttachDto객체, AttachDto객체]
-		 * 		=> <c:forEach var="at" items="${edoc.attachList}">
-		 * 
-		 * 			
-		 */
 	}
 	
 	/** 진행중인 문서 목록 (전체) 검색

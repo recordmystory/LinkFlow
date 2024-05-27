@@ -221,14 +221,13 @@ public class BookingController {
 		String mainCode = assets.get("updateMainCode");
 		AssetsDto ass = AssetsDto.builder()
 								   .assetsName(assets.get("assetsName"))
-								   .mainCode(assets.get("mainCode"))
+								   .mainCode(assets.get("updateMainCode"))
 								   .subName(assets.get("subName"))
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
-		mp.put("mainCode", mainCode);
 		int result = bkServiceImpl.insertAssets(mp);
 		
 		if(result >0) {
@@ -238,11 +237,12 @@ public class BookingController {
 		}
 		
 	}
-	@PostMapping("/ass.mod") // 자산 추가 
+	@PostMapping("/ass.mod") // 자산 수정 
 	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
 		String mainCode = assets.get("updateMainCode");
 		AssetsDto ass = AssetsDto.builder()
 								   .assetsNo(assets.get("assetsNo"))
+								   .mainCode(assets.get("updateMainCode"))
 								   .assetsName(assets.get("assetsName"))
 								   .subName(assets.get("subName"))
 								   .build();
@@ -250,14 +250,14 @@ public class BookingController {
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
-		mp.put("mainCode", mainCode);
 		
-		log.debug("mp:{}",mp);
 		int result = bkServiceImpl.modAssets(mp);
+		log.debug("result dssadass :{}",result);
 		
 		if(result >0) {
 			return "redirect:/booking/ass.list";
 		}else {
+			System.out.println("응 안 돼 돌아가~");
 			return "redirect:/booking/ass.list";
 		}
 	}
@@ -273,7 +273,7 @@ public class BookingController {
 		return "booking/supBookingManager";
 	}
 	
-	@ResponseBody
+	@ResponseBody // 비품 예약 대기 리스트
 	@GetMapping(value="/supWait.list", produces="application/json; charset=utf-8")
 	public Map<String, Object> selectSupWaitList(@RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = bkServiceImpl.selectSupWaitCount();
@@ -287,10 +287,9 @@ public class BookingController {
 		return mp;
 	}
 	
-	@ResponseBody
+	@ResponseBody // 비품 예약 완료 리스트 + 검색
 	@GetMapping(value="/supStat.list", produces="application/json; charset=utf-8")
 	public Map<String, Object> selectSupStatList(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage){
-		log.debug("search.keyword:{}",search);
 		
 		int listCount = bkServiceImpl.selectSupStatusCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 5);
@@ -302,6 +301,27 @@ public class BookingController {
 		
 		return mp;
 	}
+	
+	@PostMapping("/supCon.bk") // 비품예약 승인,반려 
+	public String updateSupBkConfirm(@RequestParam Map<String,String> bk, HttpSession session) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		log.debug("bk:{}", bk);
+		int result = bkServiceImpl.updateSupBkConfirm(bk);
+		
+		return "redirect:/booking/sup.mng";
+	}
+	
+	@PostMapping("/supEnd.bk") // 비품예약 승인,반려 
+	public String updateSupBkReturn(@RequestParam Map<String,String> bk, HttpSession session) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		log.debug("bk:{}", bk);
+		int result = bkServiceImpl.updateSupBkReturn(bk);
+		
+		return "redirect:/booking/sup.mng";
+	}
+	
 	
 	@GetMapping("/room.mng")
 	public String roomBookingManager() {

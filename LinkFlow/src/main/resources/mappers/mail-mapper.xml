@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailMapper">
+
+<resultMap id="sendMailResult" type="sendMailDto" extends="commonMapper.commonResult">
+		<id column="mail_no" property="mailNo" />
+		<result column="mail_title" property="mailTitle" />
+		<result column="mail_content" property="mailContent" />
+		<result column="trans_time" property="transTime" />
+		<result column="temp_save" property="tempSave" />
+		<result column="remove_yn" property="removeYN" />
+		
+		<result column="user_name" property="userName" />
+		
+		<collection resultMap="attachMapper.attachResult" property="attachList" />
+	</resultMap>
+	
+		<resultMap id="receiveMailResult" type="ReceiveMailDto">
+		<id column="user_id" property="userId" />
+		<result column="mail_no" property="mailNo" />
+		<result column="del_yn" property="delYN" />
+		<result column="read_yn" property="readYN" />
+		<result column="user_name" property="userName" />
+		<result column="mail_Title" property="mailTitle" />
+		<result column="trans_time" property="transTime" />
+	</resultMap>
+	
+	<select id="selectReceiveMailListCount" resultType="_int">
+		select count(*)
+			from re_mail
+			where del_yn = 'N'
+				and user_id = #{userId}
+	</select>
+	
+	<select id="selectReceiveList" resultMap="receiveMailResult">
+		select
+				  r.user_id
+				, r.mail_no
+				, r.read_yn
+				, m.user_name
+				, s.mail_title
+				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)			
+      join tb_member m on ( m.user_id = s.reg_id)
+			where r.del_yn = 'N'
+				and r.user_id = #{userId}
+				order by mail_no desc
+	</select>
+	
+	<select id="selectNonReadCount" resultType="_int">
+		select count(*)
+			from re_mail
+			where del_yn = 'N'
+				and read_yn = 'N'
+				and user_id = #{userId}
+	</select>
+	
+	<select id="selectTrashCount" resultType="_int">
+		select count(*)
+			from re_mail
+			where del_yn = 'Y'
+				and user_id = #{userId}
+	</select>
+	
+	<select id="selectSendListCount" resultType="_int">
+		select count(*)
+			from tb_mail
+			where del_yn = 'N'
+				and reg_id = #{userId}
+	</select>
+	
+	<select id="selectSendList" resultMap="sendMailResult">
+		select
+				  s.reg_id
+				, s.mail_no
+				, m.user_name
+				, s.mail_title
+				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+			from tb_mail s	
+      join tb_member m on ( m.user_id = s.reg_id)
+			where s.del_yn = 'N'
+				and s.reg_id = #{userId}
+				order by mail_no desc
+	</select>
+	
+	<select id="selectMail" resultMap="sendMailResult">
+		select
+	    s.mail_no
+	  , s.mail_title
+	  , s.mail_content
+	  , s.trans_time
+	  , s.reg_id
+	  , m.user_name
+	  , file_no
+    , file_path
+    , filesystem_name
+    , origin_name
+	from tb_mail s
+	left join tb_attachment on (ref_category ='M' and ref_no = s.mail_no)
+	join tb_member m on(s.reg_id = m.user_id)
+		where mail_no = ${no}
+			and s.del_yn ='N'
+	</select>
+
+	<update id="updateMailRead">
+	update
+  				re_mail
+			 set
+			     read_yn = 'Y'
+		 where mail_no = #{no} 
+	</update>
+	
+	<insert id="insertSendMail">
+  	insert
+  		into tb_mail
+  		(
+  			mail_no
+  		, mail_title
+  		, mail_content
+  		, temp_save
+  		, reg_id
+  		, mod_id
+  		)
+  		values
+  		(
+				seq_mailno.nextval
+			, #{mailTitle}
+			, #{mailContent}
+			, #{tempSave}
+			, #{regId}
+			, #{modId}
+  		)
+  </insert>
+  
+  <insert id="insertReceiveeMail">
+  	insert
+  		into re_mail
+  		(
+  			mail_no
+  		, user_id
+  		)
+  		values
+  		(
+				seq_mailno.currval
+			, #{emailId}
+  		)
+  </insert>
+
+</mapper>

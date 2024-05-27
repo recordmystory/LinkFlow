@@ -310,11 +310,12 @@
 	 values
 	 	   (
 	 		'ASS_'|| LPAD(SEQ_ASSNO.NEXTVAL, 3, '0')
-	 	   ,#{mainCode}
+	 	   ,#{ass.mainCode}
 	 	   ,(select sub_code
 	 	   		from tb_common
-	 	   	   where main_code = #{mainCode}	
+	 	   	   where main_code = #{ass.mainCode}	
 	 	   	     and sub_name = #{ass.subName}
+	 	   	     group by sub_code
 	 	   	 )
 	 	   	,#{ass.assetsName}
 	 	   	,#{userId}
@@ -327,8 +328,9 @@
 	update tb_assets
 	   set sub_code = (select sub_code
 			 	   		from tb_common
-			 	   	   where main_code = #{mainCode}	
+			 	   	   where main_code = #{ass.mainCode}	
 			 	   	     and sub_name = #{ass.subName}
+			 	   	   group by sub_code
 			 	   	   ),
 			assets_name = #{ass.assetsName},
 			mod_id = #{userId}
@@ -404,6 +406,8 @@
 		  ,bk_content
 		  ,assets_name
 		  ,sub_name
+		  ,b.status
+		  ,rej_content
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_end_dt,'YYYY/MM/DD'), ' ') AS bk_end_date
 		  ,to_char(b.mod_date,'YYYY/MM/DD') AS enr_date
@@ -430,5 +434,31 @@
 	  </choose>
 	order by booking_no desc
 </select>
+
+<update id="updateSupBkConfirm">
+	update tb_booking
+	   set reg_id = #{userId},
+	   	   mod_id = #{userId},
+	   	   status_date = sysdate,
+	  <choose>
+          <when test='rejContent != "" and rejContent != null'> 
+          status = 'REJ' ,
+          rej_content = #{rejContent}
+          </when>
+          <otherwise>
+          status = 'USE' 
+		  </otherwise>
+       </choose>
+	   	  
+	 where booking_no = #{bookingNo}
+</update>
+
+<update id="updateSupBkReturn">
+	update tb_booking
+	   set mod_id = #{userId},
+	   	   status_date = sysdate,
+	   	   status = 'END'
+	where booking_no = #{bookingNo}
+</update>
 
 </mapper>
