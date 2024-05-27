@@ -133,6 +133,21 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	public int modifyDelYn(String edNo) {
 		return edsmProgDao.modifyDelYn(edNo);
 	}
+
+	@Override
+	public int updateEdocHist(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocHist(edocHistDto);
+	}
+
+	@Override
+	public int selectEdHistSubCodeCnt(EdocHistDto edocHistDto) {
+		return edsmProgDao.selectEdHistSubCodeCnt(edocHistDto);
+	}
+
+	@Override
+	public int updateEdocStatusAppr(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocStatusAppr(edocHistDto);
+	}
 	 
 
 	

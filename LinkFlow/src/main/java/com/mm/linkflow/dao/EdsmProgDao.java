@@ -108,6 +108,18 @@ public class EdsmProgDao {
 	public int modifyDelYn(String edNo) {
 		return sqlSessionTemplate.update("edsmProgMapper.modifyDelYn", edNo);
 	}
+
+	public int updateEdocHist(EdocHistDto edocHistDto) {
+		return sqlSessionTemplate.update("edsmProgMapper.updateEdocHist", edocHistDto);
+	}
+
+	public int selectEdHistSubCodeCnt(EdocHistDto edocHistDto) {
+		return sqlSessionTemplate.update("edsmProgMapper.selectEdHistSubCodeCnt", edocHistDto);
+	}
+
+	public int updateEdocStatusAppr(EdocHistDto edocHistDto) {
+		return sqlSessionTemplate.update("edsmProgMapper.updateEdocStatusAppr", edocHistDto);
+	}
 	
 	
 //	public int selectAllListCount() {

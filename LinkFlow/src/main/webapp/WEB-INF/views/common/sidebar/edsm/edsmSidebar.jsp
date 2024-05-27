@@ -70,16 +70,16 @@
    
        <li class="nav-item">
 
-           <a href="#" class="nav-link middleName">
+           <a href="${ contextPath }/edsm/prog/listAll.prog" class="nav-link middleName">
              <i class="fa-solid fa-clipboard-check fa-lg"></i>&nbsp;&nbsp;
              진행 중인 문서
            <p>
                
-               <i class="fas fa-angle-left right"></i>
+               <!-- <i class="fas fa-angle-left right"></i> -->
            </p>
            </a>
 
-           <ul class="nav nav-treeview" style="padding-left: 20px;">
+           <%-- <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
                <a href="${ contextPath }/edsm/prog/listAll.prog" class="nav-link">
                <i class="far fa-circle nav-icon"></i>
@@ -112,23 +112,23 @@
      </li>
          
 
-           </ul>
+           </ul> --%>
        </li>
 
 
        <li class="nav-item">
 
-         <a href="#" class="nav-link middleName">
+         <a href="${ contextPath }/edsm/docbox/listAll.docbox" class="nav-link middleName">
          <i class="fa-solid fa-box-archive fa-lg"></i>&nbsp;&nbsp;
          
          <p>
              문서함
-             <i class="fas fa-angle-left right"></i>
+             <!-- <i class="fas fa-angle-left right"></i> -->
              
          </p>
          </a>
 
-         <ul class="nav nav-treeview" style="padding-left: 20px;">
+         <%-- <ul class="nav nav-treeview" style="padding-left: 20px;">
            <li class="nav-item">
              <a href="${ contextPath }/edsm/docbox/listAll.docbox" class="nav-link">
              <i class="far fa-circle nav-icon"></i>
@@ -163,7 +163,7 @@
              <p>반려</p>
              </a>
            </li>
-         </ul>
+         </ul> --%>
      </li>
 
      <li class="nav-item">
