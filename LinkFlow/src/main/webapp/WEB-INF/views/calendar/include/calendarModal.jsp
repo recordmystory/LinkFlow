@@ -379,7 +379,7 @@
 		                        <div id="output-box"></div>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
-                     		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
+                     		 <a class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</a>
                        </div>
 		                    <!-- 수정자 아이디 -->
 		                   <input type="hidden" name="modId" id="modId">
@@ -458,7 +458,7 @@
 		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" id="schContent" style="margin-left:67px; " required ></textarea>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
-                     		 <button type="button" class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</button>
+                     		 <a class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</a>
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
                        <input type="hidden" name="calNo" id="calNo">                       
@@ -474,159 +474,123 @@
 		</div>
     <!--일정 수정 모달 end-->
     
-    <!--공유 일정 모달 start-->
-    <div class="modal fade" id="schShareModal" tabindex="-1" aria-labelledby="schShareModal" aria-hidden="true">
-      <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="min-width: 850px;">
-          <div class="modal-header">
-            <h4 class="modal-title">일정 공유</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row" style="min-width: 850px;">
-                <div class="card-body">
-  
-                    <form action="xxxxxxx" method="post">
-                     <div class="searchUser">
-                       
-                      <div class="form-check form-check-inline text-align-center ml-5">
-                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                         <label class="form-check-label" for="inlineRadio1">이름, 아이디</label>
-                     </div>
-                     <div class="form-check form-check-inline">
-                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                         <label class="form-check-label" for="inlineRadio2">조직</label>
-                     </div>
-
-                       <div class="col-md-3" style="margin-top: 15px;">
-                         <div class="form-group">
-                           <div class="input-group">
-                            <input type="search" class="form-control" value="" name="useName">
-                              <div class="input-group-append">
-                                   <button type="button" class="btn btn-primary">
-                                       <i class="fa fa-search"></i>
-                                   </button>
-                               </div>
-                           </div>
-                         </div>
-                       </div>
-                     </form>
-
-                     </div><!--searchUser 끝-->
-
-                     <div class="row">
-                      <div class="card card-default card-info" style="width: 250px; height: 400px; margin-left: 45px; margin-right: 20px;">
-                        <div class="card-header">
-                          <h5 class="card-title">사원설정</h5>
-                        </div>
-                         
-                         <div class="card-body text-nowrap overflow-auto">
-                         
-                           <div id="kt_docs_jstree_basic">
-                             <ul>
-                                 <li data-jstree='{ "type" : "buiding" }'>
-                                     LinkFlow
-                                     <ul>
-                                         <li data-jstree='{ "type" : "group" }'>
-                                             경영지원부서
-                                             <ul>
-                                                 <li data-jstree='{ "selected" : false }'>
-                                                     경영지원팀
-                                                     <ul>
-                                                         <li data-jstree='{ "type" : "person" }'>
-                                                             김경영 대리
-                                                         </li>
-                                                         <li data-jstree='{ "type" : "person" }'>
-                                                             김가렌 사원
-                                                         </li>
-                                                         <li data-jstree='{ "type" : "person" }'>
-                                                             김지우 사원
-                                                         </li>
-                                                     </ul>
-                                                 </li>
-                                                 <li data-jstree='{ "selected" : false }'>
-                                                     개발부서
-                                                     <ul>
-                                                         <li data-jstree='{ "type" : "person" }'>
-                                                             김개발 대리
-                                                         </li>
-                                                         
-                                                     </ul>
-                                                 </li>
-                                             </ul>
-                                         </li>
-                                     </ul>
-                                 </li>
-                                 
-                             </ul>
-                            
-                           </div><!--jstree 끝-->
-                           
-                         </div>
-                       </div>
-
-                       <div class="card card-info" style="width: 180px; height: 400px;">
-                        <div class="card-header">
-                           <h3 class="card-title">
-                              결재자 선택
-                           </h3>
-
-                         </div>
-                         <div class="card-body text-nowrap overflow-auto resultNameArea">
-                          
-                         
-                         </div>
-                       </div>
-                       
-                       <div class="btnArea">
-                        <div class="downArea" >
-                           <i class="fa-solid fa-angles-right referenceIn"></i>
-                           <i class="fa-solid fa-angles-left referenceOut"></i>
-                         </div>
-                       </div>
-                       
-                       <div class="column singArea">
-                       
-
-                       <div class="card card-info mr-3" style="width: 180px; height: 200px; margin-top: 100px;">
-                        <div class="card-header">
-                          <h5 class="card-title">조회 권한</h5>
-                          
-                         </div>
-                         <div class="card-body referenceArea overflow-auto">
-
-                         </div>
-                       </div>
-                       </div>
-
-
-                     </div>
-                 </div>
-                 <!-- /.card-body -->
-            
-              </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveData">설정하기</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-    <!-- /.modal -->
-    <!--공유 일정 모달 end-->
+		<!--공유 일정 모달 start-->
+		<div class="modal fade" id="schShareModal" tabindex="-1" aria-labelledby="schShareModal" aria-hidden="true">
+		    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+		        <div class="modal-content" style="min-width: 850px;">
+		            <div class="modal-header">
+		                <h4 class="modal-title">일정 공유</h4>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <div class="row" style="min-width: 850px;">
+		                    <div class="card-body">
+		                        <form action="xxxxxxx" method="post">
+		                            <div class="searchUser">
+		                                <div class="col-md-3" style="margin-top: 15px;">
+		                                    <div class="form-group">
+		                                        <div class="input-group">
+		                                            <input type="search" class="form-control" value="" name="useName">
+		                                            <div class="input-group-append">
+		                                                <button type="button" class="btn btn-primary">
+		                                                    <i class="fa fa-search"></i>
+		                                                </button>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </form>
+		                        <!--searchUser 끝-->
+		                        <div class="row">
+		                            <div class="card card-default card-info" style="width: 250px; height: 400px; margin-left: 45px; margin-right: 20px;">
+		                                <div class="card-header">
+		                                    <h5 class="card-title">사원설정</h5>
+		                                </div>
+		                                <div class="card-body text-nowrap overflow-auto">
+		                                    <div id="kt_docs_jstree_basic">
+		                                        <ul>
+		                                            <li data-jstree='{ "type" : "buiding" }'>
+		                                                LinkFlow
+		                                                <ul>
+		                                                    <c:forEach var="appr" items="${apprList}">
+		                                                        <li data-jstree='{ "selected" : false }'>
+		                                                            ${appr.deptTitle}
+		                                                            <ul>
+		                                                                <c:forEach var="apprPerson" items="${appr.memberList}" varStatus="status">
+		                                                                    <li data-jstree='{ "type" : "person" }' data-userid="${apprPerson.userId}">
+		                                                                        ${apprPerson.userName} ${apprPerson.subName}
+		                                                                        <input type="text" class="userId" value="${apprPerson.userId}" style="display: none;"/>
+		                                                                    </li>
+		                                                                </c:forEach>
+		                                                            </ul>
+		                                                        </li>
+		                                                    </c:forEach>
+		                                                </ul>
+		                                            </li>
+		                                        </ul>
+		                                    </div><!--jstree 끝-->
+		                                </div>
+		                            </div>
+		                            <div class="card card-info" style="width: 180px; height: 400px;">
+		                                <div class="card-header">
+		                                    <h3 class="card-title">
+		                                        결재자 선택
+		                                    </h3>
+		                                </div>
+		                                <div class="card-body text-nowrap overflow-auto resultNameArea">
+		                                </div>
+		                            </div>
+		                            <div class="btnArea">
+		                                <div class="downArea">
+		                                    <i class="fa-solid fa-angles-right referenceIn"></i>
+		                                    <i class="fa-solid fa-angles-left referenceOut"></i>
+		                                </div>
+		                            </div>
+		                            <div class="column singArea">
+		                                <div class="card card-info mr-3" style="width: 180px; height: 200px; margin-top: 100px;">
+		                                    <div class="card-header">
+		                                        <h5 class="card-title">조회 권한</h5>
+		                                        <div class="card-tools">
+		                                            <button type="button" class="btn btn-tool">
+		                                                <i class="fa-solid fa-angles-down approvalDownBtn"></i>
+		                                            </button>
+		                                        </div>
+		                                    </div>
+		                                    <div class="card-body approvalArea">
+		                                        <input type="hidden" value="" id="approvalUserId">
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="card-body referenceArea overflow-auto">
+		                                <input type="hidden" value="" id="approvalUserId">
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		                <!-- /.card-body -->
+		            </div>
+		            <div class="modal-footer justify-content-between">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		                <button type="button" class="btn btn-primary" id="saveData" data-dismiss="modal">설정하기</button>
+		            </div>
+		        </div>
+		        <!-- /.modal-content -->
+		    </div>
+		    <!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		<!--공유 일정 모달 end-->
     
     <!--공유 캘린더 모달 start-->
     <div class="modal fade" id="shareCalModal" tabindex="-1" aria-labelledby="schShareModal" aria-hidden="true">
-      <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content" style="min-width: 850px;">
           <div class="modal-header">
             <h4 class="modal-title">캘린더 공유</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">   
               <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -878,141 +842,358 @@
     <script>
 
 //공유일정 조직도 모달 schShareModal***********************************************
-  $(document).ready(function(){
-    //열기 
+	//공유일정 조직도 조회
     $('.schShareBtn').click(function(){
       $('#schShareModal').modal('show');
-      $('body').addClass('modal-open'); // 모달이 열릴 때 바디에 modal-open 클래스 추가
-    }); 
-    //설정하기 버튼 클릭시
-    //닫기 클릭시
-  });
+      $('body').addClass('modal-open'); 
+    });  
+    
+  
+  	
+   	$(document).ready(function() {
+  	    $('.schShareBtn').click(function(){
+  	        console.log("일정공유 버튼 클릭됨"); 
+  	      $.ajax({
+  	        url: '${contextPath}/calendar/shareModal.do', 
+  	        type: 'get',
+  	        success: function(apprList) {
+  	        	tree(apprList);
+  	  	        },
+  	        error: function() {
+  	          console.log("조회 실패");
+  	        }
+  	     });
+  	    });
+  	});
+   	
+   	
+   	function tree(apprList) {
+   	    var treeData = [];
 
-//캘린더 모달 end
+   	    // 서버에서 받아온 데이터를 jstree에 적합한 형식으로 가공
+   	    apprList.forEach(function(dept) {
+   	      var deptNode = {
+   	        "text": dept.deptTitle,
+   	        "type": "building",
+   	        "children": []
+   	      };
+
+   	      dept.memberList.forEach(function(member) {
+   	        var memberNode = {
+   	          "text": member.userName + " " + member.subName,
+   	          "type": "person",
+   	          "data": {
+   	            "userid": member.userId
+   	          }
+   	        };
+   	        deptNode.children.push(memberNode);
+   	      });
+
+   	      treeData.push(deptNode);
+   	    });
+
+   	    // jstree에 데이터 추가
+   	    $('#kt_docs_jstree_basic').jstree(true).settings.core.data = treeData;
+   	    $('#kt_docs_jstree_basic').jstree(true).refresh();
+
+   	    // 모달 열기
+   	    $('#schShareModal').modal('show');
+   	}
+   	
+//캘린더 모달 end */
+  /*   $(document).ready(function() {
+        $('.schShareBtn').click(function(){
+            $.ajax({
+                url: '${contextPath}/calendar/shareModal.do', 
+                type: 'get',
+                success: function(apprList) {
+                    =
+                    $('#kt_docs_jstree_basic').empty(); // 값 넣기 전에 초기화
+
+                    var jstreeHtml = '';
+                    $.each(apprList, function(index, appr) {
+                        jstreeHtml += '<li data-jstree=\'{ "type" : "building" }\'>';
+                        jstreeHtml += appr.deptTitle;
+                        jstreeHtml += '<ul>';
+                        $.each(appr.memberList, function(index, apprPerson) {
+                            jstreeHtml += '<li data-jstree=\'{ "type" : "person" }\' data-userid="' + apprPerson.userId + '">';
+                            jstreeHtml += apprPerson.userName + ' ' + apprPerson.subName;
+                            jstreeHtml += '<input type="text" class="userId" value="' + apprPerson.userId + '" style="display: none;"/>';
+                            jstreeHtml += '</li>';
+                        });
+                        jstreeHtml += '</ul></li>';
+                    });
+                    $('#kt_docs_jstree_basic').append(jstreeHtml);
+
+                    // 모달 열기
+                    $('#schShareModal').modal('show');
+                },
+                error: function() {
+                    console.log("조회 실패");
+                }
+            });
+        });
+    });
+ */
+
 
 
 //공유일정 조직도 script start***********************************************
-$('#kt_docs_jstree_basic').jstree({
-    "core" : {
-        "themes" : {
-            "responsive": false
-        }
-    },
-    "types" : {
-        "default" : {
-            "icon" : "fa fa-folder"
-        },
-        "group" : {
-            "icon" : "fa-solid fa-user-group"
-        },
-        "building" : {
-            "icon" : "fa-solid fa-building"
-        },
-        "person" : {
-            "icon" : "fa-solid fa-person"
-        }
-    },
-    "plugins": ["types"]
-}).on('select_node.jstree', function (e, data) {
-    var node = data.node;
-    
-    if (node.type === "person") {
-        var personName = node.text;
-        
-        var isExistingName = $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').length > 0;
-        
-        if (!isExistingName) {
-            var html = '<div class="NameArea">' + personName +'<input type="checkBox"></div>';
-            
-            $('.resultNameArea').append(html);
-        } else {
-            $('.resultNameArea').find('.NameArea:contains("'+ personName +'")').remove();
-        }
-    }
-});
-
+   //저장버튼 클릭시
+    $('#saveData').click(function(){
+    	approvalHiddenValues = [];
+    	referenceHiddenValues = [];
 
     
-      document.querySelector('.referenceIn').addEventListener('click', function() {
-    var nameAreas = document.querySelectorAll('.NameArea');
+    	var approvalName1Html = $('.approvalName1')
+    	    .clone() 
+    	    .find('input[type="checkbox"]') 
+    	    .remove() 
+    	    .end() 
+    	    .find('.userId')
+    	    .attr('name', 'edocHistList[1].userId') 
+    	    .css('display', 'none') 
+    	    .end() 
+    	    .html(); 
+
     
-    nameAreas.forEach(function(nameArea) {
-        var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-        if (checkbox) {
-            var nameValue = nameArea.textContent.trim();
-            
-          
-            var existingElement = document.querySelector('.referenceArea .referenceName');
-            if (existingElement && existingElement.textContent.trim() === nameValue) {
-                return; 
+    	$('#approvalSelectedArea1').html(approvalName1Html);
+
+    	
+    	var approvalName2Html = $('.approvalName2')
+        .clone() 
+        .find('.userId')
+        .attr('name', 'edocHistList[2].userId') 
+        .css('display', 'none') 
+        .end() 
+        .find('input[type="checkbox"]') 
+        .remove() 
+        .end() 
+        .html(); 
+
+    $('#approvalSelectedArea2').html(approvalName2Html);
+
+    
+    	var $referAreaContent = '';
+    	$('.referenceName').each(function(index) {
+    	    var referenceNameHtml = $(this)
+            .clone() 
+            .find('input[type="checkbox"]') 
+            .remove() 
+            .end() 
+            .find('.userId')
+            .attr('name', 'edocRefList[' + index + '].userId') 
+            .css('display', 'none') 
+            .end() 
+            .html(); 
+
+        $referAreaContent += '<div class="referArea">' + referenceNameHtml + '</div>';
+    	});
+    	$('#refSelectedArea').html($referAreaContent);
+
+    	
+    	$('.approvalName1, .approvalName2, .referenceName').each(function() {
+    	    var hiddenValue = $(this).attr('data-hidden-value');
+    	    if (hiddenValue) {
+    	        if ($(this).hasClass('approvalName1') || $(this).hasClass('approvalName2')) {
+    	            approvalHiddenValues.push(hiddenValue);
+    	        } else if ($(this).hasClass('referenceName')) {
+    	            referenceHiddenValues.push(hiddenValue);
+    	        }
+    	    }
+    	});
+        
+    });
+
+
+
+          // 결재선 설정 모달 스크립트
+          $('#kt_docs_jstree_basic').jstree({
+        "core" : {
+            "themes" : {
+                "responsive": false
             }
+        },
+        "types" : {
+            "default" : {
+                "icon" : "fa fa-folder"
+            },
+            "group" : {
+                "icon" : "fa-solid fa-user-group"
+            },
+            "building" : {
+                "icon" : "fa-solid fa-building"
+            },
+            "person" : {
+                "icon" : "fa-solid fa-person"
+            }
+        },
+        "plugins": ["types", "search"],
+        "search" : {
+        	"show_only_matches" : true,
+        	"show_only_matches_children" : true,
+        }
+        
+    }).on('select_node.jstree', function (e, data) {
+    	var node = data.node;
 
-            var referenceName = document.createElement('div');
-            referenceName.className = 'referenceName';
-            referenceName.textContent = nameValue;
-            document.querySelector('.referenceArea').appendChild(referenceName);
+        if (node.type === "person") {
+            var personName = node.text;
+            var userId = node.li_attr['data-userid']; 
+           
+           
+            var existNameArea = $('.resultNameArea [data-userid="' + userId + '"]');
+					
+            if (existNameArea.length >0) { 
+                existNameArea.remove(); 
+            }else{
+
+            var html = '<div class="NameArea" data-userid="' + userId + '">' + personName + '<input type="checkBox"></div>';
+            $('.resultNameArea').append(html);
+            }
+        }
+    });
+		
+   var to = false;
+   $('#searchInput').keyup(function () {
+       if(to) { clearTimeout(to); }
+       to = setTimeout(function () {
+           var v = $('#searchInput').val();
+           $('#kt_docs_jstree_basic').jstree(true).search(v);
+       }, 250);
+   });
+          
+   document.querySelector('.approvalIn').addEventListener('click', function() {
+       var nameAreas = document.querySelectorAll('.NameArea');
+       var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
+       var maxApprovalCount = 2;
+
+       var currentIndex = existingApprovalCount + 1;
+
+       nameAreas.forEach(function(nameArea) {
+           if (existingApprovalCount >= maxApprovalCount) return;
+
+           var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+           if (checkbox) {
+               
+               var nameValue = nameArea.innerHTML.trim();
+
+               if (currentIndex > maxApprovalCount) return;
+
+               var className = 'approvalName' + currentIndex;
+
+               var newElement = document.createElement('div');
+               newElement.className = className;
+               newElement.innerHTML = nameValue; 
+
+               document.querySelector('.approvalArea').appendChild(newElement);
+
+               nameArea.remove();
+
+               existingApprovalCount++;
+               currentIndex++;
+           }
+       });
+   });
+
+   document.querySelector('.approvalOut').addEventListener('click', function() {
+       var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
+       var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+
+       moveApprovalNames(approvalNames1);
+       moveApprovalNames(approvalNames2);
+   });
+
+   function moveApprovalNames(approvalNames) {
+       approvalNames.forEach(function(approvalName) {
+           var checkbox = approvalName.querySelector('input[type="checkbox"]:checked');
+           if (checkbox) {
+               var nameText = approvalName.innerHTML.trim();
+
+               var resultName = document.createElement('div');
+               resultName.className = 'NameArea';
+               resultName.innerHTML = nameText;
+
+               var newCheckbox = document.createElement('input');
+              
+
+               document.querySelector('.resultNameArea').appendChild(resultName);
+
+               approvalName.remove();
+           }
+       });
+   }
+
+           
+
+      document.querySelector('.referenceIn').addEventListener('click', function() {
+        
+        var nameAreas = document.querySelectorAll('.NameArea');
+
+       
+        nameAreas.forEach(function(nameArea) {
             
-            nameArea.remove();
+            var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+            
+            if (checkbox) {
+                
+                var nameValue = nameArea.innerHTML.trim();
+                
+                var referenceName = document.createElement('div');
+                referenceName.className = 'referenceName';
+                referenceName.innerHTML = nameValue;
+                document.querySelector('.referenceArea').appendChild(referenceName);
+                
+                nameArea.remove();
             }
         });
     });
 
     document.querySelector('.referenceOut').addEventListener('click', function() {
-          
-          var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+        var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
 
-          
-          approvalNames.forEach(function(referenceName) {
-              
-              var nameValue = referenceName.textContent.trim();
-              
-              var resultNameArea = document.querySelector('.resultNameArea');
-            
-              var nameArea = document.createElement('div');
-              nameArea.className = 'NameArea';
-              nameArea.textContent = nameValue;
-              
-              var checkbox = document.createElement('input');
-              checkbox.type = 'checkbox';
-              nameArea.appendChild(checkbox);
-              
-              resultNameArea.appendChild(nameArea);
-              
-              referenceName.remove();
-          });
-      });
+        approvalNames.forEach(function(referenceName) {
+            var checkbox = referenceName.querySelector('input[type="checkbox"]:checked');
+            if (checkbox) {
+                var nameValue = referenceName.innerHTML.trim();
 
-  
-      document.getElementById('saveData').addEventListener('click', function() {
-        var approvalName1Element = document.querySelector('.approvalName1');
-        var approvalName2Element = document.querySelector('.approvalName2');
+                var resultNameArea = document.querySelector('.resultNameArea');
 
-    
-        var approvalName1Text = approvalName1Element ? approvalName1Element.textContent : '';
-        var frtApprovalElement = document.querySelector('.frtApproval');
-        frtApprovalElement.textContent = approvalName1Text;
+                var nameArea = document.createElement('div');
+                nameArea.className = 'NameArea';
+                nameArea.innerHTML = nameValue;
 
-        
-        var approvalName2Text = approvalName2Element ? approvalName2Element.textContent : '';
-        var scdApprovalElement = document.querySelector('.scdApproval');
-        scdApprovalElement.textContent = approvalName2Text;
+                resultNameArea.appendChild(nameArea);
 
-        var referenceNameElements = document.querySelectorAll('.referenceName');
-        var textToInsert = '';
-
-        referenceNameElements.forEach(function(referenceNameElement, index) {
-            var text = referenceNameElement.textContent.trim();
-            if (index > 0) {
-                textToInsert += ', ';
+                referenceName.remove();
             }
-            textToInsert += text;
         });
+    });
 
-        document.getElementById('refMember').value = textToInsert;
-   });
+    document.querySelector('.approvalUpBtn').addEventListener('click', function() {
+        var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+        var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+        if (approvalName1 && approvalName2) {
+            var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
+            approvalName1.innerHTML = approvalName2.innerHTML;
+            approvalName2.innerHTML = tempHTML;
+        }
+    });
+
+    document.querySelector('.approvalDownBtn').addEventListener('click', function() {
+        var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+        var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+
+        if (approvalName1 && approvalName2) {
+            var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
+            approvalName1.innerHTML = approvalName2.innerHTML;
+            approvalName2.innerHTML = tempHTML;
+        }
+    });
 
 
-//공유캘린더 조직도 end***********************************************
+//공유일정 조직도 end***********************************************
     
     
     //공유캘린더 사이드바 더보기 모달*******************************

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.ScheduleDto;
 import com.mm.linkflow.service.service.CalendarService;
@@ -36,6 +38,16 @@ public class CalendarController {
 	public String calendarMain() {
 		return "calendar/calendarMain";
 	}
+	
+	
+	/*
+	 * //calendarMain
+	 * 
+	 * @GetMapping("/calMain.page") public ModelAndView calendarMain(ModelAndView
+	 * mv) { List<DeptDto> apprList = calendarService.selecteMemberList();
+	 * mv.addObject("apprList", apprList).setViewName("calendar/calendarMain");
+	 * return mv; }
+	 */
 	
 	//schWasteList
 	@GetMapping("/wasteList.page")
@@ -173,6 +185,16 @@ public class CalendarController {
 	    	log.debug(schNo);
 			return calendarService.wasteSchRemoval(schNo) == 1 ? "success" : "fail";	
 	    } 
+	               
+	    // 공유 일정 *******************
+		
+		 //조직도 조회
+	      @ResponseBody
+		  @GetMapping(value="/shareModal.do") 
+		  public List<DeptDto> selecteMemberList() { 
+			 return calendarService.selecteMemberList();
+		   }
+		 
 }
 	  
 
