@@ -48,7 +48,7 @@
                 <section class="content-header">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">프로젝트 등록</h1>
+                            <h1 class="m-0">프로젝트 수정</h1>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -57,12 +57,13 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form action="${contextPath}/project/add.pj" method="post">
+                        <form action="${contextPath}/project/modify.pj" method="post">
+                        	<input type="hidden" name="proNo" value="${pro.proNo}">
                             <div class="contentArea">
                                 <div class="contentInElement">
                                     <div class="btnArea">
-                                        <button type="submit" class="btn btn-primary btn-sm">등록하기</button>
-                                        <button type="button" class="btn btn-danger btn-sm">등록취소</button>
+                                        <button type="submit" class="btn btn-primary btn-sm">수정하기</button>
+                                        <button type="button" class="btn btn-danger btn-sm">수정취소</button>
                                     </div>
                                 </div>
                                 <div style="display: flex;">
@@ -75,7 +76,7 @@
                                                 <td style="margin-left: 200px; padding-top: 30px;">
                                                     <div>
                                                         <h4>프로젝트명</h4>
-                                                        <input type="text" name="proTitle" class="form-control" required>
+                                                        <input type="text" name="proTitle" class="form-control" required value="${pro.proTitle}">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -93,7 +94,7 @@
                                                     <div >
                                                         <h4>상태</h4>
                                                         <input class="radioBtn" type="radio" name="proYn" value="N" checked required>&nbsp;&nbsp;&nbsp;&nbsp;진행
-                                                        <input class="radioBtn" type="radio" name="proYn" value="Y" disabled style="margin-left: 20px;" required>&nbsp;&nbsp;&nbsp;&nbsp;완료
+                                                        <input class="radioBtn" type="radio" name="proYn" value="Y" style="margin-left: 20px;" required>&nbsp;&nbsp;&nbsp;&nbsp;완료
                                                     </div>
                                                 </td>
                                             </tr>
@@ -101,11 +102,11 @@
                                                 <td>
                                                     <div>
                                                         <h4>시작일</h4>
-                                                        <input type="date" name="startDate" class="form-control" required>
+                                                        <input type="date" name="startDate" class="form-control" value="${pro.startDate}" required>
                                                     </div>
                                                     <div style="padding-bottom: 100px; padding-top: 70px;">
                                                         <h4>종료일</h4>
-                                                        <input type="date" name="endDate" class="form-control" required>
+                                                        <input type="date" name="endDate" class="form-control" value="${pro.endDate}" required>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -120,7 +121,7 @@
                                                 <td style="margin-left: 200px;">
                                                     <div>
                                                         <h4>고객사</h4>
-                                                        <input type="text" name="client" class="form-control" required>
+                                                        <input type="text" name="client" class="form-control" value="${pro.client}" required>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -131,8 +132,9 @@
                                                             고객사 주소
                                                             <button type="button" class="btn btn-outline-dark" style="margin-left: 10px;" onclick="addressSearch()">주소 찾기</button>
                                                         </h4>
-                                                        <input type="text" class="form-control" name="address" id="clientAddress" style="background-color: white; margin-bottom: 10px;" placeholder="도로명 주소" readonly>
-                                                        <input type="text" class="form-control" name="detailAdd" placeholder="세부 주소">
+                                                        <input type="text" class="form-control" name="address" id="clientAddress" 
+                                                               style="background-color: white; margin-bottom: 10px;" placeholder="도로명 주소" value="${pro.address}" readonly>
+                                                        <input type="text" class="form-control" name="detailAdd" value="${pro.detailAdd}" placeholder="세부 주소">
                                                     </div>
                                                 </td>
                                             </tr>

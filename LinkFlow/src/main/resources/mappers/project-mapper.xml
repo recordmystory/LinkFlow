@@ -251,4 +251,26 @@
 		 WHERE PRO_NO = #{proNo}
 		   AND USER_ID = #{userId}
 	</delete>
+	
+	<!-- 프로젝트 수정 -->
+	<update id="modifyProject">
+		UPDATE
+		  	   TB_PROJECT
+		   SET PRO_TITLE = #{proTitle}
+		     , CLIENT = #{client}
+		     , ADDRESS = #{address}
+		     , DETAIL_ADD = #{detailAdd}
+		     , START_DATE = #{startDate}
+		     , END_DATE = #{endDate}
+		     , MOD_ID = #{modId}
+		 WHERE PRO_NO = #{proNo}
+	</update>
+	
+	<!-- 프로젝트 삭제 -->
+	<update id="deleteProject">
+		UPDATE
+		       TB_PROJECT
+		   SET DEL_YN = 'Y'
+		 WHERE PRO_NO = #{proNo}
+	</update>
 </mapper>

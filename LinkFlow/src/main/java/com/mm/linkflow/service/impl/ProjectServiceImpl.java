@@ -73,4 +73,14 @@ public class ProjectServiceImpl implements ProjectService {
 	public int deleteDispatch(DispatchDto dis) {
 		return proDao.deleteDispatch(dis);
 	}
+
+	@Override
+	public void modifyProject(ProjectDto pro) {
+		proDao.modifyProject(pro);
+	}
+
+	@Override
+	public void deleteProject(int proNo) {
+		proDao.deleteProject(proNo);
+	}
 }
