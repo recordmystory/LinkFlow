@@ -169,6 +169,7 @@
     ,ED_NO
     ,REG_DATE
     ,MOD_DATE
+    ,ED_HIST_ORDER
     ,REG_ID
     ,MOD_ID
     ,DEL_YN
@@ -180,6 +181,7 @@
           AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.CURRVAL
     ,SYSDATE      
     ,SYSDATE
+    , #{edHistOrder}
     , #{regId}
     , #{modId}
     , 'N'

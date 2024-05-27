@@ -351,7 +351,9 @@
                               <table class="table table-bordered" style="margin-top: 10px;">
                                 <tr>
                                   <th rowspan="2" class="table-active" style="text-align: center; vertical-align: middle;" width="100">결재</th>
-                                  <th class="table-active" style="text-align: center; vertical-align: middle;">${loginUser.userName}</th>
+                                  <th class="table-active" style="text-align: center; vertical-align: middle;">
+                                  <div><input type="hidden" name="edocHistList[0].userId" value="${loginUser.userId}">${loginUser.userName}</div>
+                                  </th>
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea1"></th>
                                 
                                   <th class="table-active" style="text-align: center; vertical-align: middle;" id="approvalSelectedArea2"></th>
@@ -643,7 +645,7 @@
     	    .remove() 
     	    .end() 
     	    .find('.userId')
-    	    .attr('name', 'edocHistList[0].userId') 
+    	    .attr('name', 'edocHistList[1].userId') 
     	    .css('display', 'none') 
     	    .end() 
     	    .html(); 
@@ -655,7 +657,7 @@
     	var approvalName2Html = $('.approvalName2')
         .clone() 
         .find('.userId')
-        .attr('name', 'edocHistList[1].userId') 
+        .attr('name', 'edocHistList[2].userId') 
         .css('display', 'none') 
         .end() 
         .find('input[type="checkbox"]') 
