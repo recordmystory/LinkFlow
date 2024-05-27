@@ -163,13 +163,14 @@
 	
 	<!-- 결제 이력 insert -->
 	<insert id="insertEdocHist">
-		insert into tb_edoc_hist
+	insert into tb_edoc_hist
 		(
      USER_ID
     ,ED_NO
     ,REG_DATE
     ,MOD_DATE
     ,ED_HIST_ORDER
+    ,ED_HIST_SUB_CODE
     ,REG_ID
     ,MOD_ID
     ,DEL_YN
@@ -182,6 +183,7 @@
     ,SYSDATE      
     ,SYSDATE
     , #{edHistOrder}
+    , #{edHistSubCode}
     , #{regId}
     , #{modId}
     , 'N'

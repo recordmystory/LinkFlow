@@ -166,12 +166,22 @@ public class EdsmProgController {
 		if(edocHistList != null) {
 			int count = 1;
 			for(EdocHistDto EdocHistDto : edocHistList) {
+				if(count == 1) {
 				EdocHistDto.setEdHistOrder(count);
+				EdocHistDto.setEdHistSubCode("01");
+				EdocHistDto.setModId(loginUser.getUserId());
+				EdocHistDto.setRegId(loginUser.getUserId());
+				EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
+				count++;
+				}else {
+				EdocHistDto.setEdHistOrder(count);
+				EdocHistDto.setEdHistSubCode(null);
 				EdocHistDto.setModId(loginUser.getUserId());
 				EdocHistDto.setRegId(loginUser.getUserId());
 				EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
 				
 				count++;
+				}
 			}
 		}
 		
