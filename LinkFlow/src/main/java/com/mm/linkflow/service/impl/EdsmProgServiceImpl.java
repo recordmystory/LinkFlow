@@ -148,6 +148,11 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	public int updateEdocStatusAppr(EdocHistDto edocHistDto) {
 		return edsmProgDao.updateEdocStatusAppr(edocHistDto);
 	}
+
+	@Override
+	public int updateEdocStatusCxl(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocStatusCxl(edocHistDto);
+	}
 	 
 
 	

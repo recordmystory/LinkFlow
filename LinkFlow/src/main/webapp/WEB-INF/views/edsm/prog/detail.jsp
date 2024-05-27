@@ -355,6 +355,7 @@
                  <div class="modal-body">
                    <div class="approval-enable">
                      <div class="form-check form-check-radio">
+                     	 <input type="hidden" name="edNo" value="${edoc.edNo}">
                        <input class="form-check-input" type="radio" name="edHistSubCode" value="01" id="radio-approve1" checked>
                        <label class="form-check-label" for="radio-approve1">
                          승인

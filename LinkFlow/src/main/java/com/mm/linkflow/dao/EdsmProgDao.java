@@ -114,11 +114,15 @@ public class EdsmProgDao {
 	}
 
 	public int selectEdHistSubCodeCnt(EdocHistDto edocHistDto) {
-		return sqlSessionTemplate.update("edsmProgMapper.selectEdHistSubCodeCnt", edocHistDto);
+		return sqlSessionTemplate.selectOne("edsmProgMapper.selectEdHistSubCodeCnt", edocHistDto);
 	}
 
 	public int updateEdocStatusAppr(EdocHistDto edocHistDto) {
 		return sqlSessionTemplate.update("edsmProgMapper.updateEdocStatusAppr", edocHistDto);
+	}
+
+	public int updateEdocStatusCxl(EdocHistDto edocHistDto) {
+		return sqlSessionTemplate.update("edsmProgMapper.updateEdocStatusCxl", edocHistDto);
 	}
 	
 	

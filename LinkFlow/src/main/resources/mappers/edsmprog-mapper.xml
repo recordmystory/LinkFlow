@@ -206,9 +206,11 @@
 		FROM TB_EDOC ED
 		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
 		WHERE ED.DEL_YN = 'N'
             AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+            AND ED.STATUS = '04'
     ORDER BY ED.REG_DATE 
 	</select>
 	
@@ -227,8 +229,10 @@
 		    JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
 		    JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
 		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+		    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
 		    WHERE ED.DEL_YN = 'N'
 		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+		      AND ED.STATUS = '04'
 		    ORDER BY ED.REG_DATE 
 		) COUNT
 	</select>
@@ -249,10 +253,12 @@
 		    JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
 		    JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
 		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+		    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
 		    WHERE ED.DEL_YN = 'N'
 		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
 	     		AND ED.STATUS = #{condition}
        		AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
+       		AND ED.STATUS = '04'
 		    ORDER BY ED.REG_DATE 
 		) COUNT
 	</select>
@@ -269,11 +275,13 @@
 		FROM TB_EDOC ED
 		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID) 
 		WHERE ED.DEL_YN = 'N'
        AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
 	     AND ED.STATUS = #{condition}
 	     AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
+	     AND ED.STATUS = '04'
     ORDER BY ED.REG_DATE 
 	</select>
 	
@@ -360,7 +368,7 @@
 	
 	<!-- 결재 count -->
 	<select id="selectEdHistSubCodeCnt" resultType="_int">
-		SELECT COUNT(ED_HIST_SUB_CODE)
+		SELECT COUNT(*)
 		FROM TB_EDOC_HIST
 		WHERE ED_NO = #{edNo}
 	</select>
