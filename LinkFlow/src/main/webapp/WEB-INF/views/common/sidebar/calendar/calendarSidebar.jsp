@@ -109,7 +109,7 @@
     <!-- Sidebar Menu -->
     <nav class="linkfoiwsideMenu">
         <div class="LinkFlowInsertBtnArea">
-          <button class="btn btn-block bg-gradient-primary btn-lg schInsertModalBtn" data-bs-target="#schInsertModal" data-bs-toggle="modal">+ 일정 등록</button>
+          <button class="btn btn-block bg-gradient-primary btn-lg schInsertModalBtn" id="scheduleInsertButton" data-bs-target="#schInsertModal" data-bs-toggle="modal">+ 일정 등록</button>
         </div>
 
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -129,7 +129,7 @@
            <ul class="nav nav-treeview" style="padding-left: 20px;">
 					    <li class="nav-item">
 					        <a href="#" class="nav-link">
-					            <input type="checkbox" id="personalCalCheckbox" class="calCheckbox personalCal-checkbox" value="03">
+					            <input type="checkbox" id="personalCalCheckbox" class="calCheckbox personalCal-checkbox" value="03" >
 					            <label for="personalCalCheckbox">개인 캘린더</label>
 					        </a>
 					    </li>
@@ -200,6 +200,15 @@
 	</aside>
 	<!--사이드바 끝-->
  </div>
+ 
+<script>
+/* document.addEventListener('DOMContentLoaded', function() {
+    var scheduleInsertButton = document.getElementById('scheduleInsertButton');
 
+    if (window.location.href.includes("${contextPath}/calendar/wasteList.page")) {
+        scheduleInsertButton.style.display = 'none';
+    }
+}); */
+</script>          
 </body>
 </html>

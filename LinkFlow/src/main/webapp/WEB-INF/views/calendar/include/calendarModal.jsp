@@ -1172,91 +1172,125 @@ $('#kt_docs_jstree_basic').jstree({
           document.getElementById('refMember').value = textToInsert;
      }); 
 //공유캘린더 end
-    
-
- // 캘린더 등록하기 모달(schInsertModal)***********************************************
-
-	$(document).ready(function() {
- //캘린더 일정등록 ajax
-			//일정등록 클릭시 모달 띄우기
-			 // 로그인 확인
-	    var mod = '${loginUser.userId}'; 
-        $('input[name="modId"]').val(mod); 
-	
-	    // 일정 등록 버튼 클릭 시 모달 띄우기
-	    if (mod === '') {
-	        $('.schInsertModalBtn').click(function() {
-	            alert("일정을 등록하려면 로그인을 해 주세요.");
-	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
-	        });
-	    } else {
-	        $('.schInsertModalBtn').click(function() {
-	            $('#schInsertModal').modal('show');
-	            $('body').addClass('modal-open'); 
-	        });
-	    }
-
-		  // 중요일정 체크박스 클릭 시 조건
-	    $('#schImportInsertBtn').click(function() {
-	        var important = $(this).is(':checked') ? 'Y' : 'N';
-	        $('input[name="schImport"]').val(important);
-	    });
-		  
-	    $('#notifyInsertBtn').click(function() {
-	        var notify = $(this).is(':checked') ? 'Y' : 'N';
-	        $('input[name="notifyYn"]').val(notify);
-	    });
-	    
 
 
-    	//등록 ajax
-   		 $('#schInsertButton').click(function() {
-   		  // 날짜 비교 시간까지 비교
-   		  var start = $('input[name="startDate"]').val();
-        var end = $('input[name="endDate"]').val();
-        if (start > end) {
-            alert("종료일이 시작일보다 작을 수 없습니다.");
-            return; 
-        }
-   	    	
-        $.ajax({
-            type: "POST",
-            url: "${contextPath}/calendar/regist.do", // 일정 등록 컨트롤러의 엔드포인트
-            data: $('#scheduleForm').serialize(),
-            success: function(result) {
-            	if (result === "success") {
-                // 성공-  모달 닫기
-                console.log("일정 등록이 성공했습니다.");
-                alert("일정 등록이 성공했습니다."); 
-                $("#schInsertModal").modal("hide");
-                $('#scheduleForm')[0].reset(); //초기화
-                
-            	}
-            	
-            },
-            error: function(result) {
-                // 요청이 실패했을 때 
-                console.error("일정 등록에 실패했습니다.");
-                alert("일정 등록에 실패했습니다.");
+ // 캘린더 등록하기 (schInsertModal)***********************************************
+      //캘린더 일정등록 ajax
+     			//일정등록 클릭시 모달 띄우기
+     			 // 로그인 확인
+    $(document).ready(function(){
 
-            }
-        });
+     	    var mod = '${loginUser.userId}'; 
+             $('input[name="modId"]').val(mod); 
+     	
+     	    // 일정 등록 버튼 클릭 시 모달 띄우기
+     	    if (mod === '') {
+     	        $('.schInsertModalBtn').click(function() {
+     	            alert("일정을 등록하려면 로그인을 해 주세요.");
+     	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
+     	        });
+     	    } else {
+     	        $('.schInsertModalBtn').click(function() {
+     	            $('#schInsertModal').modal('show');
+     	            $('body').addClass('modal-open'); 
+     	        });
+     	    }
+
+     		  // 중요일정 체크박스 클릭 시 조건
+     	    $('#schImportInsertBtn').click(function() {
+     	        var important = $(this).is(':checked') ? 'Y' : 'N';
+     	        $('input[name="schImport"]').val(important);
+     	    });
+     		  
+     	    $('#notifyInsertBtn').click(function() {
+     	        var notify = $(this).is(':checked') ? 'Y' : 'N';
+     	        $('input[name="notifyYn"]').val(notify);
+     	    });
+     	    
+
+         	//등록 ajax
+        		 $('#schInsertButton').click(function() {
+        		  // 날짜 비교 시간까지 비교
+        		  var start = $('input[name="startDate"]').val();
+             var end = $('input[name="endDate"]').val();
+             if (start > end) {
+                 alert("종료일이 시작일보다 작을 수 없습니다.");
+                 return; 
+             }
+        	    	
+             $.ajax({
+                 type: "POST",
+                 url: "${contextPath}/calendar/regist.do", 
+                 data: $('#scheduleForm').serialize(),
+                 success: function(result) {
+                 	if (result === "success") {
+                     // 성공-  모달 닫기
+                     console.log("일정 등록이 성공했습니다.");
+                     alert("일정 등록이 성공했습니다."); 
+                     $("#schInsertModal").modal("hide");
+                     
+                     var calColor;
+                     var schCalSubCode = $('select[name="schCalSubCode"]').val();
+                     if (schCalSubCode === '03') {
+                         calColor = '#358657c3';
+                     } else if (schCalSubCode === '02') {
+                         calColor = '#104fa1c3';
+                     } else if (schCalSubCode === '01') {
+                         calColor = '#a82626c3';
+                     }
+                     
+                     var eventData = {
+                         title: $('input[name="schTitle"]').val(),
+                         start: $('input[name="startDate"]').val(),
+                         end: $('input[name="endDate"]').val(),
+                         color: calColor,
+                         extendedProps: {
+                             schTitle: $('input[name="schTitle"]').val(),
+                             schImport: $('input[name="schImport"]').is(':checked') ? 'Y' : 'N',
+                             schCalSubCode: schCalSubCode,
+                             address: $('input[name="address"]').val(),
+                             notifyYn: $('input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
+                             schContent: $('textarea[name="schContent"]').val()
+                         }
+                     };
+                     calendar.addEvent(eventData);
+                     calendar.render();
+
+                     $('#scheduleForm')[0].reset();
+                 }
+             },
+                 error: function(result) {
+                     // 요청이 실패했을 때 
+                     console.error("일정 등록에 실패했습니다.");
+                     alert("일정 등록에 실패했습니다.");
+
+                 }
+             });
+         });
+      //캘린더 일정등록 ajax end **************************************
+
+   	    //schInsertModal 닫힐 때
+   	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
+   	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
+   	    }); 
+   	    
+   	  	//등록모달 -> 삭제버튼 클릭시
+   	    $('#cencelBtn').click(function() {
+          $('#schInsertModal').modal('hide');
+      	}); 
     });
- //캘린더 일정등록 ajax end **************************************
+   	  	
 
- 	    //schInsertModal 닫힐 때
- 	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
- 	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
- 	    }); 
- 	    
- 	  	//등록모달 -> 삭제버튼 클릭시
- 	    $('#cencelBtn').click(function() {
-        $('#schInsertModal').modal('hide');
-    	}); 
 
-	});
- 
-    
+
+
+
+
+
+
+
+
+
  
   //네이버 지도 api start
     selectMapList();
