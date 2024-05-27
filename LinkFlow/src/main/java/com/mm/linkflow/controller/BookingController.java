@@ -284,7 +284,9 @@ public class BookingController {
 		mp.put("pi",pi);
 		mp.put("bkWaitList",bkWaitList);
 		
+		log.debug("컨트롤러까지 옴 :{}", bkWaitList);
 		return mp;
+		
 	}
 	
 	@ResponseBody // 비품 예약 완료 리스트 + 검색
@@ -334,13 +336,17 @@ public class BookingController {
 		if(bk.get("mainName").equals("시설")) {
 			String bkStartDate = bk.get("year")+"/"+bk.get("month")+"/"+bk.get("day");
 			bk.put("bkStartDate",bkStartDate);
+			bk.put("assetsNo", bk.get("roomAssNo"));
 			
-		}else if(bk.get("subName").equals("차량")) {
+		}else {
+			if(bk.get("subName").equals("차량")) {
 			String bkStartDate = bk.get("startYear")+"/"+bk.get("startMonth")+"/"+bk.get("startDay");
 			String bkEndDate = bk.get("endYear")+"/"+bk.get("endMonth")+"/"+bk.get("endDay");
 			
 			bk.put("bkStartDate",bkStartDate);
 			bk.put("bkEndDate",bkEndDate);
+			}
+			bk.put("assetsNo", bk.get("supAssNo"));
 		}
 		log.debug("bk 수정 후 :{}", bk);
 		

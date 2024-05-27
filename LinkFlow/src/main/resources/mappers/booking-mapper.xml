@@ -113,7 +113,7 @@
     where booking_id = #{userId}
       and a.sub_code= c.sub_code
       and b.del_yn = 'N'
-
+	order by b.mod_date desc
 </select>
 
 <select id="selectDetailAssList" resultMap="assResult">
@@ -372,7 +372,7 @@
 	  and a.sub_code = c.sub_code
 	  and b.del_yn = 'N'
 	  and a.del_yn = 'N'
-	order by booking_no desc
+	order by b.mod_date desc
 </select>
 
 <select id="selectSupStatusCount" resultType="_int">
@@ -434,7 +434,7 @@
 	  and user_name like '%'|| #{keyword} || '%'
 	  </when>
 	  </choose>
-	order by booking_no desc
+	order by status_date desc
 </select>
 
 <update id="updateSupBkConfirm">
@@ -488,16 +488,13 @@
 	  		    where user_id = #{userId}
 	  		    group by dept_code
 	  		  )
-	  		 ,( select assets_no
-	  		 	  from tb_assets
-	  		 	 where assets_name = #{assetsName}
-	  		 	 group by assets_no
-	  		  )
+	  		 ,#{assetsNo}
 	  		 ,#{bkContent}
 	  		 <choose>
 	  		 <when test='mainName == "시설"'>
 	         , TO_DATE(#{bkStartDate} || #{bkStartTime}, 'YYYY/MM/DD HH24:MI')
 	         , TO_DATE(#{bkStartDate}|| #{bkEndTime}, 'YYYY/MM/DD HH24:MI')
+	         
 		     </when>
 		     <when test='subName == "차량"'>
 	         , TO_DATE(#{bkStartDate}, 'YYYY/MM/DD')
@@ -514,5 +511,19 @@
 	  		 ,sysdate
 	  		)
 </insert>
+
+<select id="modalSetDtoList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , sub_name
+		  , main_name
+	 from tb_assets a
+	 join tb_common c on a.main_code = c.main_code
+	where a.del_yn ='N'
+	  and a.sub_code = c.sub_code
+	  and use_yn = 'Y'
+	order by a.assets_no desc
+</select>
 
 </mapper>
