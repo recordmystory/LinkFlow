@@ -42,4 +42,10 @@ public interface ProjectService {
 	
 	// 파견인원 삭제
 	int deleteDispatch(DispatchDto dis);
+	
+	// 프로젝트 수정
+	void modifyProject(ProjectDto pro);
+	
+	// 프로젝트 삭제
+	void deleteProject(int proNo);
 }

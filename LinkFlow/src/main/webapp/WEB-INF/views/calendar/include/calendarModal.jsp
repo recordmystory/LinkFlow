@@ -801,10 +801,10 @@
                         </div>
                         <div class="schDetailModal_content"> 
                           <label for="recipient-name" class="col-form-label" >일정</label> 
-	                         <div class="wasteDate">
-			                      <spen id="wasteStartDate"></spen> 
-			                      <spen id="wasteEndDate"></spen> 
-		                     	 </div>
+	                         <p class="wasteDate" >
+			                      <span id="wasteStartDate"></span> 
+			                      <span id="wasteEndDate"></span> 
+		                     	 </p>
                    		  </div>
                         <!--조건 걸어야함-->
                         <div class="schDetailModal_content">
@@ -1230,7 +1230,9 @@ $('#kt_docs_jstree_basic').jstree({
                 alert("일정 등록이 성공했습니다."); 
                 $("#schInsertModal").modal("hide");
                 $('#scheduleForm')[0].reset(); //초기화
+                
             	}
+            	
             },
             error: function(result) {
                 // 요청이 실패했을 때 
