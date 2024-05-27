@@ -159,6 +159,11 @@ public class BookingServiceImpl implements BookingService {
 		return bkDao.modalSetDtoList();
 	}
 
+	@Override
+	public List<BookingDto> selectRoomWaitList() {
+		return bkDao.selectRoomWaitList();
+	}
+
 	
 	
 

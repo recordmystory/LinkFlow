@@ -55,7 +55,8 @@ public interface BookingService {
     
     int updateSupBkReturn(Map<String,String> bk); // 비품 반납
     
-    List<AssetsDto> modalSetDtoList();
+    List<AssetsDto> modalSetDtoList(); // 예약하기 모달 세팅
     
+    List<BookingDto> selectRoomWaitList();
     
 }

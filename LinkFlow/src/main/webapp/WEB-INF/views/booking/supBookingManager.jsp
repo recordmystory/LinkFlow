@@ -211,7 +211,7 @@
 					                    <!-- 반려일 때 -->
 										<div class="modal-body" id="con-rejDiv" style="margin-bottom: 20px;">
 											<h6>반려 사유</h6>
-											<input type="text" class="rej-coment" name="rejContent" id="rej-content" required>
+											<input type="text" class="rej-coment" name="rejContent" id="rej-content">
 										</div>
 
 										<div class="modal-footer justify-content-between">
@@ -473,15 +473,18 @@
 	}
 	
 	function supBooking(type,bk){
-		
+		$('#rej-content').val('');
 		if(type === 1){ // 승인
 			$('#con-conDiv').css('display', 'block');
 			$('#con-rejDiv').css('display', 'none');
-			$('#rej-content').val('');
+			
+			$('#rej-content').removeAttr('required');
+			
 		}else{ // 반려
 			$('#con-rejDiv').css('display', 'block');
 			$('#con-conDiv').css('display', 'none');
 			$('#rej-content').prop('placeholder',' 반려 사유');
+			$('#rej-content').attr('required','required');
 		}
 		
 		$("#con-bkNo").val(bk.bookingNo);

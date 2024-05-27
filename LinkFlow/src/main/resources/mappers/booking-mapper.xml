@@ -526,4 +526,25 @@
 	order by a.assets_no desc
 </select>
 
+<select id="selectRoomWaitList" resultMap="bkResult">
+	select 
+		   booking_no
+		  ,user_name
+		  ,dept_title
+		  ,to_char(bk_start_dt, 'yyyy/mm/dd') as bk_start_date
+		  ,to_char(bk_start_dt, 'hh24:mi') as bk_start_time
+		  ,to_char(bk_end_dt, 'hh24:mi') as bk_end_time
+		  ,to_char(b.mod_date, 'yy/mm/dd hh24:mi:ss') as enr_date
+		  ,bk_content
+		  ,a.assets_name
+	  from tb_booking b
+	  join tb_assets a on (a.assets_no = b.assets_no)
+	  join tb_member m on (booking_id = user_id)
+	  join tb_dept d on (m.dept_code = d.dept_code)
+	 where b.del_yn = 'N'
+	   and b.status = 'WAI'
+	   and a.main_code = '002-'
+	 order by b.mod_date asc
+</select>
+
 </mapper>

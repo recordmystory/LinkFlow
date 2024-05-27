@@ -35,10 +35,6 @@ public class BookingController {
 	private final BookingServiceImpl bkServiceImpl;
 	private final PagingUtil paging;
 
-	@GetMapping("/room.bk") // 시설예약조회 
-	public String bkRoomPage() {
-		return "booking/bookingRoom";
-	}
 	
 	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
@@ -360,5 +356,16 @@ public class BookingController {
 		return "booking/roomBookingManager";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/roomWait.list", produces="application/json; charset=utf-8")
+	public List<BookingDto> selectRoomWaitList(){
+		return bkServiceImpl.selectRoomWaitList();
+	}
+	
+
+	@GetMapping("/room.bk") // 시설예약조회 
+	public String bkRoomPage() {
+		return "booking/bookingRoom";
+	}
 	
 }
