@@ -7,8 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 네이버 지도 api -->
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wfsx6d3wj7&submodules=geocoder"></script>
 <style>
 .wrapper{
  min-height: 100%;
@@ -43,15 +41,14 @@
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<div class="LinkFlowMainSection">
-            
 			<jsp:include page="/WEB-INF/views/common/sidebar/project/projectSidebar.jsp"/>
-
-            <div class="LinkFlowMainContent">
+			
+			<div class="LinkFlowMainContent">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">프로젝트 목록 조회</h1>
+                            <h1 class="m-0">프로젝트 인원 조회</h1>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -69,7 +66,7 @@
                                     -->
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                	<form action="${contextPath}/project/search.pj" method="post" id="searchForm">
+                                	<form action="${contextPath}/project/search.dis" method="get" id="searchForm">
                                 		<input name="page" type="hidden" value="1">
 		                                <div style="margin-bottom: 10px;">
 		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
@@ -97,30 +94,27 @@
                                         <table id="example2" class="table table-hover text-nowrap" style="text-align: center;">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 10%;">NO</th>
-                                                    <th style="width: 10%;">고객사</th>
+                                                    <th style="width: 10%;">프로젝트 번호</th>
+                                                    <th style="width: 20%;">고객사</th>
                                                     <th style="width: 25%;">프로젝트명</th>
-                                                    <th style="width: 10%;">담당부서</th>
-                                                    <th style="width: 25%;">계약기간</th>
-                                                    <th style="width: 10%;">위치</th>
+                                                    <th style="width: 10%;">투입인원</th>
+                                                    <th style="width: 15%;">담당부서</th>
+                                                    <th style="width: 20%;">투입기간</th>
                                                     <th style="width: 10%;">상태</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="project-list">
-                                            	<c:forEach var="p" items="${list}"> 
+                                            <tbody>
+                                            	<c:forEach var="d" items="${list}"> 
                                                 <tr>
-                                                    <td>${p.proNo}</td>
-                                                    <td>${p.client}</td>
+                                                    <td>${d.proNo}</td>
+                                                    <td>${d.client}</td>
                                                     <td>
-                                                        <a href="${contextPath}/project/detail.pj?no=${p.proNo}&title=${loginUser.deptName}">${p.proTitle}</a>
+                                                        <a href="${contextPath}/project/detail.pj?no=${d.proNo}">${d.proTitle}</a>
                                                     </td>
-                                                    <td>${p.deptName}</td>
-                                                    <td>${p.startDate} ~ ${p.endDate}</td>
-                                                    <td>
-                                                        <i class="fa-solid fa-location-dot" style="color: rgb(43, 120, 236);"></i>
-                                                        <a data-toggle="modal" href="#mapModal" onclick="mapCreate('${p.address}')">위치보기</a>
-                                                    </td>
-                                                    <td>${p.proYn eq 'N' ? '진행' : '완료'}</td>
+                                                    <td>${d.userName}</td>
+                                                    <td>${d.deptTitle}</td>
+                                                    <td>${d.startDate} ~ ${d.endDate}</td>
+                                                    <td>투입</td>
                                                 </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -130,45 +124,26 @@
 										<div class="pagination" style="display: flex; justify-content: center;">
 											<ul class="pagination">
 												<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage -1}">&laquo;</a>
+													<a class="page-link" href="${contextPath}/project/list.dis?page=${pi.currentPage -1}">&laquo;</a>
 												</li>
 												<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
 													<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
-														<a class="page-link" href="${contextPath}/project/list.pj?page=${p}">${p}</a>
+														<a class="page-link" href="${contextPath}/project/list.dis?page=${p}">${p}</a>
 													</li>
 												</c:forEach>
 												<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage +1}">&raquo;</a>
+													<a class="page-link" href="${contextPath}/project/list.dis?page=${pi.currentPage +1}">&raquo;</a>
 												</li>
 											</ul>
 										</div>
 									</div>
-								</div>
-                                <!-- The Modal -->
-                                <div class="modal" id="mapModal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <!-- Modal Header -->
-                                            <div class="modal-header" style="justify-content: center;">
-                                            <h4 class="modal-title">위치보기</h4>
-                                            </div>
-                                            <!-- Modal body -->
-                                            <div class="modal-body" style="display:flex; justify-content: center;">
-                                            <div id="map" style="width:450px; height:300px; display: flex;"></div>
-                                            </div>
-                                            <!-- Modal footer -->
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
             </div>
-        </div>
+		</div>
 	</div>
 	<c:if test="${ not empty search }">
 	<script>
@@ -177,48 +152,18 @@
 	        $("#searchForm select").val("${search.category}");
 			
 	        $("#pagingArea a").on("click", function(){
-     			$("#searchForm input[name=page]").val($(this).text());
+	        	if($(this).text() == "«"){
+	     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
+	        	}else if($(this).text() == "»"){
+	     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
+	        	}else{
+	     			$("#searchForm input[name=page]").val($(this).text());
+	        	}
      			$("#searchForm").submit();
      			return false;
 	   		});
 		});
 	</script>
 	</c:if>
-	<script>
-        $(document).ready(function () {
-            $('.dropdown-item').click(function () {
-                var selectedText = $(this).find('.spanCss').text();
-                $('.resultArea').text(selectedText);
-            });
-        });
-        // 지도 api 시작
-        //주소의 정보를 selectMapList 함수로 넘겨준다.
-        function mapCreate(address){
-        naver.maps.Service.geocode({
-                query: address
-            }, function(status, response) {
-            
-                var item = response.v2.addresses[0]
-        
-                selectMapList(item.x, item.y);
-                
-            });
-        };
-
-        //검색정보로 지도를 만들고, 지도에 마커를 찍어준다.
-        function selectMapList(latitude, longitude) {
-
-            var map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(longitude, latitude),
-                zoom: 14
-            });
-            var marker = new naver.maps.Marker({
-                map: map,
-                position: new naver.maps.LatLng(longitude, latitude),
-            });
-        };
-        // 지도 api 끝
-
-    </script>
 </body>
 </html>

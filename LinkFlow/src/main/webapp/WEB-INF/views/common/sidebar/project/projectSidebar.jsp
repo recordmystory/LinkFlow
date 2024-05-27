@@ -65,13 +65,13 @@
 	                        </a>
 	                        <ul class="nav nav-treeview" style="padding-left: 20px;">
 	                            <li class="nav-item">
-	                                <a href="#" class="nav-link">
+	                                <a href="${contextPath}/project/list.pj" class="nav-link">
 	                                    <i class="far fa-circle nav-icon"></i>
 	                                    <p>프로젝트 목록 조회</p>
 	                                </a>
 	                            </li>
 	                            <li class="nav-item">
-	                                <a href="#" class="nav-link">
+	                                <a href="${contextPath}/project/list.dis" class="nav-link">
 	                                    <i class="far fa-circle nav-icon"></i>
 	                                    <p>프로젝트 인원 조회</p>
 	                                </a>
