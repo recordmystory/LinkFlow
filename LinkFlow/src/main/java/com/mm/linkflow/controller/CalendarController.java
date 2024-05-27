@@ -108,7 +108,9 @@ public class CalendarController {
 	//캘린더 메인 - 일정 수정
 	   @ResponseBody
 	   @PostMapping(value="/updateSch.do", produces="application/json")
-	   public String updateSch(@RequestBody ScheduleDto schedule) {
+	   public String updateSch(@RequestBody ScheduleDto schedule, HttpSession session) {
+		   String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
+		   schedule.setModId(userId);
 	       int resultSch = calendarService.updateSch(schedule);
 	       
 			/*
@@ -120,6 +122,7 @@ public class CalendarController {
 	       log.debug("updateResult: {}", resultSch);
 	       log.debug("address: {}", schedule.getAddress());
 	       log.debug("schNo: {}", schedule.getAddress());
+	       log.debug("schNo: {}", schedule.getStartDate());
 
 	       if (resultSch == 1) {
 	           return "success"; 

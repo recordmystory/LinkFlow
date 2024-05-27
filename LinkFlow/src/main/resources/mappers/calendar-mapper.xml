@@ -123,6 +123,7 @@
 		            SELECT CAL_NO
 		            FROM TB_CALENDAR
 		            WHERE CAL_SUB_CODE = #{schCalSubCode}
+		            AND REG_ID = #{modId}
 		        )
 	    WHERE SCH_NO = #{schNo}
 	</update>
