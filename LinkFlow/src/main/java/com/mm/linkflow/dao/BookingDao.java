@@ -161,4 +161,12 @@ public class BookingDao {
 		return sql.insert("bkMapper.insertBooking",bk);
 	}
 
+	public List<BookingDto> selectRoomWaitList() {
+		return sql.selectList("bkMapper.selectRoomWaitList");
+	}
+
+	public int updateRoomBooking(Map<String, String> bk) {
+		return sql.update("bkMapper.updateRoomBooking",bk);
+	}
+
 }

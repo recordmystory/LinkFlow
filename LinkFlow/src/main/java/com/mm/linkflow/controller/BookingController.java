@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.AssetsDto;
 import com.mm.linkflow.dto.BookingDto;
@@ -35,10 +36,6 @@ public class BookingController {
 	private final BookingServiceImpl bkServiceImpl;
 	private final PagingUtil paging;
 
-	@GetMapping("/room.bk") // 시설예약조회 
-	public String bkRoomPage() {
-		return "booking/bookingRoom";
-	}
 	
 	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
@@ -94,7 +91,7 @@ public class BookingController {
 		mv.addObject("pi",pi)
 		  .addObject("bkList",bkList)
 		  .setViewName("booking/myBookingList");
-		
+		log.debug("mvvvvvvvvvvvv : {} ",mv);
 		return mv;
 	}
 	
@@ -284,7 +281,9 @@ public class BookingController {
 		mp.put("pi",pi);
 		mp.put("bkWaitList",bkWaitList);
 		
+		log.debug("컨트롤러까지 옴 :{}", bkWaitList);
 		return mp;
+		
 	}
 	
 	@ResponseBody // 비품 예약 완료 리스트 + 검색
@@ -311,7 +310,7 @@ public class BookingController {
 		return "redirect:/booking/sup.mng";
 	}
 	
-	@PostMapping("/supEnd.bk") // 비품예약 승인,반려 
+	@PostMapping("/supEnd.bk") // 비품예약 반납 
 	public String updateSupBkReturn(@RequestParam Map<String,String> bk, HttpSession session) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
@@ -326,33 +325,64 @@ public class BookingController {
 		return bkServiceImpl.modalSetDtoList();
 	}
 	
-	@PostMapping("/insert.bk")
-	public String insertBooking(@RequestParam Map<String,String> bk, HttpSession session) {
+	@PostMapping("/insert.bk") // 예약하기 모달 
+	public String insertBooking(@RequestParam Map<String,String> bk, HttpSession session, RedirectAttributes redirect) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
-		log.debug("bk 수정 전 :{}", bk);
 		if(bk.get("mainName").equals("시설")) {
 			String bkStartDate = bk.get("year")+"/"+bk.get("month")+"/"+bk.get("day");
 			bk.put("bkStartDate",bkStartDate);
+			bk.put("assetsNo", bk.get("roomAssNo"));
 			
-		}else if(bk.get("subName").equals("차량")) {
+		}else {
+			if(bk.get("subName").equals("차량")) {
 			String bkStartDate = bk.get("startYear")+"/"+bk.get("startMonth")+"/"+bk.get("startDay");
 			String bkEndDate = bk.get("endYear")+"/"+bk.get("endMonth")+"/"+bk.get("endDay");
 			
 			bk.put("bkStartDate",bkStartDate);
 			bk.put("bkEndDate",bkEndDate);
+			}
+			bk.put("assetsNo", bk.get("supAssNo"));
 		}
-		log.debug("bk 수정 후 :{}", bk);
 		
 		int result = bkServiceImpl.insertBooking(bk);
+		
+		if(result <= 0) {
+			redirect.addFlashAttribute("alertMsg","예약에 실패하였습니다.");
+		}
 		
 		return "redirect:/booking/room.bk";
 	}
 	
-	@GetMapping("/room.mng") // 시설예약페이지 이동
+	@GetMapping("/room.mng") // 시설예약관리 페이지 이동
 	public String roomBookingManager() {
 		return "booking/roomBookingManager";
 	}
 	
+	@ResponseBody // 시설예약 요청건 조회 
+	@GetMapping(value="/roomWait.list", produces="application/json; charset=utf-8")
+	public List<BookingDto> selectRoomWaitList(){
+		return bkServiceImpl.selectRoomWaitList();
+	}
+	
+	
+	@PostMapping(value="/upRoom.bk") // 시설 예약승인, 반려 
+	public String updateRoomBooking(@RequestParam Map<String,String> bk, HttpSession session, RedirectAttributes redirect) {
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		bk.put("userId", userId);
+		int result = bkServiceImpl.updateRoomBooking(bk);
+
+		log.debug("bkkkkkkk:{}", bk);
+		if(result <= 0) {
+			redirect.addFlashAttribute("alertMsg","잘못된 요청입니다.");
+		}
+		
+		return "redirect:/booking/room.mng";
+	}
+
+	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
+	public String bkRoomPage() {
+		return "booking/bookingRoom";
+	}
 	
 }

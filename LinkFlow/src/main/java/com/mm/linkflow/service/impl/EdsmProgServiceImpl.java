@@ -69,16 +69,22 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 		ArrayList<EdocRefDto> EdocRefList = edocDto.getEdocRefList();
 		int result = 0;
 		int result1 = edsmProgDao.insertDoc(edocDto); 
-		int result2 =0;
-		int result3 =0;
-		for(EdocHistDto EdocHistDto : edocHistList) {
-			
-			result2 += edsmProgDao.insertEdocHist(EdocHistDto);
+		int result2 =1;
+		int result3 =1;
+		
+		
+		if(edocHistList != null) {
+			for(EdocHistDto EdocHistDto : edocHistList) {
+				
+				result2 += edsmProgDao.insertEdocHist(EdocHistDto);
+			}
 		}
 		
-		for(EdocRefDto EdocRefDto : EdocRefList) {
-			
-			result3 += edsmProgDao.insertRef(EdocRefDto);
+		if(EdocRefList != null) {
+			for(EdocRefDto EdocRefDto : EdocRefList) {
+				
+				result3 += edsmProgDao.insertRef(EdocRefDto);
+			}
 		}
 		
 		result = result1*result2*result3;
@@ -126,6 +132,26 @@ public class EdsmProgServiceImpl implements EdsmProgService {
 	@Override
 	public int modifyDelYn(String edNo) {
 		return edsmProgDao.modifyDelYn(edNo);
+	}
+
+	@Override
+	public int updateEdocHist(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocHist(edocHistDto);
+	}
+
+	@Override
+	public int selectEdHistSubCodeCnt(EdocHistDto edocHistDto) {
+		return edsmProgDao.selectEdHistSubCodeCnt(edocHistDto);
+	}
+
+	@Override
+	public int updateEdocStatusAppr(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocStatusAppr(edocHistDto);
+	}
+
+	@Override
+	public int updateEdocStatusCxl(EdocHistDto edocHistDto) {
+		return edsmProgDao.updateEdocStatusCxl(edocHistDto);
 	}
 	 
 

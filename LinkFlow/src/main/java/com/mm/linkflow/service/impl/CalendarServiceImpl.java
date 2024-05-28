@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.controller.CalendarController;
 import com.mm.linkflow.dao.CalenderDao;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
 import com.mm.linkflow.service.service.CalendarService;
 
@@ -76,6 +77,12 @@ public class CalendarServiceImpl implements CalendarService {
 	public int wasteSchRemoval(String schNo) {
 		return calendarDao.wasteSchRemoval(schNo);	
 		
+	}
+
+	//제이트리 조직도 멤버조회
+	@Override
+	public List<DeptDto> selecteMemberList() {
+		return calendarDao.selecteMemberList();	
 	}
 
 	/*

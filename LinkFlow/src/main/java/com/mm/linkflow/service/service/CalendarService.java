@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mm.linkflow.dto.CalendarDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
 
 public interface CalendarService {
@@ -33,8 +34,11 @@ public interface CalendarService {
 	//휴지통- 30일 뒤 일정 완전삭제(스케줄러)
 	int wasteSchCompletely();
 
-	//휴지통= 일정완전삭제
+	//휴지통- 일정완전삭제
 	int wasteSchRemoval(String schNo);
+
+    //제이트리 조직도 멤버조회
+	List<DeptDto> selecteMemberList();
 
 
 }

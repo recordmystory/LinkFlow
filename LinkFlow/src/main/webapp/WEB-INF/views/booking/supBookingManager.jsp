@@ -211,7 +211,7 @@
 					                    <!-- 반려일 때 -->
 										<div class="modal-body" id="con-rejDiv" style="margin-bottom: 20px;">
 											<h6>반려 사유</h6>
-											<input type="text" class="rej-coment" name="rejContent" id="rej-content" required>
+											<input type="text" class="rej-coment" name="rejContent" id="rej-content">
 										</div>
 
 										<div class="modal-footer justify-content-between">
@@ -345,15 +345,15 @@
 	</div>
 	<script>
 	$(document).ready(function () {
-       bkWaitList();
-       bkStatusList();
+       bkWaitList(1);
+       bkStatusList(1);
       });
 	
-	function bkWaitList(){
+	function bkWaitList(currentPage){
 		$.ajax({
 			url:'${contextPath}/booking/supWait.list',
 			type:'get',
-			data:{},success:function(result){
+			data:{ page:currentPage },success:function(result){
 				let table="";
 				let bk = result.bkWaitList;
 				let pi = result.pi;
@@ -379,18 +379,18 @@
 	                          + "</td></tr>";
 	            		
 	                }
+					
 				}
-				
 				
 				let page = "";
 
-			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href='#' onclick=\"bkWaitList(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
 			  	for(let i = pi.startPage; i <= pi.endPage; i++){
-			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + i + "\">" + i + "</a></li>";
+			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'active' : '') + "\"><a class=\"page-link\" href='#' onclick=\"bkWaitList(" + i + ");\">" + i + "</a></li>";
 			  	}
 
-			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supWait.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
+			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\"  href='#' onclick=\"bkWaitList(" + (pi.currentPage + 1) + ");\">&raquo;</a></li>";
 				
 				
 				$("#bkWaitTable").html(table);
@@ -403,7 +403,7 @@
 		})
 	}
 	
-	function bkStatusList(){
+	function bkStatusList(currentPage){
 		let keywordElement = document.getElementById('keyword');
 	    let keyword = (keywordElement != null && keywordElement.value != null) ? keywordElement.value : "";
 	    let conditionElement = document.getElementById('condition');
@@ -416,6 +416,7 @@
 			url:'${contextPath}/booking/supStat.list',
 			type:'get',
 			data:{
+				page:currentPage,
 				keyword: keyword,
 				condition: condition
 			},success:function(result){
@@ -455,13 +456,13 @@
 				let page = "";
 	            let pi = result.pi;
 
-	            page += "<li class='page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "'><a class='page-link' href='${contextPath}/booking/supStat.list?page=" + (pi.currentPage - 1) + "'>&laquo;</a></li>";
+	            page += "<li class='page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "'><a class='page-link' onclick='bkStatusList(" + (pi.currentPage - 1) + ");'>&laquo;</a></li>";
 
 	            for (let i = pi.startPage; i <= pi.endPage; i++) {
-	                page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + i + "\">" + i + "</a></li>";
+	                page += "<li class=\"page-item " + (pi.currentPage == i ? 'active' : '') + "\"><a class=\"page-link\" onclick='bkStatusList(" + i + ");'>" + i + "</a></li>";
 	            }
 
-	            page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/supStat.list?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
+	            page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" onclick='bkStatusList(" + (pi.currentPage + 1) + ");'>&raquo;</a></li>";
 
 				$("#bkStatusTable").html(table);
 				$("#bkStatPage").html(page);
@@ -472,15 +473,18 @@
 	}
 	
 	function supBooking(type,bk){
-		
+		$('#rej-content').val('');
 		if(type === 1){ // 승인
 			$('#con-conDiv').css('display', 'block');
 			$('#con-rejDiv').css('display', 'none');
-			$('#rej-content').val('');
+			
+			$('#rej-content').removeAttr('required');
+			
 		}else{ // 반려
 			$('#con-rejDiv').css('display', 'block');
 			$('#con-conDiv').css('display', 'none');
 			$('#rej-content').prop('placeholder',' 반려 사유');
+			$('#rej-content').attr('required','required');
 		}
 		
 		$("#con-bkNo").val(bk.bookingNo);

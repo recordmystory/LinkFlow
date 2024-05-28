@@ -43,4 +43,16 @@ public interface EdsmProgService {
 
 	// 진행중인 문서 상세 (기안 취소)
 	int modifyDelYn(String edNo);
+	
+	// 진행중인 문서 상세 (결재)
+	int updateEdocHist(EdocHistDto edocHistDto);
+	
+	// 진행중인 문서 상세 (결재한 사람 count)
+	int selectEdHistSubCodeCnt(EdocHistDto edocHistDto);
+	
+	// 결재 상태 05로 업데이트
+	int updateEdocStatusAppr(EdocHistDto edocHistDto);
+	
+	// 결재 상태 06로 업데이트
+	int updateEdocStatusCxl(EdocHistDto edocHistDto);
 }

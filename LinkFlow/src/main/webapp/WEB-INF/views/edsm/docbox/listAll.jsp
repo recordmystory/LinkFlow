@@ -118,7 +118,7 @@
                                   <td>품의서</td>
                                   <td>기안</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>LI-품의-20240429-0002</td>
                                     <td>품의서 제출</td>
                                     <td>김과장</td>
@@ -135,17 +135,21 @@
                                     <td>2024-04-30</td>
                                     <td>품의서</td>
                                     <td>결재</td>
-                                </tr>
+                                </tr> -->
                               </tbody>
                             </table>
         
-                            <ul class="pagination justify-content-center">
-                              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                              <li class="page-item"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
+                            <div id="pagingArea">
+					                  	<ul class="pagination justify-content-center">
+						                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
+						                    
+						                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+						                    	<li class="page-item ${pi.currentPage == p ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${p}">${p}</a></li>
+						                    </c:forEach>
+						                    
+						                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
+				                		</ul>
+				                	</div>
                           </div> 
 	                    </div>
 	                  </div>

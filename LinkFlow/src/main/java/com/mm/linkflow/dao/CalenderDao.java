@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,11 @@ public class CalenderDao {
 	//휴지통 -일정완전삭제
 	public int wasteSchRemoval(String schNo) {
 		return sqlSessionTemplate.delete("calendarMapper.deleteSchWaste", schNo);
+	}
+
+	//제이트리 조직도 멤버 조회
+	public List<DeptDto> selecteMemberList() {
+		return sqlSessionTemplate.selectList("calendarMapper.selecteMemberList");
 	}
 
 	/*

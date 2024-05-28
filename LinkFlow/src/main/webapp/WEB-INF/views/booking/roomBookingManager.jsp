@@ -248,67 +248,8 @@ input[type="checkbox"] {
 											<th>설정</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>A</td>
-											<td>조성모(개발1팀)</td>
-											<td>2024/04/25 14:00 ~ 16:00</td>
-											<td>24/04/16 11:41:16</td>
-											<td><span data-toggle="modal" data-target="#bk-result">승인</span>
-												| <span data-toggle="modal" data-target="#bk-result">반려</span>
-											</td>
-										</tr>
-										<tr>
-											<td>C</td>
-											<td>홍해인(인사팀)</td>
-											<td>2024/04/25 14:00 ~ 16:00</td>
-											<td>24/04/17 13:41:16</td>
-											<td><span data-toggle="modal" data-target="#bk-result">승인</span>
-												| <span data-toggle="modal" data-target="#bk-result">반려</span>
-											</td>
-										</tr>
-										<tr>
-											<td>A</td>
-											<td>백현우(경영지원팀)</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-primary">Approved</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
-										<tr>
-											<td>B</td>
-											<td>Mike Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-danger">Denied</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
-										<tr>
-											<td>B</td>
-											<td>Jim Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-success">Approved</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
-										<tr>
-											<td>C</td>
-											<td>Victoria Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-warning">Pending</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
-										<tr>
-											<td>A</td>
-											<td>Michael Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-primary">Approved</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
-										<tr>
-											<td>C</td>
-											<td>Rocky Doe</td>
-											<td>11-7-2014</td>
-											<td><span class="tag tag-danger">Denied</span></td>
-											<td><a>승인</a> | <a>반려</a></td>
-										</tr>
+									<tbody id="roomTable">
+										
 									</tbody>
 								</table>
 							</div>
@@ -318,40 +259,41 @@ input[type="checkbox"] {
 						<div class="modal fade" id="bk-result">
 							<div class="modal-dialog">
 								<div class="modal-content">
-									<div class="bk-modal" style="padding-top: 40px;">
-										<p>예약 시설 :</p>
+								<form id="roomConForm" action="${contextPath }/booking/upRoom.bk" method="post">
+									<input type="hidden" name="bookingNo" id="room-bkNo">
+									<div class="bk-modal" id="room-name" style="padding-top: 40px;">
+										<p>예약 시설 :</p> &nbsp;
 										<p>회의실A</p>
 									</div>
-									<div class="bk-modal bk-time">
+									<div class="bk-modal bk-time" id="room-time">
 										<p>예약 시간</p>
 										<p>20204 / 04 / 25 14:00 ~ 16:00</p>
 									</div>
-									<div class="bk-modal">
+									<div class="bk-modal" id="bkId">
 										<p>요청자 :</p>
 										&nbsp;
 										<p>조성모(개발1팀)</p>
 									</div>
 									<div class="modal-body">
 										<h6>사용 용도</h6>
-										<input type="text" class="can-coment" placeholder="부서 회의">
+										<input type="text" id="room-bkContent" class="can-coment" placeholder="부서 회의" disabled>
 									</div>
 
 									<!-- 승인일 때 -->
-									<!-- <div class="bk-modal bk-content">
+									<div class="bk-modal bk-content" id="roomCon">
                                         <h5>예약 내용을 확인하였으며, 예약을 승인합니다.</h5>
-                                    </div> -->
-
+                                    </div>
 									<!-- 반려일 때 -->
-									<div class="modal-body">
-										<h6>비고</h6>
-										<input type="text" class="rej-coment" placeholder=" 반려 사유">
+									<div class="modal-body" id="roomRej">
+										<h6>반려 사유 </h6>
+										<input type="text" class="rej-coment" name="rejContent" id="roomRejContent" placeholder=" 반려 사유">
 									</div>
 
 									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">CANCEL</button>
-										<button type="button" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+										<button type="submit" class="btn btn-outline-primary">&nbsp;OK&nbsp;</button>
 									</div>
+								</form>
 								</div>
 								<!-- /.modal-content -->
 							</div>
@@ -402,145 +344,203 @@ input[type="checkbox"] {
 
 		<!-- /maincontent -->
 		<script>
-			$(function() {
-
-				/* initialize the external events
-				 -----------------------------------------------------------------*/
-				function ini_events(ele) {
-					ele.each(function() {
-
-						// create an Event Object (https://fullcalendar.io/docs/event-object)
-						// it doesn't need to have a start or end
-						var eventObject = {
-							title : $.trim($(this).text())
-						// use the element's text as the event title
-						}
-
-						// store the Event Object in the DOM element so we can get to it later
-						$(this).data('eventObject', eventObject)
-
-						// make the event draggable using jQuery UI
-						$(this).draggable({
-							zIndex : 1070,
-							revert : true, // will cause the event to go back to its
-							revertDuration : 0
-						//  original position after the drag
-						})
-
-					})
+		$(document).ready(function(){
+			
+			selectRoomBk();
+			
+		})
+		
+		function selectRoomBk(){
+			$.ajax({
+				url: '${contextPath}/booking/roomWait.list',
+				type:'get',
+				success:function(result){
+					let table = "";
+					
+					for(let i=0; i<result.length; i++){
+						table += "<tr>"
+							  + "<td>" + result[i].assetsName + "</td>"
+							  + "<td>" + result[i].userName + "("+ result[i].deptName +")" + "</td>"
+							  + "<td>" + result[i].bkStartDate + " " + result[i].bkStartTime + " ~ " + result[i].bkEndTime + "</td>"
+							  + "<td>" + result[i].enrDate + "</td>"
+							  + "<td><span data-toggle='modal' data-target='#bk-result' onclick='roomConfirm(1,"+ JSON.stringify(result[i]) + ")'>승인</span>"
+							  + " |  <span data-toggle='modal' data-target='#bk-result' onclick='roomConfirm(2,"+ JSON.stringify(result[i]) + ")'>반려</span>"
+							  + "</td></tr>";
+					}
+					
+					$("#roomTable").html(table);
 				}
+			})
+		}
+		
+		function roomConfirm(type,bk){
+			$('#roomRejContent').val('');
+			if(type === 1){ // 승인
+				$('#roomCon').css('display', 'block');
+				$('#roomRej').css('display', 'none');
+				
+				$('#roomRejContent').removeAttr('required');
+				
+			}else{ // 반려
+				$('#roomRej').css('display', 'block');
+				$('#roomCon').css('display', 'none');
+				$('#roomRejContent').prop('placeholder',' 반려 사유');
+				$('#roomRejContent').attr('required','required');
+			}
+			
+			$("#room-bkNo").val(bk.bookingNo);
+			
+			$("#rommName").empty();
+			$("#rommName").append("<p>예약 시설 :</p> &nbsp; <p> 회의실 " + bk.assetsName + "</p>");
 
-				// ini_events($('#external-events div.external-event'))
+			$("#bkId").empty();
+			$("#bkId").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><p>" + bk.userName + "(" + bk.deptName + ")</p>");
+			
+			$("#room-time").empty();
+			$("#room-time").append("<p>예약 시간</p> <p>" + bk.bkStartDate + " " + bk.bkStartTime + " ~ " + bk.bkEndTime + "</p>");
+			$('#room-bkContent').prop('placeholder', bk.bkContent);
+			
+		}
+	
+		$(function() {
 
-				/* initialize the calendar
-				 -----------------------------------------------------------------*/
-				//Date for the calendar events (dummy data)
-				var date = new Date()
-				var d = date.getDate(), m = date.getMonth(), y = date
-						.getFullYear()
+			/* initialize the external events
+			 -----------------------------------------------------------------*/
+			function ini_events(ele) {
+				ele.each(function() {
 
-				var Calendar = FullCalendar.Calendar;
-				var Draggable = FullCalendar.Draggable;
-
-				// var containerEl = document.getElementById('external-events');
-				// var checkbox = document.getElementById('drop-remove');
-				var calendarEl = document.getElementById('calendar');
-
-				// initialize the external events
-				// -----------------------------------------------------------------
-
-				var calendar = new Calendar(calendarEl, {
-					headerToolbar : {
-						left : 'prev,next today',
-						center : 'title',
-						right : 'dayGridMonth,timeGridWeek'
-					},
-					themeSystem : 'bootstrap',
-					//Random default events
-					events : [ {
-						title : '4:00p 회의실C',
-						start : new Date(y, m, 1, 16, 0),
-						end : new Date(y, m, 1, 15, 0),
-						backgroundColor : '#f56954', //red
-						borderColor : '#f56954', //red
-						allDay : true
-					}, {
-						title : '11:00a 회의실B',
-						start : new Date(y, m, d - 1, 11, 0),
-						end : new Date(y, m, d - 1, 13, 0),
-						backgroundColor : '#f39c12', //yellow
-						borderColor : '#f39c12', //yellow
-						allDay : true
-					}, {
-						title : '4:00p 회의실C',
-						start : new Date(y, m, d, 16, 0),
-						end : new Date(y, m, d, 18, 0),
-						backgroundColor : '#f56954', //red
-						borderColor : '#f56954', //red
-						allDay : true
-					}, {
-						title : '12:00a 회의실B',
-						start : new Date(y, m, d, 12, 0),
-						end : new Date(y, m, d, 14, 0),
-						backgroundColor : '#f39c12', //yellow
-						borderColor : '#f39c12', //yellow
-						allDay : true
-					}, {
-						title : '2:00p 회의실A',
-						start : new Date(y, m, d + 1, 14, 0),
-						end : new Date(y, m, d + 1, 16, 0),
-						allDay : true,
-						backgroundColor : '#00a65a', //Success (green)
-						borderColor : '#00a65a' //Success (green)
-					},
-
-					],
-					editable : true,
-					droppable : true, // this allows things to be dropped onto the calendar !!!
-					drop : function(info) {
-						// is the "remove after drop" checkbox checked?
-						if (checkbox.checked) {
-							// if so, remove the element from the "Draggable Events" list
-							info.draggedEl.parentNode
-									.removeChild(info.draggedEl);
-						}
+					// create an Event Object (https://fullcalendar.io/docs/event-object)
+					// it doesn't need to have a start or end
+					var eventObject = {
+						title : $.trim($(this).text())
+					// use the element's text as the event title
 					}
-				});
 
-				calendar.render();
-				// $('#calendar').fullCalendar()
+					// store the Event Object in the DOM element so we can get to it later
+					$(this).data('eventObject', eventObject)
 
-				/* ADDING EVENTS */
-				var currColor = '#3c8dbc' //Red by default
-				// Color chooser button
-				$('#color-chooser > li > a').click(function(e) {
-					e.preventDefault()
-					// Save color
-					currColor = $(this).css('color')
-					// Add color effect to button
-					$('#add-new-event').css({
-						'background-color' : currColor,
-						'border-color' : currColor
+					// make the event draggable using jQuery UI
+					$(this).draggable({
+						zIndex : 1070,
+						revert : true, // will cause the event to go back to its
+						revertDuration : 0
+					//  original position after the drag
 					})
+
 				})
-				$('#add-new-event').click(function(e) {
-					e.preventDefault()
-					// Get value and make sure it is not null
-					var val = $('#new-event').val()
-					if (val.length == 0) {
-						return
+			}
 
-						
+			// ini_events($('#external-events div.external-event'))
 
+			/* initialize the calendar
+			 -----------------------------------------------------------------*/
+			//Date for the calendar events (dummy data)
+			var date = new Date()
+			var d = date.getDate(), m = date.getMonth(), y = date
+					.getFullYear()
+
+			var Calendar = FullCalendar.Calendar;
+			var Draggable = FullCalendar.Draggable;
+
+			// var containerEl = document.getElementById('external-events');
+			// var checkbox = document.getElementById('drop-remove');
+			var calendarEl = document.getElementById('calendar');
+
+			// initialize the external events
+			// -----------------------------------------------------------------
+
+			var calendar = new Calendar(calendarEl, {
+				headerToolbar : {
+					left : 'prev,next today',
+					center : 'title',
+					right : 'dayGridMonth,timeGridWeek'
+				},
+				themeSystem : 'bootstrap',
+				//Random default events
+				events : [ {
+					title : '4:00p 회의실C',
+					start : new Date(y, m, 1, 16, 0),
+					end : new Date(y, m, 1, 15, 0),
+					backgroundColor : '#f56954', //red
+					borderColor : '#f56954', //red
+					allDay : true
+				}, {
+					title : '11:00a 회의실B',
+					start : new Date(y, m, d - 1, 11, 0),
+					end : new Date(y, m, d - 1, 13, 0),
+					backgroundColor : '#f39c12', //yellow
+					borderColor : '#f39c12', //yellow
+					allDay : true
+				}, {
+					title : '4:00p 회의실C',
+					start : new Date(y, m, d, 16, 0),
+					end : new Date(y, m, d, 18, 0),
+					backgroundColor : '#f56954', //red
+					borderColor : '#f56954', //red
+					allDay : true
+				}, {
+					title : '12:00a 회의실B',
+					start : new Date(y, m, d, 12, 0),
+					end : new Date(y, m, d, 14, 0),
+					backgroundColor : '#f39c12', //yellow
+					borderColor : '#f39c12', //yellow
+					allDay : true
+				}, {
+					title : '2:00p 회의실A',
+					start : new Date(y, m, d + 1, 14, 0),
+					end : new Date(y, m, d + 1, 16, 0),
+					allDay : true,
+					backgroundColor : '#00a65a', //Success (green)
+					borderColor : '#00a65a' //Success (green)
+				},
+
+				],
+				editable : true,
+				droppable : true, // this allows things to be dropped onto the calendar !!!
+				drop : function(info) {
+					// is the "remove after drop" checkbox checked?
+					if (checkbox.checked) {
+						// if so, remove the element from the "Draggable Events" list
+						info.draggedEl.parentNode
+								.removeChild(info.draggedEl);
 					}
+				}
+			});
 
-					// Add draggable funtionality
-					ini_events(event)
+			calendar.render();
+			// $('#calendar').fullCalendar()
 
-					// Remove event from text input
-					$('#new-event').val('')
+			/* ADDING EVENTS */
+			var currColor = '#3c8dbc' //Red by default
+			// Color chooser button
+			$('#color-chooser > li > a').click(function(e) {
+				e.preventDefault()
+				// Save color
+				currColor = $(this).css('color')
+				// Add color effect to button
+				$('#add-new-event').css({
+					'background-color' : currColor,
+					'border-color' : currColor
 				})
 			})
+			$('#add-new-event').click(function(e) {
+				e.preventDefault()
+				// Get value and make sure it is not null
+				var val = $('#new-event').val()
+				if (val.length == 0) {
+					return
+
+					
+
+				}
+
+				// Add draggable funtionality
+				ini_events(event)
+
+				// Remove event from text input
+				$('#new-event').val('')
+			})
+		})
 		</script>
 
 	</div>

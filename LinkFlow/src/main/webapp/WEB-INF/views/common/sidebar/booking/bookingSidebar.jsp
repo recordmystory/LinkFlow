@@ -220,31 +220,30 @@ select{
 		                <p class="md-list">이용 시간</p>
 		                <div class="md-div">
 		                    <select name="bkStartTime" id="bk-sTime" style="width:90px;" class="md-select form-control">
-		                        <c:forEach var="hour" begin="9" end="17">
-                                    <c:forEach var="minute" begin="0" end="30" step="30">
-                                        <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
-                                            ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
-                                        </option>
-                                    </c:forEach>
-                                </c:forEach>
-		                    </select> &nbsp;&nbsp;
-		                    <p>~</p>&nbsp;&nbsp;
-		                    <select name="bkEndTime" id="bk-eTime" style="width:90px;" class="md-select form-control">
-		                        <c:forEach var="hour" begin="10" end="18">
-                                    <c:forEach var="minute" begin="0" end="30" step="30">
-                                        <option value="${hour}:${minute == 0 ? '00' : minute}">
-                                            ${hour}:${minute == 0 ? '00' : minute}
-                                        </option>
-                                    </c:forEach>
-                                </c:forEach>
-		                    </select> &nbsp;&nbsp;
+							    <c:forEach var="hour" begin="9" end="17"> <!-- 17시까지만 반복 -->
+							        <c:forEach var="minute" begin="0" end="30" step="30">
+							            <c:if test="${hour != 17 || minute == 0}"> <!-- 17시일 때는 분이 30인 경우만 선택 -->
+							                <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
+							                    ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
+							                </option>
+							            </c:if>
+							        </c:forEach>
+							    </c:forEach>
+							</select>&nbsp;&nbsp;
+							<p>~</p>&nbsp;&nbsp;
+							<select name="bkEndTime" id="bk-eTime" style="width:90px;" class="md-select form-control">
+							    <c:forEach var="hour" begin="10" end="18">
+							        <c:forEach var="minute" begin="0" end="30" step="30">
+							            <option value="${hour}:${minute == 0 ? '00' : minute}">
+							                ${hour}:${minute == 0 ? '00' : minute}
+							            </option>
+							        </c:forEach>
+							    </c:forEach>
+							</select> &nbsp;&nbsp;
 		                </div>
 		                <p class="md-list">이용 시설</p>
 		                <div class="md-div">
-		                    <select name="assetsName" id="bk-room" style="width:auto;" class="md-select form-control">
-		                        <option value="A">회의실A</option>
-		                        <option value="B">회의실B</option>
-		                        <option value="C">회의실C</option>
+		                    <select name="roomAssNo" id="bk-room" style="width:auto;" class="md-select form-control">
 		                    </select>
 		                </div>
 		            </div>
@@ -259,22 +258,22 @@ select{
 		                        <option value="키보드">키보드</option>
 		                        <option value="마우스">마우스</option>
 		                    </select> &nbsp;&nbsp;&nbsp;
-		                    <select name="assetsName" id="bk-assName" style="width: auto;" class="md-select form-control"></select>
+		                    <select name="supAssNo" id="bk-assName" style="width: auto;" class="md-select form-control"></select>
 		                </div>
 		                <p class="md-list">이용 시간</p>
 		                <div id="notCar" class="md-div" > <h4> - </h4></div>
 		                <div class="md-div bkTime" id="sup-car" style="display:none;">
 		                	<div class="carTime">
-			                	<select name="startYear" class="form-control setYear" style="width:100px;" class="md-select"></select> &nbsp;
-					        	<select name="startMonth" class="form-control setMonth" style="width:80px;" class="md-select"></select>&nbsp;
-					        	<select name="startDay" class="form-control setDay" style="width:100px;" class="md-select"></select>&nbsp;
+			                	<select name="startYear" class="form-control setYear md-select" style="width:100px;"></select> &nbsp;
+					        	<select name="startMonth" class="form-control setMonth md-select" style="width:80px;"></select>&nbsp;
+					        	<select name="startDay" class="form-control setDay md-select" style="width:100px;"></select>&nbsp;
 		                	</div>
 		                   
 		                     <div class="timeH4"><h2> - </h2></div>
 		                    <div class="carTime">
-			                	<select name="endYear" class="form-control setYear" style="width:100px;" class="md-select"></select> &nbsp;
-					        	<select name="endMonth" class="form-control setMonth" style="width:80px;" class="md-select"></select>&nbsp;
-					        	<select name="endDay" class="form-control setDay" style="width:100px;" class="md-select"></select>&nbsp;
+			                	<select name="endYear" class="form-control md-select" style="width:100px;" id="endYear"></select> &nbsp;
+					        	<select name="endMonth" class="form-control md-select" style="width:80px;" id="endMonth"></select>&nbsp;
+					        	<select name="endDay" class="form-control md-select" style="width:100px;" id="endDay"></select>&nbsp;
 		                	</div>
 		                </div>
 		            </div>
@@ -317,6 +316,9 @@ select{
 	        $(".setYear").empty();
 	        $(".setMonth").empty();
 	        $(".setDay").empty();
+	        $("#endYear").empty();
+	        $("#endMonth").empty();
+	        $("#endDay").empty();
 	        
 	        var setDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 	        // 년도 셋팅
@@ -388,11 +390,12 @@ select{
 	    			for(let i=0; i<result.length; i++){
     					if(result[i].mainName === '시설'){
 	    					 /* room += "<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>"; */
-	    					$("#bk-room").append("<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>");
+	    					$("#bk-room").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].subName + result[i].assetsName +"</option>");
     					}else if(result[i].subName === supplies){
-    						$("#bk-assName").append("<option value='"+ result[i].assetsName +"'>"+ result[i].assetsName +"</option>")
+    						$("#bk-assName").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].assetsName +"</option>")
     					
     					}
+    					
     				}
 	    			
 	    		}
@@ -426,6 +429,41 @@ select{
 	            suppliesContent.style.display = 'block';
 	        }
 	    }
+	    
+	    document.addEventListener("DOMContentLoaded", function() {
+	        var startSelect = document.getElementById("bk-sTime");
+	        var endSelect = document.getElementById("bk-eTime");
+
+	        startSelect.addEventListener("change", function() {
+	            var selectedStartTime = this.value.trim();
+	            var startTimeParts = selectedStartTime.split(':');
+	            var startHour = parseInt(startTimeParts[0]);
+	            var startMinute = parseInt(startTimeParts[1]);
+
+	            endSelect.innerHTML = ""; // Clear existing options
+
+	            for (var hour = startHour; hour < 18; hour++) {
+	                for (var minute = 0; minute <= 30; minute += 30) {
+	                    var endHour = hour;
+	                    var endMinute = minute;
+	                    if (endMinute === 0) {
+	                        endMinute = '00';
+	                    } else {
+	                        endHour += 1;
+	                        endMinute = '00';
+	                    }
+	                    if (endHour === 18 && endMinute > 0) continue; // No need to go beyond 18:00
+	                    var optionHour = endHour < 10 ? '0' + endHour : endHour;
+	                    var optionMinute = endMinute;
+	                    var optionValue = optionHour + ':' + optionMinute;
+	                    var option = document.createElement("option");
+	                    option.value = optionValue;
+	                    option.textContent = optionValue;
+	                    endSelect.appendChild(option);
+	                }
+	            }
+	        });
+	    });
 	    
 	    function submit(){
 	    	

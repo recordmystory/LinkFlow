@@ -83,4 +83,34 @@ public class ProjectServiceImpl implements ProjectService {
 	public void deleteProject(int proNo) {
 		proDao.deleteProject(proNo);
 	}
+
+	@Override
+	public List<DispatchDto> listDispatch(PageInfoDto pi) {
+		return proDao.listDispatch(pi);
+	}
+
+	@Override
+	public int listDispatchCount() {
+		return proDao.listDispatchCount();
+	}
+
+	@Override
+	public int searchDispatchCount(Map<String, String> search) {
+		return proDao.searchDispatchCount(search);
+	}
+
+	@Override
+	public List<DispatchDto> searchDispatchList(Map<String, String> search, PageInfoDto pi) {
+		return proDao.searchDispatchList(search, pi);
+	}
+
+	@Override
+	public List<DispatchDto> myDispatchList(String userId, PageInfoDto pi) {
+		return proDao.myDispatchList(userId, pi);
+	}
+
+	@Override
+	public int myDispatchCount(String userId) {
+		return proDao.myDispatchCount(userId);
+	}
 }

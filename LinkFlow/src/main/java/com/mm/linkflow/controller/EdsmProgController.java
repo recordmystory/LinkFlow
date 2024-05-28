@@ -40,6 +40,44 @@ public class EdsmProgController {
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
+	
+	@PostMapping("/approval.prog")
+	public String updateEdocHist(EdocHistDto edocHistDto, HttpSession session, RedirectAttributes RedirectAttribute) {
+		
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		edocHistDto.setUserId(loginUser.getUserId());
+
+		int result = edsmProgService.updateEdocHist(edocHistDto);
+		
+		int status = 1;
+		if(edocHistDto.getEdHistSubCode().equals("01")) {
+			// 승인시 tb_edoc_histd의 해당 문서에 ED_HIST_SUB_CODE가 01를 조회해서 3개시 
+			int count = edsmProgService.selectEdHistSubCodeCnt(edocHistDto);
+			log.debug("그냥 count: {}", count);
+			if(count == 3) {
+				//반려시 tb_eddoc의 status를 05로 업데이트
+				log.debug("if문 안에 count: {}", count);
+				status = 0;
+				status = edsmProgService.updateEdocStatusAppr(edocHistDto);
+			}
+			
+		}else if (edocHistDto.getEdHistSubCode().equals("02")){
+			//반려시 tb_eddoc의 status를 06로 업데이트
+			status = 0;
+			status = edsmProgService.updateEdocStatusCxl(edocHistDto);			
+		}
+		
+		log.debug("결재 여부 : {}", edocHistDto);
+		
+		if(result * status > 0) {
+			RedirectAttribute.addFlashAttribute("alertMsg", "결재가 완료되었습니다.");
+		} else {
+			RedirectAttribute.addFlashAttribute("alertMsg", "결재에 실패했습니다.");			
+		}
+		
+		return "redirect:/edsm/prog/listAll.prog";
+	}
+	
 	@GetMapping("/modifyDelYn.prog")
 	public String modifyDelYn(String edNo, RedirectAttributes redirectAttribute) {
 		log.debug(edNo);
@@ -163,20 +201,37 @@ public class EdsmProgController {
 		edocDto.setModId(loginUser.getUserId());
 
 		
-		
-		
-		for(EdocHistDto EdocHistDto : edocHistList) {
-			EdocHistDto.setModId(loginUser.getUserId());
-			EdocHistDto.setRegId(loginUser.getUserId());
-			EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
-			
+		if(edocHistList != null) {
+			int count = 1;
+			for(EdocHistDto EdocHistDto : edocHistList) {
+				if(count == 1) {
+				EdocHistDto.setEdHistOrder(count);
+				EdocHistDto.setEdHistSubCode("01");
+				EdocHistDto.setModId(loginUser.getUserId());
+				EdocHistDto.setRegId(loginUser.getUserId());
+				EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
+				count++;
+				}else {
+				EdocHistDto.setEdHistOrder(count);
+				EdocHistDto.setEdHistSubCode(null);
+				EdocHistDto.setModId(loginUser.getUserId());
+				EdocHistDto.setRegId(loginUser.getUserId());
+				EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
+				
+				count++;
+				}
+			}
 		}
-		for(EdocRefDto EdocRefDto : EdocRefList) {
-			EdocRefDto.setModId(loginUser.getUserId());
-			EdocRefDto.setRegId(loginUser.getUserId());
-			EdocRefDto.setEdFormCode(edocDto.getEdFormCode());
-			
+		
+		if(EdocRefList != null) {
+			for(EdocRefDto EdocRefDto : EdocRefList) {
+				EdocRefDto.setModId(loginUser.getUserId());
+				EdocRefDto.setRegId(loginUser.getUserId());
+				EdocRefDto.setEdFormCode(edocDto.getEdFormCode());
+				
+			}
 		}
+		
 		int result = edsmProgService.insertDoc(edocDto);
 		
 		if(result>0) {

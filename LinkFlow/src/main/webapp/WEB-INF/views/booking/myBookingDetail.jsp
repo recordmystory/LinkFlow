@@ -121,19 +121,6 @@
 							<a class="btn bg-gradient-secondary" href="${ contextPath }/booking/mylist.bk">목록으로</a>
 						</div>
 					</div>
-					<%
-						// 현재 날짜와 시간 가져오기
-						Date now = new Date();
-						// 날짜 형식 지정
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-						// 현재 날짜를 문자열로 변환
-						String[] todayArr = dateFormat.format(now).split("/");
-						
-						pageContext.setAttribute("todayYear",todayArr[0]);
-						pageContext.setAttribute("todayMonth",todayArr[1]);
-						pageContext.setAttribute("todayDay",todayArr[1]);
-						
-					%>
 					
 					<div class="bk-detail" id="detailArea">
 						<input type="hidden" name="bookingNo" value="${bk.bookingNo }" id="bookingNo">
@@ -157,28 +144,33 @@
 
 						                    <p style="font-size: 30px; margin-top: 5px;">&nbsp;&nbsp;/&nbsp;&nbsp;</p>
 						
-						                    <c:choose>
-						                        <c:when test="${bk.subName eq '회의실'}">
-						                            <select id="start" name="bkStartTime" class="form-control" style="width: 110px;">
-						                                <c:forEach var="hour" begin="9" end="17">
-						                                    <c:forEach var="minute" begin="0" end="30" step="30">
-						                                        <option value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}">
-						                                            ${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}
-						                                        </option>
-						                                    </c:forEach>
-						                                </c:forEach>
-						                            </select>
-						                            &nbsp;&nbsp;<span>~</span>&nbsp;&nbsp;
-						                            <select id="end" name="bkEndTime" class="form-control" style="width: 110px;">
-						                                <c:forEach var="hour" begin="10" end="18">
-						                                    <c:forEach var="minute" begin="0" end="30" step="30">
-						                                        <option value="${hour}:${minute == 0 ? '00' : minute}">
-						                                            ${hour}:${minute == 0 ? '00' : minute}
-						                                        </option>
-						                                    </c:forEach>
-						                                </c:forEach>
-						                            </select>&nbsp;
-						                        </c:when>
+						                   <c:choose>
+											    <c:when test="${bk.subName eq '회의실'}">
+											        <select id="start" name="bkStartTime" class="form-control" style="width: 110px;">
+											            <c:forEach var="hour" begin="9" end="17">
+											                <c:forEach var="minute" begin="0" end="30" step="30">
+											                    <c:if test="${hour != 17 || minute == 0}">
+											                        <c:set var="time" value="${hour < 10 ? '0' : ''}${hour}:${minute == 0 ? '00' : minute}"/>
+											                        <option value="${time}" ${time == bk.bkStartTime ? 'selected' : ''}>
+											                            ${time}
+											                        </option>
+											                    </c:if>
+											                </c:forEach>
+											            </c:forEach>
+											        </select>
+											        &nbsp;&nbsp;<span>~</span>&nbsp;&nbsp;
+											        <select id="end" name="bkEndTime" class="form-control" style="width: 110px;">
+											            <!-- 기본적으로 끝나는 시간을 미리 생성 -->
+											            <c:forEach var="hour" begin="10" end="18">
+											                <c:forEach var="minute" begin="0" end="30" step="30">
+											                    <c:set var="time" value="${hour}:${minute == 0 ? '00' : minute}"/>
+											                    <option value="${time}" ${time == bk.bkEndTime ? 'selected' : ''}>
+											                        ${time}
+											                    </option>
+											                </c:forEach>
+											            </c:forEach>
+											        </select>&nbsp;
+											    </c:when>
 						                         <c:when test="${bk.subName eq '차량'}">
 											        <c:set var="ymdEnd" value="${bk.bkEndDate}" />
 											        <c:set var="ymdEndArr" value="${fn:split(ymdEnd, '/')}"/>
@@ -436,8 +428,43 @@
 			})
 		}
 		
-	
-    
+		document.addEventListener("DOMContentLoaded", function() {
+		    var startSelect = document.getElementById("start");
+		    var endSelect = document.getElementById("end");
+
+		    startSelect.addEventListener("change", function() {
+		        var selectedStartTime = this.value.trim();
+		        var startTimeParts = selectedStartTime.split(':');
+		        var startHour = parseInt(startTimeParts[0]);
+		        var startMinute = parseInt(startTimeParts[1]);
+
+		        endSelect.innerHTML = ""; // Clear existing options
+
+		        // Add 1 hour to selected start time and set it as the initial end time
+		        var initialHour = startHour + 1;
+		        var initialMinute = startMinute;
+
+		        // If the initial hour exceeds 18, set it to 18 and minute to 0
+		        if (initialHour >= 18) {
+		            initialHour = 18;
+		            initialMinute = 0;
+		        }
+
+		        // Loop through hours and minutes to populate end time options
+		        for (var hour = initialHour; hour <= 18; hour++) {
+		            for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
+		                if (hour === 18 && minute > 0) continue; // No need to go beyond 18:00
+		                var optionHour = hour < 10 ? '0' + hour : hour;
+		                var optionMinute = minute === 0 ? '00' : minute;
+		                var optionValue = optionHour + ':' + optionMinute;
+		                var option = document.createElement("option");
+		                option.value = optionValue;
+		                option.textContent = optionValue;
+		                endSelect.appendChild(option);
+		            }
+		        }
+		    });
+		});
 	</script>
 
 

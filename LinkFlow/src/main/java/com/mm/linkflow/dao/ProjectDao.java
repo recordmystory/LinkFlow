@@ -93,4 +93,49 @@ public class ProjectDao {
 	public void deleteProject(int proNo) {
 		sql.update("projectMapper.deleteProject", proNo);
 	}
+	
+	// 프로젝트 인원 조회
+	public List<DispatchDto> listDispatch(PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.listDispatch", null, rowBounds);
+	}
+	
+	// 프로젝트 인원 수 조회
+	public int listDispatchCount() {
+		return sql.selectOne("projectMapper.listDispatchCount");
+	}
+	
+	// 인원 검색 수 조회
+	public int searchDispatchCount(Map<String, String> search) {
+		return sql.selectOne("projectMapper.searchDispatchCount", search);
+	}
+	
+	// 인원 검색 조회
+	public List<DispatchDto> searchDispatchList(Map<String, String> search, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.searchDispatchList", search, rowBounds);
+	}
+	
+	// 본인 프로젝트 조회
+	public List<DispatchDto> myDispatchList(String userId, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.myDispatchList", userId, rowBounds);
+	}
+	
+	// 본인 프로젝트 카운트 조회
+	public int myDispatchCount(String userId) {
+		return sql.selectOne("projectMapper.myDispatchCount", userId);
+	}
 }

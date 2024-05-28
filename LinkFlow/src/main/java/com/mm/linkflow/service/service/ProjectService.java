@@ -48,4 +48,22 @@ public interface ProjectService {
 	
 	// 프로젝트 삭제
 	void deleteProject(int proNo);
+	
+	// 프로젝트 인원 조회
+	List<DispatchDto> listDispatch(PageInfoDto pi);
+	
+	// 프로젝트 인원 수 조회
+	int listDispatchCount();
+	
+	// 인원 검색 수 조회
+	int searchDispatchCount(Map<String, String> search);
+	
+	// 인원 검색 조회
+	List<DispatchDto> searchDispatchList(Map<String, String> search, PageInfoDto pi);
+	
+	// 본인 프로젝트 조회
+	List<DispatchDto> myDispatchList(String userId, PageInfoDto pi);
+	
+	// 본인 프로젝트 카운트 조회
+	int myDispatchCount(String userId);
 }

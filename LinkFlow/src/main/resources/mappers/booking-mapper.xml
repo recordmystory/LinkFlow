@@ -106,14 +106,14 @@
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
-		  ,status
+		  ,b.status
      from tb_booking b
      join tb_assets a using (assets_no)
      join tb_common c using (main_code)
     where booking_id = #{userId}
       and a.sub_code= c.sub_code
       and b.del_yn = 'N'
-
+	order by b.mod_date desc
 </select>
 
 <select id="selectDetailAssList" resultMap="assResult">
@@ -372,7 +372,7 @@
 	  and a.sub_code = c.sub_code
 	  and b.del_yn = 'N'
 	  and a.del_yn = 'N'
-	order by booking_no desc
+	order by b.mod_date desc
 </select>
 
 <select id="selectSupStatusCount" resultType="_int">
@@ -434,7 +434,7 @@
 	  and user_name like '%'|| #{keyword} || '%'
 	  </when>
 	  </choose>
-	order by booking_no desc
+	order by status_date desc
 </select>
 
 <update id="updateSupBkConfirm">
@@ -488,16 +488,13 @@
 	  		    where user_id = #{userId}
 	  		    group by dept_code
 	  		  )
-	  		 ,( select assets_no
-	  		 	  from tb_assets
-	  		 	 where assets_name = #{assetsName}
-	  		 	 group by assets_no
-	  		  )
+	  		 ,#{assetsNo}
 	  		 ,#{bkContent}
 	  		 <choose>
 	  		 <when test='mainName == "시설"'>
 	         , TO_DATE(#{bkStartDate} || #{bkStartTime}, 'YYYY/MM/DD HH24:MI')
 	         , TO_DATE(#{bkStartDate}|| #{bkEndTime}, 'YYYY/MM/DD HH24:MI')
+	         
 		     </when>
 		     <when test='subName == "차량"'>
 	         , TO_DATE(#{bkStartDate}, 'YYYY/MM/DD')
@@ -515,4 +512,56 @@
 	  		)
 </insert>
 
+<select id="modalSetDtoList" resultMap="assResult">
+	select 
+			assets_no
+		  , assets_name
+		  , sub_name
+		  , main_name
+	 from tb_assets a
+	 join tb_common c on a.main_code = c.main_code
+	where a.del_yn ='N'
+	  and a.sub_code = c.sub_code
+	  and use_yn = 'Y'
+	order by a.assets_no desc
+</select>
+
+<select id="selectRoomWaitList" resultMap="bkResult">
+	select 
+		   booking_no
+		  ,user_name
+		  ,dept_title
+		  ,to_char(bk_start_dt, 'yyyy/mm/dd') as bk_start_date
+		  ,to_char(bk_start_dt, 'hh24:mi') as bk_start_time
+		  ,to_char(bk_end_dt, 'hh24:mi') as bk_end_time
+		  ,to_char(b.mod_date, 'yy/mm/dd hh24:mi:ss') as enr_date
+		  ,bk_content
+		  ,a.assets_name
+	  from tb_booking b
+	  join tb_assets a on (a.assets_no = b.assets_no)
+	  join tb_member m on (booking_id = user_id)
+	  join tb_dept d on (m.dept_code = d.dept_code)
+	 where b.del_yn = 'N'
+	   and b.status = 'WAI'
+	   and a.main_code = '002-'
+	 order by b.mod_date asc
+</select>
+
+<update id="updateRoomBooking">
+	update tb_booking
+	  set
+	      <choose>
+	      <when test='rejContent !="" and rejContent != null'>
+	      status = 'REJ',
+	      rej_content = #{rejContent}
+	      </when>
+	      <otherwise>
+	      status = 'COM'
+	      </otherwise>
+	      </choose>
+	      , status_date = sysdate
+	      , reg_id = sysdate
+	      , mod_id = #{userId}
+	where booking_no = #{bookingNo}
+</update>
 </mapper>

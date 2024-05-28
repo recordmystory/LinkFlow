@@ -22,4 +22,7 @@ public class DispatchDto extends CommonDto {
 	private String endDate;
 	private String disYn;
 	private String userName;
+	private String proTitle;
+	private String client;
+	private String deptTitle;
 }

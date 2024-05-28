@@ -23,6 +23,9 @@
 		<result column="END_DATE" property="endDate"/>
 		<result column="DIS_YN" property="disYn"/>
 		<result column="USER_NAME" property="userName"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="CLIENT" property="client"/>
+		<result column="DEPT_TITLE" property="deptTitle"/>
 	</resultMap>
 	
 	<!-- 프로젝트 등록 -->
@@ -190,7 +193,7 @@
 		  JOIN TB_DEPT USING (DEPT_CODE)
 		 WHERE PRO_NO = #{no}
 	</select>
-	
+
 	<!-- 파견인원 등록 -->
 	<insert id="addDispatch">
 		INSERT
@@ -273,4 +276,113 @@
 		   SET DEL_YN = 'Y'
 		 WHERE PRO_NO = #{proNo}
 	</update>
+	
+	<!-- 프로젝트 인원 조회 -->
+	<select id="listDispatch" resultMap="disResult">
+		SELECT
+		       D.PRO_NO
+		     , CLIENT
+		     , PRO_TITLE
+		     , USER_NAME
+		     , DEPT_TITLE
+		     , TO_CHAR(D.START_DATE, 'YYYY-MM-DD') START_DATE
+		     , TO_CHAR(D.END_DATE, 'YYYY-MM-DD') END_DATE
+		     , DIS_YN
+		  FROM TB_DISPATCH D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M USING (USER_ID)
+          JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
+		 WHERE DIS_YN = 'N'
+		 ORDER
+		    BY D.PRO_NO DESC
+	</select>
+	
+	<!-- 프로젝트 인원 수 조회 -->
+	<select id="listDispatchCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_DISPATCH
+		 WHERE DIS_YN = 'N'
+	</select>
+	
+	<!-- 인원 검색 수 조회 -->
+	<select id="searchDispatchCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_DISPATCH
+		  JOIN TB_PROJECT USING (PRO_NO)
+		 WHERE DIS_YN = 'N'
+		<if test="startDate != null and startDate != ''">
+           AND START_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND END_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
+    	</if>
+	</select>
+	
+	<!-- 인원 검색 리스트 조회 -->
+	<select id="searchDispatchList" resultMap="disResult">
+		SELECT
+		       D.PRO_NO
+		     , CLIENT
+		     , PRO_TITLE
+		     , USER_NAME
+		     , DEPT_TITLE
+		     , TO_CHAR(D.START_DATE, 'YYYY-MM-DD') START_DATE
+		     , TO_CHAR(D.END_DATE, 'YYYY-MM-DD') END_DATE
+		     , DIS_YN
+		  FROM TB_DISPATCH D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M USING (USER_ID)
+          JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
+		 WHERE DIS_YN = 'N'
+		 <if test="startDate != null and startDate != ''">
+           AND D.START_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND D.END_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'client'">
+    	   AND CLIENT LIKE '%' || #{keyword} || '%'
+    	</if>
+    	 ORDER
+    	    BY D.PRO_NO DESC
+	</select>
+	
+	<!-- 본인 프로젝트 조회 -->
+	<select id="myDispatchList" resultMap="disResult">
+		SELECT
+		       D.PRO_NO
+		     , CLIENT
+		     , PRO_TITLE
+		     , USER_NAME
+		     , DEPT_TITLE
+		     , TO_CHAR(D.START_DATE, 'YYYY-MM-DD') START_DATE
+		     , TO_CHAR(D.END_DATE, 'YYYY-MM-DD') END_DATE
+		     , DIS_YN
+		  FROM TB_DISPATCH D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M USING (USER_ID)
+          JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
+		 WHERE DIS_YN = 'N'
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 본인 프로젝트 개수 조회 -->
+	<select id="myDispatchCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM TB_DISPATCH
+		 WHERE DIS_YN = 'N'
+		   AND USER_ID = #{userId}
+	</select>
 </mapper>

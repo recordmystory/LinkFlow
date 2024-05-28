@@ -24,7 +24,18 @@
   	 <result column="MOD_DATE" property="modDate"/>
  </resultMap>
 						
+	<resultMap type="DeptDto" id="deptResult" extends="commonMapper.commonResult">
+		<result column="DEPT_CODE" property="deptCode"/>
+		<result column="DEPT_TITLE" property="deptTitle"/>
 		
+		<collection property="memberList" ofType="MemberDto">
+			<id column="USER_ID" property="userId"/>
+			<result column="USER_NAME" property="userName"/>
+			<result column="sub_name" property="subName"/>
+		</collection>
+
+	</resultMap>
+	
 	<!-- 일정등록 -->
 	<insert id="insertSch">
 	    INSERT INTO TB_SCHEDULE
@@ -205,33 +216,7 @@
 
 		INSERT INTO TB_CALENDAR
 		    (
-		        CAL_NO,
-		        REG_ID,
-		        DEPT_CODE,
-		        CAL_SUB_CODE,
-		        REG_DATE,
-		        MOD_DATE,
-		        MOD_ID,
-		        DEL_YN,
-		        CAL_COLOR
-		    )
-		    SELECT 
-		        SEQ_CALNO.nextval,
-		        #{userId},
-		        #{deptCode},
-		        sub.CAL_SUB_CODE,
-		        SYSDATE,
-		        SYSDATE,
-		        #{userId},
-		        'N',
-		        CASE
-		            WHEN sub.CAL_SUB_CODE = '01' THEN '#a82626c3'
-		            WHEN sub.CAL_SUB_CODE = '02' THEN '#104fa1c3'
-		            WHEN sub.CAL_SUB_CODE = '03' THEN '#358657c3'
-		            ELSE null
-		        END
-		    FROM
-		        (SELECT '01' AS CAL_SUB_CODE FROM DUAL
+_CODE FROM DUAL
 		         UNION ALL
 		         SELECT '02' AS CAL_SUB_CODE FROM DUAL
 		         UNION ALL
@@ -239,4 +224,25 @@
 		         UNION ALL
 		         SELECT '04' AS CAL_SUB_CODE FROM DUAL) sub	 
 	  </insert>
+	  
+	 <!-- 제이트리 조직도 멤버조회 -->
+	<select id="selecteMemberList" resultMap="deptResult">
+		SELECT 
+             D.DEPT_CODE       
+               , D.DEPT_TITLE 
+               , M.USER_NAME 
+               , C.SUB_NAME 
+               , M.USER_ID
+		FROM 
+		    TB_DEPT D 
+		LEFT OUTER JOIN 
+		    TB_MEMBER M ON D.DEPT_CODE = M.DEPT_CODE AND M.DEL_YN = 'N'
+		LEFT JOIN 
+		    TB_COMMON C ON M.RANK_BCODE = C.MAIN_CODE AND M.RANK_SCODE = C.SUB_CODE
+		WHERE 
+		    D.DEL_YN = 'N'
+		
+		ORDER BY 
+        D.DEPT_CODE
+	</select>
 </mapper>

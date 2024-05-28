@@ -40,19 +40,13 @@ public class ProjectController {
 	
 	// 프로젝트 목록 조회
 	@GetMapping("/list.pj")
-	public ModelAndView listProject(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage
-			                      , String id, String posi) {
-//		if(posi.equals("팀장")) {
+	public ModelAndView listProject(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage) {
 			int listCount = proService.selectProjectCount();
 			PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 			mv.addObject("list", proService.listProject(pi))
 			.addObject("pi", pi)
 			.setViewName("project/listProject");
 			
-//		}else {
-//			int listCount = 
-//		}
-		
 		return mv;
 	}
 	
@@ -64,9 +58,6 @@ public class ProjectController {
 			                    , ModelAndView mv) {
 		Map<String, String> search = new HashMap<>();
 		
-		System.out.println(startDate);
-		System.out.println(endDate);
-		
 		search.put("startDate", startDate);
 		search.put("endDate", endDate);
 		search.put("category", category);
@@ -76,7 +67,6 @@ public class ProjectController {
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<ProjectDto> list = new ArrayList<>();
 		list = proService.searchListProject(search, pi);
-		log.debug("pi : {}", pi);
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
@@ -185,5 +175,65 @@ public class ProjectController {
 		proService.deleteProject(no);
 		
 		return "redirect:/project/list.pj";
+	}
+	
+	// 프로젝트 인원 조회
+	@GetMapping("list.dis")
+	public ModelAndView listDispatch(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage) {
+		
+		int listCount = proService.listDispatchCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DispatchDto> list = new ArrayList<>();
+		
+		list = proService.listDispatch(pi);
+		
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("project/listDispatch");
+		
+		return mv;
+		
+	}
+	
+	// 파견인원 검색 조회
+	@GetMapping("search.dis")
+	public ModelAndView searchDispatchList(String startDate, String endDate, String category, String keyword
+			                    		 , @RequestParam(value="page", defaultValue="1")int currentPage
+			                    		 , ModelAndView mv) {
+		Map<String, String> search = new HashMap<>();
+		
+		search.put("startDate", startDate);
+		search.put("endDate", endDate);
+		search.put("category", category);
+		search.put("keyword", keyword);
+		
+		int listCount = proService.searchDispatchCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DispatchDto> list = new ArrayList<>();
+		list = proService.searchDispatchList(search, pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("search", search)
+		  .setViewName("project/listDispatch");
+	    
+	    return mv;
+	}
+	
+	// 본인 프로젝트 조회
+	@ResponseBody
+	@GetMapping("myList.dis")
+	public Map<String, Object> myDispatchList(String userId, @RequestParam(value="page", defaultValue="1")int currentPage){
+		
+		Map<String, Object> map = new HashMap<>();
+		int listCount = proService.myDispatchCount(userId);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DispatchDto> list = new ArrayList<>();
+		list = proService.myDispatchList(userId, pi);
+		map.put("list", list);
+		map.put("pi", pi);
+		
+		return map;
+		
 	}
 }

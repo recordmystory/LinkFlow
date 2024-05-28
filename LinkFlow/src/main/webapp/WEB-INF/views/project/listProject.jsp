@@ -179,7 +179,6 @@
 	        $("#pagingArea a").on("click", function(){
      			$("#searchForm input[name=page]").val($(this).text());
      			$("#searchForm").submit();
-     			//location.href = '${contextPath}/project/search.pj?category=${search.category}&keyword=${search.keyword}&page=' + $(this).text();
      			return false;
 	   		});
 		});
