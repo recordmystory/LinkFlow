@@ -468,6 +468,7 @@
     join tb_common c on (c.sub_code = m.rank_scode)
    where r.del_yn = 'N'
    	 and ref_no = #{no}
+   	 and c.main_code = '007-'
    order
    		by reply_no
   </select>

@@ -176,6 +176,10 @@ public class MailController {
                 usernameList.add(username);
             }
         }
+        
+        if(emailArray.length != usernameList.size()) {
+        	return null;
+        }
 
         return usernameList.toArray(new String[0]);
     }
