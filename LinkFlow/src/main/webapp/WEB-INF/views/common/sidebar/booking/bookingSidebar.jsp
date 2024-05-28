@@ -296,178 +296,205 @@ select{
 		<!--사이드바 끝-->
 	</div>
 	<script>
-	    $(document).ready(function () {
-	      $('.dropdown-item').click(function () {
-	        var selectedText = $(this).find('.spanCss').text();
-	        $('.resultArea').text(selectedText);
-	      });
-		})
-		
-		
-		function bookingSet(){
-	    	dateSet();
-	    	setDto();
-	    }
+    $(document).ready(function () {
+      $('.dropdown-item').click(function () {
+        var selectedText = $(this).find('.spanCss').text();
+        $('.resultArea').text(selectedText);
+      });
+	})
+	
+	
+	function bookingSet(){
+    	dateSet();
+    	setDto();
+    }
 	    
-	    function dateSet() {
-	        var now = new Date();
-	        console.log(now);
-	        /***************************** 날짜 초기화 ***********************************/
-	        $(".setYear").empty();
-	        $(".setMonth").empty();
-	        $(".setDay").empty();
-	        $("#endYear").empty();
-	        $("#endMonth").empty();
-	        $("#endDay").empty();
-	        
-	        var setDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-	        // 년도 셋팅
-	        $(".setYear").append("<option value='" + now.getFullYear() + "'>" + now.getFullYear() + "</option>");
-	        if (now.getMonth() == 11) {
-	            var nextYear = Number($(".setYear").val()) + 1;
-	            $(".setYear").append("<option value='" + nextYear + "'>" + nextYear + "</option>");
-	        }
-	        
-	        // 월 셋팅
-	        var currentMonth = String(now.getMonth() + 1).padStart(2, '0');
-	        var nextMonth = String(now.getMonth() + 2).padStart(2, '0');
-	        $(".setMonth").append("<option value='" + currentMonth + "'>" + currentMonth + "</option>");
-	        $(".setMonth").append("<option value='" + nextMonth + "'>" + nextMonth + "</option>");
-	        
-	        // 일 셋팅
-	        var currentDay = String(now.getDate()).padStart(2, '0');
-	        $(".setDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
-	        
-	        for (var i = now.getDate(); i <= setDate.getDate(); i++) {
-	            if (i != now.getDate()) {
-	                var day = String(i).padStart(2, '0');
-	                $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
-	            }
-	        }
-	        /***************************** 날짜 초기화 ***********************************/
-	        
-	        $(".setYear").change(function() {
-	            $(".setDay").empty();
-	            var tempDate = new Date($(this).val(), $(".setMonth").val() - 1, 0);
-	            for (var i = 1; i <= tempDate.getDate(); i++) {
-	                var day = String(i).padStart(2, '0');
-	                $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
-	            }
-	        });
-	        
-	        $(".setMonth").change(function() {
-	            $(".setDay").empty();
-	            var tempDate = new Date($(".setYear").val(), $(this).val(), 0);
-	            
-	            if (tempDate.getMonth() != now.getMonth()) {
-	                for (var i = 1; i <= tempDate.getDate(); i++) {
-	                    var day = String(i).padStart(2, '0');
-	                    $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
-	                }
-	            } else {
-	                var currentDay = String(now.getDate()).padStart(2, '0');
-	                $(".setDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
-	                
-	                for (var i = now.getDate(); i <= tempDate.getDate(); i++) {
-	                    if (i != now.getDate()) {
-	                        var day = String(i).padStart(2, '0');
-	                        $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
-	                    }
-	                }
-	            }
-	        });
-	    }
+    function dateSet() {
+        var now = new Date();
+        console.log(now);
+        /***************************** 날짜 초기화 ***********************************/
+        $(".setYear").empty();
+        $(".setMonth").empty();
+        $(".setDay").empty();
+        $("#endYear").empty();
+        $("#endMonth").empty();
+        $("#endDay").empty();
+        
+        var setDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        // 년도 셋팅
+        $(".setYear").append("<option value='" + now.getFullYear() + "'>" + now.getFullYear() + "</option>");
+        $("#endYear").append("<option value='" + now.getFullYear() + "'>" + now.getFullYear() + "</option>");
+        if (now.getMonth() == 11) {
+            var nextYear = Number($(".setYear").val()) + 1;
+            $(".setYear").append("<option value='" + nextYear + "'>" + nextYear + "</option>");
+            $("#endYear").append("<option value='" + nextYear + "'>" + nextYear + "</option>");
+        }
+        
+        // 월 셋팅
+        var currentMonth = String(now.getMonth() + 1).padStart(2, '0');
+        var nextMonth = String(now.getMonth() + 2).padStart(2, '0');
+        $(".setMonth").append("<option value='" + currentMonth + "'>" + currentMonth + "</option>");
+        $(".setMonth").append("<option value='" + nextMonth + "'>" + nextMonth + "</option>");
+        $("#endMonth").append("<option value='" + currentMonth + "'>" + currentMonth + "</option>");
+        $("#endMonth").append("<option value='" + nextMonth + "'>" + nextMonth + "</option>");
+        
+        // 일 셋팅
+        var currentDay = String(now.getDate()).padStart(2, '0');
+        $(".setDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
+        $("#endDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
+        
+        for (var i = now.getDate(); i <= setDate.getDate(); i++) {
+            if (i != now.getDate()) {
+                var day = String(i).padStart(2, '0');
+                $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
+                $("#endDay").append("<option value='" + day + "'>" + day + "</option>");
+            }
+        }
+        /***************************** 날짜 초기화 ***********************************/
+        
+        $(".setYear").change(function() {
+            $(".setDay").empty();
+            var tempDate = new Date($(this).val(), $(".setMonth").val() - 1, 0);
+            for (var i = 1; i <= tempDate.getDate(); i++) {
+                var day = String(i).padStart(2, '0');
+                $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
+                $("#endDay").append("<option value='" + day + "'>" + day + "</option>");
+            }
+        });
+        
+        $(".setMonth").change(function() {
+            $(".setDay").empty();
+            var tempDate = new Date($(".setYear").val(), $(this).val(), 0);
+            
+            if (tempDate.getMonth() != now.getMonth()) {
+                for (var i = 1; i <= tempDate.getDate(); i++) {
+                    var day = String(i).padStart(2, '0');
+                    $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
+                }
+            } else {
+                var currentDay = String(now.getDate()).padStart(2, '0');
+                $(".setDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
+                
+                for (var i = now.getDate(); i <= tempDate.getDate(); i++) {
+                    if (i != now.getDate()) {
+                        var day = String(i).padStart(2, '0');
+                        $(".setDay").append("<option value='" + day + "'>" + day + "</option>");
+                    }
+                }
+            }
+        });
+        
+        $("#endMonth").change(function() {
+            $("#endDay").empty();
+            var tempDate = new Date($("#endYear").val(), $(this).val(), 0);
+            
+            if (tempDate.getMonth() != now.getMonth()) {
+                for (var i = 1; i <= tempDate.getDate(); i++) {
+                    var day = String(i).padStart(2, '0');
+                    $("#endDay").append("<option value='" + day + "'>" + day + "</option>");
+                }
+            } else {
+                var currentDay = String(now.getDate()).padStart(2, '0');
+                $("#endDay").append("<option value='" + currentDay + "'>" + currentDay + "</option>");
+                
+                for (var i = now.getDate(); i <= tempDate.getDate(); i++) {
+                    if (i != now.getDate()) {
+                        var day = String(i).padStart(2, '0');
+                        $("#endDay").append("<option value='" + day + "'>" + day + "</option>");
+                    }
+                }
+            }
+        });
+        
+    }
 
-	    function setDto(){
-	    	let supplies = $("#bk-subName").val();
-	    	$("#bk-room").empty();
-	    	$("#bk-assName").empty();
-	    	
-	    	$.ajax({
-	    		url : '${contextPath}/booking/setDto.bk',
-	    		success:function(result){
-	    			
-	    			for(let i=0; i<result.length; i++){
-    					if(result[i].mainName === '시설'){
-	    					 /* room += "<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>"; */
-	    					$("#bk-room").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].subName + result[i].assetsName +"</option>");
-    					}else if(result[i].subName === supplies){
-    						$("#bk-assName").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].assetsName +"</option>")
-    					
-    					}
-    					
-    				}
-	    			
-	    		}
-	    	})
-	    }
-	    
-	    function changeSup(){
-	    	setDto();
-	    	dateSet();
-	    	
-	    	let supplies = $("#bk-subName").val();
-	    	if(supplies === '차량'){
-	    		$("#notCar").css('display','none');
-	    		$("#sup-car").css('display','block');
-	    	}else{
-	    		$("#notCar").css('display','block');
-	    		$("#sup-car").css('display','none');
-	    	}
-	    }
-	    
-	    function changeBody() {
-	        var selectedValue = document.getElementById('bk-name').value;
-	        var roomContent = document.getElementById('room-content');
-	        var suppliesContent = document.getElementById('supplies-content');
+    function setDto(){
+    	let supplies = $("#bk-subName").val();
+    	$("#bk-room").empty();
+    	$("#bk-assName").empty();
+    	
+    	$.ajax({
+    		url : '${contextPath}/booking/setDto.bk',
+    		success:function(result){
+    			for(let i=0; i<result.length; i++){
+   					if(result[i].mainName === '시설'){
+    					 /* room += "<option value='"+ result[i].assetsName +"'>"+ result[i].subName + result[i].assetsName +"</option>"; */
+    					$("#bk-room").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].subName + result[i].assetsName +"</option>");
+   					}else if(result[i].subName === supplies){
+   						$("#bk-assName").append("<option value='"+ result[i].assetsNo +"'>"+ result[i].assetsName +"</option>")
+   					
+   					}
+   				}
+    		}
+    	})
+    }
+    
+    function changeSup(){
+    	setDto();
+    	dateSet();
+    	
+    	let supplies = $("#bk-subName").val();
+    	if(supplies === '차량'){
+    		$("#notCar").css('display','none');
+    		$("#sup-car").css('display','block');
+    	}else{
+    		$("#notCar").css('display','block');
+    		$("#sup-car").css('display','none');
+    	}
+    }
+    
+    function changeBody() {
+        var selectedValue = document.getElementById('bk-name').value;
+        var roomContent = document.getElementById('room-content');
+        var suppliesContent = document.getElementById('supplies-content');
 
-	        if (selectedValue === '시설') {
-	            roomContent.style.display = 'block';
-	            suppliesContent.style.display = 'none';
-	        } else if (selectedValue === '비품') {
-	            roomContent.style.display = 'none';
-	            suppliesContent.style.display = 'block';
-	        }
-	    }
-	    
-	    document.addEventListener("DOMContentLoaded", function() {
-	        var startSelect = document.getElementById("bk-sTime");
-	        var endSelect = document.getElementById("bk-eTime");
+        if (selectedValue === '시설') {
+            roomContent.style.display = 'block';
+            suppliesContent.style.display = 'none';
+        } else if (selectedValue === '비품') {
+            roomContent.style.display = 'none';
+            suppliesContent.style.display = 'block';
+        }
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        var startSelect = document.getElementById("bk-sTime");
+        var endSelect = document.getElementById("bk-eTime");
 
-	        startSelect.addEventListener("change", function() {
-	            var selectedStartTime = this.value.trim();
-	            var startTimeParts = selectedStartTime.split(':');
-	            var startHour = parseInt(startTimeParts[0]);
-	            var startMinute = parseInt(startTimeParts[1]);
+        startSelect.addEventListener("change", function() {
+            var selectedStartTime = this.value.trim();
+            var startTimeParts = selectedStartTime.split(':');
+            var startHour = parseInt(startTimeParts[0]);
+            var startMinute = parseInt(startTimeParts[1]);
 
-	            endSelect.innerHTML = ""; // Clear existing options
+            endSelect.innerHTML = ""; // Clear existing options
 
-	            for (var hour = startHour; hour < 18; hour++) {
-	                for (var minute = 0; minute <= 30; minute += 30) {
-	                    var endHour = hour;
-	                    var endMinute = minute;
-	                    if (endMinute === 0) {
-	                        endMinute = '00';
-	                    } else {
-	                        endHour += 1;
-	                        endMinute = '00';
-	                    }
-	                    if (endHour === 18 && endMinute > 0) continue; // No need to go beyond 18:00
-	                    var optionHour = endHour < 10 ? '0' + endHour : endHour;
-	                    var optionMinute = endMinute;
-	                    var optionValue = optionHour + ':' + optionMinute;
-	                    var option = document.createElement("option");
-	                    option.value = optionValue;
-	                    option.textContent = optionValue;
-	                    endSelect.appendChild(option);
-	                }
-	            }
-	        });
-	    });
-	    
-	    function submit(){
-	    	
-	    }
-	  </script>
+            for (var hour = startHour; hour < 18; hour++) {
+                for (var minute = 0; minute <= 30; minute += 30) {
+                    var endHour = hour;
+                    var endMinute = minute;
+                    if (endMinute === 0) {
+                        endMinute = '00';
+                    } else {
+                        endHour += 1;
+                        endMinute = '00';
+                    }
+                    if (endHour === 18 && endMinute > 0) continue; // No need to go beyond 18:00
+                    var optionHour = endHour < 10 ? '0' + endHour : endHour;
+                    var optionMinute = endMinute;
+                    var optionValue = optionHour + ':' + optionMinute;
+                    var option = document.createElement("option");
+                    option.value = optionValue;
+                    option.textContent = optionValue;
+                    endSelect.appendChild(option);
+                }
+            }
+        });
+    });
+    
+    function submit(){
+    	
+    }
+ 	 </script>
 </body>
 </html>

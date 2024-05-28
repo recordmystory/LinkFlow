@@ -204,7 +204,7 @@ input[type="checkbox"]:checked {
 		                            
 		                            <input type="text" id="keyword" class="form-control float-right" name="keyword" placeholder="Search">
 		                            <div class="input-group-append">
-		                                <button type="submit" class="btn btn-default" onclick="searchAssets();">
+		                                <button type="submit" class="btn btn-default" onclick="searchAssets(1);">
 		                                    <i class="fas fa-search"></i>
 		                                </button>
 		                            </div>
@@ -337,7 +337,7 @@ input[type="checkbox"]:checked {
             } */
 	    });
 		
-		function searchAssets() { // 검색
+		function searchAssets(num) { // 검색
 		    let mainName = document.getElementById('mainName').value;
 		    let subName = '';
 
@@ -362,6 +362,7 @@ input[type="checkbox"]:checked {
 		            mainName: mainName,
 		            subName: subName,
 		            keyword: keyword
+		            page:num
 		        },
 		        success: function (searchResult) {
 		            let table = "";
@@ -382,13 +383,13 @@ input[type="checkbox"]:checked {
 		                       + "</td></tr>";
 		            }
 		            
-		            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + (pi.currentPage - 1) + "\">&laquo;</a></li>";
+		            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchAssets(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
 					for (let i = pi.startPage; i <= pi.endPage; i++) {
-					    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + i + "\">" + i + "</a></li>";
+					    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchAssets(" + i + ");\"> + i + "</a></li>";
 					}
 
-					page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" href=\"${contextPath}/booking/ass.search?page=" + (pi.currentPage + 1) + "\">&raquo;</a></li>";
+					page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchAssets(" + (pi.currentPage + 1) + ");\">&raquo;</a></li>";
 				
 		            $("#listTable").html(table);
 		            $("#pageArea ul").html(page);

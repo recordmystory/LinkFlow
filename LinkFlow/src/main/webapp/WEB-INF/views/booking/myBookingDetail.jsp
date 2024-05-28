@@ -227,13 +227,15 @@
 									<div class="coment" style="height: 150px;">
 										<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
 								</div>
-								<!-- 비고란에 값이 있을 때만 보여지는 영역 -->
+								
 								<hr>
-								<div style="margin: 40px;">
-									<h4>비고</h4>
-									<div class="coment" style="height: 100px;">${ bk.rejContent }
+								<c:if test="${ bk.status ne '예약대기' }">
+									<div style="margin: 40px;">
+										<h4>반려 사유</h4>
+										<div class="coment" style="height: 100px;" disabled>${ bk.rejContent }
+										</div>
 									</div>
-								</div>
+								</c:if>
 
 							</div>
 						<!-- /.card -->
@@ -329,16 +331,17 @@
 		 		$("#year").append("<option value='"+nextYear+"'>"+nextYear+"</option>");
 		    }
 		 	
-		 	//월 셋팅
-		 	if(detailMonth == now.getMonth()+1){
-			 	for(var i=Number(detailMonth); i<=Number(detailMonth)+1; i++) {
-			 		$("#month").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-		 	}else{
-		 		for(var i=Number(detailMonth)-1; i<=Number(detailMonth); i++) {
-			 		$("#month").append("<option value='"+i+"'>"+i+"</option>");
-			 	}
-		 	}
+		 	 // 월 셋팅
+		     $("#month").append("<option value='" + detailMonth + "'>" + detailMonth + "</option>");
+		     var currentMonth = (now.getMonth() + 1 < 10 ? '0'+(Number(now.getMonth()) + 1) : (Number(now.getMonth()) + 1));
+		     
+		     if (detailMonth == currentMonth) {
+		         var nextMonth = currentMonth < 12 ? Number(currentMonth) + 1 : 1;
+		         $("#month").append("<option value='" + (nextMonth <10 ? '0'+nextMonth : nextMonth) + "'>" + (nextMonth <10 ? '0'+nextMonth : nextMonth) + "</option>");
+		     	
+		     } else {
+		         $("#month").append("<option value='" + currentMonth + "'>" + currentMonth + "</option>");
+		     }
 		 	
 		 	//일 셋팅
 		 	var detailDate = new Date(detailYear, detailMonth, 0);
@@ -359,20 +362,25 @@
 			 	}
 		    });
 		    
-			$("#month").change(function(){
+		    $("#month").change(function(){
 				$("#day").empty();
 				var tempDate = new Date($("#year").val(), $(this).val(), 0);
-				
+				console.log($(this).val());
+			    console.log(tempDate.getMonth());
+			    console.log(now.getMonth());
+			    console.log(detailDay);
+			    
 				if(tempDate.getMonth() != now.getMonth()){
 					for(var i=1; i<=tempDate.getDate(); i++){
-				 		$("#day").append("<option value='"+i+"'>"+i+"</option>");
+				 		$("#day").append("<option value='"+(i < 10 ? '0'+i : i )+"'>"+(i < 10 ? '0'+i : i )+"</option>");
 				 	}
 				}else{
-					$("#day").append("<option value='"+detailDay+"'>"+detailDay+"</option>");
+					$("#day").append("<option value='"+(now.getDate() < 10 ? '0'+(Number(now.getDate())+1) : now.getDate())+"'>"
+													  +(now.getDate() < 10 ? '0'+(Number(now.getDate())+1) : now.getDate())+"</option>");
 				 	
 				 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
 				 		if( i != detailDay){
-				 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+				 			$("#day").append("<option value='"+(i < 10 ? '0'+i : i )+"'>"+(i < 10 ? '0'+i : i )+"</option>");
 				 		}
 				 	}
 				}
@@ -438,22 +446,22 @@
 		        var startHour = parseInt(startTimeParts[0]);
 		        var startMinute = parseInt(startTimeParts[1]);
 
-		        endSelect.innerHTML = ""; // Clear existing options
+		        endSelect.innerHTML = ""; // 종료시간 비우기
 
-		        // Add 1 hour to selected start time and set it as the initial end time
+		        // 시작시간 + 1 = 종료시간
 		        var initialHour = startHour + 1;
 		        var initialMinute = startMinute;
 
-		        // If the initial hour exceeds 18, set it to 18 and minute to 0
+		        // 종료시간이 18일 때 분 0 처리
 		        if (initialHour >= 18) {
 		            initialHour = 18;
 		            initialMinute = 0;
 		        }
 
-		        // Loop through hours and minutes to populate end time options
+		        // 반복문으로 시작시간 변경할 때마다 종료시간 바꿔주기
 		        for (var hour = initialHour; hour <= 18; hour++) {
 		            for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
-		                if (hour === 18 && minute > 0) continue; // No need to go beyond 18:00
+		                if (hour === 18 && minute > 0) continue; // 18시 까지
 		                var optionHour = hour < 10 ? '0' + hour : hour;
 		                var optionMinute = minute === 0 ? '00' : minute;
 		                var optionValue = optionHour + ':' + optionMinute;

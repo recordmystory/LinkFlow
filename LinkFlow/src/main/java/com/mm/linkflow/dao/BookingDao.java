@@ -131,7 +131,7 @@ public class BookingDao {
 		int limit = pi.getBoardLimit();
 		int offset = (pi.getCurrentPage()-1)*limit;
 		RowBounds rowBounds = new RowBounds(offset,limit);
-		return sql.selectList("bkMapper.selectBkWaitList",rowBounds);
+		return sql.selectList("bkMapper.selectBkWaitList",null, rowBounds);
 	}
 
 	public int selectSupStatusCount(Map<String, String> search) {

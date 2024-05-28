@@ -387,7 +387,7 @@
 			  	page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" href='#' onclick=\"bkWaitList(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
 			  	for(let i = pi.startPage; i <= pi.endPage; i++){
-			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'active' : '') + "\"><a class=\"page-link\" href='#' onclick=\"bkWaitList(" + i + ");\">" + i + "</a></li>";
+			  	    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" href='#' onclick=\"bkWaitList(" + i + ");\">" + i + "</a></li>";
 			  	}
 
 			  	page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\"  href='#' onclick=\"bkWaitList(" + (pi.currentPage + 1) + ");\">&raquo;</a></li>";
@@ -459,7 +459,7 @@
 	            page += "<li class='page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "'><a class='page-link' onclick='bkStatusList(" + (pi.currentPage - 1) + ");'>&laquo;</a></li>";
 
 	            for (let i = pi.startPage; i <= pi.endPage; i++) {
-	                page += "<li class=\"page-item " + (pi.currentPage == i ? 'active' : '') + "\"><a class=\"page-link\" onclick='bkStatusList(" + i + ");'>" + i + "</a></li>";
+	                page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" onclick='bkStatusList(" + i + ");'>" + i + "</a></li>";
 	            }
 
 	            page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" onclick='bkStatusList(" + (pi.currentPage + 1) + ");'>&raquo;</a></li>";
