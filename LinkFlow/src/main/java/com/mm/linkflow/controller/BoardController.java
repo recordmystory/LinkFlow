@@ -7,14 +7,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +50,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
+	
+
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	private final BoardService boardService;
 	private final AttachService attachService;
@@ -144,7 +154,7 @@ public class BoardController {
 		}
 
 		int result = boardService.insertBoard(board);
-		
+		log.debug("attachList : {}", attachList);
 		if(attachList.isEmpty() && result == 1 || !attachList.isEmpty() && result == attachList.size()) {
 			redirectAttributes.addFlashAttribute("alertMsg", "게시글 작성에 성공하였습니다.");
 		}else {
@@ -576,4 +586,5 @@ public class BoardController {
 		
 		return boardService.updateReply(reply) > 0 ? "SUCCESS" : "FAIL";
 	}
+	
 }
