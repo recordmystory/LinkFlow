@@ -255,6 +255,13 @@
 		   AND USER_ID = #{userId}
 	</delete>
 	
+	<!-- 프로젝트 & 파견인원 동시 삭제 -->
+	<delete id="deleteProjectDispatch">
+		DELETE
+		  FROM TB_DISPATCH
+		 WHERE PRO_NO = #{proNo}
+	</delete>
+	
 	<!-- 프로젝트 수정 -->
 	<update id="modifyProject">
 		UPDATE

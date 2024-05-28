@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- 네이버 지도 api -->
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wfsx6d3wj7&submodules=geocoder"></script>
 <style type="text/css">
 .wrapper{
  min-height: 100%;
@@ -129,7 +131,8 @@
                                     </div>
                                     <div class="detailTwo">
                                         <span class="btn detailTitle" style="margin-left: 130px; cursor: default; background-color: #17a2b8; color: white;" disabled>고객사</span>
-                                        <button class="btn btn-outline-dark detailContent" style="width: 400px; cursor: default;" disabled>${pro.client}</button>
+                                        <button class="btn btn-outline-dark detailContent" style="width: 307px; cursor: default;" disabled>${pro.client}</button>
+                                        <a class="btn btn-outline-info" data-toggle="modal" href="#mapModal" onclick="mapCreate('${pro.address}')">위치보기</a>
                                         <span class="btn detailTitle" style="margin-left: 150px; cursor: default; background-color: #17a2b8; color: white;" disabled>담당부서</span>
                                         <button class="btn btn-outline-dark detailContent" style="width: 437px; cursor: default;" disabled>${pro.deptName}</button>
                                     </div>
@@ -380,6 +383,28 @@
                     </div>
                 </div>
             </div>
+            <!-- 인원찾기 모달 끝 -->
+            
+            <!-- 지도 모달 시작 -->
+            <div class="modal" id="mapModal">
+	            <div class="modal-dialog">
+	                <div class="modal-content">
+	                    <!-- Modal Header -->
+	                    <div class="modal-header" style="justify-content: center;">
+	                    <h4 class="modal-title">위치보기</h4>
+	                    </div>
+	                    <!-- Modal body -->
+	                    <div class="modal-body" style="display:flex; justify-content: center;">
+	                    <div id="map" style="width:450px; height:300px; display: flex;"></div>
+	                    </div>
+	                    <!-- Modal footer -->
+	                    <div class="modal-footer">
+	                    <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        <!-- 지도 모달 끝 -->
 		</div>
 	</div>
 	<script>
@@ -473,7 +498,35 @@
 					}
 				});
 			}
-		};        
+		};
+		
+		// 지도 api 시작
+        //주소의 정보를 selectMapList 함수로 넘겨준다.
+        function mapCreate(address){
+        naver.maps.Service.geocode({
+                query: address
+            }, function(status, response) {
+            
+                var item = response.v2.addresses[0]
+        
+                selectMapList(item.x, item.y);
+                
+            });
+        };
+
+        //검색정보로 지도를 만들고, 지도에 마커를 찍어준다.
+        function selectMapList(latitude, longitude) {
+
+            var map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(longitude, latitude),
+                zoom: 14
+            });
+            var marker = new naver.maps.Marker({
+                map: map,
+                position: new naver.maps.LatLng(longitude, latitude),
+            });
+        };
+        // 지도 api 끝
     </script>
 </body>
 </html>
