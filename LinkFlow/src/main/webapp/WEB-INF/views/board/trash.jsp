@@ -134,27 +134,6 @@ input[type="checkbox"] {
                     </div>
                 </div>
             </section>
-             <script>
-              	$(document).ready(function(){
-              		$(".origin_del").on("click", function(){
-              			// 삭제하고자 하는 해당 첨부파일 번호를 form submit시 넘기기 위한 작업
-              			// => 해당 form요소내에 input type="hidden" 만들어서 append
-              			let inputEl = document.createElement("input");
-              			inputEl.type = "hidden";
-              			inputEl.name = "delFileNo";
-              			inputEl.value = $(this).data("fileno")
-              			
-              			document.getElementById("updateForm").append(inputEl);
-              			
-              			// 화면으로부터 사라지도록 작업
-              			$(this).parent().remove();
-              			
-              			if ($('#oringFileTr td').children().length === 0) {
-              	            $('#oringFileTr').remove();
-              	    }
-              		})
-              	})
-              </script>
             	<script>
                 function checkAllBoxes() {
                     var checkAll = document.getElementById('checkAll');
@@ -194,6 +173,8 @@ input[type="checkbox"] {
                         if (checkBoxes[i].checked) {
                             selected = true;
                             break;
+                        }else{
+                        	return false;
                         }
                     }
 
@@ -202,8 +183,9 @@ input[type="checkbox"] {
                         		document.getElementById('deleteForm').action = actionUrl;
                             document.getElementById('deleteForm').submit();
                         }
-                    } else {
-                        alert('복구할 항목을 선택하세요.');
+                    }else {
+                       alert('복구할 항목을 선택하세요.');
+                       return false;
                     }
                 }
             </script>

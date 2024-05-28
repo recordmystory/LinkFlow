@@ -69,26 +69,29 @@ input[type="checkbox"] {
                     <div class="contentArea">
                         <div class="contentInElement">
                             <div class="btnArea">
-                                <button class="btn btn-primary btn-lg" style="margin-right: 6px;">삭제하기</button>
+                                <button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmDelete();">삭제하기</button>
                             </div>
                             <div class="form-inline">
+                                <form id="searchForm" action="${contextPath }/mail/sendSearch.do" method="get" align="center">
                                 <div class="input-group">
+                                		<input type="hidden" name="page" value="">
                                     <div class="select" style="margin-right: 15px;">
-                                        <select name="" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
-                                            <option value="all">작성자</option>
-                                            <option value="wait">제목</option>
-                                            <option value="complete">내용</option>
+                                        <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
+                                            <option value="mail_title">제목</option>
+                                            <option value="mail_content">내용</option>
                                         </select>
                                     </div>
-                                    <input class="form-control form-control-sidebar" type="search" placeholder="검색하기" aria-label="Search">
+                                    <input name="keyword" class="form-control form-control-sidebar" type="search" placeholder="검색하기" aria-label="Search" value="${search.keyword }">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-search fa-fw"></i>
                                         </button>
                                     </div>
                                 </div>
+                               </form>
                             </div>
                         </div>
+	                    	<form id="deleteForm" action="${contextPath}/mail/delete.do" method="get">
                         <div style="min-height: 500px; min-width: 100%;">
                             <div class="card">
                                 <div class="card-body table-responsive p-0">
@@ -112,7 +115,7 @@ input[type="checkbox"] {
                                         		<c:otherwise>
                                             <c:forEach var="m" items="${sendMailList}">
                                      					<tr onclick="location.href='${contextPath}/mail/detail.page?&no=${ m.mailNo }';">
-                                                <td><input type="checkbox" class="checkBox"></td>
+                                                <td><input name="no" value="${ m.mailNo }"  type="checkbox" class="checkBox" onclick="event.stopPropagation();"></td>
                                                 <td><i class="fa-solid fa-envelope-open fa-xl"></i></td>
                                                 <td>${m.userName }</td>
                                                 <td>${m.mailTitle }</td>
@@ -138,10 +141,26 @@ input[type="checkbox"] {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        	</div>
+                        </form>
                     </div>
                 </div>
             </section>
+            <c:if test="${not empty search }">
+						  <script>
+						  	$(document).ready(function(){
+						  		$("#searchForm select").val("${search.condition}");
+						  		
+						  		// 검색후 페이지일 경우 페이징바의 페이지 클릭시
+						  		$("#pagingArea a").on("click", function(){
+						  			$("#searchForm input[name=page]").val($(this).text());
+						  			$("#searchForm").submit();
+						  			//
+						  			return false; // 기본이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
+						  		})
+						  	})
+						  </script>
+						 </c:if>
             <script>
                 function checkAllBoxes() {
                     var checkAll = document.getElementById('checkAll');
@@ -149,6 +168,29 @@ input[type="checkbox"] {
 
                     for (var i = 0; i < checkBoxes.length; i++) {
                         checkBoxes[i].checked = checkAll.checked;
+                    }
+                }
+                
+                function confirmDelete() {
+                    var checkBoxes = document.getElementsByClassName('checkBox');
+                    var selected = false;
+
+                    for (var i = 0; i < checkBoxes.length; i++) {
+                        if (checkBoxes[i].checked) {
+                            selected = true;
+                            break;
+                        }
+                    }
+
+                    if (selected) {
+                        if (confirm('정말 삭제하시겠습니까?')) {
+                            document.getElementById('deleteForm').submit();
+                        }else{
+                        	 return false;
+                        }
+                    } else {
+                        alert('삭제할 항목을 선택하세요.');
+                        return false;
                     }
                 }
             </script>

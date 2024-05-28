@@ -1,7 +1,11 @@
 package com.mm.linkflow.service.impl;
 
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +20,9 @@ import com.mm.linkflow.dto.SendMailDto;
 import com.mm.linkflow.service.service.MailService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MailServiceImpl implements MailService {
@@ -68,16 +74,16 @@ public class MailServiceImpl implements MailService {
 	public int insertSendMail(SendMailDto sendMail) {
 
 		int result1 = mailDao.insertSendMail(sendMail);
-		
-		int result2 = 1;
+		int result2 = mailDao.insertSendReMail(sendMail);
+		int result3 = 1;
 		List<AttachDto> attachList = sendMail.getAttachList();
-		if(!attachList.isEmpty()) {
-			result2 = 0;
+		if(attachList != null) {
+			result3 = 0;
 			for(AttachDto at : attachList) {
-				result2 += attachDao.insertAttach(at);
+				result3 += attachDao.insertAttach(at);
 			}
 		}
-		return result1 * result2;
+		return result1 * result2 * result3;
 	}
 
 	@Override
@@ -100,7 +106,7 @@ public class MailServiceImpl implements MailService {
 		int result1 = mailDao.updateTempSaveMail(mail);
 		int result2 = delFileNo == null ? 1
 										: attachDao.deleteAttach(delFileNo);
-		
+
 		List<AttachDto> list = mail.getAttachList();
 		int result3 = 0;
 		if(list != null) {
@@ -113,7 +119,7 @@ public class MailServiceImpl implements MailService {
 		
 		return result1 == 1
 				&& result2 > 0
-					&& result3 == list.size() 
+					&& result3 == list.size()
 						? 1 : -1 ;
 	}
 
@@ -128,11 +134,70 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int insertTempSaveMail(int mailNo, String[] receivceEmailId) {
+	public int insertTempSaveReceiveMail(int mailNo, String[] receivceEmailId) {
 		int result=0;
 		for(int i=0; i< receivceEmailId.length; i++) {
-			result += mailDao.insertTempSaveMail(mailNo, receivceEmailId[i]);
+			result += mailDao.insertTempSaveReceiveMail(mailNo, receivceEmailId[i]);
 		}
 		return result;
+	}
+
+	@Override
+	public int deleteMail(HashMap <String, Object> map) {
+		return mailDao.deleteMail(map);
+	}
+
+	@Override
+	public List<ReceiveMailDto> selectTrashList(PageInfoDto pi, String userId) {
+		return mailDao.selectTrashList(pi, userId);
+	}
+
+	@Override
+	public int reStoreMail(HashMap<String, Object> map) {
+		return mailDao.reStoreMail(map);
+	}
+
+	@Override
+	public int removeMail(List<Integer> no) {
+		int result1 = mailDao.removeMail(no);
+		return result1;
+	}
+
+	@Override
+	public int removeTempSave(List<Integer> no) {
+		int result2 = 1;
+		for(int index : no) {
+			List<String> delFileNo = attachDao.selectDelMailFileNo(index); 
+			
+			if(delFileNo != null) {
+				
+				String[] delFileNoArray = new String[delFileNo.size()];
+				delFileNo.toArray(delFileNoArray);
+				
+				for(int i=0; i<delFileNoArray.length; i++) {
+					log.debug("delFileNoArray[{}] : {}", i, delFileNoArray[i]);
+				}
+				
+				result2 = attachDao.deleteAttach(delFileNoArray);	
+				
+				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
+				for(AttachDto at : delFileList) {
+					new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+				}
+			}
+		}
+		int result3 = mailDao.removeTempSaveChild(no);
+		int result1 = mailDao.removeTempSave(no);
+		return result1 * result2 * result3;
+	}
+
+	@Override
+	public int selectSearchCount(Map<String, String> search) {
+		return mailDao.selectSearchCount(search);
+	}
+
+	@Override
+	public List<SendMailDto> selectSearchList(PageInfoDto pi, Map<String, String> search) {
+		return mailDao.selectSearchList(pi, search);
 	}
 }

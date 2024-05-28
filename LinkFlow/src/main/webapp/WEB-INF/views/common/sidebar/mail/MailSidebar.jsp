@@ -73,7 +73,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link middleName">
+            <a href="${ contextPath }/mail/trash.page" class="nav-link middleName">
               <i class="nav-icon far-2xl fa-solid fa-trash"></i>
               <p>휴지통 <c:if test="${countMap.trashCount != 0 }">(${ countMap.trashCount})</c:if></p>
             </a>

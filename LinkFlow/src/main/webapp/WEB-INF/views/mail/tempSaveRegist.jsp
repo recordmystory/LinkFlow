@@ -86,7 +86,7 @@
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="LinkFlowMainSection">
-        <jsp:include page="/WEB-INF/views/common/sidebar/board/boardSidebar.jsp"/>
+        <jsp:include page="/WEB-INF/views/common/sidebar/mail/MailSidebar.jsp"/>
         <div class="LinkFlowMainContent">
             <!-- Content Header (Page header) -->
             <section class="content-header">

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -272,6 +273,7 @@ public class MailController {
 					   , RedirectAttributes redirectAttributes) {
 		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		sendMail.setRegId(String.valueOf(loginUser.getUserId()));
 		sendMail.setModId(String.valueOf(loginUser.getUserId()));
 		sendMail.setTempSave("02");
 		log.debug("receiveUser : {}", receiveUser);
@@ -297,7 +299,7 @@ public class MailController {
 		}
 
 		int result1 = mailService.updateTempSaveMail(sendMail, delFileNo);
-		int result2 = mailService.insertTempSaveMail(sendMail.getMailNo(), receivceEmailId);
+		int result2 = mailService.insertTempSaveReceiveMail(sendMail.getMailNo(), receivceEmailId);
 
 		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
 			for(AttachDto at : delFileList) {
@@ -310,5 +312,146 @@ public class MailController {
 		}
 		
 		return "redirect:/mail/detail.page?no=" + sendMail.getMailNo();
+	}
+	
+	
+	@GetMapping("/delete.do") 
+	public String delete(@RequestParam(value = "no")List<Integer> no
+					   , HttpSession session
+				       , RedirectAttributes redirectAttributes) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		HashMap <String, Object> map = new HashMap<>();
+		map.put("userId", loginUser.getUserId());
+		map.put("mailNoList", no);
+		int result = mailService.deleteMail(map);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:/mail/receiveList.do?page=1";
+	}
+	
+	@GetMapping("/trash.page")
+	public String trashForm(Model model, HttpSession session
+						  , @RequestParam(value="page", defaultValue="1")int currentPage) { 
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		int listCount = countMap.get("trashCount");
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<ReceiveMailDto> trashList = mailService.selectTrashList(pi, loginUser.getUserId());
+		
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("countMap", countMap);
+		model.addAttribute("trashList", trashList);
+		return "mail/trash";
+	}
+	
+	@GetMapping("/reStore.do") 
+	public String reStore(@RequestParam(value = "no")List<Integer> no
+					   , HttpSession session
+				       , RedirectAttributes redirectAttributes) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		HashMap <String, Object> map = new HashMap<>();
+		map.put("userId", loginUser.getUserId());
+		map.put("mailNoList", no);
+		int result = mailService.reStoreMail(map);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "복구에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 복구에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return"redirect:/mail/trash.page";
+	}
+	
+	@GetMapping("/remove.do") 
+	public String removeList(@RequestParam(value = "no")List<Integer> no
+						, HttpServletRequest request
+				        , RedirectAttributes redirectAttributes) {
+
+		int result = mailService.removeMail(no);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:" + request.getHeader("referer");
+	}
+	
+	@GetMapping("/removeTempSave.do") 
+	public String removeTempSave(@RequestParam(value = "no")List<Integer> no
+						, HttpServletRequest request
+				        , RedirectAttributes redirectAttributes) {
+
+		int result = mailService.removeTempSave(no);
+
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "삭제에 성공하였습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", " 삭제에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("histortyBackYN", "Y");
+		}
+		
+		return "redirect:" + request.getHeader("referer");
+	}
+	
+	@GetMapping("/receiveSearch.do")
+	public ModelAndView receiveSearch(
+					   @RequestParam(value="page", defaultValue="1") int currentPage,
+					   @RequestParam Map<String, String> search,
+					   HttpSession session,
+					   ModelAndView mv) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		search.put("userId", loginUser.getUserId());
+		search.put("type", "R");
+		int listCount = mailService.selectSearchCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<SendMailDto> receiveMailList = mailService.selectSearchList(pi, search);
+		
+		mv.addObject("pi", pi)
+		  .addObject("receiveMailList", receiveMailList)
+		  .addObject("countMap", countMap)
+		  .addObject("search", search)
+		  .setViewName("mail/receiveList");
+		
+		return mv;
+	}
+	
+	@GetMapping("/sendSearch.do")
+	public ModelAndView sendSearch(
+					   @RequestParam(value="page", defaultValue="1") int currentPage,
+					   @RequestParam Map<String, String> search,
+					   HttpSession session,
+					   ModelAndView mv) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		search.put("userId", loginUser.getUserId());
+		search.put("type", "S");
+		int listCount = mailService.selectSearchCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		
+		List<SendMailDto> sendMailList = mailService.selectSearchList(pi, search);
+		
+		mv.addObject("pi", pi)
+		  .addObject("sendMailList", sendMailList)
+		  .addObject("countMap", countMap)
+		  .addObject("search", search)
+		  .setViewName("mail/sendList");
+		
+		return mv;
 	}
 }

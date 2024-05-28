@@ -27,8 +27,11 @@
 	
 	<select id="selectReceiveMailListCount" resultType="_int">
 		select count(*)
-			from re_mail
-			where del_yn = 'N'
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)		
+			where r.del_yn = 'N'
+				and s.temp_save = '02'
+				and type = 'R'
 				and user_id = #{userId}
 	</select>
 	
@@ -44,14 +47,18 @@
 			join tb_mail s on (r.mail_no = s.mail_no)			
       join tb_member m on ( m.user_id = s.reg_id)
 			where r.del_yn = 'N'
+        and r.type= 'R'
 				and r.user_id = #{userId}
 				order by mail_no desc
 	</select>
 	
 	<select id="selectNonReadCount" resultType="_int">
 		select count(*)
-			from re_mail
-			where del_yn = 'N'
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)
+			where r.del_yn = 'N'
+				and s.temp_save = '02'
+				and type = 'R'
 				and read_yn = 'N'
 				and user_id = #{userId}
 	</select>
@@ -65,23 +72,29 @@
 	
 	<select id="selectSendListCount" resultType="_int">
 		select count(*)
-			from tb_mail
-			where del_yn = 'N'
-				and reg_id = #{userId}
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)		
+			where r.del_yn = 'N'
+				and s.temp_save = '02'
+				and type = 'S'
+				and user_id = #{userId}
 	</select>
 	
-	<select id="selectSendList" resultMap="sendMailResult">
+	<select id="selectSendList" resultMap="receiveMailResult">
 		select
-				  s.reg_id
-				, s.mail_no
+				  r.user_id
+				, r.mail_no
+				, r.read_yn
 				, m.user_name
 				, s.mail_title
 				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
-			from tb_mail s	
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)			
       join tb_member m on ( m.user_id = s.reg_id)
-			where s.del_yn = 'N'
-				and s.reg_id = #{userId}
-				and s.temp_save = '02'
+			where r.del_yn = 'N'
+        and r.type= 'S'
+        and s.temp_save = '02'
+				and r.user_id = #{userId}
 				order by mail_no desc
 	</select>
 	
@@ -101,7 +114,6 @@
 	left join tb_attachment on (ref_category ='M' and ref_no = s.mail_no)
 	join tb_member m on(s.reg_id = m.user_id)
 		where mail_no = ${no}
-			and s.del_yn ='N'
 	</select>
 
 	<update id="updateMailRead">
@@ -109,7 +121,8 @@
   				re_mail
 			 set
 			     read_yn = 'Y'
-		 where mail_no = #{no} 
+		 where mail_no = #{no}
+		 	 and type = 'R'
 	</update>
 	
 	<insert id="insertSendMail">
@@ -140,11 +153,31 @@
   		(
   			mail_no
   		, user_id
+  		, type
   		)
   		values
   		(
 				seq_mailno.currval
 			, #{emailId}
+			, 'R'
+  		)
+  </insert>
+  
+  <insert id="insertSendReMail">
+  	insert
+  		into re_mail
+  		(
+  			mail_no
+  		, user_id
+  		, type
+  		, read_yn
+  		)
+  		values
+  		(
+				seq_mailno.currval
+			, #{regId}
+			, 'S'
+			, 'Y'
   		)
   </insert>
   
@@ -190,18 +223,116 @@
 				order by mail_no desc
 	</select>
 	
-	<insert id="insertTempSaveMail">
+	<insert id="insertTempSaveReceiveMail">
   	insert
   		into re_mail
   		(
   			mail_no
   		, user_id
+  		, type
   		)
   		values
   		(
 				#{mailNo}
 			, #{emailId}
+			, 'R'
   		)
   </insert>
+
+  <update id="deleteMail">
+     UPDATE re_mail
+     SET del_yn = 'Y'
+     WHERE
+     		 user_id = #{userId}
+     and mail_no IN
+     <foreach item="item" collection="mailNoList" open="(" separator="," close=")">
+         #{item}
+     </foreach>
+  </update>
+  
+  <select id="selectTrashList" resultMap="receiveMailResult">
+		select
+				  r.user_id
+				, r.mail_no
+				, r.read_yn
+				, m.user_name
+				, s.mail_title
+				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)			
+      join tb_member m on ( m.user_id = s.reg_id)
+			where r.del_yn = 'Y'
+				and r.user_id = #{userId}
+				order by mail_no desc
+  </select>
+  
+  <update id="reStoreMail">
+     UPDATE re_mail
+     SET del_yn = 'N'
+     WHERE
+     		 user_id = #{userId}
+     and mail_no IN
+     <foreach item="item" collection="mailNoList" open="(" separator="," close=")">
+         #{item}
+     </foreach>
+  </update>
+  
+  <delete id="removeMailList">
+     delete
+		  FROM re_mail
+		  where mail_no in
+			  <foreach item="item" collection="list" open="(" separator="," close=")">
+	          #{item}
+	      </foreach>
+  </delete>
+  
+  <delete id="removeTempSaveChild">
+     delete
+		  FROM re_mail
+		  where 
+		  	mail_no in
+			  <foreach item="item" collection="list" open="(" separator="," close=")">
+	          #{item}
+	      </foreach>
+  </delete>
+  
+  <delete id="removeTempSaveList">
+     delete
+		  FROM tb_mail
+		  where temp_save = '01'
+		  	and mail_no in
+			  <foreach item="item" collection="list" open="(" separator="," close=")">
+	          #{item}
+	      </foreach>
+  </delete>
+  
+  <select id="selectSearchCount" resultType="_int">
+  	select count(*) 
+  	  from tb_mail t
+  	  join re_mail r on (t.mail_no = r.mail_no)
+  	 where t.del_yn = 'N'
+  	 	 and ${condition} like '%' || #{keyword} || '%'
+  	 	 and r.user_id = #{userId}
+  	 	 and r.type = #{type}
+  	 	 and r.del_yn = 'N'
+  </select>
+  
+  <select id="selectSearchList" resultMap="receiveMailResult">
+		select
+				  r.user_id
+				, r.mail_no
+				, r.read_yn
+				, m.user_name
+				, s.mail_title
+				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+			from re_mail r
+			join tb_mail s on (r.mail_no = s.mail_no)			
+      join tb_member m on ( m.user_id = s.reg_id)
+			where r.del_yn = 'N'
+        and r.type= #{type}
+				and r.user_id = #{userId}
+				and ${condition} like '%' || #{keyword} || '%'
+				order by mail_no desc
+	</select>
 
 </mapper>

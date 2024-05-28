@@ -35,4 +35,8 @@ public class AttachDao {
 		return sqlSession.selectList("attachMapper.selectDelBoardFileNo", no);
 	}
 
+	public List<String> selectDelMailFileNo(int no) {
+		return sqlSession.selectList("attachMapper.selectDelMailFileNo", no);
+	}
+
 }

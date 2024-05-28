@@ -103,7 +103,7 @@ public class BoardDao {
 	}
 
 	public int removeBoard(List<Integer> no) {
-		return sqlSession.delete("boardMapper.removeBoarList", no);
+		return sqlSession.delete("boardMapper.removeBoardList", no);
 	}
 
 	public int selectTrashListCount(String userId) {

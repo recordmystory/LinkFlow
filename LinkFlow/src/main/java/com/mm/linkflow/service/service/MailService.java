@@ -1,6 +1,8 @@
 package com.mm.linkflow.service.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
@@ -38,6 +40,20 @@ public interface MailService {
 
 	List<BoardDto> selectTempSaveList(PageInfoDto pi, String userId);
 
-	int insertTempSaveMail(int mailNo, String[] receivceEmailId);
+	int insertTempSaveReceiveMail(int mailNo, String[] receivceEmailId);
+
+	int deleteMail(HashMap <String, Object> map);
+
+	List<ReceiveMailDto> selectTrashList(PageInfoDto pi, String userId);
+
+	int reStoreMail(HashMap<String, Object> map);
+
+	int removeMail(List<Integer> no);
+
+	int removeTempSave(List<Integer> no);
+
+	int selectSearchCount(Map<String, String> search);
+
+	List<SendMailDto> selectSearchList(PageInfoDto pi, Map<String, String> search);
 
 }

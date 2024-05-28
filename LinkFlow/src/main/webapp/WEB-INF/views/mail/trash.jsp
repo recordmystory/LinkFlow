@@ -52,25 +52,26 @@ input[type="checkbox"] {
 
     <div class="LinkFlowMainSection">
         <jsp:include page="/WEB-INF/views/common/sidebar/mail/MailSidebar.jsp"/>
+        
         <div class="LinkFlowMainContent">
 
-            <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">임시저장</h1>
+                        <h1 class="m-0">휴지통</h1>
                     </div>
                 </div>
             </section>
 
-            <!-- Main content -->
+
             <section class="content">
-                <div class="container-fluid" style="display: flex; justify-content: center;">
+                <div class="container-fluid" style="display: flex; justify-content: center;"> 
                     <div class="contentArea">
-                    <form id="deleteForm" action="${contextPath}/mail/removeTempSave.do" method="get">
+                        <form id="deleteForm" action="" method="get">
                         <div class="contentInElement">
                             <div class="btnArea">
-                                <button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmDelete();">삭제하기</button>
+                             		<button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmRestore('${contextPath}/mail/reStore.do');">복구</button>
+                                <button type="button" class="btn btn-primary btn-lg" style="margin-right: 6px;" onclick="confirmDelete('${contextPath}/mail/remove.do');">삭제하기</button>
                             </div>
                             <div class="form-inline">
                                 <div class="input-group">
@@ -90,6 +91,7 @@ input[type="checkbox"] {
                                 </div>
                             </div>
                         </div>
+
                         <div style="min-height: 500px; min-width: 100%;">
                             <div class="card">
                                 <div class="card-body table-responsive p-0">
@@ -104,80 +106,119 @@ input[type="checkbox"] {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <c:choose>
-                                        		<c:when test="${empty tempSaveList }">
+                                        	<c:choose>
+                                        		<c:when test="${empty trashList }">
                                         			<tr>
 											                					<td colspan="5"> 조회된 메일이 없습니다 </td>
 											                				<tr>
                                         		</c:when>
                                         		<c:otherwise>
-                                            <c:forEach var="m" items="${tempSaveList}">
-                                     					<tr onclick="location.href='${contextPath}/mail/tempSaveDetail.page?&no=${ m.mailNo }';">
-                                                <td><input name="no" value="${ m.mailNo }"  type="checkbox" class="checkBox" onclick="event.stopPropagation();"></td>
-                                                <td><i class="fa-solid fa-envelope-open fa-xl"></i></td>
-                                                <td>${m.userName }</td>
-                                                <td>${m.mailTitle }</td>
-                                                <td>${m.transTime }</td>
-                                            	</tr>
-                                        			</c:forEach>
-                                    				</c:otherwise>
-                                      		</c:choose>
+                                        		<c:forEach var="m" items="${trashList}">
+                                        			<c:choose>
+                                        				<c:when test="${m.readYN == 'N' }">
+                                        					<tr>
+			                                                <th><input name="no" value="${ m.mailNo }"  type="checkbox" class="checkBox" onclick="event.stopPropagation();"></th>
+			                                                <th><i class="fa-solid fa-envelope fa-xl"></i></th>
+			                                                <th>${m.userName }</th>
+			                                                <th>${m.mailTitle }</th>
+			                                                <th>${m.transTime }</th>
+			                                            </tr>
+                                        				</c:when>
+                                        				<c:otherwise>
+                                        					<tr>
+			                                                <td><input name="no" value="${ m.mailNo }" type="checkbox" class="checkBox" onclick="event.stopPropagation();"></td>
+			                                                <td><i class="fa-solid fa-envelope-open fa-xl"></i></td>
+			                                                <td>${m.userName }</td>
+			                                                <td>${m.mailTitle }</td>
+			                                                <td>${m.transTime }</td>
+			                                            </tr>
+                                        				</c:otherwise>
+                                        			</c:choose>
+                                        		</c:forEach>
+                                       		</c:otherwise>
+                                     		</c:choose>
+                                            
                                         </tbody>
                                     </table>
                                     <hr style="margin-top: 0px;">
                                     <div class="pagination" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
-                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${pi.currentPage -1}">&laquo;</a></li>
+                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${pi.currentPage -1}">&laquo;</a></li>
                     
 														                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${p}">${p}</a></li>
+														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${p}">${p}</a></li>
 														                </c:forEach>
 														                
-														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/tempSave.page?page=${pi.currentPage +1}">&raquo;</a></li>
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${pi.currentPage +1}">&raquo;</a></li>
 
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       </form> 
+                       </form>
                     </div>
                 </div>
             </section>
-            <script>
-                function checkAllBoxes() {
-                    var checkAll = document.getElementById('checkAll');
-                    var checkBoxes = document.getElementsByClassName('checkBox');
-
-                    for (var i = 0; i < checkBoxes.length; i++) {
-                        checkBoxes[i].checked = checkAll.checked;
-                    }
-                }
-                function confirmDelete() {
-                    var checkBoxes = document.getElementsByClassName('checkBox');
-                    var selected = false;
-
-                    for (var i = 0; i < checkBoxes.length; i++) {
-                        if (checkBoxes[i].checked) {
-                            selected = true;
-                            break;
-                        }
-                    }
-
-                    if (selected) {
-                        if (confirm('정말 삭제하시겠습니까?')) {
-                            document.getElementById('deleteForm').submit();
-                        }else {
-                        	 return false;
-                        }
-                    } else {
-                        alert('삭제할 항목을 선택하세요.');
-                        return false;
-                    }
-                }
-            </script>
+            <!-- /.content -->
         </div>
     </div>
 </div>
+
+<script>
+    function checkAllBoxes() {
+        var checkAll = document.getElementById('checkAll');
+        var checkBoxes = document.getElementsByClassName('checkBox');
+
+        for (var i = 0; i < checkBoxes.length; i++) {
+            checkBoxes[i].checked = checkAll.checked;
+        }
+    }
+    
+    function confirmDelete(actionUrl) {
+        var checkBoxes = document.getElementsByClassName('checkBox');
+        var selected = false;
+
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                selected = true;
+                break;
+            }
+        }
+
+        if (selected) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+            		document.getElementById('deleteForm').action = actionUrl;
+                document.getElementById('deleteForm').submit();
+            }else{
+           	 	return false;
+            }
+        }else {
+           alert('삭제할 항목을 선택하세요.');
+           return false;
+        }
+    }
+    function confirmRestore(actionUrl) {
+        var checkBoxes = document.getElementsByClassName('checkBox');
+        var selected = false;
+
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                selected = true;
+                break;
+            }
+        }
+
+        if (selected) {
+            if (confirm('해당 게시물들을 복구하시겠습니까?')) {
+            		document.getElementById('deleteForm').action = actionUrl;
+                document.getElementById('deleteForm').submit();
+            }
+        }else {
+           alert('복구할 항목을 선택하세요.');
+           return false;
+        }
+    }
+</script>
 </body>
 </html>

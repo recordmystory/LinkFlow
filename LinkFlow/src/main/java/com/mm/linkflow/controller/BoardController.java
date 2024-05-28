@@ -190,7 +190,7 @@ public class BoardController {
 		
 		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
 		
-		if(board.getNoticeYN() == null) {
+		if(board.getNoticeYN() == null || !board.getNoticeYN().equals("Y")) {
 			if(board.getBoardCategory().equals("CATEGORY-8")) {
 				board.setNoticeYN("Y");
 			}
@@ -263,7 +263,7 @@ public class BoardController {
 		board.setModId(String.valueOf(loginUser.getUserId()));
 		board.setTempSave("01");
 		
-		if(board.getNoticeYN() == null) {
+		if(board.getNoticeYN() == null || !board.getNoticeYN().equals("Y")) {
 			if(board.getBoardCategory().equals("CATEGORY-8")) {
 				board.setNoticeYN("Y");
 			}
@@ -271,6 +271,7 @@ public class BoardController {
 				board.setNoticeYN("N");
 			}
 		}
+		log.debug("noticeYN : {}", board.getNoticeYN());
 
 		 List<AttachDto> attachList = new ArrayList<>(); 
 		 if(uploadFiles != null) {
@@ -328,7 +329,7 @@ public class BoardController {
 		
 		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
 		
-		if(board.getNoticeYN() == null) {
+		if(board.getNoticeYN() == null || !board.getNoticeYN().equals("Y")) {
 			if(board.getBoardCategory().equals("CATEGORY-8")) {
 				board.setNoticeYN("Y");
 			}

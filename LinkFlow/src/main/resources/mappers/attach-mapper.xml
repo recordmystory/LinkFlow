@@ -102,5 +102,13 @@
    where ref_no = #{no}
    	 and ref_category = 'B'
   </select>
+  
+  <select id="selectDelMailFileNo" resultType="String">
+  	select
+  			  file_no
+  	from tb_attachment
+   where ref_no = #{no}
+   	 and ref_category = 'M'
+  </select>
 	
 </mapper>

@@ -309,7 +309,7 @@
 		from dual
   </select>
   
-  <delete id="removeBoarList">
+  <delete id="removeBoardList">
      delete
 		  FROM tb_board
 		  where board_no in

@@ -75,9 +75,7 @@ i {
                             </div>
                             <div class="form-inline">
                                 <div class="input-group">
-                                	<c:if test="${ board.regId == loginUser.userId or loginUser.superRight == 'Y' or loginUser.boardRight == 'Y'}">
                                     <a href="#" onclick="confirmDelete('${contextPath}/mail/delete.do?no=${mail.mailNo}')">삭제</a>
-                                  </c:if>
                                 </div>
                             </div>
                         </div>

@@ -21,6 +21,7 @@ import com.mm.linkflow.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -70,7 +71,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		int result2 = 1;
 		List<AttachDto> attachList = board.getAttachList();
-		if(!attachList.isEmpty()) {
+		if(!attachList.isEmpty() || attachList != null) {
 			result2 = 0;
 			for(AttachDto at : attachList) {
 				result2 += attachDao.insertAttach(at);
@@ -153,9 +154,14 @@ public class BoardServiceImpl implements BoardService {
 				
 				String[] delFileNoArray = new String[delFileNo.size()];
 				delFileNo.toArray(delFileNoArray);
-				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
-				result2 += attachDao.deleteAttach(delFileNoArray);	
 				
+				for(int i=0; i<delFileNoArray.length; i++) {
+					log.debug("delFileNoArray[{}] : {}", i, delFileNoArray[i]);
+				}
+				
+				result2 = attachDao.deleteAttach(delFileNoArray);	
+				
+				List<AttachDto> delFileList = attachDao.selectDelFileList(delFileNoArray);
 				for(AttachDto at : delFileList) {
 					new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
 				}

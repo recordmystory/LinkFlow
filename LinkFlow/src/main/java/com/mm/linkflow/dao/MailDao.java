@@ -2,6 +2,7 @@ package com.mm.linkflow.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -91,10 +92,58 @@ public class MailDao {
 		return sqlSession.selectList("mailMapper.selectTempSaveList", userId, rowBounds);
 	}
 
-	public int insertTempSaveMail(int mailNo, String emailId) {
+	public int insertTempSaveReceiveMail(int mailNo, String emailId) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("mailNo", mailNo);
 		map.put("emailId", emailId);		
-		return sqlSession.insert("mailMapper.insertTempSaveMail", map);
+		return sqlSession.insert("mailMapper.insertTempSaveReceiveMail", map);
 	}
+
+
+	public int deleteMail(HashMap <String, Object> map) {
+		return sqlSession.update("mailMapper.deleteMail", map);
+	}
+
+	public List<ReceiveMailDto> selectTrashList(PageInfoDto pi, String userId) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sqlSession.selectList("mailMapper.selectTrashList", userId, rowBounds);
+	}
+
+	public int insertSendReMail(SendMailDto sendMail) {
+		return sqlSession.insert("mailMapper.insertSendReMail", sendMail);
+	}
+
+	public int reStoreMail(HashMap<String, Object> map) {
+		return sqlSession.update("mailMapper.reStoreMail", map);
+	}
+
+	public int removeMail(List<Integer> no) {
+		return sqlSession.delete("mailMapper.removeMailList", no);
+	}
+
+	public int removeTempSave(List<Integer> no) {
+		return sqlSession.delete("mailMapper.removeTempSaveList", no);
+	}
+
+	public int removeTempSaveChild(List<Integer> no) {
+		return sqlSession.delete("mailMapper.removeTempSaveChild", no);
+	}
+
+	public int selectSearchCount(Map<String, String> search) {
+		return sqlSession.selectOne("mailMapper.selectSearchCount", search);
+	}
+
+	public List<SendMailDto> selectSearchList(PageInfoDto pi, Map<String, String> search) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sqlSession.selectList("mailMapper.selectSearchList", search, rowBounds);
+	}
+
 }
