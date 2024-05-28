@@ -35,7 +35,8 @@
 	  }
 	  .groupName{
 	   margin: 20px;
-	   padding: 10px;
+	  
+	   white-space: nowrap;
 	   
 	  }
 	  .groupAddress{
