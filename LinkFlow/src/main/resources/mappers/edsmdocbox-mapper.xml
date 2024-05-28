@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edsmDocboxMapper">
+	<resultMap type="EdocDto" id="edocResult" extends="commonMapper.commonResult">
+		<id column="ED_NO" property="edNo"/>		
+		<result column="ED_FORM_CODE" property="edFormCode"/>
+		<result column="ED_TITLE" property="edTitle"/>
+		<result column="ED_CONTENT" property="edContent"/>
+		<result column="PRES_DATE" property="presDate"/>
+		<result column="SEC_CODE" property="secCode"/>
+		<result column="STATUS" property="status"/>
+		<result column="TEMP_SAVE" property="tempSave"/>
+		<result column="DEPT_TITLE" property="deptTitle"/>
+		<result column="ED_FR_NAME" property="edFrName"/>
+	</resultMap>
+	
+	<resultMap type="EdocHistDto" id="edocHistResult" extends="commonMapper.commonResult">
+		<id column="USER_ID" property="userId"/>
+		<result column="ED_NO" property="edNo"/>
+		<result column="ED_HIST_ORDER" property="edHistOrder"/>
+		<result column="ED_HIST_SUB_CODE" property="edHistSubCode"/>
+		<result column="ED_HIST_DATE" property="edHistDate"/>
+		<result column="ED_HIST_COMMENT" property="edHistComment"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="SIGN_URL" property="signUrl"/>
+	</resultMap>
+	
+	<resultMap type="EdocRefDto" id="edocRefResult" extends="commonMapper.commonResult">
+		<id column="ED_NO" property="edNo"/>
+		<id column="USER_ID" property="userId"/>
+		<result column="USER_NAME" property="userName" />
+	</resultMap>
+
+	<!-- 문서함 목록 조회 및 페이징 -->
+	<select id="selectDocboxList" resultMap="edocResult">
+		SELECT AA.ED_NO
+		     , AA.ED_TITLE
+		     , (SELECT USER_NAME FROM TB_MEMBER WHERE REG_ID = USER_ID) AS REG_ID
+		     , AA.REG_DATE
+		     , AA.MOD_DATE
+		     , (SELECT ED_FR_NAME FROM TB_EDOC_FORM WHERE ED_FR_CODE = AA.ED_FORM_CODE) AS ED_FR_NAME
+		     , DECODE(AA.GUBUN, '참조', '참조', DECODE(AA.STATUS, '05', '결재', '06', '반려')) AS STATUS
+		FROM (
+		    SELECT '기안' AS GUBUN, A.*
+		    FROM TB_EDOC A  
+		    WHERE A.REG_ID = #{userId}
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		       
+		    UNION ALL
+		    
+		    SELECT '결재' AS GUBUN, A.*
+		    FROM TB_EDOC A
+		       , TB_EDOC_HIST B
+		    WHERE A.ED_NO = B.ED_NO
+		        AND B.USER_ID = #{userId}
+		        AND A.REG_ID NOT LIKE #{userId}
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		        
+		    UNION ALL
+		    
+		    SELECT '참조' AS GUBUN, A.*
+		    FROM TB_EDOC A
+		       , TB_EDOC_REF B
+		    WHERE A.ED_NO = B.ED_NO
+		        AND B.USER_ID = #{userId}
+		        AND A.REG_ID NOT LIKE #{userId}
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		        
+		) AA
+		ORDER BY AA.REG_DATE
+	</select>
+	
+	<select id="selectDocboxListCnt" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM (
+				    SELECT AA.ED_NO
+				     , AA.ED_TITLE
+				     , (SELECT USER_NAME FROM TB_MEMBER WHERE REG_ID = USER_ID) AS REG_ID
+				     , AA.REG_DATE
+				     , AA.MOD_DATE
+				     , (SELECT ED_FR_NAME FROM TB_EDOC_FORM WHERE ED_FR_CODE = AA.ED_FORM_CODE) AS ED_FR_NAME
+				     , DECODE(AA.GUBUN, '참조', '참조', DECODE(AA.STATUS, '05', '결재', '06', '반려')) AS STATUS
+				FROM (
+						    SELECT '기안' AS GUBUN, A.*
+						    FROM TB_EDOC A  
+						    WHERE A.REG_ID = #{userId}
+						        AND (A.STATUS = '05' OR STATUS = '06')
+						       
+						    UNION ALL
+						    
+						    SELECT '결재' AS GUBUN, A.*
+						    FROM TB_EDOC A
+						       , TB_EDOC_HIST B
+						    WHERE A.ED_NO = B.ED_NO
+						        AND B.USER_ID = #{userId}
+						        AND A.REG_ID NOT LIKE #{userId}
+						        AND (A.STATUS = '05' OR STATUS = '06')
+						        
+						    UNION ALL
+						    
+						    SELECT '참조' AS GUBUN, A.*
+						    FROM TB_EDOC A
+						       , TB_EDOC_REF B
+						    WHERE A.ED_NO = B.ED_NO
+						        AND B.USER_ID = #{userId}
+						        AND A.REG_ID NOT LIKE #{userId}
+						        AND (A.STATUS = '05' OR STATUS = '06')
+						        
+				) AA
+		) COUNT
+	</select>
+	
+	<select id="selectSearchListCnt" resultType="_int">
+			 SELECT COUNT(*) AS COUNT
+				FROM (
+				    SELECT AA.ED_NO
+				     , AA.ED_TITLE
+				     , (SELECT USER_NAME FROM TB_MEMBER WHERE REG_ID = USER_ID) AS REG_ID
+				     , AA.REG_DATE
+				     , AA.MOD_DATE
+				     , (SELECT ED_FR_NAME FROM TB_EDOC_FORM WHERE ED_FR_CODE = AA.ED_FORM_CODE) AS ED_FR_NAME
+				     , DECODE(AA.GUBUN, '참조', '참조', DECODE(AA.STATUS, '05', '결재', '06', '반려')) AS STATUS
+				FROM (
+				    SELECT '기안' AS GUBUN, A.*
+				    FROM TB_EDOC A  
+				    WHERE A.REG_ID = 'test03'
+				        AND (A.STATUS = '05' OR STATUS = '06')
+				       
+				    UNION ALL
+				    
+				    SELECT '결재' AS GUBUN, A.*
+				    FROM TB_EDOC A
+				       , TB_EDOC_HIST B
+				    WHERE A.ED_NO = B.ED_NO
+				        AND B.USER_ID = 'test03'
+				        AND A.REG_ID NOT LIKE 'test03'
+				        AND (A.STATUS = '05' OR STATUS = '06')
+				        
+				    UNION ALL
+				    
+				    SELECT '참조' AS GUBUN, A.*
+				    FROM TB_EDOC A
+				       , TB_EDOC_REF B
+				    WHERE A.ED_NO = B.ED_NO
+				        AND B.USER_ID = 'test03'
+				        AND A.REG_ID NOT LIKE 'test03'
+				        AND (A.STATUS = '05' OR STATUS = '06')
+				        
+				) AA
+		        WHERE AA.DEL_YN = 'N' 
+		        	AND 
+		        		<if test="condition == '05'">
+		        			AA.GUBUN = '결재' AND AA.STATUS = '05'
+		        		</if>
+		        		
+		        		<if test="condition == '06'">
+		        			AA.STATUS = '06'
+		        		</if>
+		        		
+		        		<if test="condition == '07'">
+		        			AA.GUBUN = '참조'
+		        		</if>
+		        	AND AA.ED_TITLE LIKE '%' || #{keyword} || '%'
+				ORDER BY AA.REG_DATE
+				) COUNT
+	</select>
+	
+		    
+	<select id="selectSearchList" resultMap="edocResult">
+		SELECT AA.ED_NO
+		     , AA.ED_TITLE
+		     , (SELECT USER_NAME FROM TB_MEMBER WHERE REG_ID = USER_ID) AS REG_ID
+		     , AA.REG_DATE
+		     , AA.MOD_DATE
+		     , (SELECT ED_FR_NAME FROM TB_EDOC_FORM WHERE ED_FR_CODE = AA.ED_FORM_CODE) AS ED_FR_NAME
+		     , DECODE(AA.GUBUN, '참조', '참조', DECODE(AA.STATUS, '05', '결재', '06', '반려')) AS STATUS
+		FROM (
+		    SELECT '기안' AS GUBUN, A.*
+		    FROM TB_EDOC A  
+		    WHERE A.REG_ID = 'test03'
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		       
+		    UNION ALL
+		    
+		    SELECT '결재' AS GUBUN, A.*
+		    FROM TB_EDOC A
+		       , TB_EDOC_HIST B
+		    WHERE A.ED_NO = B.ED_NO
+		        AND B.USER_ID = 'test03'
+		        AND A.REG_ID NOT LIKE 'test03'
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		        
+		    UNION ALL
+		    
+		    SELECT '참조' AS GUBUN, A.*
+		    FROM TB_EDOC A
+		       , TB_EDOC_REF B
+		    WHERE A.ED_NO = B.ED_NO
+		        AND B.USER_ID = 'test03'
+		        AND A.REG_ID NOT LIKE 'test03'
+		        AND (A.STATUS = '05' OR STATUS = '06')
+		        
+		) AA
+        WHERE AA.DEL_YN = 'N' 
+        	AND 
+        		<if test="condition == '05'">
+        			AA.GUBUN = '결재' AND AA.STATUS = '05'
+        		</if>
+        		
+        		<if test="condition == '06'">
+        			AA.STATUS = '06'
+        		</if>
+        		
+        		<if test="condition == '07'">
+        			AA.GUBUN = '참조'
+        		</if>
+        	AND AA.ED_TITLE LIKE '%' || #{keyword} || '%'
+		ORDER BY AA.REG_DATE
+	</select>
+	
+	<select id="selectEdocDetail" resultMap="edocResult">
+		SELECT ED_FR_NAME
+			    , ED_NO
+			    , D.DEPT_TITLE
+			    , M.USER_NAME AS REG_ID
+			    , ED.PRES_DATE
+			    , ED.SEC_CODE
+			    , ED.ED_TITLE
+			    , ED_CONTENT
+			    , TO_CHAR(ED.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+			    , TO_CHAR(ED.MOD_DATE, 'YYYY-MM-DD') AS MOD_DATE
+		FROM TB_EDOC ED
+		JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
+		JOIN TB_MEMBER M ON (M.USER_ID = ED.REG_ID)
+		JOIN TB_DEPT D ON (M.DEPT_CODE = D.DEPT_CODE)
+		WHERE ED.ED_NO = #{edNo}
+	</select>
+	
+	<!-- 결재자와 결재이력 -->
+	<select id="selectApprDetail" resultMap="edocHistResult">
+		SELECT EH.USER_ID
+		     , M.USER_NAME
+		     , M.SIGN_URL
+		     , EH.ED_NO
+		     , EH.ED_HIST_ORDER
+		     , EH.ED_HIST_SUB_CODE
+		     , EH.ED_HIST_DATE
+		     , EH.ED_HIST_COMMENT
+		     , EH.REG_ID
+		FROM TB_EDOC_HIST EH
+		JOIN TB_MEMBER M ON (M.USER_ID = EH.USER_ID)
+		WHERE ED_NO = #{edNo}
+		ORDER BY ED_HIST_ORDER
+	</select>
+	
+	<!-- 참조자 목록 -->
+	<select id="selectRefDetail" resultMap="edocRefResult">
+		SELECT ED_NO
+		     , USER_ID
+		     , M.USER_NAME
+		FROM TB_EDOC_REF ER
+		JOIN TB_MEMBER M USING (USER_ID)
+		WHERE ED_NO = #{edNo}
+	</select>
+	
+</mapper>

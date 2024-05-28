@@ -206,34 +206,34 @@
 		FROM TB_EDOC ED
 		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
+        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+        JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
 		WHERE ED.DEL_YN = 'N'
-            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
             AND ED.STATUS = '04'
-    ORDER BY ED.REG_DATE 
+    ORDER BY ED.REG_DATE
 	</select>
 	
 	<select id="selectAllListCnt" resultType="_int">
 		SELECT COUNT(*) AS COUNT
 		FROM (
-		    SELECT DISTINCT ED.ED_NO
-		                 , ED.ED_TITLE
-		                 , M.USER_NAME AS REG_ID
-		                 , ED.MOD_ID
-		                 , TO_CHAR(ED.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
-		                 , EF.ED_FR_NAME AS ED_FORM_CODE
-		                 , DECODE(ED.STATUS, '01', '대기', '02', '예정', '03', '확인', '04', '진행') AS STATUS
-		                 , ED.REG_DATE
-		    FROM TB_EDOC ED
-		    JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
-		    JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-		    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
-		    WHERE ED.DEL_YN = 'N'
-		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
-		      AND ED.STATUS = '04'
-		    ORDER BY ED.REG_DATE 
+				    SELECT DISTINCT ED.ED_NO
+						     , ED.ED_TITLE
+						     , M.USER_NAME AS REG_ID
+						     , ED.MOD_ID
+						     , TO_CHAR(ED.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+						     , EF.ED_FR_NAME AS ED_FORM_CODE
+						     , DECODE(ED.STATUS, '01', '대기', '02', '예정', '03', '확인', '04', '진행') AS STATUS
+						     , ED.REG_DATE
+						FROM TB_EDOC ED
+						JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
+						JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
+				        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
+				        JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
+						WHERE ED.DEL_YN = 'N'
+				            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
+				            AND ED.STATUS = '04'
+				    ORDER BY ED.REG_DATE
 		) COUNT
 	</select>
 	
@@ -255,7 +255,7 @@
 		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
 		    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
 		    WHERE ED.DEL_YN = 'N'
-		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 	     		AND ED.STATUS = #{condition}
        		AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
        		AND ED.STATUS = '04'
@@ -278,7 +278,7 @@
     JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
     JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID) 
 		WHERE ED.DEL_YN = 'N'
-       AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId})
+       AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 	     AND ED.STATUS = #{condition}
 	     AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
 	     AND ED.STATUS = '04'
@@ -368,7 +368,7 @@
 	
 	<!-- 결재 count -->
 	<select id="selectEdHistSubCodeCnt" resultType="_int">
-		SELECT COUNT(*)
+		SELECT COUNT(ED_HIST_SUB_CODE)
 		FROM TB_EDOC_HIST
 		WHERE ED_NO = #{edNo}
 	</select>
@@ -385,38 +385,5 @@
 		WHERE ED_NO = #{edNo}
 	</update>
 	
-	<!-- 결재선 insert -->
-	<!-- <insert id="inserApprLine">
-		INSERT INTO TB_EDOC_HIST
-                        (
-                              USER_ID
-                            , ED_NO
-                            , ED_HIST_ORDER
-                            , ED_HIST_SUB_CODE
-                            , ED_HIST_DATE
-                            , ED_HIST_COMMENT
-                            , REG_DATE
-                            , MOD_DATE
-                            , REG_ID
-                            , MOD_ID
-                            , DEL_YN
-                        )
-                        VALUES
-                        (
-		                          #{userId}
-		                        , 'LI' || '-' || (SELECT SUBSTR(EF.ED_FR_NAME, 1, 2)
-						                  FROM TB_EDOC_FORM EF
-						                  WHERE EF.ED_FR_CODE = #{edFormCode}
-						                  AND ROWNUM = 1) || '-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || SEQ_EDOC.CURRVAL
-		                        , #{edHistOrder}
-		                        , NULL
-		                        , NULL
-		                        , NULL
-		                        , SYSDATE
-		                        , SYSDATE
-		                        , #{userId}
-		                        , #{userId}
-		                        , DEFAULT
-                        )
-	</insert> -->
+	
 </mapper>

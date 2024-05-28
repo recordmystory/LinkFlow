@@ -38,9 +38,17 @@ import lombok.extern.slf4j.Slf4j;
 public class EdsmProgController {
 	private final EdsmProgService edsmProgService;
 	private final PagingUtil pagingUtil;
-	private final FileUtil fileUtil;
 	
 	
+	/** 진행중인 문서 상세 : 결재
+	 * 
+	 * @param edocHistDto
+	 * @param session
+	 * @param RedirectAttribute
+	 * @return 목록 페이지로 redirect
+	 * 
+	 * @author 김지우
+	 */
 	@PostMapping("/approval.prog")
 	public String updateEdocHist(EdocHistDto edocHistDto, HttpSession session, RedirectAttributes RedirectAttribute) {
 		
@@ -184,6 +192,8 @@ public class EdsmProgController {
 	 * @param session
 	 * @param redirectAttributes
 	 * @return 진행중문서 목록 페이지로 redirect
+	 * 
+	 * @author 엄희강
 	 */
 	@PostMapping("/draftingDoc.prog")
 	public String insertDoc(EdocDto edocDto, List<MultipartFile> uploadFiles,HttpSession session, RedirectAttributes redirectAttributes) {

@@ -67,19 +67,19 @@
           <section class="content-header content">
 		        <div class="row mb-2">
 		          <div class="col-sm-6">
-		              <h1 class="m-0" id="header-title">전체 </h1>
+		              <h1 class="m-0" id="header-title">전체 (${listCnt})</h1>
 		          </div>
 		        </div>
+		       <form id="searchForm" action="${contextPath}/edsm/docbox/search.docbox" method="get">
 		        <div class="search d-flex justify-content-end">
-		          <select name="" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
-		            <option value="all">전체</option>
-		            <option value="wait">기안</option>
-		            <option value="complete">결재</option>
-		            <option value="progress">참조</option>
-		            <option value="confirm">반려</option>
+		          <input type="hidden" name="page" value="1">
+		          <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
+		            <option value="05">결재</option>
+		            <option value="06">반려</option>
+		            <option value="07">참조</option>
 		          </select>
 		          <div class="input-group col-4" style="height: 100%;">
-		            <input type="search" class="form-control" placeholder="문서 제목을 입력해주세요">
+		            <input type="search" class="form-control" name="keyword" value="${search.keyword}" placeholder="제목을 입력해주세요">
 		            <div class="input-group-append">
 		                <button type="submit" class="btn btn-primary">
 		                    <i class="fa fa-search"></i>
@@ -87,6 +87,7 @@
 		            </div>
 		          </div>
 		        </div>
+		       </form>
           </section>
                
                 <!-- Main content -->
@@ -109,45 +110,37 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>LI-품의-20240429-0003</td>
-                                  <td>품의서 제출</td>
-                                  <td>김과장</td>
-                                  <td>2024-04-29</td>
-                                  <td>2024-04-30</td>
-                                  <td>품의서</td>
-                                  <td>기안</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td>LI-품의-20240429-0002</td>
-                                    <td>품의서 제출</td>
-                                    <td>김과장</td>
-                                    <td>2024-04-29</td>
-                                    <td>2024-04-30</td>
-                                    <td>품의서</td>
-                                    <td>결재</td>
-                                </tr>
-                                <tr>
-                                    <td>LI-품의-20240429-0001</td>
-                                    <td>품의서 제출</td>
-                                    <td>김과장</td>
-                                    <td>2024-04-29</td>
-                                    <td>2024-04-30</td>
-                                    <td>품의서</td>
-                                    <td>결재</td>
-                                </tr> -->
+                              	<c:choose>
+                              		<c:when test="${empty list}">
+                              			<tr><td colspan="8" style="text-align: center;">조회된 문서가 없습니다.</td></tr>
+                              		</c:when>
+                              		
+                              		<c:otherwise>
+                              			<c:forEach var="edbox" items="${list}">
+                              				<tr onclick="location.href='${contextPath}/edsm/docbox/detail.docbox?edNo='+ '${edbox.edNo}'">
+                              					<td>${edbox.edNo}</td>
+                              					<td>${edbox.edTitle}</td>
+                              					<td>${edbox.regId}</td>
+                              					<td>${edbox.regDate}</td>
+                              					<td>${edbox.modDate}</td>
+                              					<td>${edbox.edFrName}</td>
+                              					<td>${edbox.status}</td>
+                              				</tr>
+                              			</c:forEach>
+                              		</c:otherwise>
+                              	</c:choose>
                               </tbody>
                             </table>
         
                             <div id="pagingArea">
 					                  	<ul class="pagination justify-content-center">
-						                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
+						                    <li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.docbox?page=${pi.currentPage - 1}">&lt; &lt;</a></li>
 						                    
 						                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-						                    	<li class="page-item ${pi.currentPage == p ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${p}">${p}</a></li>
+						                    	<li class="page-item ${pi.currentPage == p ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.docbox?page=${p}">${p}</a></li>
 						                    </c:forEach>
 						                    
-						                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.prog?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
+						                    <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="${contextPath}/edsm/docbox/listAll.docbox?page=${pi.currentPage + 1}">&gt; &gt;</a></li>
 				                		</ul>
 				                	</div>
                           </div> 
@@ -164,7 +157,7 @@
     <script>
      $(document).ready(function() {
 
-       let headOriginalValue = $('#header-title').text();
+       /* let headOriginalValue = $('#header-title').text();
        let trCount = $('table tr').length - 1;
        
          $('.dropdown-item').click(function() {
@@ -174,7 +167,7 @@
 
          // 추가
          // 테이블 내에 있는 행 개수 count
-           $('#header-title').text(headOriginalValue + ' (' + trCount + ')');
+           $('#header-title').text(headOriginalValue + ' (' + trCount + ')');  */
      });
    </script>
 </body>
