@@ -148,6 +148,7 @@ input[type="checkbox"] {
                 </div>
             </div>
             <!-- /maincontent -->
+
          <script>
          
          document.addEventListener('DOMContentLoaded', function () {
@@ -334,7 +335,7 @@ input[type="checkbox"] {
                 // Get value and make sure it is not null
                 var val = $('#new-event').val()
                 if (val.length == 0) {
-                    return
+                    returns
                 }
 
                 // Add draggable funtionality
@@ -345,6 +346,7 @@ input[type="checkbox"] {
             })
         })
           </script>
+
 
 		</div>
 	</div>

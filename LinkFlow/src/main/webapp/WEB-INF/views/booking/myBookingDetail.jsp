@@ -312,7 +312,7 @@
 		    if(status !== "예약대기"){
 		        $("#detailArea select").prop("disabled", true);
 		    }
-		    
+			
 		   var now = new Date();
 		    
 		    /***************************** 날짜 초기화 ***********************************/
@@ -440,38 +440,40 @@
 		    var startSelect = document.getElementById("start");
 		    var endSelect = document.getElementById("end");
 
-		    startSelect.addEventListener("change", function() {
-		        var selectedStartTime = this.value.trim();
-		        var startTimeParts = selectedStartTime.split(':');
-		        var startHour = parseInt(startTimeParts[0]);
-		        var startMinute = parseInt(startTimeParts[1]);
+		    if (startSelect && endSelect) {
+		        startSelect.addEventListener("change", function() {
+		            var selectedStartTime = this.value.trim();
+		            var startTimeParts = selectedStartTime.split(':');
+		            var startHour = parseInt(startTimeParts[0]);
+		            var startMinute = parseInt(startTimeParts[1]);
 
-		        endSelect.innerHTML = ""; // 종료시간 비우기
+		            endSelect.innerHTML = ""; // 종료시간 비우기
 
-		        // 시작시간 + 1 = 종료시간
-		        var initialHour = startHour + 1;
-		        var initialMinute = startMinute;
+		            // 시작시간 + 1 = 종료시간
+		            var initialHour = startHour + 1;
+		            var initialMinute = startMinute;
 
-		        // 종료시간이 18일 때 분 0 처리
-		        if (initialHour >= 18) {
-		            initialHour = 18;
-		            initialMinute = 0;
-		        }
-
-		        // 반복문으로 시작시간 변경할 때마다 종료시간 바꿔주기
-		        for (var hour = initialHour; hour <= 18; hour++) {
-		            for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
-		                if (hour === 18 && minute > 0) continue; // 18시 까지
-		                var optionHour = hour < 10 ? '0' + hour : hour;
-		                var optionMinute = minute === 0 ? '00' : minute;
-		                var optionValue = optionHour + ':' + optionMinute;
-		                var option = document.createElement("option");
-		                option.value = optionValue;
-		                option.textContent = optionValue;
-		                endSelect.appendChild(option);
+		            // 종료시간이 18일 때 분 0 처리
+		            if (initialHour >= 18) {
+		                initialHour = 18;
+		                initialMinute = 0;
 		            }
-		        }
-		    });
+
+		            // 반복문으로 시작시간 변경할 때마다 종료시간 바꿔주기
+		            for (var hour = initialHour; hour <= 18; hour++) {
+		                for (var minute = (hour === initialHour ? initialMinute : 0); minute <= 30; minute += 30) {
+		                    if (hour === 18 && minute > 0) continue; // 18시 까지
+		                    var optionHour = hour < 10 ? '0' + hour : hour;
+		                    var optionMinute = minute === 0 ? '00' : minute;
+		                    var optionValue = optionHour + ':' + optionMinute;
+		                    var option = document.createElement("option");
+		                    option.value = optionValue;
+		                    option.textContent = optionValue;
+		                    endSelect.appendChild(option);
+		                }
+		            }
+		        });
+		    }
 		});
 	</script>
 

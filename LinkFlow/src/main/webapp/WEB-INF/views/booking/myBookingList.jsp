@@ -76,13 +76,13 @@ input[type="checkbox"]:checked {
 					<div class="card">
 						<div class="card-header">
 							<h6 class="card-title">
-									<input type="checkbox" id="roomCheckbox" name="room" onchange="search(1); checkYN();"> 시설 &nbsp;
-									 <input type="checkbox" id="supCheckbox" name="supplies" onchange="search(1); checkYN();"> 비품
+									<input type="checkbox" id="roomCheckbox" name="room" onchange="searchMyList(1); checkYN();"> 시설 &nbsp;
+									 <input type="checkbox" id="supCheckbox" name="supplies" onchange="searchMyList(1); checkYN();"> 비품
 								</h6>
 
 							<div class="card-tools">
 								<div class="input-group input-group-sm" style="width: 120px;">
-									<select id="status" name="status" class="form-control" onchange="search(1);">
+									<select id="status" name="status" class="form-control" onchange="searchMyList(1);">
 										<option value="ALL">전체</option>
 										<option value="WAI">예약대기</option>
 										<option value="COM">예약완료</option>
@@ -174,7 +174,7 @@ input[type="checkbox"]:checked {
 	    }
 
 	    // 검색 실행 함수
-	    function search(no) {
+	    function searchMyList(no) {
 	        let { room, supplies } = checkYN(); // checkYN()으로부터 값을 가져옴
 	        let status = document.getElementById('status').value;
 
@@ -184,7 +184,7 @@ input[type="checkbox"]:checked {
 				data:{
 					room: room,
 					supplies: supplies,
-					status: status
+					status: status,
 					page:no
 				},success:function(result){
 					let table ="";
@@ -203,13 +203,13 @@ input[type="checkbox"]:checked {
 							table +="<td>"+ list[i].status +"</th></tr>";
 						}
 					  	
-						page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"search(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
+						page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchMyList(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
 						for (let i = pi.startPage; i <= pi.endPage; i++) {
-						    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"search(" + i + ");\">" + i + "</a></li>";
+						    page += "<li class=\"page-item " + (pi.currentPage == i ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchMyList(" + i + ");\">" + i + "</a></li>";
 						}
 
-						page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"search(" + (pi.currentPage + 1) + ");\">&raquo;</a></li>";
+						page += "<li class=\"page-item " + (pi.currentPage == pi.maxPage ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchMyList(" + (pi.currentPage + 1) + ");\">&raquo;</a></li>";
 					}
 					
 					$("#roomCheckbox").prop("checked",result.search.room == 'Y' ? true: false);
@@ -225,10 +225,9 @@ input[type="checkbox"]:checked {
 		}
 		 $(document).ready(function() {
 		 	$('#roomCheckbox, #supCheckbox, #status').change(function() {
-		    	search(1); // 변경 사항이 감지되면 검색 실행
+		 		searchMyList(1); // 변경 사항이 감지되면 검색 실행
 		    });
 		 	
-		 	console.log("머야 왜 안댐?");
 	    });
 		</script>
 	
