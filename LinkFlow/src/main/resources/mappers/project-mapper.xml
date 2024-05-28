@@ -357,4 +357,32 @@
     	 ORDER
     	    BY D.PRO_NO DESC
 	</select>
+	
+	<!-- 본인 프로젝트 조회 -->
+	<select id="myDispatchList" resultMap="disResult">
+		SELECT
+		       D.PRO_NO
+		     , CLIENT
+		     , PRO_TITLE
+		     , USER_NAME
+		     , DEPT_TITLE
+		     , TO_CHAR(D.START_DATE, 'YYYY-MM-DD') START_DATE
+		     , TO_CHAR(D.END_DATE, 'YYYY-MM-DD') END_DATE
+		     , DIS_YN
+		  FROM TB_DISPATCH D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M USING (USER_ID)
+          JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
+		 WHERE DIS_YN = 'N'
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 본인 프로젝트 개수 조회 -->
+	<select id="myDispatchCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM TB_DISPATCH
+		 WHERE DIS_YN = 'N'
+		   AND USER_ID = #{userId}
+	</select>
 </mapper>

@@ -56,14 +56,14 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid" style="display: flex; justify-content: center;">
+                    <div class="container-fluid" style="display: flex;">
                         <div class="contentArea">
                             <div class="contentInElement">
                                 <div class="btnArea">
-                                    <!--
-                                    <button class="btn btn-primary btn-sm">기안하기</button>
-                                    <button class="btn btn-primary btn-sm">임시저장</button>
-                                    -->
+                                	<div style="transform: translateX(10px) translateY(80px); display: flex; justify-content: center;">
+                                		<input type="checkbox" id="myProject" style="width: 20px; height: 20px;">
+                                		<p style="margin-left: 10px; font-size: 20px; transform: translateY(-4px);">본인 프로젝트만 조회</p>
+                                	</div>
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
                                 	<form action="${contextPath}/project/search.dis" method="get" id="searchForm">
@@ -91,7 +91,7 @@
                             <div style="min-height: 500px; min-width: 100%;">
                                 <div class="card">
                                     <div class="card-body">
-                                        <table id="example2" class="table table-hover text-nowrap" style="text-align: center;">
+                                        <table id="dispatchList" class="table table-hover text-nowrap" style="text-align: center;">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10%;">프로젝트 번호</th>
@@ -146,24 +146,101 @@
 		</div>
 	</div>
 	<c:if test="${ not empty search }">
+		<script>
+		
+			
+			$(document).ready(function () {
+				
+				// 검색 페이징 처리
+		        $("#searchForm select").val("${search.category}");
+				
+		        $("#pagingArea a").on("click", function(){
+		        	if($(this).text() == "«"){
+		     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
+		        	}else if($(this).text() == "»"){
+		     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
+		        	}else{
+		     			$("#searchForm input[name=page]").val($(this).text());
+		        	}
+	     			$("#searchForm").submit();
+	     			return false;
+		   		});
+		    	// 검색 페이징 처리
+			});
+	
+		</script>
+	</c:if>
 	<script>
-		$(document).ready(function () {
-			
-	        $("#searchForm select").val("${search.category}");
-			
-	        $("#pagingArea a").on("click", function(){
-	        	if($(this).text() == "«"){
-	     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
-	        	}else if($(this).text() == "»"){
-	     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
-	        	}else{
-	     			$("#searchForm input[name=page]").val($(this).text());
-	        	}
-     			$("#searchForm").submit();
-     			return false;
-	   		});
+		$(function() {
+
+			var userId = '${loginUser.userId}'
+	        // 내 프로젝트만 보기
+			$('#myProject').change(function myList() {
+		        if (this.checked) {
+		            $.ajax({
+		                url: '${contextPath}/project/myList.dis',
+		                type: 'GET',
+		                data: {userId: userId},
+		                success: function(map) {
+		                	updateTableAndPaging(map);
+		                }
+		            });
+		        }
+		    });
+	     	// 내 프로젝트만 보기
+	     	
+	     	// 테이블 페이징 새로 처리
+			function updateTableAndPaging(data) {
+				
+	     		console.log(data.pi);
+				var tableBody = $('#dispatchList tbody');
+			    var pagingArea = $('#pagingArea');
+	
+			    tableBody.empty();
+	
+			    $.each(data.list, function(index, item) {
+			    	var row = 
+				    	'<tr>'
+				        +   '<td>' + item.proNo + '</td>'
+				        +   '<td>' + item.client + '</td>'
+				        +   '<td>'
+				        +       '<a href="' + '${contextPath}/project/detail.pj?no=' + item.proNo + '">' + item.proTitle + '</a>'
+				        +   '</td>'
+				        +   '<td>' + item.userName + '</td>'
+				        +   '<td>' + item.deptTitle + '</td>'
+				        +   '<td>' + item.startDate + ' ~ ' + (item.endDate == null ? '' : item.endDate) + '</td>'
+				        +   '<td>' + '투입' + '</td>'
+				        + '</tr>';
+			        tableBody.append(row);
+			    });
+	
+			    pagingArea.empty();
+	
+			    var pagination = 
+			    	'<div class="pagination" style="display: flex; justify-content: center;">'
+			        +   '<ul class="pagination">'
+			        +       '<li class="page-item ' + (data.pi.currentPage == 1 ? 'disabled' : '') + '">'
+			        +           '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + (data.pi.currentPage - 1) + '">&laquo;</a>'
+			        +       '</li>';
+	
+			    for (var p = data.pi.startPage; p <= data.pi.endPage; p++) {
+			        pagination += 
+			        	'<li class="page-item ' + (data.pi.currentPage == p ? 'disabled' : '') + '">'
+			            +   '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + p + '">' + p + '</a>'
+			            + '</li>';
+			    }
+	
+			    pagination += 
+			        '<li class="page-item ' + (data.pi.currentPage == data.pi.maxPage ? 'disabled' : '') + '">'
+			        +   '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + (data.pi.currentPage + 1) + '">&raquo;</a>'
+			        + '</li>'
+			        + '</ul>'
+			        + '</div>';
+	
+			    $("#pagingArea").html(pagination);
+			}
+			// 테이플 페이징 새로 처리
 		});
 	</script>
-	</c:if>
 </body>
 </html>

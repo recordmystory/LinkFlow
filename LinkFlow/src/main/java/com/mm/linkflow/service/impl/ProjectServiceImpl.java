@@ -103,4 +103,14 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<DispatchDto> searchDispatchList(Map<String, String> search, PageInfoDto pi) {
 		return proDao.searchDispatchList(search, pi);
 	}
+
+	@Override
+	public List<DispatchDto> myDispatchList(String userId, PageInfoDto pi) {
+		return proDao.myDispatchList(userId, pi);
+	}
+
+	@Override
+	public int myDispatchCount(String userId) {
+		return proDao.myDispatchCount(userId);
+	}
 }

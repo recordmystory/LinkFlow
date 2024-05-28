@@ -60,4 +60,10 @@ public interface ProjectService {
 	
 	// 인원 검색 조회
 	List<DispatchDto> searchDispatchList(Map<String, String> search, PageInfoDto pi);
+	
+	// 본인 프로젝트 조회
+	List<DispatchDto> myDispatchList(String userId, PageInfoDto pi);
+	
+	// 본인 프로젝트 카운트 조회
+	int myDispatchCount(String userId);
 }

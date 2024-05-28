@@ -123,4 +123,19 @@ public class ProjectDao {
 		
 		return sql.selectList("projectMapper.searchDispatchList", search, rowBounds);
 	}
+	
+	// 본인 프로젝트 조회
+	public List<DispatchDto> myDispatchList(String userId, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.myDispatchList", userId, rowBounds);
+	}
+	
+	// 본인 프로젝트 카운트 조회
+	public int myDispatchCount(String userId) {
+		return sql.selectOne("projectMapper.myDispatchCount", userId);
+	}
 }

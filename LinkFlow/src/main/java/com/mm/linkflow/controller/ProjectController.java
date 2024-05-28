@@ -219,4 +219,21 @@ public class ProjectController {
 	    
 	    return mv;
 	}
+	
+	// 본인 프로젝트 조회
+	@ResponseBody
+	@GetMapping("myList.dis")
+	public Map<String, Object> myDispatchList(String userId, @RequestParam(value="page", defaultValue="1")int currentPage){
+		
+		Map<String, Object> map = new HashMap<>();
+		int listCount = proService.myDispatchCount(userId);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DispatchDto> list = new ArrayList<>();
+		list = proService.myDispatchList(userId, pi);
+		map.put("list", list);
+		map.put("pi", pi);
+		
+		return map;
+		
+	}
 }
