@@ -160,7 +160,7 @@
 					                                    <td>${n.deptTitle }</td>
 					                                    <td>${n.subName }</td>
 					                                    <td>${n.userName }</td>
-					                                    <td><input value="<c:if test="${ n.writeYN eq 'Y' }"> Y </c:if>" type="checkbox" class="writeCheckBox" name="AuthList[${status.index + masterCount}].writeYN" onclick="toggleCheckbox(this)" <c:if test="${ n.writeYN eq 'Y' }"> checked </c:if>></td>
+					                                    <td><input value="<c:if test="${ n.writeYN eq 'Y' }">Y</c:if>" type="checkbox" class="writeCheckBox" name="AuthList[${status.index + masterCount}].writeYN" onclick="toggleCheckbox(this)" <c:if test="${ n.writeYN eq 'Y' }"> checked </c:if>></td>
 				                                  	</tr>
                                     			</c:otherwise>
                                     		</c:choose>
