@@ -53,10 +53,8 @@ public class EdsmProgController {
 		if(edocHistDto.getEdHistSubCode().equals("01")) {
 			// 승인시 tb_edoc_histd의 해당 문서에 ED_HIST_SUB_CODE가 01를 조회해서 3개시 
 			int count = edsmProgService.selectEdHistSubCodeCnt(edocHistDto);
-			log.debug("그냥 count: {}", count);
 			if(count == 3) {
 				//반려시 tb_eddoc의 status를 05로 업데이트
-				log.debug("if문 안에 count: {}", count);
 				status = 0;
 				status = edsmProgService.updateEdocStatusAppr(edocHistDto);
 			}
@@ -210,7 +208,7 @@ public class EdsmProgController {
 				EdocHistDto.setModId(loginUser.getUserId());
 				EdocHistDto.setRegId(loginUser.getUserId());
 				EdocHistDto.setEdFormCode(edocDto.getEdFormCode());
-				count++;
+				count++; 
 				}else {
 				EdocHistDto.setEdHistOrder(count);
 				EdocHistDto.setEdHistSubCode(null);
