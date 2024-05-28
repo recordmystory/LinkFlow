@@ -216,13 +216,13 @@
 
 		INSERT INTO TB_CALENDAR
 		    (
-_CODE FROM DUAL
+				CODE FROM DUAL
 		         UNION ALL
 		         SELECT '02' AS CAL_SUB_CODE FROM DUAL
 		         UNION ALL
 		         SELECT '03' AS CAL_SUB_CODE FROM DUAL
 		         UNION ALL
-		         SELECT '04' AS CAL_SUB_CODE FROM DUAL) sub	 
+		         SELECT '04' AS CAL_SUB_CODE FROM DUAL)
 	  </insert>
 	  
 	 <!-- 제이트리 조직도 멤버조회 -->
