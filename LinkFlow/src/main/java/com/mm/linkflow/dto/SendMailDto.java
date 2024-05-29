@@ -22,6 +22,8 @@ public class SendMailDto extends CommonDto{
 	private String transTime;
 	private String tempSave;
 	private String removeYN;
+	private String userId;
+	private String receiver;
 	
 	private String userName;
 	
