@@ -47,7 +47,7 @@
 	        END_DATE,
 	        ADDRESS,
 	        SCH_IMPORT,
-	        NOTIFY_YN,
+	       <!--  NOTIFY_YN, -->
 	        REG_DATE,
 	        MOD_DATE,
 	        MOD_ID,
@@ -68,7 +68,7 @@
 					TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI'),
 	        #{address},
 	        #{schImport},
-	        #{notifyYn},
+<!-- 	    #{notifyYn}, -->
 	        SYSDATE,
 	        SYSDATE,
 	        #{modId},
@@ -86,7 +86,7 @@
         TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
         S.ADDRESS,
         S.SCH_IMPORT,
-        S.NOTIFY_YN,
+<!--    S.NOTIFY_YN, -->
         S.SCH_TITLE,
         C.CAL_COLOR,
         C.CAL_SUB_CODE,
@@ -127,7 +127,7 @@
 	        START_DATE = TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI'),
 	        END_DATE = TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI'),
 	        ADDRESS = #{address},
-	        NOTIFY_YN = #{notifyYn},
+<!-- 	    NOTIFY_YN = #{notifyYn}, -->
 	        SCH_CONTENT = #{schContent},
 	        MOD_DATE = SYSDATE,
 	        CAL_NO = (
@@ -178,7 +178,7 @@
         TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
         S.ADDRESS,
         S.SCH_IMPORT,
-        S.NOTIFY_YN,
+<!--    S.NOTIFY_YN, -->  
         S.SCH_TITLE,
         C.CAL_SUB_CODE
        FROM TB_SCHEDULE S

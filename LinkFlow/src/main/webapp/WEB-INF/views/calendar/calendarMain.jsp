@@ -359,21 +359,7 @@
 		    });
 		}
 		
-		//수정 모달 required 조건처리
-		document.querySelector("#schUpdateButton").addEventListener(
-		  "click",
-		  function (event) {
-			  if($('#schTitle').val().trim() === ''){
-		    	alert("제목을 입력하세요");
-			  }else if($('#startDate').val().trim() === ''){
-			    alert("시작일을 입력하세요");
-			  }else if($('#endDate').val().trim() === ''){
-			    alert("종료일을 입력하세요");
-			  }
-		    event.preventDefault();
-		  },
-		  false,//false는 이벤트 버블링을 사용하고, true는 캡처링을 사용 ~
-		);
+
 		
     //일정 삭제, 수정, 캘린더 체크박스 
 		  $(document).ready(function() {
@@ -401,11 +387,15 @@
                 schContent: $('#schUpdateModal textarea[name="schContent"]').val()
             };
             
-            // 날짜 비교 시간까지 비교
-	          if (data.startDate > data.endDate) {
-	              alert("종료일이 시작일보다 작을 수 없습니다.");
+            if (data.schTitle === '') {
+                alert("제목을 입력하세요");
+                event.preventDefault();
+                return; 
+            } else if (data.startDate >= data.endDate) {
+	              alert("종료일이 시작일보다 같거나 작을 수 없습니다.");
 	              return; 
 	          }
+
 
             $.ajax({
                 type: "POST",
@@ -439,7 +429,6 @@
                         //calendar.addEvent(eventData);
                         //calendar.addEvent(eventData);
                         addEventAndShow(data.schCalSubCode);
-                        //별로 안좋은 방식(에이젝스 한 번 더 부르는 것보다 코드가 길어지더라도 끝내는게 좋음 나중에 리팩토링
                         
                         CheckboxReSelect();
                        
@@ -474,7 +463,16 @@
            $('#schUpdateModal').modal('hide');
 			  });
 			  
-			 
+			  //캘린더 재조회 수정에서 
+		      function CheckboxReSelect(){
+		     	  var events = calendar.getEvents(); 
+		     	  var changeCheckboxVal = $(".calCheckbox").val();
+		        events.forEach(function(event) {
+		       	 event.extendedProps.schCalSubCode && event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
+
+
+		       });
+		     }
     // 일정 삭제 *******************************
     	//삭제모달 html text
         $('.schDetailModal_grayBtn').click(function() {
@@ -518,29 +516,27 @@
             });
         });
     
-        //캘린더 일정등록 ajax**************************************
+      //캘린더 일정등록 ajax**************************************
 			//일정등록 클릭시 모달 띄우기
 			 // 로그인 확인
-	    var mod = '${loginUser.userId}'; 
-     $('input[name="modId"]').val(mod); 
-	
-	    // 일정 등록 버튼 클릭 시 모달 띄우기
-	    if (mod === '') {
-	        $('.schInsertModalBtn').click(function() {
-	            alert("일정을 등록하려면 로그인을 해 주세요.");
-	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
-	        });
-	    } else {
-	        $('.schInsertModalBtn').click(function() {
-	            $('#schInsertModal').modal('show');
-	            $('body').addClass('modal-open'); 
-	        });
-	    }
 
+	
 		  // 중요일정 체크박스 클릭 시 조건
 	    $('#schImportInsertBtn').click(function() {
 	        var important = $(this).is(':checked') ? 'Y' : 'N';
 	        $('input[name="schImport"]').val(important);
+	        var mod = '${loginUser.userId}'; 
+	        $('input[name="modId"]').val(mod); 
+	        
+	        // 일정 등록 버튼 클릭 시 모달 띄우기
+	        if (mod === '') {
+	            alert("일정을 등록하려면 로그인을 해 주세요.");
+	            window.location.href = "/linkflow/member/loginout.me"; // 로그인 페이지 경로로 이동
+	        } else {
+	                $('#schInsertModal').modal('show');
+	                $('body').addClass('modal-open'); 
+	        }
+
 	    });
 		  
 	    $('#notifyInsertBtn').click(function() {
@@ -600,14 +596,7 @@
 	  	
  */
  
-      //캘린더 재조회 수정에서 
-      function CheckboxReSelect(){
-     	  var events = calendar.getEvents(); // 현재보여지는 모든 일정을 다 가져오고 
-     	  var changeCheckboxVal = $(".calCheckbox").val();
-        events.forEach(function(event) {
-       	 event.extendedProps.schCalSubCode != changeCheckboxVal && event.remove();
-       });
-     }
+    
       //삭제모달에서 취소버튼 클릭시
       $('#schDeleteCancelBtn').click(function() {
           $('#detailBtn').modal('hide');

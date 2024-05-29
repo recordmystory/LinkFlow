@@ -149,7 +149,7 @@
         </li>
         
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
 
           <a href="#" class="nav-link middleName">
           
@@ -189,11 +189,11 @@
             <button type="button" class="btn shareCalMoreBtn" data-bs-target="#shareCalMoreModal" data-bs-toggle="modal">더보기</button>
           </li>
         </ul>
-      </li>
+      </li>-->
       <div class="nav-item">
         <a href="${contextPath}/calendar/wasteList.page" class="nav-link middleName">휴지통</a>
       </div>
-    </nav>
+    </nav> 
     <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
