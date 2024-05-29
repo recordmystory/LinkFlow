@@ -178,7 +178,7 @@
         TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
         S.ADDRESS,
         S.SCH_IMPORT,
-<!--    S.NOTIFY_YN, -->  
+<!--    S.NOTIFY_YN, -->
         S.SCH_TITLE,
         C.CAL_SUB_CODE
        FROM TB_SCHEDULE S
