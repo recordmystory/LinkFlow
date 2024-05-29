@@ -256,8 +256,8 @@
                                notifyYn: calendarEvents[i].notifyYn,
                                schContent: calendarEvents[i].schContent,
                                schNo: calendarEvents[i].schNo,
-                               calNo: calendarEvents[i].calNo
-
+                               calNo: calendarEvents[i].calNo,
+															 modId: calendarEvents[i].modId
                            }
                    };
                    //events.push(eventData);//addEvent로도 가능
@@ -329,6 +329,14 @@
     		}else {
 		        $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').hide();
 		    }
+		    
+		    //공유일정 수정하기 버튼 막기
+		     var userId = '${loginUser.userId}';
+		     var modId = $('#modId').text(extendedProps.modId);		  
+		     console.log(modId);
+		     if (userId != modId ) {
+			        $('.schDetailModal_blueBtn').hide();
+			    }  
 		    
 		    $('#schDetailModal').modal('show');
 		}

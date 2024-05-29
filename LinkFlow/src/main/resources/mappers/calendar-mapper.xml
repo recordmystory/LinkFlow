@@ -22,6 +22,8 @@
  		 <result column="CAL_COLOR" property="calColor"/>
   	 <result column="CAL_SUB_CODE" property="schCalSubCode"/>
   	 <result column="MOD_DATE" property="modDate"/>
+  	 <result column="MOD_ID" property="modId"/>
+  	 
  </resultMap>
 						
 	<resultMap type="DeptDto" id="deptResult" extends="commonMapper.commonResult">
@@ -33,9 +35,12 @@
 			<result column="USER_NAME" property="userName"/>
 			<result column="sub_name" property="subName"/>
 		</collection>
-
 	</resultMap>
 	
+	<resultMap type="ShaSchDto" id="ShaSchResult"  extends="commonMapper.commonResult">
+    <result column="SHARE_ID" property="shareId"/>
+    <result column="SCH_NO" property="schNo"/>
+	</resultMap>
 	<!-- 일정등록 -->
 	<insert id="insertSch">
 	    INSERT INTO TB_SCHEDULE
@@ -61,7 +66,7 @@
 	            SELECT CAL_NO
 	            FROM TB_CALENDAR
 	            WHERE CAL_SUB_CODE = #{schCalSubCode}
-	            AND REG_ID = #{modId} <!-- userId -->
+	            AND REG_ID = #{modId} 
 	        ),
 	        #{schContent},
 	        TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI'),
@@ -77,9 +82,35 @@
 	    )
 	</insert>
 
+	<!-- 공유일정 등록 -->
+	<insert id="insertSharedSch">
+	
+	 INSERT INTO TB_SHA_SCH
+    (
+        SHARE_ID,
+        SCH_NO,
+        REG_DATE,
+        MOD_DATE,
+        REG_ID,
+        MOD_ID,
+        DEL_YN
+    )
+    VALUES
+    (
+        #{shareId},
+        SEQ_SCHNO.currval,
+        SYSDATE,
+        SYSDATE,
+        #{userId},
+        #{userId},
+        'N'
+    )
+	</insert>
+
+
 	<!-- 전체일정 조회(특정 캘린더)  -->
 	<select id="selectScheduleList" resultMap="scheduleResult">
-    SELECT 
+    SELECT  DISTINCT 
         S.SCH_NO,
         S.SCH_CONTENT,
         TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
@@ -90,32 +121,39 @@
         S.SCH_TITLE,
         C.CAL_COLOR,
         C.CAL_SUB_CODE,
-        C.CAL_NO
+        C.CAL_NO,
+        S.MOD_ID
     FROM TB_SCHEDULE S
     LEFT JOIN TB_CALENDAR C ON C.CAL_NO = S.CAL_NO
     LEFT JOIN TB_MEMBER M ON C.REG_ID = M.USER_ID
+    JOIN TB_SHA_SCH SS ON S.SCH_NO = SS.SCH_NO
+    
     WHERE 
-         <choose>
+        <choose>
             <when test="schCalSubCode == '01'">
-                 M.SP_RIGHT = 'Y' 
+                 (M.SP_RIGHT = 'Y' 
                  AND S.DEL_YN = 'N'
-                 AND C.CAL_SUB_CODE = '01'
+                 AND C.CAL_SUB_CODE = '01')
+                 OR (SS.SHARE_ID = #{userId} AND S.DEL_YN = 'N' AND C.CAL_SUB_CODE = '01')
             </when>
             <when test="schCalSubCode == '02'">
-                 M.DEPT_CODE IN (
+                 (M.DEPT_CODE IN (
                     SELECT DEPT_CODE 
                     FROM TB_MEMBER 
                     WHERE USER_ID = #{userId}                     
                 )AND M.DEPT_RIGHT = 'Y' 
                 AND S.DEL_YN = 'N'
-                AND C.CAL_SUB_CODE = '02'
+                AND C.CAL_SUB_CODE = '02')
+                OR (SS.SHARE_ID = #{userId} AND S.DEL_YN = 'N' AND C.CAL_SUB_CODE = '02')
             </when>
             <when test="schCalSubCode == '03'">
-              	 S.MOD_ID = #{userId} 
+              	 (S.MOD_ID = #{userId} 
               	 AND S.DEL_YN = 'N'
-              	 AND C.CAL_SUB_CODE = '03'
+              	 AND C.CAL_SUB_CODE = '03')
+              	 OR (SS.SHARE_ID = #{userId} AND S.DEL_YN = 'N' AND C.CAL_SUB_CODE = '03')
             </when>
         </choose>
+
 </select>
 	 
 	<!-- 일정수정 -->
@@ -134,7 +172,7 @@
 		            SELECT CAL_NO
 		            FROM TB_CALENDAR
 		            WHERE CAL_SUB_CODE = #{schCalSubCode}
-		            AND REG_ID = #{modId}
+		            AND REG_ID = #{userId}
 		        )
 	    WHERE SCH_NO = #{schNo}
 	</update>
@@ -270,4 +308,6 @@
 		ORDER BY 
         D.DEPT_CODE
 	</select>
+	
+
 </mapper>

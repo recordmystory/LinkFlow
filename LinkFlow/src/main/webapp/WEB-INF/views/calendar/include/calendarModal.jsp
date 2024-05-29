@@ -221,6 +221,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="schNo" id="schNo">
+                <input type="hidden" name="modId" id="modId">
             <div class="modal-footer justify-content-center">
                 <button type="button" class="blue-button btn schDetailModal_blueBtn" data-toggle="modal" data-target="#schUpdateModal">수정</button>
 								<button type="button" class="gray-button btn schDetailModal_grayBtn" data-toggle="modal" data-target="#detailBtn">삭제</button>
@@ -384,6 +385,8 @@
                        </div>
 		                    <!-- 수정자 아이디 -->
 		                   <input type="hidden" name="modId" id="modId">
+		                   <input type="hidden" name="shareIds" id="shareIds">
+		                   
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">
@@ -465,7 +468,7 @@
                        <input type="hidden" name="calNo" id="calNo">                       
 		                </form>
 		            </div>
-		            <div class="modal-footer justify-content-center">
+		            <div class="modal-footer justify-content-center">                              
 		                <button type="button" id="schUpdateButton" class="btn blue-button">수정</button>
 		                <button type="button" class="btn gray-button" id="schUpdateCancelBtn" >취소</button>
 
@@ -480,7 +483,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content" style="min-width: 1400px;">
           <div class="modal-header">
-            <h4 class="modal-title">결재선 설정하기</h4>
+            <h4 class="modal-title">일정 공유</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -511,7 +514,7 @@
                    <div class="row">
                      <div class="card card-default card-info" style="width: 300px; height: 500px; margin-right: 20px;">
                        <div class="card-header">
-                         <h5 class="card-title">사원설정</h5>
+                         <h5 class="card-title">사원 설정</h5>
                        </div>
                        
                        <div class="card-body text-nowrap overflow-auto">
@@ -707,39 +710,8 @@
 //공유일정 조직도 script start***********************************************
   
     $('#saveData').click(function(){
-    	approvalHiddenValues = [];
     	referenceHiddenValues = [];
 
-    
-    	var approvalName1Html = $('.approvalName1')
-    	    .clone() 
-    	    .find('input[type="checkbox"]') 
-    	    .remove() 
-    	    .end() 
-    	    .find('.userId')
-    	    .attr('name', 'edocHistList[1].userId') 
-    	    .css('display', 'none') 
-    	    .end() 
-    	    .html(); 
-
-    
-    	$('#approvalSelectedArea1').html(approvalName1Html);
-
-    	
-    	var approvalName2Html = $('.approvalName2')
-        .clone() 
-        .find('.userId')
-        .attr('name', 'edocHistList[2].userId') 
-        .css('display', 'none') 
-        .end() 
-        .find('input[type="checkbox"]') 
-        .remove() 
-        .end() 
-        .html(); 
-
-    $('#approvalSelectedArea2').html(approvalName2Html);
-
-    
     	var $referAreaContent = '';
     	$('.referenceName').each(function(index) {
     	    var referenceNameHtml = $(this)
@@ -758,12 +730,10 @@
     	$('#refSelectedArea').html($referAreaContent);
 
     	
-    	$('.approvalName1, .approvalName2, .referenceName').each(function() {
+    	$('.referenceName').each(function() {
     	    var hiddenValue = $(this).attr('data-hidden-value');
     	    if (hiddenValue) {
-    	        if ($(this).hasClass('approvalName1') || $(this).hasClass('approvalName2')) {
-    	            approvalHiddenValues.push(hiddenValue);
-    	        } else if ($(this).hasClass('referenceName')) {
+    	         if ($(this).hasClass('referenceName')) {
     	            referenceHiddenValues.push(hiddenValue);
     	        }
     	    }
@@ -853,28 +823,28 @@
 
            
 
-      document.querySelector('.referenceIn').addEventListener('click', function() {
-        
-        var nameAreas = document.querySelectorAll('.NameArea');
+   document.querySelector('.referenceIn').addEventListener('click', function() {
+	    var shareIds = [];
+	    var nameAreas = document.querySelectorAll('.NameArea');
 
-       
-        nameAreas.forEach(function(nameArea) {
-            
-            var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-            
-            if (checkbox) {
-                
-                var nameValue = nameArea.innerHTML.trim();
-                
-                var referenceName = document.createElement('div');
-                referenceName.className = 'referenceName';
-                referenceName.innerHTML = nameValue;
-                document.querySelector('.referenceArea').appendChild(referenceName);
-                
-                nameArea.remove();
-            }
-        });
-    });
+	    nameAreas.forEach(function(nameArea) {
+	        var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+	        if (checkbox) {
+	            var userId = nameArea.getAttribute('data-userid');
+	            shareIds.push(userId);
+
+	            var nameValue = nameArea.innerHTML.trim();
+	            var referenceName = document.createElement('div');
+	            referenceName.className = 'referenceName';
+	            referenceName.innerHTML = nameValue;
+	            document.querySelector('.referenceArea').appendChild(referenceName);
+	            
+	            nameArea.remove();
+	        }
+	    });
+
+	    document.getElementById('shareIds').value = shareIds.join(',');
+	});
 
     document.querySelector('.referenceOut').addEventListener('click', function() {
         var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
@@ -988,12 +958,14 @@
                      calendar.render();
 
                      $('#scheduleForm')[0].reset();
-                 }
-             },
-                 error: function(result) {
-                     // 요청이 실패했을 때 
-                     console.error("일정 등록에 실패했습니다.");
-                     alert("일정 등록에 실패했습니다.");
+                 	 } else {
+                         console.error("일정 등록에 실패했습니다. 서버 응답: ");
+                         alert("일정 등록에 실패했습니다.");
+                     }
+                 },
+                 error: function() {
+                	 console.error("일정 등록에 실패했습니다.");
+                   alert("일정 등록에 실패했습니다.");
 
                  }
              });
