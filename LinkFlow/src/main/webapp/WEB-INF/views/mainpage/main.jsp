@@ -228,21 +228,16 @@
 	
 						<!-- 전자결재 시작 -->
 						<div class="divisionOne_one">
-							<h4>전자결재</h4>
-							<div class="division card" style="width: 400px; height: 150px;">
-								<div
-									style="width: 90%; height: 90%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-									<div style="margin-bottom: 10px;">
-										<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listWait.prog">대기</a> 
-										<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listCheck.prog">확인</a>
-									</div>
-									<div>
-										<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listPlan.prog">예정</a> 
-										<a class="btn btn-outline-secondary" href="${ contextPath }/edsm/prog/listProg.prog">진행</a>
-									</div>
-								</div>
-							</div>
-						</div>
+                            <h4>전자결재</h4>
+                            <div class="division card" style="width: 400px; height: 150px;"> 
+                                <div style="width: 90%; height: 90%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                    <div style="display: flex; align-items: center; justify-content: center;">
+                                        <a href="${ contextPath }/edsm/prog/listAll.prog" class="btn btn-outline-secondary" style="margin-right: 5px; width: 200px; height: 60px; display: flex; align-items: center; justify-content: center;">진행 중인 문서</a>
+                                        <a href="${ contextPath }/edsm/docbox/listAll.docbox" class="btn btn-outline-secondary" style="height: 60px; display: flex; align-items: center; justify-content: center;">문서함</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 						<!-- 전자결재 끝 -->
 					</div>
 					<!-- 일정 시작 -->
