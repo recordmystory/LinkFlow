@@ -28,6 +28,17 @@
 		<result column="DEPT_TITLE" property="deptTitle"/>
 	</resultMap>
 	
+	<resultMap type="DailyDto" id="daiResult" extends="commonMapper.commonResult">
+		<id column="DAI_NO" property="daiNo"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="DAI_CONTENT" property="daiContent"/>
+		<result column="DAI_ANS" property="daiAns"/>
+		<result column="ANS_DATE" property="ansDate"/>
+		<result column="ANS_WIRTER" property="ansWriter"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="USER_NAME" property="userName"/>
+	</resultMap>
+	
 	<!-- 프로젝트 등록 -->
 	<insert id="addProject">
 		INSERT
@@ -391,5 +402,89 @@
 		  FROM TB_DISPATCH
 		 WHERE DIS_YN = 'N'
 		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 프로젝트 PM 여부 확인 -->
+	<select id="projectPmCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TB_DISPATCH
+		 WHERE USER_ID = #{userId}
+		   AND ROLE = 'PM'
+	</select>
+	
+	<!-- 일일작업 리스트 조회 -->
+	<select id="dailyList" resultMap="daiResult">
+		SELECT
+		       DAI_NO
+		     , D.PRO_NO
+		     , DAI_CONTENT
+		     , DAI_ANS
+		     , D.REG_DATE
+		  	 , PRO_TITLE
+		  	 , USER_NAME
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
+		 WHERE D.DEL_YN = 'N'
+		   AND D.REG_ID = #{userId}
+	</select>
+	
+	<!-- 일일작업 카운트 조회 -->
+	<select id="dailyCount" resultType="_int">
+		SELECT
+		 	   COUNT(*)
+		  FROM TB_DAILY
+		 WHERE DEL_YN = 'N'
+		   AND REG_ID = #{userId}
+	</select>
+	
+	<!-- 본인 프로젝트 조회(일일작업 용) -->
+	<select id="dailyProjectList" resultMap="disResult">
+		SELECT 
+			   D.PRO_NO
+			 , PRO_TITLE
+		  FROM TB_DISPATCH D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		 WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 일일작업 등록 -->
+	<insert id="addDaily">
+		INSERT
+		  INTO TB_DAILY
+		  (
+		  	DAI_NO
+		  , PRO_NO
+		  , DAI_CONTENT
+		  , REG_ID
+		  , MOD_ID
+		  )
+		  VALUES
+		  (
+		  	SEQ_DAILY.NEXTVAL
+		  , #{proNo}
+		  , #{daiContent}
+		  , #{regId}
+		  , #{modId}
+		  )
+	</insert>
+	
+	<!-- 일일작업 조회 -->
+	<select id="detailDaily" resultMap="daiResult">
+		SELECT
+		 	   DAI_NO
+		 	 , PRO_NO
+		 	 , USER_NAME
+		 	 , PRO_TITLE
+		 	 , REG_DATE
+		 	 , DAI_CONTENT
+		 	 , DAI_ANS
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M ON (M.USER_ID = D.REG_ID)
+		 WHERE USER_ID = REG_ID
+		   AND DAI_NO = #{daiNo}
+		   AND D.DEL_YN = 'N'
 	</select>
 </mapper>

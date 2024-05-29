@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mm.linkflow.dto.DailyDto;
 import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
@@ -40,7 +41,13 @@ public class ProjectController {
 	
 	// 프로젝트 목록 조회
 	@GetMapping("/list.pj")
-	public ModelAndView listProject(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage) {
+	public ModelAndView listProject(ModelAndView mv, HttpSession session,  @RequestParam(value="page", defaultValue="1")int currentPage) {
+			
+			MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+			
+			String userId = loginUser.getUserId();
+			session.setAttribute("result", proService.projectPmCount(userId));
+
 			int listCount = proService.selectProjectCount();
 			PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 			mv.addObject("list", proService.listProject(pi))
@@ -236,5 +243,45 @@ public class ProjectController {
 		
 		return map;
 		
+	}
+	
+	// 본인 일일작업 조회
+	@GetMapping("list.dai")
+	public ModelAndView dailyList(ModelAndView mv, HttpSession session, @RequestParam(value="page", defaultValue="1")int currentPage) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
+		int listCount = proService.dailyCount(userId);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DailyDto> list = new ArrayList<>();
+		list = proService.dailyList(userId, pi);
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("project/listDaily");
+		
+		
+		return mv;
+	}
+	
+	// 일일작업 등록폼
+	@GetMapping("addForm.dai")
+	public ModelAndView dailyAddForm(ModelAndView mv, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
+		List<DispatchDto> list = proService.dailyProjectList(userId);
+		mv.addObject("list", list)
+		  .setViewName("project/addDailyForm");
+		return mv;
+	}
+	
+	// 일일작업 등록
+	@PostMapping("add.dai")
+	public String addDaily(DailyDto dai, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		dai.setRegId(loginUser.getUserId());
+		dai.setModId(loginUser.getUserId());
+		proService.addDaily(dai);
+		
+		return "redirect:/project/list.dai";
 	}
 }

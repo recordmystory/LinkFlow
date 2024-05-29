@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mm.linkflow.dto.DailyDto;
 import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
@@ -142,5 +143,34 @@ public class ProjectDao {
 	// 본인 프로젝트 카운트 조회
 	public int myDispatchCount(String userId) {
 		return sql.selectOne("projectMapper.myDispatchCount", userId);
+	}
+	
+	// 프로젝트 PM여부 확인
+	public int projectPmCount(String userId) {
+		return sql.selectOne("projectMapper.projectPmCount", userId);
+	}
+	
+	// 일일작업 리스트 조회
+	public List<DailyDto> dailyList(String userId, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		return sql.selectList("projectMapper.dailyList", userId, rowBounds);
+	}
+	
+	// 일일작업 카운트 조회
+	public int dailyCount(String userId) {
+		return sql.selectOne("projectMapper.dailyCount", userId);
+	}
+	
+	// 일일작업 등록
+	public void addDaily(DailyDto dai) {
+		sql.insert("projectMapper.addDaily", dai);
+	}
+	
+	// 본인 프로젝트 조회(일일작업 용)
+	public List<DispatchDto> dailyProjectList(String userId){
+		return sql.selectList("projectMapper.dailyProjectList", userId);
 	}
 }

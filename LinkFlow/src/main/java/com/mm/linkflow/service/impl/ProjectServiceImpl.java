@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.mm.linkflow.dao.ProjectDao;
+import com.mm.linkflow.dto.DailyDto;
 import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
@@ -117,5 +118,30 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void deleteProjectDispatch(int proNo) {
 		proDao.deleteProjectDispatch(proNo);
+	}
+
+	@Override
+	public int projectPmCount(String userId) {
+		return proDao.projectPmCount(userId);
+	}
+
+	@Override
+	public List<DailyDto> dailyList(String userId, PageInfoDto pi) {
+		return proDao.dailyList(userId, pi);
+	}
+
+	@Override
+	public int dailyCount(String userId) {
+		return proDao.dailyCount(userId);
+	}
+
+	@Override
+	public void addDaily(DailyDto dai) {
+		proDao.addDaily(dai);
+	}
+
+	@Override
+	public List<DispatchDto> dailyProjectList(String userId) {
+		return proDao.dailyProjectList(userId);
 	}
 }

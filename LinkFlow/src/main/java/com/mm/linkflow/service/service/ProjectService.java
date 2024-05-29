@@ -3,6 +3,7 @@ package com.mm.linkflow.service.service;
 import java.util.List;
 import java.util.Map;
 
+import com.mm.linkflow.dto.DailyDto;
 import com.mm.linkflow.dto.DispatchDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ProjectDto;
@@ -69,4 +70,19 @@ public interface ProjectService {
 	
 	// 본인 프로젝트 카운트 조회
 	int myDispatchCount(String userId);
+	
+	// 프로젝트 PM 여부 확인
+	int projectPmCount(String userId);
+	
+	// 일일작업 리스트 조회
+	List<DailyDto> dailyList(String userId, PageInfoDto pi);
+	
+	// 일일작업 카운트 조회
+	int dailyCount(String userId);
+	
+	// 일일작업 등록
+	void addDaily(DailyDto dai);
+	
+	// 본인 프로젝트 조회(일일작업 용)
+	List<DispatchDto> dailyProjectList(String userId);
 }

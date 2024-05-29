@@ -43,7 +43,6 @@
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<div class="LinkFlowMainSection">
-            
 			<jsp:include page="/WEB-INF/views/common/sidebar/project/projectSidebar.jsp"/>
 
             <div class="LinkFlowMainContent">
@@ -185,13 +184,8 @@
 	</script>
 	</c:if>
 	<script>
-        $(document).ready(function () {
-            $('.dropdown-item').click(function () {
-                var selectedText = $(this).find('.spanCss').text();
-                $('.resultArea').text(selectedText);
-            });
-        });
-        // 지도 api 시작
+
+		// 지도 api 시작
         //주소의 정보를 selectMapList 함수로 넘겨준다.
         function mapCreate(address){
         naver.maps.Service.geocode({

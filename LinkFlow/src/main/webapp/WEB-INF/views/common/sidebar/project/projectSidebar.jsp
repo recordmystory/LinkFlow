@@ -48,9 +48,9 @@
 	            <nav class="linkfoiwsideMenu">
 	                <!--프로젝트 등록이나 휴가 신청등 버튼등 보여지는 요소 필요없음 지우거나~-->
 	                <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발')}">
-	                <div class="LinkFlowInsertBtnArea">
-	                    <a href="${contextPath}/project/addForm.pj" class="btn btn-block bg-primary btn-lg" style="color: white;">+ 프로젝트 등록</a>
-	                </div>
+		                <div class="LinkFlowInsertBtnArea">
+		                    <a href="${contextPath}/project/addForm.pj" class="btn btn-block bg-primary btn-lg" style="color: white;">+ 프로젝트 등록</a>
+		                </div>
 	                </c:if>
 	                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
 	                    data-accordion="false">
@@ -78,29 +78,33 @@
 	                            </li>
 	                        </ul>
 	                    </li>
-	                    <li class="nav-item">
-	                        <a href="#" class="nav-link middleName">
-	                            <i class="nav-icon far fa-solid fa-pen"></i>
-	                            <p>
-	                                일일작업 관리
-	                                <i class="fas fa-angle-left right"></i>
-	                            </p>
-	                        </a>
-	                        <ul class="nav nav-treeview" style="padding-left: 20px;">
-	                            <li class="nav-item">
-	                                <a href="#" class="nav-link">
-	                                    <i class="far fa-circle nav-icon"></i>
-	                                    <p>일일작업 조회</p>
-	                                </a>
-	                            </li>
-	                            <li class="nav-item">
-	                                <a href="#" class="nav-link">
-	                                    <i class="far fa-circle nav-icon"></i>
-	                                    <p>직원별 일일작업 조회</p>
-	                                </a>
-	                            </li>
-	                        </ul>
-	                    </li>
+	                    <c:if test="${not empty loginUser and fn:contains(loginUser.deptName, '개발')}">
+		                    <li class="nav-item">
+		                        <a href="#" class="nav-link middleName">
+		                            <i class="nav-icon far fa-solid fa-pen"></i>
+		                            <p>
+		                                일일작업 관리
+		                                <i class="fas fa-angle-left right"></i>
+		                            </p>
+		                        </a>
+		                        <ul class="nav nav-treeview" style="padding-left: 20px;">
+		                            <li class="nav-item">
+		                                <a href="${contextPath}/project/list.dai" class="nav-link">
+		                                    <i class="far fa-circle nav-icon"></i>
+		                                    <p>일일작업 조회</p>
+		                                </a>
+		                            </li>
+		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발') or result > 0}">
+			                            <li class="nav-item">
+			                                <a href="#" class="nav-link">
+			                                    <i class="far fa-circle nav-icon"></i>
+			                                    <p>직원별 일일작업 조회</p>
+			                                </a>
+			                            </li>
+		                            </c:if>
+		                        </ul>
+		                    </li>
+	                    </c:if>
 	                </ul>
 	            </nav>
 	            <!-- /.sidebar-menu -->

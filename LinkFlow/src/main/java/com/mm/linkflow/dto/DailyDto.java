@@ -20,4 +20,6 @@ public class DailyDto extends CommonDto {
 	private String daiAns;
 	private String ansDate;
 	private String ansWriter;
+	private String proTitle;
+	private String userName;
 }
