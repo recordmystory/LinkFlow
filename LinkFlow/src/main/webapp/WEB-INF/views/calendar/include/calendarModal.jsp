@@ -203,7 +203,7 @@
                       <label for="recipient-name" class="col-form-label">장소</label>
                       <div class="search">
                         <div id="address"></div>
-                        <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
+                       <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div> -->
                       </div>                          
                     </div>
                     <!---->
@@ -362,7 +362,7 @@
 		                        <label for="address" class="col-form-label">장소</label>
 		                        <div class="search mt-1">
 		                            <input type="text" name="address" class="form-select" style="width:320px; font-size: small; margin-left: 30px;">
-   														  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        
+   														 <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		             -->           
    												  </div>
 		                    </div>
 		                   <!--   알림 설정 
@@ -442,7 +442,7 @@
 		                        <label for="address" class="col-form-label">장소</label>
 		                        <div class="search mt-1">
 		                            <input type="text" name="address" id="address" class="form-select" style="width:320px; font-size: small; margin-left: 30px;">
-   															<div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                       
+   															<!-- <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        -->
 		                    		</div>
 		                    </div>
 		                    <!-- 알림 설정 
@@ -620,7 +620,7 @@
                           <label for="recipient-name" class="col-form-label">장소</label>
                          	<div class="search">
 		                        <div id="wasteAddress"></div>
-		                        <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>
+		                        <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>-->
                       		</div>                                                   
                         </div>
                         <!---->
