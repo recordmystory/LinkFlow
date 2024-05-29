@@ -32,22 +32,15 @@ public class CalendarController {
 	
 	private final CalendarService calendarService;
 
-	
-	//calendarMain  
-	@GetMapping("/calMain.page")
-	public String calendarMain() {
-		return "calendar/calendarMain";
-	}
-	
-	
-	/*
-	 * //calendarMain
-	 * 
-	 * @GetMapping("/calMain.page") public ModelAndView calendarMain(ModelAndView
-	 * mv) { List<DeptDto> apprList = calendarService.selecteMemberList();
-	 * mv.addObject("apprList", apprList).setViewName("calendar/calendarMain");
-	 * return mv; }
-	 */
+	//calendarMain	 
+   @GetMapping("/calMain.page") 
+   public ModelAndView calendarMain(ModelAndView mv) {
+	  // 공유 일정 조직도 조회
+	  List<DeptDto> apprList = calendarService.selecteMemberList();
+	  mv.addObject("apprList", apprList).setViewName("calendar/calendarMain");
+	  return mv;
+   }
+ 
 	
 	//schWasteList
 	@GetMapping("/wasteList.page")
@@ -186,14 +179,14 @@ public class CalendarController {
 			return calendarService.wasteSchRemoval(schNo) == 1 ? "success" : "fail";	
 	    } 
 	               
-	    // 공유 일정 *******************
-		
-		 //조직도 조회
-	      @ResponseBody
-		  @GetMapping(value="/shareModal.do") 
-		  public List<DeptDto> selecteMemberList() { 
-			 return calendarService.selecteMemberList();
-		   }
+		/*
+		 *
+		 * 
+		 * @ResponseBody
+		 * 
+		 * @GetMapping(value="/shareModal.do") public List<DeptDto> selecteMemberList()
+		 * { return calendarService.selecteMemberList(); }
+		 */
 		 
 }
 	  

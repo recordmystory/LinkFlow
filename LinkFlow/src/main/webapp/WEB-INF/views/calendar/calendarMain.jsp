@@ -149,12 +149,13 @@
             moreLinkClick: "popover",
             //구글api로 공휴일 가져오기
             googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
-            timeZone: 'Asia/Seoul', //시간대 서울
-            dayMaxEvents: true, 
+            timeZone: 'Asia/Seoul', //시간대 
+            //locale : 'ko',
+            dayMaxEvents: true, //5
             initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동
             editable: false, // 이벤트를 드래그하여 이동할 수 있음(막기)
-            selectable: true, // 날짜를 클릭하여 이벤트 생성
+            //selectable: true, // 날짜 클릭시 등록
             //more 갯수 제한
             views: {
                 timeGrid: {
@@ -162,12 +163,13 @@
                 
                 }
             },
+            displayEventTime: false,
             //중요일정, 전사 부서 개인 일정 순으로 정렬 //다시보기!
             eventOrder: function(a, b) {
             	 
-            	//중요일정일 때 a를 위로 
+            	//중요일정일 때 a를 위로 //양수면 앞뒤 자리가 바뀌고 음수면 그대로 sort참고 
 	            if (a.extendedProps.schImport === 'Y' && b.extendedProps.schImport !== 'Y') {
-	                return -1; //반환값이 음수면 첫 뻔 째 일정이 두 번째 보다 우선, 양수면 두번째 일정이 우선
+	                return -1; //반환값이 음수면 첫 뻔 째 일정이 두 번째 보다 우선, 양수면 두 번째 일정이 우선
 	            } else if (a.extendedProps.schImport !== 'Y' && b.extendedProps.schImport === 'Y') {
 	                return 1;
 	            }
@@ -178,7 +180,7 @@
 	                '02': 2, // 부서일정
 	                '03': 3  // 개인일정
 	            };
-           	 return order[a.extendedProps.schCalSubCode] - order[b.extendedProps.schCalSubCode];
+           	 return order[a.extendedProps.schCalSubCode] - order[b.extendedProps.schCalSubCode]; //02 - 03 -1 - 음수 a가 위 //03 - 01 02 + b가 위  
        		 },                 
             
           	
@@ -417,7 +419,7 @@
                         $('#schUpdateModal').modal('hide');
                         $('#schDetailModal').modal('hide');
 
-                      /*   // 수정된 일정의 기존 이벤트를 찾아 업데이트
+                       /*   // 수정된 일정의 기존 이벤트를 찾아 업데이트
                         var eventData = {
 				                    title: data.schTitle,
 				                    start: data.startDate,
@@ -433,12 +435,16 @@
 				                        
 				                    }
 
-                        }; */
+                        };    */
+                        //calendar.addEvent(eventData);
+                        //calendar.addEvent(eventData);
                         addEventAndShow(data.schCalSubCode);
+                        //별로 안좋은 방식(에이젝스 한 번 더 부르는 것보다 코드가 길어지더라도 끝내는게 좋음 나중에 리팩토링
                         
                         CheckboxReSelect();
                        
-                       /* var event = calendar.getEventById(schNo);
+                       /*  // 수정된 일정의 기존 이벤트를 찾아 업데이트
+                        var event = calendar.getEventById(data.schNo);
 
                         // 일정 속성 업데이트
                         if (event) {
@@ -452,17 +458,8 @@
                             event.setExtendedProp('schContent', data.schContent);
                             event.setExtendedProp('calNo', data.calNo);
                         }
-                       // event.revert(event);
-                       // calendar.rerenderEvents(event);
-                        //location.reload();
-                        //calendar.refetchEvents(event);
-                       // calendar.revert(event);
-                        //event.refetchEvents();
-                       // event.revert();
-                       // event.rerenderEvents();*/
-                     //addEventAndShow(eventData.schCalSubCode);   
-       	          //schUpdateButton1();
-										
+
+                        CheckboxReSelect(); */
                     }
                 },
                 error: function() {
@@ -470,6 +467,7 @@
                 }
             });
         });
+
      
     		//수정모달에서 취소 클릭시
 			  $('#schUpdateCancelBtn').click(function() {
@@ -605,11 +603,11 @@
       //캘린더 재조회 수정에서 
       function CheckboxReSelect(){
      	  var events = calendar.getEvents(); // 현재보여지는 모든 일정을 다 가져오고 
-     	    var changeCheckboxVal = $(".calCheckbox").val();
-           events.forEach(function(event) {
-           	event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
-           });
-      }
+     	  var changeCheckboxVal = $(".calCheckbox").val();
+        events.forEach(function(event) {
+       	 event.extendedProps.schCalSubCode != changeCheckboxVal && event.remove();
+       });
+     }
       //삭제모달에서 취소버튼 클릭시
       $('#schDeleteCancelBtn').click(function() {
           $('#detailBtn').modal('hide');

@@ -458,7 +458,7 @@
 		                        <textarea class="schInsertModal_content_text mt-2" name="schContent" id="schContent" style="margin-left:67px; " required ></textarea>
 		                    </div>
 		                    <div class="schDetailModal_content justify-content-start text-sm">
-                     		 <a class="btn schShareBtn" data-bs-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</a>
+                     		 <a class="btn schShareBtn" data-target="#schShareModal" data-bs-toggle="modal">+ 일정공유</a>
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
                        <input type="hidden" name="calNo" id="calNo">                       
@@ -474,7 +474,7 @@
 		</div>
     <!--일정 수정 모달 end-->
     
-		<!--공유 일정 모달 start-->
+	<!--공유 일정 모달 start-->
 		<div class="modal fade" id="schShareModal" tabindex="-1" aria-labelledby="schShareModal" aria-hidden="true">
 		    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 		        <div class="modal-content" style="min-width: 850px;">
@@ -494,7 +494,7 @@
 		                                        <div class="input-group">
 		                                            <input type="search" class="form-control" value="" name="useName">
 		                                            <div class="input-group-append">
-		                                                <button type="button" class="btn btn-primary">
+		                                                <button type="submit" class="btn btn-primary">
 		                                                    <i class="fa fa-search"></i>
 		                                                </button>
 		                                            </div>
@@ -541,32 +541,35 @@
 		                                    </h3>
 		                                </div>
 		                                <div class="card-body text-nowrap overflow-auto resultNameArea">
+		                                
 		                                </div>
 		                            </div>
-		                            <div class="btnArea">
-		                                <div class="downArea">
-		                                    <i class="fa-solid fa-angles-right referenceIn"></i>
-		                                    <i class="fa-solid fa-angles-left referenceOut"></i>
-		                                </div>
-		                            </div>
+			                           <div class="btnArea">
+						                       <div class="downArea" >
+						                         <i class="fa-solid fa-angles-right referenceIn"></i>
+						                         <i class="fa-solid fa-angles-left referenceOut"></i>
+						                       </div>
+						                     </div>
 		                            <div class="column singArea">
 		                                <div class="card card-info mr-3" style="width: 180px; height: 200px; margin-top: 100px;">
 		                                    <div class="card-header">
 		                                        <h5 class="card-title">조회 권한</h5>
 		                                        <div class="card-tools">
-		                                            <button type="button" class="btn btn-tool">
-		                                                <i class="fa-solid fa-angles-down approvalDownBtn"></i>
-		                                            </button>
-		                                        </div>
-		                                    </div>
-		                                    <div class="card-body approvalArea">
-		                                        <input type="hidden" value="" id="approvalUserId">
+									                          
+									                           <button type="button" class="btn btn-tool" >
+									                             <i class="fa-solid fa-angles-down approvalDownBtn"></i>
+									                           </button>
+									                           <div class="card-body">
+									                            <div class="referenceArea">
+									                            
+									                            </div>
+									                           
+									                           </div>
+									                         </div>
 		                                    </div>
 		                                </div>
 		                            </div>
-		                            <div class="card-body referenceArea overflow-auto">
-		                                <input type="hidden" value="" id="approvalUserId">
-		                            </div>
+		                           
 		                        </div>
 		                    </div>
 		                </div>
@@ -720,7 +723,7 @@
                           <h5 class="card-title">조회 권한</h5>
                           
                          </div>
-                         <div class="card-body referenceArea overflow-auto">
+                         <div class="card-body  overflow-auto">
 
                          </div>
                        </div>
@@ -741,9 +744,8 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
     <!-- /.modal -->
-    <!--공유 캘린더 모달 end-->
+    <!--공유 캘린더 모달 end--> 
     
     <!------휴지통 모달------------------------------------------------  -->
      <!-- 일정 상세 정보 모달 start -->
@@ -841,7 +843,7 @@
         
     <script>
 
-//공유일정 조직도 모달 schShareModal***********************************************
+ //공유일정 조직도 모달 schShareModal***********************************************
 	//공유일정 조직도 조회
     $('.schShareBtn').click(function(){
       $('#schShareModal').modal('show');
@@ -850,7 +852,8 @@
     
   
   	
-   	$(document).ready(function() {
+  /*공유일정 조직도 조회 (에이젝스로 사용시)  	
+  $(document).ready(function() {
   	    $('.schShareBtn').click(function(){
   	        console.log("일정공유 버튼 클릭됨"); 
   	      $.ajax({
@@ -900,43 +903,7 @@
    	    $('#schShareModal').modal('show');
    	}
    	
-//캘린더 모달 end */
-  /*   $(document).ready(function() {
-        $('.schShareBtn').click(function(){
-            $.ajax({
-                url: '${contextPath}/calendar/shareModal.do', 
-                type: 'get',
-                success: function(apprList) {
-                    =
-                    $('#kt_docs_jstree_basic').empty(); // 값 넣기 전에 초기화
-
-                    var jstreeHtml = '';
-                    $.each(apprList, function(index, appr) {
-                        jstreeHtml += '<li data-jstree=\'{ "type" : "building" }\'>';
-                        jstreeHtml += appr.deptTitle;
-                        jstreeHtml += '<ul>';
-                        $.each(appr.memberList, function(index, apprPerson) {
-                            jstreeHtml += '<li data-jstree=\'{ "type" : "person" }\' data-userid="' + apprPerson.userId + '">';
-                            jstreeHtml += apprPerson.userName + ' ' + apprPerson.subName;
-                            jstreeHtml += '<input type="text" class="userId" value="' + apprPerson.userId + '" style="display: none;"/>';
-                            jstreeHtml += '</li>';
-                        });
-                        jstreeHtml += '</ul></li>';
-                    });
-                    $('#kt_docs_jstree_basic').append(jstreeHtml);
-
-                    // 모달 열기
-                    $('#schShareModal').modal('show');
-                },
-                error: function() {
-                    console.log("조회 실패");
-                }
-            });
-        });
-    });
  */
-
-
 
 //공유일정 조직도 script start***********************************************
    //저장버튼 클릭시
@@ -1005,193 +972,191 @@
         
     });
 
-
-
-          // 결재선 설정 모달 스크립트
-          $('#kt_docs_jstree_basic').jstree({
-        "core" : {
-            "themes" : {
-                "responsive": false
-            }
-        },
-        "types" : {
-            "default" : {
-                "icon" : "fa fa-folder"
-            },
-            "group" : {
-                "icon" : "fa-solid fa-user-group"
-            },
-            "building" : {
-                "icon" : "fa-solid fa-building"
-            },
-            "person" : {
-                "icon" : "fa-solid fa-person"
-            }
-        },
-        "plugins": ["types", "search"],
-        "search" : {
-        	"show_only_matches" : true,
-        	"show_only_matches_children" : true,
-        }
-        
-    }).on('select_node.jstree', function (e, data) {
-    	var node = data.node;
-
-        if (node.type === "person") {
-            var personName = node.text;
-            var userId = node.li_attr['data-userid']; 
-           
-           
-            var existNameArea = $('.resultNameArea [data-userid="' + userId + '"]');
-					
-            if (existNameArea.length >0) { 
-                existNameArea.remove(); 
-            }else{
-
-            var html = '<div class="NameArea" data-userid="' + userId + '">' + personName + '<input type="checkBox"></div>';
-            $('.resultNameArea').append(html);
-            }
-        }
-    });
+		 // 결재선 설정 모달 스크립트
+		 $('#kt_docs_jstree_basic').jstree({
+		"core" : {
+		   "themes" : {
+		       "responsive": false
+		   }
+		},
+		"types" : {
+		   "default" : {
+		       "icon" : "fa fa-folder"
+		   },
+		   "group" : {
+		       "icon" : "fa-solid fa-user-group"
+		   },
+		   "building" : {
+		       "icon" : "fa-solid fa-building"
+		   },
+		   "person" : {
+		       "icon" : "fa-solid fa-person"
+		   }
+		},
+		"plugins": ["types", "search"],
+		"search" : {
+			"show_only_matches" : true,
+			"show_only_matches_children" : true,
+		}
 		
-   var to = false;
-   $('#searchInput').keyup(function () {
-       if(to) { clearTimeout(to); }
-       to = setTimeout(function () {
-           var v = $('#searchInput').val();
-           $('#kt_docs_jstree_basic').jstree(true).search(v);
-       }, 250);
-   });
-          
-   document.querySelector('.approvalIn').addEventListener('click', function() {
-       var nameAreas = document.querySelectorAll('.NameArea');
-       var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
-       var maxApprovalCount = 2;
-
-       var currentIndex = existingApprovalCount + 1;
-
-       nameAreas.forEach(function(nameArea) {
-           if (existingApprovalCount >= maxApprovalCount) return;
-
-           var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-           if (checkbox) {
-               
-               var nameValue = nameArea.innerHTML.trim();
-
-               if (currentIndex > maxApprovalCount) return;
-
-               var className = 'approvalName' + currentIndex;
-
-               var newElement = document.createElement('div');
-               newElement.className = className;
-               newElement.innerHTML = nameValue; 
-
-               document.querySelector('.approvalArea').appendChild(newElement);
-
-               nameArea.remove();
-
-               existingApprovalCount++;
-               currentIndex++;
-           }
-       });
-   });
-
-   document.querySelector('.approvalOut').addEventListener('click', function() {
-       var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
-       var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
-
-       moveApprovalNames(approvalNames1);
-       moveApprovalNames(approvalNames2);
-   });
-
-   function moveApprovalNames(approvalNames) {
-       approvalNames.forEach(function(approvalName) {
-           var checkbox = approvalName.querySelector('input[type="checkbox"]:checked');
-           if (checkbox) {
-               var nameText = approvalName.innerHTML.trim();
-
-               var resultName = document.createElement('div');
-               resultName.className = 'NameArea';
-               resultName.innerHTML = nameText;
-
-               var newCheckbox = document.createElement('input');
-              
-
-               document.querySelector('.resultNameArea').appendChild(resultName);
-
-               approvalName.remove();
-           }
-       });
-   }
-
-           
-
-      document.querySelector('.referenceIn').addEventListener('click', function() {
-        
-        var nameAreas = document.querySelectorAll('.NameArea');
-
-       
-        nameAreas.forEach(function(nameArea) {
-            
-            var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
-            
-            if (checkbox) {
-                
-                var nameValue = nameArea.innerHTML.trim();
-                
-                var referenceName = document.createElement('div');
-                referenceName.className = 'referenceName';
-                referenceName.innerHTML = nameValue;
-                document.querySelector('.referenceArea').appendChild(referenceName);
-                
-                nameArea.remove();
-            }
-        });
-    });
-
-    document.querySelector('.referenceOut').addEventListener('click', function() {
-        var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
-
-        approvalNames.forEach(function(referenceName) {
-            var checkbox = referenceName.querySelector('input[type="checkbox"]:checked');
-            if (checkbox) {
-                var nameValue = referenceName.innerHTML.trim();
-
-                var resultNameArea = document.querySelector('.resultNameArea');
-
-                var nameArea = document.createElement('div');
-                nameArea.className = 'NameArea';
-                nameArea.innerHTML = nameValue;
-
-                resultNameArea.appendChild(nameArea);
-
-                referenceName.remove();
-            }
-        });
-    });
-
-    document.querySelector('.approvalUpBtn').addEventListener('click', function() {
-        var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-        var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-        if (approvalName1 && approvalName2) {
-            var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
-            approvalName1.innerHTML = approvalName2.innerHTML;
-            approvalName2.innerHTML = tempHTML;
-        }
-    });
-
-    document.querySelector('.approvalDownBtn').addEventListener('click', function() {
-        var approvalName1 = document.querySelector('.approvalArea .approvalName1');
-        var approvalName2 = document.querySelector('.approvalArea .approvalName2');
-
-        if (approvalName1 && approvalName2) {
-            var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
-            approvalName1.innerHTML = approvalName2.innerHTML;
-            approvalName2.innerHTML = tempHTML;
-        }
-    });
-
+		}).on('select_node.jstree', function (e, data) {
+		var node = data.node;
+		
+		if (node.type === "person") {
+		   var personName = node.text;
+		   var userId = node.li_attr['data-userid']; 
+		  
+		  
+		   var existNameArea = $('.resultNameArea [data-userid="' + userId + '"]');
+					
+		   if (existNameArea.length >0) { 
+		       existNameArea.remove(); 
+		   }else{
+		
+		   var html = '<div class="NameArea" data-userid="' + userId + '">' + personName + '<input type="checkBox"></div>';
+		   $('.resultNameArea').append(html);
+		   }
+		}
+		});
+		
+		var to = false;
+		$('#searchInput').keyup(function () {
+		if(to) { clearTimeout(to); }
+		to = setTimeout(function () {
+		  var v = $('#searchInput').val();
+		  $('#kt_docs_jstree_basic').jstree(true).search(v);
+		}, 250);
+		});
+		 
+		/*document.querySelector('.approvalIn').addEventListener('click', function() {
+		var nameAreas = document.querySelectorAll('.NameArea');
+		var existingApprovalCount = document.querySelectorAll('.approvalArea .approvalName').length;
+		var maxApprovalCount = 2;
+		
+		var currentIndex = existingApprovalCount + 1;
+		
+		nameAreas.forEach(function(nameArea) {
+		  if (existingApprovalCount >= maxApprovalCount) return;
+		
+		  var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+		  if (checkbox) {
+		      
+		      var nameValue = nameArea.innerHTML.trim();
+		
+		      if (currentIndex > maxApprovalCount) return;
+		
+		      var className = 'approvalName' + currentIndex;
+		
+		      var newElement = document.createElement('div');
+		      newElement.className = className;
+		      newElement.innerHTML = nameValue; 
+		
+		      document.querySelector('.approvalArea').appendChild(newElement);
+		
+		      nameArea.remove();
+		
+		      existingApprovalCount++;
+		      currentIndex++;
+		  }
+		});
+		});*/
+		
+		/*document.querySelector('.approvalOut').addEventListener('click', function() {
+		var approvalNames1 = document.querySelectorAll('.approvalArea .approvalName1');
+		var approvalNames2 = document.querySelectorAll('.approvalArea .approvalName2');
+		
+		moveApprovalNames(approvalNames1);
+		moveApprovalNames(approvalNames2);
+		});*/
+		
+		function moveApprovalNames(approvalNames) {
+		approvalNames.forEach(function(approvalName) {
+		  var checkbox = approvalName.querySelector('input[type="checkbox"]:checked');
+		  if (checkbox) {
+		      var nameText = approvalName.innerHTML.trim();
+		
+		      var resultName = document.createElement('div');
+		      resultName.className = 'NameArea';
+		      resultName.innerHTML = nameText;
+		
+		      var newCheckbox = document.createElement('input');
+		     
+		
+		      document.querySelector('.resultNameArea').appendChild(resultName);
+		
+		      approvalName.remove();
+		  }
+		});
+		}
+		
+		  
+		
+		/*document.querySelector('.referenceIn').addEventListener('click', function() {
+		
+		var nameAreas = document.querySelectorAll('.NameArea');
+		
+		
+		nameAreas.forEach(function(nameArea) {
+		   
+		   var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+		   
+		   if (checkbox) {
+		       
+		       var nameValue = nameArea.innerHTML.trim();
+		       
+		       var referenceName = document.createElement('div');
+		       referenceName.className = 'referenceName';
+		       referenceName.innerHTML = nameValue;
+		       document.querySelector('.referenceArea').appendChild(referenceName);
+		       
+		       nameArea.remove();
+		   }
+		});
+		});
+		
+		document.querySelector('.referenceOut').addEventListener('click', function() {
+		var approvalNames = document.querySelectorAll('.referenceArea .referenceName');
+		
+		approvalNames.forEach(function(referenceName) {
+		   var checkbox = referenceName.querySelector('input[type="checkbox"]:checked');
+		   if (checkbox) {
+		       var nameValue = referenceName.innerHTML.trim();
+		
+		       var resultNameArea = document.querySelector('.resultNameArea');
+		
+		       var nameArea = document.createElement('div');
+		       nameArea.className = 'NameArea';
+		       nameArea.innerHTML = nameValue;
+		
+		       resultNameArea.appendChild(nameArea);
+		
+		       referenceName.remove();
+		   }
+		});
+		});
+		
+		document.querySelector('.approvalUpBtn').addEventListener('click', function() {
+		var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+		var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+		
+		if (approvalName1 && approvalName2) {
+		   var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
+		   approvalName1.innerHTML = approvalName2.innerHTML;
+		   approvalName2.innerHTML = tempHTML;
+		}
+		});
+		
+		document.querySelector('.approvalDownBtn').addEventListener('click', function() {
+		var approvalName1 = document.querySelector('.approvalArea .approvalName1');
+		var approvalName2 = document.querySelector('.approvalArea .approvalName2');
+		
+		if (approvalName1 && approvalName2) {
+		   var tempHTML = approvalName1.innerHTML;  // textContent 대신 innerHTML 사용
+		   approvalName1.innerHTML = approvalName2.innerHTML;
+		   approvalName2.innerHTML = tempHTML;
+		}
+		});
+		*/
 
 //공유일정 조직도 end***********************************************
     
@@ -1273,15 +1238,43 @@
           }
       }
   });
+     
+     $(document).ready(function(){
+				$(".referenceIn").on("click", function(){
+					debugger;
+				      var nameAreas = document.querySelectorAll('.NameArea');
+				      
+				      nameAreas.forEach(function(nameArea) {
+				          var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
+				          if (checkbox) {
+				              var nameValue = nameArea.innerHTML.trim();
+				              
+				            
+				              var existingElement = document.querySelector('.referenceArea .referenceName');
+				              if (existingElement && existingElement.textContent.trim() === nameValue) {
+				                  return; 
+				              }
+
+				              var referenceName = document.createElement('div');
+				              referenceName.className = 'referenceName';
+				              referenceName.innerHTML = nameValue;
+				              document.querySelector('.referenceArea').appendChild(referenceName);
+				              
+				              nameArea.remove();
+				              }
+				          });
+				});
+     });
 
       
-        document.querySelector('.referenceIn').addEventListener('click', function() {
+        /*document.querySelector('.referenceIn').on('click', function() {
+        	debugger;
       var nameAreas = document.querySelectorAll('.NameArea');
            
       nameAreas.forEach(function(nameArea) {
           var checkbox = nameArea.querySelector('input[type="checkbox"]:checked');
           if (checkbox) {
-              var nameValue = nameArea.textContent.trim();
+              var nameValue = nameArea.html.trim();
               
             
               var existingElement = document.querySelector('.referenceArea .referenceName');
@@ -1291,7 +1284,7 @@
 
               var referenceName = document.createElement('div');
               referenceName.className = 'referenceName';
-              referenceName.textContent = nameValue;
+              referenceName.innerHtml = nameValue;
               document.querySelector('.referenceArea').appendChild(referenceName);
               
               nameArea.remove();
@@ -1351,9 +1344,9 @@
           });
 
           document.getElementById('refMember').value = textToInsert;
-     }); 
-//공유캘린더 end
-
+     }); */
+//공유캘린더 end 
+ 
 
  // 캘린더 등록하기 (schInsertModal)***********************************************
       //캘린더 일정등록 ajax
@@ -1516,7 +1509,7 @@
           e.preventDefault();
           searchAddressToCoordinate($('#address').val());
       });
-      naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+      //naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
 
 
   //지도에 마커 찍기
