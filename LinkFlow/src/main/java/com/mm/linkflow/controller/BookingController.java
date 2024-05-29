@@ -415,10 +415,11 @@ public class BookingController {
 		return "booking/bookingRoom";
 	}
 	
-	@ResponseBody
+	@ResponseBody // 시설예약캘린더 조회 
 	@GetMapping(value="/room.list", produces="application/json; charset=utf-8")
-	public List<BookingDto> selectRoomBooking(){
-		return bkServiceImpl.selectRoomBooking();
+	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,String> rooms){
+		log.debug("왜 안되나~? :{}", rooms);
+		return bkServiceImpl.selectRoomBooking(rooms);
 	}
 	
 }

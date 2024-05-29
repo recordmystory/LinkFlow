@@ -576,5 +576,30 @@
 	 join tb_assets a on (a.assets_no = b.assets_no)
 	where b.status = 'COM'
 	  and b.del_yn = 'N'
+	  <choose>
+	  <when test='A == null and A == ""'>
+	  and assets_name in (#{B}, #{C})
+	  </when>
+	  <when test='B == null and B == ""'>
+	  and assets_name in (#{A}, #{C})
+	  </when>
+	  <when test='C == null and C == ""'>
+	  and assets_name in (#{B}, #{A})
+	  </when>
+	  <when test='A == null and A == "" and B == null and B == ""'>
+	  and assets_name = #{C}
+	  </when>
+	  <when test='A == null and A == "" and C == null and C == ""'>
+	  and assets_name = #{B}
+	  </when>
+	  <when test='C == null and C == "" and B == null and B == ""'>
+	  and assets_name = #{A}
+	  </when>
+	  <when test='A == null and A == "" and B == null and B == "" and C == null and C == ""'>
+	  </when>
+	  <otherwise>
+	  and assets_name in (#{A}, #{B}, #{C})
+	  </otherwise>
+	  </choose>
 </select>
 </mapper>

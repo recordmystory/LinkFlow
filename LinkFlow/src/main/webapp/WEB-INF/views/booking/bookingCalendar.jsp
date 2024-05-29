@@ -8,6 +8,49 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<style>
+
+/* 체크박스 */
+input[type="checkbox"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	border: 2px solid #ccc;
+}
+
+.chex1:checked {
+	background-color: #29ce17;
+}
+
+.chex2:checked {
+	background-color: #d05ffc;
+}
+
+.chex3:checked {
+	background-color: #f0674b;
+}
+/*공휴일 스타일*/
+.holiday{
+	background-color: transparent;
+	border-color: transparent; /*투명화*/
+	font-size: smaller; 
+	font-weight: bolder; 
+	margin-bottom: 5px;
+	pointer-events: none;
+	
+}
+
+.fc-daygrid-day-top, .holiday{
+	/*position: absolute;
+     top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 중앙 정렬 */
+}
+
+</style>
 </head>
 <body>
 <div class="calsection" style="background-color: white; width: 95%;">
@@ -44,125 +87,86 @@
     <!-- /.content -->
     
     <script>
-         
+    
+        function callCalendar(A,B,C) {
+            var Calendar = FullCalendar.Calendar;
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                themeSystem: 'bootstrap',
+                dayMaxEvents: true,
+                eventMaxStack: 3,
+                googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
+                events: function(info, successCallback, failureCallback) {
+                    $.ajax({
+                        url: '${contextPath}/booking/room.list',
+                        type: 'get',
+                        data:{ A:A, B:B, C:C },
+                        dataType: 'json',
+                        success: function(list) {
+                        	console.log(list);
+                            var events = [];
+                            if (list != null) {
+                                $.each(list, function(index, bk) {
+                                    var event = {
+                                        title: '',
+                                        start: bk.bkStartDate + 'T' + bk.bkStartTime,
+                                        end: bk.bkStartDate + 'T' + bk.bkEndTime,
+                                        backgroundColor: '',
+                                        borderColor: '',
+                                        allDay: false
+                                    };
+                                    if (bk.assetsName == "A") {
+                                        event.title = '회의실A';
+                                        event.backgroundColor = '#29ce17'; 
+                                        event.borderColor = '#29ce17';
+                                    } else if (bk.assetsName == "B") {
+                                        event.title = '회의실B';
+                                        event.backgroundColor = '#d05ffc'; 
+                                        event.borderColor = '#d05ffc'; 
+                                    } else {
+                                        event.title = '회의실C';
+                                        event.backgroundColor = '#f0674b'; 
+                                        event.borderColor = '#f0674b'; 
+                                    }
+                                    events.push(event);
+                                });
+                            }
+                            successCallback(events);
+                        }
+                    });
+                },
+                eventSources: [
+                    //공휴일 
+                      {
+                          googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
+                          classNames: 'holiday',
+                          textColor: 'rgba(190, 0, 50, 0.5)',
+                          constraint: 'availableForMeeting'
+                      }
+                  ]
+            });
+           
+            calendar.render();
+        }
+        
+        function roomCheck(){
+        	let roomA = $(".chex1").prop("checked") ? "A" : "";
+            let roomB = $(".chex2").prop("checked") ? "B" : "";
+            let roomC = $(".chex3").prop("checked") ? "C" : "";
+            
+            callCalendar(roomA,roomB,roomC);
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-     	    let roomA = $("#check1").prop("checked") ? "A" : "";
-     	    let roomB = $("#check2").prop("checked") ? "B" : "";
-     	    let roomC = $("#check3").prop("checked") ? "C" : "";
-     	   
-     	    $(function() {
-     	        /* initialize the calendar
-     	        -----------------------------------------------------------------*/
-     	        // Date for the calendar events (dummy data)
-     	        var date = new Date();
-     	        var d = date.getDate(), m = date.getMonth(), y = date.getFullYear();
 
-     	        var Calendar = FullCalendar.Calendar;
-     	        var Draggable = FullCalendar.Draggable;
-
-     	        // var containerEl = document.getElementById('external-events');
-     	        var checkbox = document.getElementById('drop-remove');
-     	        var calendarEl = document.getElementById('calendar');
-
-     	        // initialize the external events
-     	        // -----------------------------------------------------------------
-
-     	        var calendar = new Calendar(calendarEl, {
-     	            headerToolbar: {
-     	                left: 'prev,next today',
-     	                center: 'title',
-     	                right: 'dayGridMonth,timeGridWeek'
-     	            },
-     	            themeSystem: 'bootstrap',
-     	            // Random default events
-     	            events: function(info, successCallback, failureCallback) {
-     	                $.ajax({
-     	                    url: '${contextPath}/booking/room.list',
-     	                    type: 'get',
-     	                    dataType: 'json',
-     	                    success: function(list) {
-     	                        var events = [];
-     	                        if (list != null) {
-     	                            $.each(list, function(index, bk) {
-     	                                if (bk.assetsName == "A") {
-     	                                    events.push({
-     	                                        title: '회의실A',
-     	                                        start: bk.bkStartDate +'T'+ bk.bkStartTime,
-     	                                        end: bk.bkStartDate +'T'+ bk.bkEndTime,
-     	                                        backgroundColor: '#29ce17', // green
-     	                                        borderColor: '#29ce17', // green
-     	                                        allDay: true
-     	                                    });
-     	                                } else if (bk.assetsName == "B") {
-     	                                    events.push({
-     	                                        title: '회의실B',
-     	                                        start: bk.bkStartDate +'T'+ bk.bkStartTime,
-     	                                        end: bk.bkStartDate +'T'+ bk.bkEndTime,
-     	                                        backgroundColor: '#f3d037', // yellow
-     	                                        borderColor: '#f3d037', // yellow
-     	                                        allDay: true
-     	                                    });
-     	                                } else {
-     	                                    events.push({
-     	                                        title: '회의실C',
-     	                                        start: bk.bkStartDate +'T'+ bk.bkStartTime,
-     	                                        end: bk.bkStartDate +'T'+ bk.bkEndTime,
-     	                                        backgroundColor: '#f0674b', // red
-     	                                        borderColor: '#f0674b', // red
-     	                                        allDay: true
-     	                                    });
-     	                                }
-     	                            });
-     	                            console.log(events);
-     	                        }
-     	                        successCallback(events);
-     	                    }
-     	                });
-     	            },
-     	            editable: true,
-     	            droppable: true, // this allows things to be dropped onto the calendar !!!
-     	            drop: function(info) {
-     	                // is the "remove after drop" checkbox checked?
-     	                if (checkbox.checked) {
-     	                    // if so, remove the element from the "Draggable Events" list
-     	                    info.draggedEl.parentNode.removeChild(info.draggedEl);
-     	                }
-     	            }
-     	        });
-
-     	        calendar.render();
-     	        // $('#calendar').fullCalendar()
-
-     	        /* ADDING EVENTS */
-     	        var currColor = '#3c8dbc'; // Red by default
-     	        // Color chooser button
-     	        $('#color-chooser > li > a').click(function(e) {
-     	            e.preventDefault();
-     	            // Save color
-     	            currColor = $(this).css('color');
-     	            // Add color effect to button
-     	            $('#add-new-event').css({
-     	                'background-color': currColor,
-     	                'border-color': currColor
-     	            });
-     	        });
-
-     	        $('#add-new-event').click(function(e) {
-     	            e.preventDefault();
-     	            // Get value and make sure it is not null
-     	            var val = $('#new-event').val();
-     	            if (val.length == 0) {
-     	                return;
-     	            }
-
-     	            // Add draggable funtionality
-     	            ini_events(event);
-
-     	            // Remove event from text input
-     	            $('#new-event').val('');
-     	        });
-     	    });
-     	});
+            roomCheck();
+        });
     </script>
 </div>
 </body>

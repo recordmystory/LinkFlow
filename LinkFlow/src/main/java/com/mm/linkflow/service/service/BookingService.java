@@ -61,5 +61,5 @@ public interface BookingService {
     
     int updateRoomBooking(Map<String,String> bk); // 시설예약 승인,반려
     
-    List<BookingDto> selectRoomBooking();
+    List<BookingDto> selectRoomBooking(Map<String,String> rooms);
 }
