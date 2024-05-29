@@ -8,6 +8,21 @@
 <head>
 <meta charset="UTF-8">
 <title>booking sidebar</title>
+<!-- jQuery UI -->
+<script src="${contextPath }/resources/htmlTemplate/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- fullCalendar 2.2.5 -->
+<script src="${contextPath }/resources/htmlTemplate/plugins/moment/moment.min.js"></script>
+<script src="${contextPath }/resources/htmlTemplate/plugins/fullcalendar/main.js"></script>
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/plugins/fontawesome-free/css/all.min.css">
+<!-- fullCalendar -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/plugins/fullcalendar/main.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/dist/css/adminlte.min.css">
 
 <style>
 .LinkFlowSidebar {

@@ -169,4 +169,8 @@ public class BookingDao {
 		return sql.update("bkMapper.updateRoomBooking",bk);
 	}
 
+	public List<BookingDto> selectRoomBooking() {
+		return sql.selectList("bkMapper.selectRoomBooking");
+	}
+
 }

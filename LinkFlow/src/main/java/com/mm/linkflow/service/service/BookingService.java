@@ -57,7 +57,9 @@ public interface BookingService {
     
     List<AssetsDto> modalSetDtoList(); // 예약하기 모달 세팅
     
-    List<BookingDto> selectRoomWaitList();
+    List<BookingDto> selectRoomWaitList(); // 시설예약 대기 리스트
     
-    int updateRoomBooking(Map<String,String> bk);
+    int updateRoomBooking(Map<String,String> bk); // 시설예약 승인,반려
+    
+    List<BookingDto> selectRoomBooking();
 }

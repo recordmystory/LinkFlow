@@ -564,4 +564,17 @@
 	      , mod_id = #{userId}
 	where booking_no = #{bookingNo}
 </update>
+
+<select id="selectRoomBooking" resultMap="bkResult">
+	select 
+		   assets_name
+		  ,booking_no
+		  ,NVL(to_char(bk_start_dt,'YYYY-MM-DD'), '-') AS bk_start_date
+		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
+		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
+	 from tb_booking b
+	 join tb_assets a on (a.assets_no = b.assets_no)
+	where b.status = 'COM'
+	  and b.del_yn = 'N'
+</select>
 </mapper>

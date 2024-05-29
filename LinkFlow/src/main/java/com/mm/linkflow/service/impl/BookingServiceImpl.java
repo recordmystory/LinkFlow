@@ -168,6 +168,11 @@ public class BookingServiceImpl implements BookingService {
 	public int updateRoomBooking(Map<String, String> bk) {
 		return bkDao.updateRoomBooking(bk);
 	}
+
+	@Override
+	public List<BookingDto> selectRoomBooking() {
+		return bkDao.selectRoomBooking();
+	}
 	
 	
 

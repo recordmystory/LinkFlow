@@ -415,4 +415,10 @@ public class BookingController {
 		return "booking/bookingRoom";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/room.list", produces="application/json; charset=utf-8")
+	public List<BookingDto> selectRoomBooking(){
+		return bkServiceImpl.selectRoomBooking();
+	}
+	
 }
