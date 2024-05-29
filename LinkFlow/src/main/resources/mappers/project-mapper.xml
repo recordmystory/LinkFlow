@@ -255,6 +255,13 @@
 		   AND USER_ID = #{userId}
 	</delete>
 	
+	<!-- 프로젝트 & 파견인원 동시 삭제 -->
+	<delete id="deleteProjectDispatch">
+		DELETE
+		  FROM TB_DISPATCH
+		 WHERE PRO_NO = #{proNo}
+	</delete>
+	
 	<!-- 프로젝트 수정 -->
 	<update id="modifyProject">
 		UPDATE
@@ -309,14 +316,14 @@
 	<select id="searchDispatchCount" resultType="_int">
 		SELECT
 		       COUNT(*)
-		  FROM TB_DISPATCH
+		  FROM TB_DISPATCH D
 		  JOIN TB_PROJECT USING (PRO_NO)
 		 WHERE DIS_YN = 'N'
 		<if test="startDate != null and startDate != ''">
-           AND START_DATE <![CDATA[>=]]> #{startDate}
+           AND D.START_DATE <![CDATA[>=]]> #{startDate}
     	</if>
     	<if test="endDate != null and endDate != ''">
-       	   AND END_DATE <![CDATA[<=]]> #{endDate}
+       	   AND D.END_DATE <![CDATA[<=]]> #{endDate}
     	</if>
     	<if test="category != null and category != '' and category == 'proName'">
     	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'

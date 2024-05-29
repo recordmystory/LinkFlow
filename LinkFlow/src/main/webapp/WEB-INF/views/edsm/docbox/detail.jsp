@@ -137,7 +137,6 @@
     }
 
   .attachment-content {
-    display: flex;
     align-items: center;
   }
 
@@ -184,7 +183,9 @@
   .btnArea{
       margin-bottom: 30px;
     }
-
+	
+	.docContentArea{margin: 40px 0px 40px 20px !important;}
+	
     /* 인쇄  */
     @media print {
       .LinkFlowSidebar, .btnArea, .draft-inquiry > h6, .document-header, .sign-img-area button, .security-level, .attachment-content > svg{
@@ -227,66 +228,74 @@
                               <tr>
                                 <th class="table-active">문서 종류</th>
                                 <td>
-                                  품의서
+                                  ${edoc.edFrName}
                                 </td>
                                 <th class="table-active">문서번호</th>
-                                <td>LI-품의-20240509-0001</td>
+                                <td>${edoc.edNo}</td>
                               </tr>
                               <tr>
                                 <th class="table-active">기안 부서</th>
                                 <td>
-                                  개발부서 > 개발1팀
+                                  ${edoc.deptTitle}
                                 </td>
                                 <th class="table-active">기안자</th>
                                 <td>
-                                  김과장
+                                  ${edoc.regId}
                                 </td>
                               </tr>
                               <tr>
-                                <th class="table-active">보존 연한</th>
-                                <td>
-                                  5년
-                                </td>
-                                <th class="table-active">보안 등급</th>
-                                <td>
-                                  <select class="form-control security-level">
-                                    <option value="">S등급</option>
-                                    <option value="">A등급</option>
-                                    <option value="">B등급</option>
-                                    <option value="">C등급</option>
-                                </select>
-
-                                <div class="hidden-on-print-securityLevel">
-                                  <span id="selectedSecurityLevel"></span>
-                                </div>
-                                </td>
-                              </tr>
+					                     <th class="table-active">보존 연한</th>
+					                     <td>
+					                       <c:choose>
+							                    <c:when test="${edoc.presDate == 0}">
+							                        영구
+							                    </c:when>
+							                    <c:otherwise>
+							                        ${edoc.presDate}년
+							                    </c:otherwise>
+							                	</c:choose>
+					                     </td>
+					                     <th class="table-active">보안 등급</th>
+					                     <td>
+					                     	 ${edoc.secCode}등급
+					                       <%-- <select name="secCode" id="selectedSecCode" class="form-control security-level">
+					                         <option value="S" <c:if test="${edoc.secCode == 'S'}">selected</c:if>>S등급</option>
+					                         <option value="A" <c:if test="${edoc.secCode == 'A'}">selected</c:if>>A등급</option>
+					                         <option value="B" <c:if test="${edoc.secCode == 'B'}">selected</c:if>>B등급</option>
+					                         <option value="C" <c:if test="${edoc.secCode == 'C'}">selected</c:if>>C등급</option>
+					                     </select> --%>
+					
+					                     <!-- <div class="hidden-on-print-securityLevel">
+					                       <span id="selectedSecurityLevel"></span>
+					                     </div> -->
+					                     </td>
+					                   </tr>
                               <tr>
                                 <th class="table-active">기안일시</th>
                                 <td>
-                                  2024-04-28 17:55
+                                  ${edoc.regDate}
                                 </td>
                                 <th class="table-active">완료일시</th>
                                 <td>
-                                    2024-04-29 09:31
+                                   ${edoc.modDate}
                                 </td>
                               </tr>
                             </tbody>
                           </table> 
 
-
-                      <!-- The Modal -->
+<!-- 
+                      The Modal
                       <div class="modal" id="approvalModal">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
 
-                            <!-- Modal Header -->
+                            Modal Header
                             <div class="modal-header">
                               <h4 class="modal-title">결재</h4>
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
 
-                            <!-- Modal body -->
+                            Modal body
                             <div class="modal-body">
                               <div class="approval-enable">
                                 <div class="form-check form-check-radio">
@@ -313,7 +322,7 @@
                               </div>
                             </div>
 
-                            <!-- Modal footer -->
+                            Modal footer
                             <div class="modal-footer d-flex justify-content-center">
                               <button type="button" class="btn btn-primary">확인</button>
                             </div>
@@ -321,7 +330,7 @@
                           </div>
                         </div>
                       </div>
-
+ -->
                       <!-- 별첨 -->
                       <!-- <div class="attachment" style="margin-bottom: 25px;">
                         <h6>별첨</h6>
@@ -330,12 +339,14 @@
 
                       <!-- 제목 -->
                       <div class="document-title" style="margin-bottom: 25px;">
-                        <div><span class="document-header">제목</span>품의서 제출합니다</div>
+                        <div><span class="document-header">제목</span>${edoc.edTitle}</div>
                       </div>
 
                       <div class="document-content">
                         <span class="document-header">내용</span><br>
-                        <img src="${contextPath}/resources/images/common/edsm_document.png" alt="문서 이미지"><br><br>
+                        <div class="docContentArea">
+						             	${edoc.edContent}      <!-- 에디터 영역 -->
+						            </div>
                         <!-- 에디터 영역 -->
                         <!-- <script src="../../../ckeditor5/build/ckeditor.js"></script>
                         <div id="editor">에디터 영역</div>
@@ -352,37 +363,23 @@
                             });
                         </script> -->
                         <hr>
-
-                        <div class="attachment">
-                          <div class="attachment-title" style="margin-bottom: 10px;">
-                            <b style="margin-right: 10px;">별첨</b>
-                            <span id="hoverfile" onclick="$('#file-input').click();">파일 및 관련문서 첨부</span>
-                            <input id="file-input" type="file" style="display: none;">
-                          </div>
-                          <div class="attachment-content">
-                            <span style="margin-right: 5px;">파일명.png</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-                            </svg>
-                          </div>
-                        </div>
                         
-                        <div class="document-comment">
-                          <div class="document-comment-title">
-                            이력
-                          </div>
-                          <div class="document-comment-content">
-                            <div>
-                              <span class="document-approval-user-name">김과장</span>
-                              <span>기안</span>
-                              <hr>
-                            </div>
-                            <div>
-                              <span class="document-approval-user-name">김과장</span>
-                              <span>문서내용 수정</span>
-                            </div>
-                          </div>
-                        </div>
+                       <div class="document-comment">
+				               <div class="document-comment-title">
+				                 이력
+				               </div>
+				               <div class="document-comment-content">
+				                 <c:forEach var="edocHist" items="${edoc.docHistList}">
+				                 	<c:if test="${edocHist.edHistSubCode != null}">
+						                 <div>
+						                   <span class="document-approval-user-name">${edocHist.userName}</span>
+						                   <span>결재</span>
+						                   <hr>
+						                 </div>
+					                 </c:if>
+				                </c:forEach>
+				               </div>
+				             </div>
               				</div>
                         
                       </div>
@@ -397,12 +394,12 @@
     </div>
     
 	<script>
-    $(document).ready(function() {
+    /* $(document).ready(function() {
         $('.dropdown-item').click(function() {
             var selectedText = $(this).find('.spanCss').text();
             $('.resultArea').text(selectedText);
         });
-    });
+    }); */
     
     // 인쇄
     function docPrint(){

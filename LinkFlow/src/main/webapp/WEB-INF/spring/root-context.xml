@@ -53,4 +53,22 @@
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
 	
+	<!-- gmail설정 -->
+	<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+		 <property name="host" value="smtp.gmail.com" />
+	   <property name="port" value="587" />
+		 <property name="username" value="lingkeupeullou@gmail.com"/> <!-- 자신의 이메일 아이디 -->
+		 <property name="password" value="pwbz epal pegu yfjq"/> <!-- 자신의 비밀번호 -->
+	   <property name="javaMailProperties">
+	    <props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.auth">true </prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+     </property>
+	</bean>
+	
 </beans>

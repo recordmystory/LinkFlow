@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.Date" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -105,9 +104,7 @@
 	padding-right:70px;
 	text-align :center;
 }
-select{
-	height:100px;
-}
+
 
 </style>
 </head>
@@ -196,9 +193,9 @@ select{
 		<div class="modal fade" id="booking">
 			<div class="modal-dialog">
 				<div class="modal-content">
-				<form id="insertBooking" action="${contextPath }/booking/insert.bk" method="post">
+				<form id="insertBooking" action="${contextPath }/booking/insert.bk" method="post" onsubmit="return checkForm();">
 					<div class="md-header">
-						<select name="mainName" id="bk-name" class="md-type form-control" style="width:80px;" onchange="changeBody();">
+						<select name="mainName" id="bk-mainName" class="md-type form-control" style="width:80px;" onchange="changeBody();">
 							<option value="시설">시설</option>
 							<option value="비품">비품</option>
 						</select> &nbsp;&nbsp;
@@ -264,9 +261,9 @@ select{
 		                <div id="notCar" class="md-div" > <h4> - </h4></div>
 		                <div class="md-div bkTime" id="sup-car" style="display:none;">
 		                	<div class="carTime">
-			                	<select name="startYear" class="form-control setYear md-select" style="width:100px;"></select> &nbsp;
-					        	<select name="startMonth" class="form-control setMonth md-select" style="width:80px;"></select>&nbsp;
-					        	<select name="startDay" class="form-control setDay md-select" style="width:100px;"></select>&nbsp;
+			                	<select name="startYear" class="form-control setYear md-select" style="width:100px;" id="startYear";></select> &nbsp;
+					        	<select name="startMonth" class="form-control setMonth md-select" style="width:80px;" id="startMonth"></select>&nbsp;
+					        	<select name="startDay" class="form-control setDay md-select" style="width:100px;" id="startDay"></select>&nbsp;
 		                	</div>
 		                   
 		                     <div class="timeH4"><h2> - </h2></div>
@@ -444,7 +441,7 @@ select{
     }
     
     function changeBody() {
-        var selectedValue = document.getElementById('bk-name').value;
+        var selectedValue = document.getElementById('bk-mainName').value;
         var roomContent = document.getElementById('room-content');
         var suppliesContent = document.getElementById('supplies-content');
 
@@ -492,7 +489,15 @@ select{
         });
     });
     
-    function submit(){
+    function checkForm(){
+    	var startDate = new Date($("#startYear").val(), $("#startMonth").val() -1, $("#startDay").val());
+    	var endDate = new Date($("#endYear").val(), $("#endMonth").val()-1, $("#endDay").val());
+    	
+    	if(startDate.getTime() > endDate.getTime()){
+    		alert("잘못된 설정입니다. 날짜를 다시 확인해주세요.");
+    		return false;
+    	}
+    	return true;
     	
     }
  	 </script>

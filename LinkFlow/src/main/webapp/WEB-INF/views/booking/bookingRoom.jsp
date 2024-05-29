@@ -148,152 +148,205 @@ input[type="checkbox"] {
                 </div>
             </div>
             <!-- /maincontent -->
-            <script>
-                $(function () {
 
-                    /* initialize the external events
-                     -----------------------------------------------------------------*/
-                    function ini_events(ele) {
-                        ele.each(function () {
+         <script>
+         
+         document.addEventListener('DOMContentLoaded', function () {
+             $(function () {
+                 var request = $.ajax({
+                     url: '${contextPath}/booking/room.list', // 변경하기
+                     method: "GET",
+                     
+                     dataType: "json"
+                 });
+  
+                 request.done(function (data) {
+                     console.log(data); // log 로 데이터 찍어주기.
+  
+                     var calendarEl = document.getElementById('calendar');
+  
+                     var calendar = new FullCalendar.Calendar(calendarEl, {
+                         initialDate: '2022-02-07',
+                         initialView: 'timeGridWeek',
+                         headerToolbar: {
+                             left: 'prev,next today',
+                             center: 'title',
+                             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                         },
+                         editable: true,
+                         droppable: true, // this allows things to be dropped onto the calendar
+                         drop: function (arg) {
+                             // is the "remove after drop" checkbox checked?
+                             if (document.getElementById('drop-remove').checked) {
+                                 // if so, remove the element from the "Draggable Events" list
+                                 arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                             }
+                         },
+                         /**
+                          * data 로 값이 넘어온다. log 값 전달.
+                          */
+                         events: data
+                     });
+  
+                     calendar.render();
+                 });
+  
+                 request.fail(function( jqXHR, textStatus ) {
+                     alert( "Request failed: " + textStatus );
+                 });
+             });
+  
+         });
 
-                            // create an Event Object (https://fullcalendar.io/docs/event-object)
-                            // it doesn't need to have a start or end
-                            var eventObject = {
-                                title: $.trim($(this).text()) // use the element's text as the event title
-                            }
+         
+         
+         
+         	$(function () {
 
-                            // store the Event Object in the DOM element so we can get to it later
-                            $(this).data('eventObject', eventObject)
+                  /* initialize the external events
+                   -----------------------------------------------------------------*/
+            	function ini_events(ele) {
+                	ele.each(function () {
 
-                            // make the event draggable using jQuery UI
-                            $(this).draggable({
-                                zIndex: 1070,
-                                revert: true, // will cause the event to go back to its
-                                revertDuration: 0  //  original position after the drag
-                            })
-
-                        })
+                    // create an Event Object (https://fullcalendar.io/docs/event-object)
+                    // it doesn't need to have a start or end
+                    var eventObject = {
+                        title: $.trim($(this).text()) // use the element's text as the event title
                     }
 
-                    // ini_events($('#external-events div.external-event'))
+                    // store the Event Object in the DOM element so we can get to it later
+                    $(this).data('eventObject', eventObject)
 
-                    /* initialize the calendar
-                     -----------------------------------------------------------------*/
-                    //Date for the calendar events (dummy data)
-                    var date = new Date()
-                    var d = date.getDate(),
-                        m = date.getMonth(),
-                        y = date.getFullYear()
-
-                    var Calendar = FullCalendar.Calendar;
-                    var Draggable = FullCalendar.Draggable;
-
-                    // var containerEl = document.getElementById('external-events');
-                    // var checkbox = document.getElementById('drop-remove');
-                    var calendarEl = document.getElementById('calendar');
-
-                    // initialize the external events
-                    // -----------------------------------------------------------------
-
-                    var calendar = new Calendar(calendarEl, {
-                        headerToolbar: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,timeGridWeek'
-                        },
-                        themeSystem: 'bootstrap',
-                        //Random default events
-                        events: [
-                            {
-                                title: '4:00p 회의실C',
-                                start: new Date(y, m, 1, 16, 0),
-                                end: new Date(y, m, 1, 15, 0),
-                                backgroundColor: '#f56954', //red
-                                borderColor: '#f56954', //red
-                                allDay: true
-                            },
-                            {
-                                title: '11:00a 회의실B',
-                                start: new Date(y, m, d - 1, 11, 0),
-                                end: new Date(y, m, d - 1, 13, 0),
-                                backgroundColor: '#f39c12', //yellow
-                                borderColor: '#f39c12', //yellow
-                                allDay: true
-                            },
-                            {
-                                title: '4:00p 회의실C',
-                                start: new Date(y, m, d, 16, 0),
-                                end: new Date(y, m, d, 18, 0),
-                                backgroundColor: '#f56954', //red
-                                borderColor: '#f56954', //red
-                                allDay: true
-                            },
-                            {
-                                title: '12:00a 회의실B',
-                                start: new Date(y, m, d, 12, 0),
-                                end: new Date(y, m, d, 14, 0),
-                                backgroundColor: '#f39c12', //yellow
-                                borderColor: '#f39c12', //yellow
-                                allDay: true
-                            },
-                            {
-                                title: '2:00p 회의실A',
-                                start: new Date(y, m, d + 1, 14, 0),
-                                end: new Date(y, m, d + 1, 16, 0),
-                                allDay: true,
-                                backgroundColor: '#00a65a', //Success (green)
-                                borderColor: '#00a65a' //Success (green)
-                            },
-
-                        ],
-                        editable: true,
-                        droppable: true, // this allows things to be dropped onto the calendar !!!
-                        drop: function (info) {
-                            // is the "remove after drop" checkbox checked?
-                            if (checkbox.checked) {
-                                // if so, remove the element from the "Draggable Events" list
-                                info.draggedEl.parentNode.removeChild(info.draggedEl);
-                            }
-                        },
-                        views:{
-                        	timeGrid:{
-                        		
-                        	}
-                        }
-                    });
-
-                    calendar.render();
-                    // $('#calendar').fullCalendar()
-
-                    /* ADDING EVENTS */
-                    var currColor = '#3c8dbc' //Red by default
-                    // Color chooser button
-                    $('#color-chooser > li > a').click(function (e) {
-                        e.preventDefault()
-                        // Save color
-                        currColor = $(this).css('color')
-                        // Add color effect to button
-                        $('#add-new-event').css({
-                            'background-color': currColor,
-                            'border-color': currColor
-                        })
+                    // make the event draggable using jQuery UI
+                    $(this).draggable({
+                        zIndex: 1070,
+                        revert: true, // will cause the event to go back to its
+                        revertDuration: 0  //  original position after the drag
                     })
-                    $('#add-new-event').click(function (e) {
-                        e.preventDefault()
-                        // Get value and make sure it is not null
-                        var val = $('#new-event').val()
-                        if (val.length == 0) {
-                            return
-                        }
 
-                        // Add draggable funtionality
-                        ini_events(event)
-
-                        // Remove event from text input
-                        $('#new-event').val('')
-                    })
                 })
-            </script>
+            }
+
+            // ini_events($('#external-events div.external-event'))
+
+            /* initialize the calendar
+             -----------------------------------------------------------------*/
+            //Date for the calendar events (dummy data)
+            var date = new Date()
+            var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear()
+
+            var Calendar = FullCalendar.Calendar;
+            var Draggable = FullCalendar.Draggable;
+
+            // var containerEl = document.getElementById('external-events');
+            // var checkbox = document.getElementById('drop-remove');
+            var calendarEl = document.getElementById('calendar');
+
+            // initialize the external events
+            // -----------------------------------------------------------------
+
+            var calendar = new Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                themeSystem: 'bootstrap',
+                //Random default events
+                events: [
+                    {
+                        title: '4:00p 회의실C',
+                        start: new Date(y, m, 1, 16, 0),
+                        end: new Date(y, m, 1, 15, 0),
+                        backgroundColor: '#f56954', //red
+                        borderColor: '#f56954', //red
+                        allDay: true
+                    },
+                    {
+                        title: '11:00a 회의실B',
+                        start: new Date(y, m, d - 1, 11, 0),
+                        end: new Date(y, m, d - 1, 13, 0),
+                        backgroundColor: '#f39c12', //yellow
+                        borderColor: '#f39c12', //yellow
+                        allDay: true
+                    },
+                    {
+                        title: '4:00p 회의실C',
+                        start: new Date(y, m, d, 16, 0),
+                        end: new Date(y, m, d, 18, 0),
+                        backgroundColor: '#f56954', //red
+                        borderColor: '#f56954', //red
+                        allDay: true
+                    },
+                    {
+                        title: '12:00a 회의실B',
+                        start: new Date(y, m, d, 12, 0),
+                        end: new Date(y, m, d, 14, 0),
+                        backgroundColor: '#f39c12', //yellow
+                        borderColor: '#f39c12', //yellow
+                        allDay: true
+                    },
+                    {
+                        title: '2:00p 회의실A',
+                        start: new Date(y, m, d + 1, 14, 0),
+                        end: new Date(y, m, d + 1, 16, 0),
+                        allDay: true,
+                        backgroundColor: '#00a65a', //Success (green)
+                        borderColor: '#00a65a' //Success (green)
+                    },
+
+                ],
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar !!!
+                drop: function (info) {
+                    // is the "remove after drop" checkbox checked?
+                    if (checkbox.checked) {
+                        // if so, remove the element from the "Draggable Events" list
+                        info.draggedEl.parentNode.removeChild(info.draggedEl);
+                    }
+                },
+                views:{
+                	timeGrid:{
+                		
+                	}
+                }
+            });
+
+            calendar.render();
+            // $('#calendar').fullCalendar()
+
+            /* ADDING EVENTS */
+            var currColor = '#3c8dbc' //Red by default
+            // Color chooser button
+            $('#color-chooser > li > a').click(function (e) {
+                e.preventDefault()
+                // Save color
+                currColor = $(this).css('color')
+                // Add color effect to button
+                $('#add-new-event').css({
+                    'background-color': currColor,
+                    'border-color': currColor
+                })
+            })
+            $('#add-new-event').click(function (e) {
+                e.preventDefault()
+                // Get value and make sure it is not null
+                var val = $('#new-event').val()
+                if (val.length == 0) {
+                    returns
+                }
+
+                // Add draggable funtionality
+                ini_events(event)
+
+                // Remove event from text input
+                $('#new-event').val('')
+            })
+        })
+          </script>
+
 
 		</div>
 	</div>

@@ -173,6 +173,7 @@ public class ProjectController {
 	@GetMapping("delete.pj")
 	public String deleteProject(int no) {
 		proService.deleteProject(no);
+		proService.deleteProjectDispatch(no);
 		
 		return "redirect:/project/list.pj";
 	}

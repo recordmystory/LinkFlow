@@ -218,12 +218,17 @@ public class BookingController {
 	@PostMapping("/ass.in") // 자산 추가 
 	public String insertAssets(@RequestParam Map<String,String> assets, HttpSession session) {
 		String mainCode = assets.get("updateMainCode");
+		if(assets.get("updateMainCode").equals("002-")) {
+			assets.put("subName", assets.get("roomSubName"));
+		}
 		AssetsDto ass = AssetsDto.builder()
 								   .assetsName(assets.get("assetsName"))
 								   .mainCode(assets.get("updateMainCode"))
 								   .subName(assets.get("subName"))
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		
+		log.debug("assssssss:{} ",ass);
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
@@ -256,7 +261,6 @@ public class BookingController {
 		if(result >0) {
 			return "redirect:/booking/ass.list";
 		}else {
-			System.out.println("응 안 돼 돌아가~");
 			return "redirect:/booking/ass.list";
 		}
 	}

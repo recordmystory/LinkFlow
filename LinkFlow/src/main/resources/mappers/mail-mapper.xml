@@ -133,6 +133,7 @@
   		, mail_title
   		, mail_content
   		, temp_save
+  		, receiver
   		, reg_id
   		, mod_id
   		)
@@ -142,6 +143,7 @@
 			, #{mailTitle}
 			, #{mailContent}
 			, #{tempSave}
+			, #{receiver}
 			, #{regId}
 			, #{modId}
   		)

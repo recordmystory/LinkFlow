@@ -113,4 +113,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public int myDispatchCount(String userId) {
 		return proDao.myDispatchCount(userId);
 	}
+
+	@Override
+	public void deleteProjectDispatch(int proNo) {
+		proDao.deleteProjectDispatch(proNo);
+	}
 }

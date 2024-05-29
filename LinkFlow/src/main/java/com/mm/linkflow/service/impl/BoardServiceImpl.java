@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import com.mm.linkflow.dao.AttachDao;
 import com.mm.linkflow.dao.BoardDao;
@@ -71,7 +73,9 @@ public class BoardServiceImpl implements BoardService {
 		
 		int result2 = 1;
 		List<AttachDto> attachList = board.getAttachList();
-		if(!attachList.isEmpty() || attachList != null) {
+		log.debug("attachList : {}", attachList);
+		ObjectUtils.isEmpty(attachList);
+		if(!ObjectUtils.isEmpty(attachList)) {
 			result2 = 0;
 			for(AttachDto at : attachList) {
 				result2 += attachDao.insertAttach(at);
@@ -148,8 +152,9 @@ public class BoardServiceImpl implements BoardService {
 		int result2 = 1;
 		int result3 = 1;
 		for(int index : no) {
-			List<String> delFileNo = attachDao.selectDelBoardFileNo(index); 
-			if(delFileNo != null) {
+			List<String> delFileNo = attachDao.selectDelBoardFileNo(index);
+			
+			if(!ObjectUtils.isEmpty(delFileNo)) {
 				result2 = 0;
 				
 				String[] delFileNoArray = new String[delFileNo.size()];

@@ -6,11 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.AttachDto;
-import com.mm.linkflow.dto.BoardCategoryDto;
 import com.mm.linkflow.dto.BoardDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
@@ -41,6 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class MailController {
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	private final MailService mailService;
 	private final AttachService attachService;
@@ -129,19 +136,29 @@ public class MailController {
 					   , String receiveUser
 					   , List<MultipartFile> uploadFiles
 					   , HttpSession session
-					   , RedirectAttributes redirectAttributes) {
+					   , RedirectAttributes redirectAttributes) throws Exception {
 		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		sendMail.setRegId(String.valueOf(loginUser.getUserId()));
 		sendMail.setModId(String.valueOf(loginUser.getUserId()));
+		sendMail.setReceiver(receiveUser);
 		sendMail.setTempSave("02");
-		String[] receivceEmailId = parseEmails(receiveUser);
-
-		int count = memberService.selectCheckUser(receivceEmailId);
+		Map<String, String[]> map = parseEmails(receiveUser);
+		String[] receivceEmailId = map.get("userNameList");
+		String[] externalEmail = map.get("externalEmail");
 		
-		if(count != receivceEmailId.length || receivceEmailId.length == 0) {
-			redirectAttributes.addFlashAttribute("alertMsg", "존재하지않는 이메일입니다");
+		int count = 0;
+		if(ObjectUtils.isEmpty(receivceEmailId) && ObjectUtils.isEmpty(externalEmail)) {
+			redirectAttributes.addFlashAttribute("alertMsg", "error1 : 존재하지않는 이메일입니다");
 			return "redirect:/mail/registForm.page";
+		}
+		
+		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+			count = memberService.selectCheckUser(receivceEmailId);
+			if(count != receivceEmailId.length || count == 0) {
+				redirectAttributes.addFlashAttribute("alertMsg", "error2 : 존재하지않는 이메일입니다");
+				return "redirect:/mail/registForm.page";
+			}
 		}
 		
 		List<AttachDto> attachList = new ArrayList<>();
@@ -151,9 +168,18 @@ public class MailController {
 		}
 
 		int result1 = mailService.insertSendMail(sendMail);
-		int result2 = mailService.insertReceiveMail(receivceEmailId);
+		
+		if(!ObjectUtils.isEmpty(externalEmail)) {
+			boolean check =sendExternalMail(sendMail, externalEmail, uploadFiles);
+		}
+		
+		int result2 = 1;
+		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+			result2 = mailService.insertReceiveMail(receivceEmailId);			
+		}
 
-		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
+		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || 
+		  (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
 			redirectAttributes.addFlashAttribute("alertMsg", "메일 전송에 성공하였습니다.");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", " 메일 전송에 실패하였습니다.");
@@ -163,22 +189,33 @@ public class MailController {
 		return "redirect:/mail/sendList.do";
 	}
 	
-	 public static String[] parseEmails(String emails) {
+	 public static Map<String, String[]> parseEmails(String emails) {
         emails = emails.replace(" ", "");
 
         String[] emailArray = emails.split(",");
-
-        List<String> usernameList = new ArrayList<>();
-
+        
+        List<String> userNameList = new ArrayList<>();
+        List<String> externalEmail = new ArrayList<>();
+        
+        Map<String, String[]> map = new HashMap<>();
+        
         for (String email : emailArray) {
             if (email.endsWith("@linkflow.com")) {
                 String username = email.split("@")[0];
-                usernameList.add(username);
+                userNameList.add(username);
+            }else if(email.endsWith("@gmail.com")) {
+            	externalEmail.add(email);
             }
         }
+        if(emailArray.length != userNameList.size() + externalEmail.size()) {
+        	return null;
+        }
+        map.put("userNameList",  userNameList.toArray(new String[0]));
+        map.put("externalEmail", externalEmail.toArray(new String[0]));
 
-        return usernameList.toArray(new String[0]);
+        return map;
     }
+	 
 	 @ResponseBody
 	 @PostMapping("/insertTempSave.do")
 	 public int insertTempSave(SendMailDto sendMail
@@ -270,24 +307,30 @@ public class MailController {
 					   , String receiveUser, String[] delFileNo
 					   , List<MultipartFile> uploadFiles
 					   , HttpSession session
-					   , RedirectAttributes redirectAttributes) {
+					   , RedirectAttributes redirectAttributes) throws Exception {
 		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		sendMail.setRegId(String.valueOf(loginUser.getUserId()));
 		sendMail.setModId(String.valueOf(loginUser.getUserId()));
+		sendMail.setReceiver(receiveUser);
 		sendMail.setTempSave("02");
-		log.debug("receiveUser : {}", receiveUser);
-		String[] receivceEmailId = parseEmails(receiveUser);
+		Map<String, String[]> map = parseEmails(receiveUser);
+		String[] receivceEmailId = map.get("userNameList");
+		String[] externalEmail = map.get("externalEmail");
 		
-		for(int i=0; i<receivceEmailId.length; i++) {
-			log.debug("receivceEmailId[{}] : {}",i ,receivceEmailId[i]);
+		
+		int count = 0;
+		if(ObjectUtils.isEmpty(receivceEmailId) && ObjectUtils.isEmpty(externalEmail)) {
+			redirectAttributes.addFlashAttribute("alertMsg", "error1 : 존재하지않는 이메일입니다");
+			return "redirect:/mail/registForm.page";
 		}
 		
-		int count = memberService.selectCheckUser(receivceEmailId);
-		
-		if(count != receivceEmailId.length || receivceEmailId.length == 0) {
-			redirectAttributes.addFlashAttribute("alertMsg", "존재하지않는 이메일입니다");
-			return "redirect:/mail/tempSaveDetail.page?no=" + sendMail.getMailNo();
+		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+			count = memberService.selectCheckUser(receivceEmailId);
+			if(count != receivceEmailId.length || count == 0) {
+				redirectAttributes.addFlashAttribute("alertMsg", "error2 : 존재하지않는 이메일입니다");
+				return "redirect:/mail/registForm.page";
+			}
 		}
 		
 		List<AttachDto> delFileList = attachService.selectDelFileList(delFileNo);
@@ -299,9 +342,17 @@ public class MailController {
 		}
 
 		int result1 = mailService.updateTempSaveMail(sendMail, delFileNo);
-		int result2 = mailService.insertTempSaveReceiveMail(sendMail.getMailNo(), receivceEmailId);
+		int result2 = 1;
+		
+		if(!ObjectUtils.isEmpty(externalEmail)) {
+			boolean check =sendExternalMail(sendMail, externalEmail, uploadFiles);
+		}
+		
+		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+			mailService.insertTempSaveReceiveMail(sendMail.getMailNo(), receivceEmailId);			
+		}
 
-		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
+		if((attachList.isEmpty() && result1 * result2 > 0) || (!attachList.isEmpty() && result1 == attachList.size() && result2 > 0)) {
 			for(AttachDto at : delFileList) {
 				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
 			}
@@ -454,4 +505,38 @@ public class MailController {
 		
 		return mv;
 	}
+	
+    public boolean sendExternalMail(SendMailDto sendMail, String[] externalEmail, List<MultipartFile> uploadFiles) throws Exception{
+        
+    	boolean result = true;
+    	
+        String subject = sendMail.getMailTitle();
+        String content = sendMail.getMailContent();
+        String from = "lingkeupeullou@gmail.com";
+        String to = externalEmail[0];
+        
+        try {
+            MimeMessage mail = mailSender.createMimeMessage();
+            MimeMessageHelper mailHelper = new MimeMessageHelper(mail,true,"UTF-8");
+            
+            mailHelper.setFrom(from);
+            mailHelper.setTo(to);
+            mailHelper.setSubject(subject);
+            mailHelper.setText(content, true);
+            
+            if(!ObjectUtils.isEmpty(uploadFiles)) {
+            	for (MultipartFile file : uploadFiles) {
+            		mailHelper.addAttachment(file.getOriginalFilename(), file);
+            	}
+            }
+            
+            mailSender.send(mail);
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        log.debug("외부메일 발송 체크 : {}", result);
+        return result;
+    }
 }

@@ -171,75 +171,90 @@
 		</script>
 	</c:if>
 	<script>
-		$(function() {
+	   	
+		// 내 프로젝트 페이징 처리용
+		var userId = '${loginUser.userId}'
+		
+    	function myList(page) {
+    		console.log(page);
+			$.ajax({
+            	url: '${contextPath}/project/myList.dis',
+               	type: 'GET',
+               	data: {
+               		userId: userId,
+               		page: page
+               	},
+               	success: function(map) {
+               		updateTableAndPaging(map);
+               	}
+           	});
+		};
+		// 내 프로젝트 페이징 처리용
+			
+		// 테이블 페이징 새로 처리
+		function updateTableAndPaging(data) {
+			
+     		console.log(data.pi);
+			var tableBody = $('#dispatchList tbody');
+		    var pagingArea = $('#pagingArea');
 
-			var userId = '${loginUser.userId}'
+		    tableBody.empty();
+
+		    $.each(data.list, function(index, item) {
+		    	var row = 
+			    	'<tr>'
+			        +   '<td>' + item.proNo + '</td>'
+			        +   '<td>' + item.client + '</td>'
+			        +   '<td>'
+			        +       '<a href="' + '${contextPath}/project/detail.pj?no=' + item.proNo + '">' + item.proTitle + '</a>'
+			        +   '</td>'
+			        +   '<td>' + item.userName + '</td>'
+			        +   '<td>' + item.deptTitle + '</td>'
+			        +   '<td>' + item.startDate + ' ~ ' + (item.endDate == null ? '' : item.endDate) + '</td>'
+			        +   '<td>' + '투입' + '</td>'
+			        + '</tr>';
+		        tableBody.append(row);
+		    });
+
+		    pagingArea.empty();
+
+		    var pagination = 
+		    	'<div class="pagination" style="display: flex; justify-content: center;">'
+		        +   '<ul class="pagination">'
+		        +       '<li class="page-item ' + (data.pi.currentPage == 1 ? 'disabled' : '') + '">'
+		        +           '<a class="page-link" onclick="myList(' + (data.pi.currentPage - 1) + ');">&laquo;</a>'
+		        +       '</li>';
+
+		    for (var p = data.pi.startPage; p <= data.pi.endPage; p++) {
+		        pagination += 
+		        	'<li class="page-item ' + (data.pi.currentPage == p ? 'disabled' : '') + '">'
+		            +   '<a class="page-link" onclick="myList(' + p + ');">' + p + '</a>'
+		            + '</li>';
+		    }
+
+		    pagination += 
+		        '<li class="page-item ' + (data.pi.currentPage == data.pi.maxPage ? 'disabled' : '') + '">'
+		        +   '<a class="page-link" onclick="myList(' + (data.pi.currentPage + 1) + ');">&raquo;</a>'
+		        + '</li>'
+		        + '</ul>'
+		        + '</div>';
+
+		    $("#pagingArea").html(pagination);
+		};
+		// 테이플 페이징 새로 처리
+		
+		$(document).ready(function() {
+			
 	        // 내 프로젝트만 보기
-			$('#myProject').change(function myList() {
-		        if (this.checked) {
-		            $.ajax({
-		                url: '${contextPath}/project/myList.dis',
-		                type: 'GET',
-		                data: {userId: userId},
-		                success: function(map) {
-		                	updateTableAndPaging(map);
-		                }
-		            });
+			$('#myProject').change(function() {
+		        if(this.checked) {
+		        	myList(1);
+		        }else{
+		        	location.href="${contextPath}/project/list.dis";
 		        }
 		    });
 	     	// 내 프로젝트만 보기
-	     	
-	     	// 테이블 페이징 새로 처리
-			function updateTableAndPaging(data) {
-				
-	     		console.log(data.pi);
-				var tableBody = $('#dispatchList tbody');
-			    var pagingArea = $('#pagingArea');
-	
-			    tableBody.empty();
-	
-			    $.each(data.list, function(index, item) {
-			    	var row = 
-				    	'<tr>'
-				        +   '<td>' + item.proNo + '</td>'
-				        +   '<td>' + item.client + '</td>'
-				        +   '<td>'
-				        +       '<a href="' + '${contextPath}/project/detail.pj?no=' + item.proNo + '">' + item.proTitle + '</a>'
-				        +   '</td>'
-				        +   '<td>' + item.userName + '</td>'
-				        +   '<td>' + item.deptTitle + '</td>'
-				        +   '<td>' + item.startDate + ' ~ ' + (item.endDate == null ? '' : item.endDate) + '</td>'
-				        +   '<td>' + '투입' + '</td>'
-				        + '</tr>';
-			        tableBody.append(row);
-			    });
-	
-			    pagingArea.empty();
-	
-			    var pagination = 
-			    	'<div class="pagination" style="display: flex; justify-content: center;">'
-			        +   '<ul class="pagination">'
-			        +       '<li class="page-item ' + (data.pi.currentPage == 1 ? 'disabled' : '') + '">'
-			        +           '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + (data.pi.currentPage - 1) + '">&laquo;</a>'
-			        +       '</li>';
-	
-			    for (var p = data.pi.startPage; p <= data.pi.endPage; p++) {
-			        pagination += 
-			        	'<li class="page-item ' + (data.pi.currentPage == p ? 'disabled' : '') + '">'
-			            +   '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + p + '">' + p + '</a>'
-			            + '</li>';
-			    }
-	
-			    pagination += 
-			        '<li class="page-item ' + (data.pi.currentPage == data.pi.maxPage ? 'disabled' : '') + '">'
-			        +   '<a class="page-link" href="' + '${contextPath}/project/list.dis?page=' + (data.pi.currentPage + 1) + '">&raquo;</a>'
-			        + '</li>'
-			        + '</ul>'
-			        + '</div>';
-	
-			    $("#pagingArea").html(pagination);
-			}
-			// 테이플 페이징 새로 처리
+			
 		});
 	</script>
 </body>

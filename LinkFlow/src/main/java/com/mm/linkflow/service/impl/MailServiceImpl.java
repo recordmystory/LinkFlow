@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.mm.linkflow.dao.AttachDao;
 import com.mm.linkflow.dao.MailDao;
@@ -77,7 +78,7 @@ public class MailServiceImpl implements MailService {
 		int result2 = mailDao.insertSendReMail(sendMail);
 		int result3 = 1;
 		List<AttachDto> attachList = sendMail.getAttachList();
-		if(attachList != null) {
+		if(!ObjectUtils.isEmpty(attachList)) {
 			result3 = 0;
 			for(AttachDto at : attachList) {
 				result3 += attachDao.insertAttach(at);
@@ -169,7 +170,7 @@ public class MailServiceImpl implements MailService {
 		for(int index : no) {
 			List<String> delFileNo = attachDao.selectDelMailFileNo(index); 
 			
-			if(delFileNo != null) {
+			if(delFileNo != null && delFileNo.size() > 0) {
 				
 				String[] delFileNoArray = new String[delFileNo.size()];
 				delFileNo.toArray(delFileNoArray);

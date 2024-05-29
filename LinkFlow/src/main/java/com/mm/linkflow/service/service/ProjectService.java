@@ -43,6 +43,9 @@ public interface ProjectService {
 	// 파견인원 삭제
 	int deleteDispatch(DispatchDto dis);
 	
+	// 프로젝트 & 파견인원 동시 삭제
+	void deleteProjectDispatch(int proNo);
+	
 	// 프로젝트 수정
 	void modifyProject(ProjectDto pro);
 	
