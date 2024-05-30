@@ -367,11 +367,11 @@
 	                          + "<td>" + bk[i].assetsName + "</td>"
 	                          + "<td>" + bk[i].userName + "(" + bk[i].deptName + ")</td>";
 	                    if (bk[i].subName === '차량') {
-	                        table += "<td>2024/04/25 - 2024/05/15</td>";
+	                        table += "<td>"+ bk[i].bkStartDate + " - "+ bk[i].bkEndDate +"</td>";
 	                    } else {
 	                        table += "<td> - </td>";
 	                    }
-	                    table += "<td>24/04/16 11:16:41</td>"
+	                    table += "<td>"+ bk[i].enrDate +"</td>"
 	                          + "<td>"
 	                          + "<a data-toggle='modal' data-target='#sup-confirm' onclick='supBooking(1, " + JSON.stringify(bk[i]) + ");'>승인</a>"
 	                          + " | " 
@@ -430,12 +430,12 @@
 							  + "<td>"+ bk[i].subName + "</td>"
 							  + "<td>"+ bk[i].assetsName + "</td>"
 							  + "<td>"+ bk[i].userName + "("+ bk[i].deptName +")</td>";
-						if(bk[i].subName === '차량'){
-							table += "<td>2024/04/25 - 2024/05/15</td>";
-						}else{
-							table += "<td> - </td>";
-						}
-						table += "<td>24/04/16 11:16:41</td>";
+						 if (bk[i].subName === '차량') {
+		                       table += "<td>"+ bk[i].bkStartDate + " - "+ bk[i].bkEndDate +"</td>";
+		                   } else {
+		                        table += "<td> - </td>";
+		                   }
+						table += "<td>"+ bk[i].enrDate +"</td>";
 						if(bk[i].status == "COM" || bk[i].status == "USE"){
 							table += "<td>"
 								  + "<a data-toggle='modal' data-target='#sup-detail' onclick='supDetail(1, "+ JSON.stringify(bk[i]) +")'>사용중</a>"
