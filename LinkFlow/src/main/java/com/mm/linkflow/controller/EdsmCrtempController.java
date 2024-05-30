@@ -26,10 +26,6 @@ import com.mm.linkflow.util.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author sdl13
- *
- */
 @RequestMapping("/edsm/crtemp")
 @Controller
 @RequiredArgsConstructor
@@ -37,8 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 public class EdsmCrtempController {
 	private final EdsmCrTempService edsmCrTempService;
 	private final PagingUtil pagingUtil;
-	// private final FileUtil fileUtil;
 	
+	/** 양식 등록 페이지로 이동
+	 * 
+	 * @return /edsm/crtemp/enrollForm
+	 * 
+	 * @author 김지우
+	 */
 	@GetMapping("/enrollForm.crtp")
 	public String EnrollForm() {
 		return "/edsm/crtemp/enrollForm";
