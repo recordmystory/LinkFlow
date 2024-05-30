@@ -144,4 +144,29 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<DispatchDto> dailyProjectList(String userId) {
 		return proDao.dailyProjectList(userId);
 	}
+
+	@Override
+	public DailyDto detailDaily(int daiNo) {
+		return proDao.detailDaily(daiNo);
+	}
+
+	@Override
+	public void modifyDaily(DailyDto dai) {
+		proDao.modifyDaily(dai);
+	}
+
+	@Override
+	public void deleteDaily(int daiNo) {
+		proDao.deleteDaily(daiNo);
+	}
+
+	@Override
+	public List<DailyDto> searchDaily(Map<String, String> search, PageInfoDto pi) {
+		return proDao.searchDaily(search, pi);
+	}
+
+	@Override
+	public int searchDailyCount(Map<String, String> search) {
+		return proDao.searchDailyCount(search);
+	}
 }

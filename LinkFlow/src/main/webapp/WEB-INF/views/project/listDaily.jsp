@@ -64,13 +64,15 @@
                                     <a href="${contextPath}/project/addForm.dai" class="btn btn-primary btn-sm">일일작업 등록</a>
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                    <form action="dd.page">
+                                    <form action="${contextPath}/project/search.dai" method="post" id="searchForm">
+                                    	<input name="page" type="hidden" value="1">
+                                    	<input type="hidden" name="userId" value="${loginUser.userId}">
                                         <div style="margin-bottom: 10px;">
-                                            <input class="form-control form-control-sidebar" name="start_date" type="date" style="width: 150px;">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="end_date" type="date">
+                                            <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
                                         </div>
                                         <div class="input-group">
-                                            <button class="btn" style="background-color: black; color: white; margin-right: 15px; width: 150px;" disabled>프로젝트명</button>
-                                            <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search">
+                                            <button class="btn" style="background-color: black; color: white; margin-right: 15px; width: 150px; cursor: default;" disabled>프로젝트명</button>
+                                            <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search" value="${search.keyword}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fas fa-search fa-fw"></i>
@@ -98,7 +100,7 @@
 	                                                <tr>
 	                                                    <td>${d.daiNo}</td>
 	                                                    <td>
-	                                                        <a href="">${d.proTitle}</a>
+	                                                        <a href="${contextPath}/project/detail.dai?no=${d.daiNo}">${d.proTitle}</a>
 	                                                    </td>
 	                                                    <td>${d.regDate}</td>
 	                                                    <td>${d.ansDate}</td>
@@ -116,15 +118,15 @@
 										<div class="pagination" style="display: flex; justify-content: center;">
 											<ul class="pagination">
 												<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage -1}">&laquo;</a>
+													<a class="page-link" href="${contextPath}/project/list.dai?page=${pi.currentPage -1}">&laquo;</a>
 												</li>
 												<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
 													<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
-														<a class="page-link" href="${contextPath}/project/list.pj?page=${p}">${p}</a>
+														<a class="page-link" href="${contextPath}/project/list.dai?page=${p}">${p}</a>
 													</li>
 												</c:forEach>
 												<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.pj?page=${pi.currentPage +1}">&raquo;</a>
+													<a class="page-link" href="${contextPath}/project/list.dai?page=${pi.currentPage +1}">&raquo;</a>
 												</li>
 											</ul>
 										</div>
@@ -137,5 +139,14 @@
             </div>
 		</div>
 	</div>
+	<script>
+		$(document).ready(function () {
+	        $("#pagingArea a").on("click", function(){
+     			$("#searchForm input[name=page]").val($(this).text());
+     			$("#searchForm").submit();
+     			return false;
+	   		});
+		});
+	</script>
 </body>
 </html>

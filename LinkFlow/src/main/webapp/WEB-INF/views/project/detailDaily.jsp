@@ -61,39 +61,39 @@
                         <div class="contentArea">
                             <div class="contentInElement">
                                 <div class="btnArea">
-                                    <button class="btn btn-primary btn-sm">수정하기</button>
-                                    <button class="btn btn-danger btn-sm">삭제</button>
+                                    <a href="${contextPath}/project/modifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">수정하기</a>
+                                    <a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
                                 </div>
                             </div>
                             <div class="card" style="min-height: 500px; min-width: 100%;">
                                 <table class="table" style="text-align: center; font-size: 17px; margin-top: 20px; width: 1300px; margin-left: 100PX;">
                                     <tr>
                                         <td><b>성명</b></td>
-                                        <td>강민주</td>
+                                        <td>${daily.userName}</td>
                                         <td><b>프로젝트명</b></td>
-                                        <td>IT 통합 운영</td>
+                                        <td>${daily.proTitle}</td>
                                     </tr>
                                     <tr>
                                         <td><b>일자</b></td>
-                                        <td>2024-05-10</td>
+                                        <td>${daily.regDate}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">
                                             <div style="transform: translateX(-550px);"><h5 style="font-weight: bold;">작업내용</h5></div>
-                                            <textarea style="width: 1100px; height: 400px; margin-top: 20px; overflow: auto; border: none; resize: none;" readonly>내용 구역</textarea>
+                                            <textarea style="width: 1100px; height: 400px; margin-top: 20px; overflow: auto; border: none; resize: none;" readonly>${daily.daiContent}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">
                                             <div style="transform: translateX(-550px);"><h5 style="font-weight: bold;">피드백</h5></div>
-                                            <textarea style="width: 1100px; height: 400px; margin-top: 20px; overflow: auto; border: none; resize: none;" readonly>피드백 구역</textarea>
+                                            <textarea style="width: 1100px; height: 400px; margin-top: 20px; overflow: auto; border: none; resize: none;" readonly>${daily.daiAns}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">
-                                            <button class="btn" style="background-color: #d4d4d4; width: 200px; margin-top: 50px; margin-bottom: 20px;">목록으로</button>
+                                            <a href="${contextPath}/project/list.dai" class="btn" style="background-color: #d4d4d4; width: 200px; margin-top: 50px; margin-bottom: 20px;">목록으로</a>
                                         </td>
                                     </tr>
                                 </table>

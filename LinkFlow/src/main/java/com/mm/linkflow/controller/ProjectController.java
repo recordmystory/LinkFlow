@@ -50,9 +50,11 @@ public class ProjectController {
 
 			int listCount = proService.selectProjectCount();
 			PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
-			mv.addObject("list", proService.listProject(pi))
-			.addObject("pi", pi)
-			.setViewName("project/listProject");
+			List<ProjectDto> list = new ArrayList<>();
+			list = proService.listProject(pi);
+			mv.addObject("list", list)
+			  .addObject("pi", pi)
+		 	  .setViewName("project/listProject");
 			
 		return mv;
 	}
@@ -204,7 +206,7 @@ public class ProjectController {
 	}
 	
 	// 파견인원 검색 조회
-	@GetMapping("search.dis")
+	@PostMapping("search.dis")
 	public ModelAndView searchDispatchList(String startDate, String endDate, String category, String keyword
 			                    		 , @RequestParam(value="page", defaultValue="1")int currentPage
 			                    		 , ModelAndView mv) {
@@ -268,7 +270,8 @@ public class ProjectController {
 	public ModelAndView dailyAddForm(ModelAndView mv, HttpSession session) {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();
-		List<DispatchDto> list = proService.dailyProjectList(userId);
+		List<DispatchDto> list = new ArrayList<>();
+		list = proService.dailyProjectList(userId);
 		mv.addObject("list", list)
 		  .setViewName("project/addDailyForm");
 		return mv;
@@ -283,5 +286,67 @@ public class ProjectController {
 		proService.addDaily(dai);
 		
 		return "redirect:/project/list.dai";
+	}
+	
+	// 일일작업 조회
+	@GetMapping("detail.dai")
+	public ModelAndView detailDaily(int no, ModelAndView mv) {
+		
+		mv.addObject("daily", proService.detailDaily(no))
+		  .setViewName("project/detailDaily");
+		
+		return mv;
+	}
+	
+	// 일일작업 수정 폼
+	@GetMapping("modifyForm.dai")
+	public ModelAndView modifyFormDaily(int no, ModelAndView mv) {
+		
+		mv.addObject("dai", proService.detailDaily(no))
+		  .setViewName("project/modifyDailyForm");
+		
+		return mv;
+	}
+	
+	// 일일작업 수정
+	@PostMapping("modify.dai")
+	public String modifyDaily(DailyDto dai) {
+		proService.modifyDaily(dai);
+		
+		return "redirect:/project/detail.dai?no=" + dai.getDaiNo();
+	}
+	
+	// 일일작업 삭제
+	@GetMapping("delete.dai")
+	public String deleteDaily(int no) {
+		proService.deleteDaily(no);
+		
+		return "redirect:/project/list.dai";
+	}
+	
+	// 일일작업 검색 조회
+	@PostMapping("search.dai")
+	public ModelAndView searchDaily(ModelAndView mv, String keyword, String startDate, String endDate, String userId
+			                      , @RequestParam(value="page", defaultValue="1")int currentPage) {
+		Map<String, String> search = new HashMap<>();
+		
+		search.put("keyword", keyword);
+		search.put("startDate", startDate);
+		search.put("endDate", endDate);
+		search.put("userId", userId);
+		
+		int listCount = proService.searchDailyCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DailyDto> list = new ArrayList<>();
+		list = proService.searchDaily(search, pi);
+		
+		System.out.println(list);
+		
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .addObject("search", search)
+		  .setViewName("project/listDaily");
+		
+		return mv;
 	}
 }
