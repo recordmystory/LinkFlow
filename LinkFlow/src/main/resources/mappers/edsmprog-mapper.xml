@@ -206,8 +206,8 @@
 		FROM TB_EDOC ED
 		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-        JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
+    JOIN TB_EDOC_HIST EH ON (ED.ED_NO = EH.ED_NO)
+    JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
 		WHERE ED.DEL_YN = 'N'
             AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
             AND ED.STATUS = '04'
@@ -228,8 +228,8 @@
 						FROM TB_EDOC ED
 						JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 						JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-				        JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-				        JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
+				    JOIN TB_EDOC_HIST EH ON (ED.ED_NO = EH.ED_NO)
+				    JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
 						WHERE ED.DEL_YN = 'N'
 				            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 				            AND ED.STATUS = '04'
@@ -250,10 +250,10 @@
 		                 , DECODE(ED.STATUS, '01', '대기', '02', '예정', '03', '확인', '04', '진행') AS STATUS
 		                 , ED.REG_DATE
 		    FROM TB_EDOC ED
-		    JOIN TB_EDOC_FORM EF ON (ED.ED_FORM_CODE = EF.ED_FR_CODE)
-		    JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-		    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-		    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID)
+		    JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
+				JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
+		    JOIN TB_EDOC_HIST EH ON (ED.ED_NO = EH.ED_NO)
+		    JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
 		    WHERE ED.DEL_YN = 'N'
 		      AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 	     		AND ED.STATUS = #{condition}
@@ -275,8 +275,8 @@
 		FROM TB_EDOC ED
 		JOIN TB_EDOC_FORM EF ON (ED_FR_CODE = ED_FORM_CODE)
 		JOIN TB_MEMBER M ON (ED.REG_ID = M.USER_ID)
-    JOIN TB_EDOC_HIST EH ON (ED.REG_ID = EH.REG_ID)
-    JOIN TB_EDOC_REF ER ON (#{userId} = ER.USER_ID) 
+    JOIN TB_EDOC_HIST EH ON (ED.ED_NO = EH.ED_NO)
+    JOIN TB_EDOC_REF ER ON (ED.ED_NO = ER.ED_NO)
 		WHERE ED.DEL_YN = 'N'
        AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 	     AND ED.STATUS = #{condition}

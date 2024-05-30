@@ -94,9 +94,9 @@
 		                                    <p>일일작업 조회</p>
 		                                </a>
 		                            </li>
-		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발') or result > 0}">
+		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발')}">
 			                            <li class="nav-item">
-			                                <a href="#" class="nav-link">
+			                                <a href="${contextPath}/project/listLead.dai?deptCode=${loginUser.deptCode}" class="nav-link">
 			                                    <i class="far fa-circle nav-icon"></i>
 			                                    <p>직원별 일일작업 조회</p>
 			                                </a>

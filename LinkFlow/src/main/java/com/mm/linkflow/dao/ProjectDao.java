@@ -145,10 +145,12 @@ public class ProjectDao {
 		return sql.selectOne("projectMapper.myDispatchCount", userId);
 	}
 	
+	/*
 	// 프로젝트 PM여부 확인
 	public int projectPmCount(String userId) {
 		return sql.selectOne("projectMapper.projectPmCount", userId);
 	}
+	*/
 	
 	// 일일작업 리스트 조회
 	public List<DailyDto> dailyList(String userId, PageInfoDto pi){
@@ -169,8 +171,58 @@ public class ProjectDao {
 		sql.insert("projectMapper.addDaily", dai);
 	}
 	
+	// 일일작업 중복 체크
+	public int dailyCheck(DailyDto dai) {
+		return sql.selectOne("projectMapper.dailyCheck", dai);
+	}
+	
 	// 본인 프로젝트 조회(일일작업 용)
 	public List<DispatchDto> dailyProjectList(String userId){
 		return sql.selectList("projectMapper.dailyProjectList", userId);
+	}
+	
+	// 일일작업 조회
+	public DailyDto detailDaily(int daiNo) {
+		return sql.selectOne("projectMapper.detailDaily", daiNo);
+	}
+	
+	// 일일작업 수정
+	public void modifyDaily(DailyDto dai) {
+		sql.update("projectMapper.modifyDaily", dai);
+	}
+	
+	// 일일작업 삭제
+	public void deleteDaily(int daiNo) {
+		sql.update("projectMapper.deleteDaily", daiNo);
+	}
+	
+	// 일일작업 검색 조회
+	public List<DailyDto> searchDaily(Map<String, String> search, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.searchDaily", search, rowBounds);
+	}
+	
+	// 일일작업 검색 카운트
+	public int searchDailyCount(Map<String, String> search) {
+		return sql.selectOne("projectMapper.searchDailyCount", search);
+	}
+	
+	// 직원별 일일작업 조회
+	public List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.listDailyLead", deptCode, rowBounds);
+	}
+	
+	// 직원별 일일작업 카운트
+	public int listDailyLeadCount()	{
+		return sql.selectOne("projectMapper.listDailyLeadCount");
 	}
 }

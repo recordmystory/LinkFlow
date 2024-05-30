@@ -120,10 +120,12 @@ public class ProjectServiceImpl implements ProjectService {
 		proDao.deleteProjectDispatch(proNo);
 	}
 
+	/*
 	@Override
 	public int projectPmCount(String userId) {
 		return proDao.projectPmCount(userId);
 	}
+	*/
 
 	@Override
 	public List<DailyDto> dailyList(String userId, PageInfoDto pi) {
@@ -143,5 +145,45 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<DispatchDto> dailyProjectList(String userId) {
 		return proDao.dailyProjectList(userId);
+	}
+
+	@Override
+	public DailyDto detailDaily(int daiNo) {
+		return proDao.detailDaily(daiNo);
+	}
+
+	@Override
+	public void modifyDaily(DailyDto dai) {
+		proDao.modifyDaily(dai);
+	}
+
+	@Override
+	public void deleteDaily(int daiNo) {
+		proDao.deleteDaily(daiNo);
+	}
+
+	@Override
+	public List<DailyDto> searchDaily(Map<String, String> search, PageInfoDto pi) {
+		return proDao.searchDaily(search, pi);
+	}
+
+	@Override
+	public int searchDailyCount(Map<String, String> search) {
+		return proDao.searchDailyCount(search);
+	}
+
+	@Override
+	public int dailyCheck(DailyDto dai) {
+		return proDao.dailyCheck(dai);
+	}
+
+	@Override
+	public List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode) {
+		return proDao.listDailyLead(pi, deptCode);
+	}
+
+	@Override
+	public int listDailyLeadCount() {
+		return proDao.listDailyLeadCount();
 	}
 }

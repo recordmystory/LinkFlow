@@ -335,49 +335,30 @@ public class BookingController {
 	public String insertBooking(@RequestParam Map<String,String> bk, HttpSession session, RedirectAttributes redirect) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
-		int result = 0;
 		
 		if(bk.get("mainName").equals("시설")) {
 			String bkStartDate = bk.get("year")+"/"+bk.get("month")+"/"+bk.get("day");
 			bk.put("bkStartDate",bkStartDate);
 			bk.put("assetsNo", bk.get("roomAssNo"));
 			
-			result = bkServiceImpl.insertBooking(bk);
 		}else {
-			bk.put("assetsNo", bk.get("supAssNo"));
-			
-			String bkStartDate = bk.get("startYear")+"/"+bk.get("startMonth")+"/"+bk.get("startDay");
-			String bkEndDate = bk.get("endYear")+"/"+bk.get("endMonth")+"/"+bk.get("endDay");
 			
 			if(bk.get("subName").equals("차량")) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-				
-		        Date date1 = null;
-		        Date date2 = null;
-		        try {
-		            date1 = sdf.parse(bkStartDate);
-		            date2 = sdf.parse(bkEndDate);
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
-		        
-		        if (date1 != null && date2 != null) {
-		            if (date1.compareTo(date2) <= 0) {
-		            	bk.put("bkStartDate",bkStartDate);
-						bk.put("bkEndDate",bkEndDate);
-						
-						result = bkServiceImpl.insertBooking(bk);
-		            } else {
-		            	result = 0;
-		            }
-		        }
-
-			}else {
-				result = bkServiceImpl.insertBooking(bk);
-			}
+				String bkStartDate = bk.get("startYear")+"/"+bk.get("startMonth")+"/"+bk.get("startDay");
+				String bkEndDate = bk.get("endYear")+"/"+bk.get("endMonth")+"/"+bk.get("endDay");
+		
+            	bk.put("bkStartDate",bkStartDate);
+				bk.put("bkEndDate",bkEndDate);
+		    } 
+			
+			bk.put("assetsNo", bk.get("supAssNo"));
+			
 		}
 		
-		if(result <= 0) {
+		int result = bkServiceImpl.insertBooking(bk);
+		if(result > 0) {
+			redirect.addFlashAttribute("alertMsg","예약이 완료되었습니다.");
+		}else {
 			redirect.addFlashAttribute("alertMsg","예약 내용을 다시 확인하세요.");
 		}
 		

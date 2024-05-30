@@ -111,10 +111,12 @@
                     <div class="container-fluid" style="display: flex; justify-content: center;">
                         <div class="contentArea">
                             <div class="contentInElement">
+                            	<c:if test="${not empty loginUser and loginUser.position eq '팀장' and pro.deptName eq loginUser.deptName}">
                                 <div class="btnArea">
                                     <a href="${contextPath}/project/modifyForm.pj?no=${pro.proNo}" class="btn btn-primary btn-sm">프로젝트 수정</a>
                                     <a href="${contextPath}/project/delete.pj?no=${pro.proNo}" class="btn btn-danger btn-sm">프로젝트 삭제</a>
                                 </div>
+                                </c:if>
                             </div>
                             <div style="min-height: 500px;">
                                 <div class="projectDetail card">

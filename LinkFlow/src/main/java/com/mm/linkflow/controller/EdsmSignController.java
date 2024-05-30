@@ -28,7 +28,6 @@ public class EdsmSignController {
 	
 	private final EdsmSignService edsmSignService;
 	private final FileUtil fileUtil;
-	// private final CommonsMultipartResolver multipartResolver;
 	
 	/** 기본 이미지로 서명 설정
 	 * 
@@ -120,6 +119,12 @@ public class EdsmSignController {
 		}
 	}
 	
+	/** 서명 설정 페이지로 이동
+	 * 
+	 * @return /edsm/sign/setting
+	 * 
+	 * @author 김지우
+	 */
 	@GetMapping("/setting.sg")
 	public String listAll() {
 		return "/edsm/sign/setting";

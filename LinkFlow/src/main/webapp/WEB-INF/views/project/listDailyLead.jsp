@@ -49,7 +49,7 @@
                 <section class="content-header">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">일일작업 조회</h1>
+                            <h1 class="m-0">직원별 일일작업 조회</h1>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -61,25 +61,28 @@
                         <div class="contentArea">
                             <div class="contentInElement">
                                 <div class="btnArea">
-                                    <a href="${contextPath}/project/addForm.dai" class="btn btn-primary btn-sm">일일작업 등록</a>
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                    <form action="${contextPath}/project/search.dai" method="post" id="searchForm">
-                                    	<input name="page" type="hidden" value="1">
-                                    	<input type="hidden" name="userId" value="${loginUser.userId}">
-                                        <div style="margin-bottom: 10px;">
-                                            <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
-                                        </div>
-                                        <div class="input-group">
-                                            <button class="btn" style="background-color: black; color: white; margin-right: 15px; width: 150px; cursor: default;" disabled>프로젝트명</button>
-                                            <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search" value="${search.keyword}">
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="fas fa-search fa-fw"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <form action="${contextPath}/project/searchDailyLead.dai" method="post" id="searchForm">
+                                		<input name="page" type="hidden" value="1">
+		                                <div style="margin-bottom: 10px;">
+		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
+		                                </div>
+		                                <div class="input-group">
+		                                    <div class="select" style="margin-right: 15px;">
+		                                        <select name="category" id="bottom-menu" class="form-control bottom-menu" style="width: 150px;">
+		                                            <option value="proName">프로젝트명</option>
+		                                            <option value="userName">이름</option>
+		                                        </select>
+		                                    </div>
+		                                    <input class="form-control form-control-sidebar" name="keyword" type="search" placeholder="Search" aria-label="Search" value="${search.keyword}">
+		                                    <div class="input-group-append">
+		                                        <button type="submit" class="btn btn-primary">
+		                                            <i class="fas fa-search fa-fw"></i>
+		                                        </button>
+		                                    </div>
+		                                </div>
+	                                </form>
                                 </div>
                             </div>
                             <div style="min-height: 500px; min-width: 100%;">
@@ -90,8 +93,9 @@
                                                 <tr>
                                                     <th style="width: 10%;">NO</th>
                                                     <th style="width: 30%;">프로젝트명</th>
-                                                    <th style="width: 20%;">작성일</th>
-                                                    <th style="width: 20%;">답변일</th>
+                                                    <th style="width: 10%;">이름</th>
+                                                    <th style="width: 15%;">작성일</th>
+                                                    <th style="width: 15%;">답변일</th>
                                                     <th style="width: 10%;">피드백</th>
                                                 </tr>
                                             </thead>
@@ -100,8 +104,9 @@
 	                                                <tr>
 	                                                    <td>${d.daiNo}</td>
 	                                                    <td>
-	                                                        <a href="${contextPath}/project/detail.dai?no=${d.daiNo}">${d.proTitle}</a>
+	                                                        <a href="${contextPath}/project/detailLead.dai?no=${d.daiNo}">${d.proTitle}</a>
 	                                                    </td>
+	                                                    <td>${d.userName}</td>
 	                                                    <td>${d.regDate}</td>
 	                                                    <td>${d.ansDate}</td>
 	                                                    <td>
@@ -118,15 +123,15 @@
 										<div class="pagination" style="display: flex; justify-content: center;">
 											<ul class="pagination">
 												<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.dai?page=${pi.currentPage -1}">&laquo;</a>
+													<a class="page-link" href="${contextPath}/project/listLead.dai?page=${pi.currentPage -1}&deptCode=${loginUser.deptCode}">&laquo;</a>
 												</li>
 												<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
 													<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }">
-														<a class="page-link" href="${contextPath}/project/list.dai?page=${p}">${p}</a>
+														<a class="page-link" href="${contextPath}/project/listLead.dai?page=${p}&deptCode=${loginUser.deptCode}">${p}</a>
 													</li>
 												</c:forEach>
 												<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-													<a class="page-link" href="${contextPath}/project/list.dai?page=${pi.currentPage +1}">&raquo;</a>
+													<a class="page-link" href="${contextPath}/project/listLead.dai?page=${pi.currentPage +1}&deptCode=${loginUser.deptCode}">&raquo;</a>
 												</li>
 											</ul>
 										</div>

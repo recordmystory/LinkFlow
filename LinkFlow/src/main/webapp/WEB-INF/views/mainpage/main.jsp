@@ -280,7 +280,7 @@
 				<c:if test="${ loginUser.superRight == 'Y' || loginUser.hrRight == 'Y' }">
 				<!-- 사원현황 시작 -->
 				<!-- 여기는 슈퍼관리자 / 인사담당자로 로그인시에만 표시 -->
-				<div class="mainContent_chart card">
+				<div class="mainContent_chart card" style="margin-bottom: 200px">
 					<div style="border-right: 1px solid black; width: 70%;">
 						<h4>사원 현황</h4>
 			    	<div class="division">

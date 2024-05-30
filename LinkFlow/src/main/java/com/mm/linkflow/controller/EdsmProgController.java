@@ -25,7 +25,6 @@ import com.mm.linkflow.dto.EdocRefDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.service.service.EdsmProgService;
-import com.mm.linkflow.util.FileUtil;
 import com.mm.linkflow.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -243,9 +242,9 @@ public class EdsmProgController {
 		int result = edsmProgService.insertDoc(edocDto);
 		
 		if(result>0) {
-			redirectAttributes.addFlashAttribute("alertMsg","성공");
+			redirectAttributes.addFlashAttribute("alertMsg","기안 완료되었습니다.");
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg","실패");
+			redirectAttributes.addFlashAttribute("alertMsg","기안에 실패했습니다.");
 		}
 	
 
@@ -288,35 +287,5 @@ public class EdsmProgController {
 		return mv;
 	}
 	
-	@GetMapping("/modifyForm.prog")
-	public String apprModifyForm() {
-		return "/edsm/prog/modifyForm";
-	}
-
-
-//	@GetMapping("/listAll.prog")
-//	public String listAll() {
-//		return "/edsm/prog/listAll";
-//	}
-
-	@GetMapping("/listCheck.prog")
-	public String listCheck() {
-		return "/edsm/prog/listCheck";
-	}
-
-	@GetMapping("/listPlan.prog")
-	public String listPlan() {
-		return "/edsm/prog/listPlan";
-	}
-
-	@GetMapping("/listProg.prog")
-	public String listProg() {
-		return "/edsm/prog/listProg";
-	}
-
-	@GetMapping("/listWait.prog")
-	public String listWait() {
-		return "/edsm/prog/listWait";
-	}
 
 }

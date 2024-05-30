@@ -32,24 +32,41 @@ input[type="checkbox"] {
 .chex3:checked {
 	background-color: #f0674b;
 }
-/*공휴일 스타일*/
-.holiday{
+
+.holiday {
 	background-color: transparent;
 	border-color: transparent; /*투명화*/
-	font-size: smaller; 
-	font-weight: bolder; 
+	font-size: smaller;
+	font-weight: bolder;
 	margin-bottom: 5px;
 	pointer-events: none;
-	
 }
 
-.fc-daygrid-day-top, .holiday{
-	/*position: absolute;
-     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 중앙 정렬 */
+.fc-day-sun a {
+	color: red !important;
+	text-decoration: none;
 }
 
+.fc-day-sat a {
+	color: blue !important;;
+	text-decoration: none;
+}
+
+.fc-daygrid-day-frame {
+	position: relative;
+	width:
+}
+
+.fc-daygrid-day-frame>div:nth-child(1), .fc-daygrid-day-frame>div:nth-child(2) {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+}
+.fc-daygrid-day-frame {
+   position: relative;
+   min-height: 100px !important; /* 테이블의 최소 높이 설정 */
+}
 </style>
 </head>
 <body>
@@ -96,12 +113,12 @@ input[type="checkbox"] {
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 themeSystem: 'bootstrap',
                 dayMaxEvents: true,
                 eventMaxStack: 3,
-                googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
+                googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
                 events: function(info, successCallback, failureCallback) {
                     $.ajax({
                         url: '${contextPath}/booking/room.list',
@@ -119,7 +136,7 @@ input[type="checkbox"] {
                                         end: bk.bkStartDate + 'T' + bk.bkEndTime,
                                         backgroundColor: '',
                                         borderColor: '',
-                                        allDay: false
+                                        /* allDay: false */
                                     };
                                     if (bk.assetsName == "A") {
                                         event.title = '회의실A';
@@ -134,22 +151,39 @@ input[type="checkbox"] {
                                         event.backgroundColor = '#f0674b'; 
                                         event.borderColor = '#f0674b'; 
                                     }
+                                   /*  
+                                    var dd = document.getElementByClassName('.fc-daygrid-day-frame');
+                                    var firstDiv = dd.children[0];
+                                    var secondDiv = dd.children[1];
+
+                                    firstDiv.classList.add('overlay');
+                                    secondDiv.classList.add('overlay'); */
                                     events.push(event);
+                                    
                                 });
                             }
                             successCallback(events);
                         }
                     });
                 },
-                eventSources: [
-                    //공휴일 
-                      {
-                          googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
-                          classNames: 'holiday',
-                          textColor: 'rgba(190, 0, 50, 0.5)',
-                          constraint: 'availableForMeeting'
-                      }
-                  ]
+                eventSources: [ {
+		                          googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+		                          classNames: 'holiday',
+		                          textColor: '#e63c09',
+		                          constraint: 'availableForMeeting'
+                      			}
+                ]/* ,
+                eventDidMount: function(info) {
+                    console.log(info.event.classNames);  // 디버깅용 출력
+                    if (info.event.classNames.includes('holiday')) {
+                        console.log('Holiday event detected', info.el);  // 디버깅용 출력
+                        var dayEl = info.el.closest('.fc-daygrid-day') || info.el.closest('.fc-daygrid-day-frame');
+                        if (dayEl) {
+                            console.log('Day element found', dayEl);  // 디버깅용 출력
+                            dayEl.classList.add('holiday-style');
+                        }
+                    }
+                } */
             });
            
             calendar.render();

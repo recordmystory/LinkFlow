@@ -30,6 +30,14 @@ public class EdsmDocboxController {
 	private final EdsmDocboxService edsmDocboxService;
 	private final PagingUtil pagingUtil;
 	
+	/** 문서 제목으로 검색
+	 * 
+	 * @param currentPage
+	 * @param search
+	 * @param session
+	 * @param mv
+	 * @return mv
+	 */
 	@GetMapping("/search.docbox")
 	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,
 			   @RequestParam Map<String, String> search, HttpSession session,
@@ -52,6 +60,14 @@ public class EdsmDocboxController {
 		return mv;
 	}
 	
+	/** 문서함 상세 페이지 조회
+	 * 
+	 * @param edNo
+	 * @param model
+	 * @return /edsm/docbox/detail
+	 * 
+	 * @author 김지우
+	 */
 	@GetMapping("/detail.docbox")
 	public String detail(String edNo, Model model) {
 		log.debug("edNo : {}", edNo);
@@ -61,6 +77,15 @@ public class EdsmDocboxController {
 		return "/edsm/docbox/detail";
 	}
 	
+	/** 문서함 목록 조회
+	 * 
+	 * @param currentPage
+	 * @param mv
+	 * @param session
+	 * @return mv
+	 * 
+	 * @author 김지우
+	 */
 	@GetMapping("/listAll.docbox")
 	public ModelAndView listAll(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv, HttpSession session) {
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -75,24 +100,4 @@ public class EdsmDocboxController {
 		return mv;
 	}
 	
-	// ----------- 잘가라 --------------------
-	@GetMapping("/listAppr.docbox")
-	public String listAppr() {
-		return "/edsm/docbox/listAppr";
-	}
-	
-	@GetMapping("/listDraft.docbox")
-	public String listDraft() {
-		return "/edsm/docbox/listDraft";
-	}
-	
-	@GetMapping("/listRef.docbox")
-	public String listRef() {
-		return "/edsm/docbox/listRef";
-	}
-	
-	@GetMapping("/listReject.docbox")
-	public String listReject() {
-		return "/edsm/docbox/listReject";
-	}
 }
