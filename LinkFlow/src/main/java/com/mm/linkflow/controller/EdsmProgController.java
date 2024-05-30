@@ -243,9 +243,9 @@ public class EdsmProgController {
 		int result = edsmProgService.insertDoc(edocDto);
 		
 		if(result>0) {
-			redirectAttributes.addFlashAttribute("alertMsg","성공");
+			redirectAttributes.addFlashAttribute("alertMsg","기안 완료되었습니다.");
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg","실패");
+			redirectAttributes.addFlashAttribute("alertMsg","기안에 실패했습니다.");
 		}
 	
 
