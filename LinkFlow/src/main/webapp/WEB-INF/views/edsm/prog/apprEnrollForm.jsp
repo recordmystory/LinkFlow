@@ -310,6 +310,7 @@
                                     <th class="table-active">문서 종류</th>
                                     <td>
                                       <select class="form-control documentTypeSelect" name="edFormCode" id="documentTypeSelect">
+                                        <option value="">양식 선택</option>
                                         <c:forEach var="fr" items="${list}" varStatus="num">
 																	       <option value="${fr.edFrCode}">${fr.edFrName}</option>
 																	    	</c:forEach>
@@ -604,18 +605,18 @@
                                                 <th class="table-active dayoff-table-title">휴가종류</th>
                                                 <td>
                                                   <select class="form-control" id="dayoff-table-type">
-                                                    <option value="">오전반차</option>
-                                                    <option value="">오후반차</option>
-                                                    <option value="">연차</option>
+                                                    <option value="02">오전반차</option>
+                                                    <option value="03">오후반차</option>
+                                                    <option value="01">연차</option>
                                                   </select>
                                                 </td>
                                               </tr>
                                               <tr>
                                                 <th class="table-active dayoff-table-title">휴가일자</th>
                                                 <td>
-                                                  <input type="date" name="startDate" id="startDate" class="form-control date">        
+                                                  <input type="date" name="startDay" id="startDate" class="form-control date">        
                                                   <span style="margin: 0px 50px 0px 50px; font-weight: bold;">~</span>
-                                                  <input type="date" name="endDate" id="endDate" class="form-control date">
+                                                  <input type="date" name="endDay" id="endDate" class="form-control date">
                                                 </td>
                                                 <tr>
                                                   <th class="table-active dayoff-table-title">휴가사유</th>
