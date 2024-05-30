@@ -372,7 +372,7 @@
                    <div class="approval-enable-comment">
                      <div class="approval-enable-comment-header">
                        <b>승인 / 반려 의견</b><br>
-                       <textarea name="edHistComment" id="" class="form-control" cols="30" rows="10" style="resize: none;" placeholder="의견 입력">
+                       <textarea name="edHistComment" id="" class="form-control" cols="30" rows="10" style="resize: none;" placeholder="의견 입력" required="required">
                          
                        </textarea>
                      </div>
