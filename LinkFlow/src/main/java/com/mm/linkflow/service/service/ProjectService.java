@@ -72,7 +72,7 @@ public interface ProjectService {
 	int myDispatchCount(String userId);
 	
 	// 프로젝트 PM 여부 확인
-	int projectPmCount(String userId);
+//	int projectPmCount(String userId);
 	
 	// 일일작업 리스트 조회
 	List<DailyDto> dailyList(String userId, PageInfoDto pi);
@@ -82,6 +82,9 @@ public interface ProjectService {
 	
 	// 일일작업 등록
 	void addDaily(DailyDto dai);
+	
+	// 일일작업 중복 체크
+	int dailyCheck(DailyDto dai);
 	
 	// 본인 프로젝트 조회(일일작업 용)
 	List<DispatchDto> dailyProjectList(String userId);
@@ -100,4 +103,10 @@ public interface ProjectService {
 	
 	// 일일작업 검색 카운트
 	int searchDailyCount(Map<String, String> search);
+	
+	// 직원별 일일작업 조회
+	List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode);
+	
+	// 직원별 일일작업 카운트
+	int listDailyLeadCount();
 }

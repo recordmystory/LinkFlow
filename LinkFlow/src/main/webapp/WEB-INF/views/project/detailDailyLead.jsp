@@ -60,10 +60,20 @@
                     <div class="container-fluid" style="display: flex; justify-content: center;">
                         <div class="contentArea">
                             <div class="contentInElement">
-                            	<div class="btnArea">
-                                    <a href="${contextPath}/project/modifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">수정하기</a>
-                                    <a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
-                                </div>
+	                   			<c:choose>
+	                   				<c:when test="${daily.daiAns == null}">
+	                   					<div class="btnArea">
+	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변하기</a>
+	                               			<a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
+	                         			</div>
+	                   				</c:when>
+	                   				<c:otherwise>
+	                   					<div class="btnArea">
+	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변수정</a>
+	                               			<a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
+	                         			</div>
+	                   				</c:otherwise>
+	                   			</c:choose>
                             </div>
                             <div class="card" style="min-height: 500px; min-width: 100%;">
                                 <table class="table" style="text-align: center; font-size: 17px; margin-top: 20px; width: 1300px; margin-left: 100PX;">
@@ -93,7 +103,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="4">
-                                            <a href="${contextPath}/project/list.dai" class="btn" style="background-color: #d4d4d4; width: 200px; margin-top: 50px; margin-bottom: 20px;">목록으로</a>
+                                            <a href="${contextPath}/project/listLead.dai?deptCode=${loginUser.deptCode}" class="btn" style="background-color: #d4d4d4; width: 200px; margin-top: 50px; margin-bottom: 20px;">목록으로</a>
                                         </td>
                                     </tr>
                                 </table>

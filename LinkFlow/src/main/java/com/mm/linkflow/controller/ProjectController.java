@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.DailyDto;
 import com.mm.linkflow.dto.DispatchDto;
@@ -43,10 +44,9 @@ public class ProjectController {
 	@GetMapping("/list.pj")
 	public ModelAndView listProject(ModelAndView mv, HttpSession session,  @RequestParam(value="page", defaultValue="1")int currentPage) {
 			
-			MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-			
-			String userId = loginUser.getUserId();
-			session.setAttribute("result", proService.projectPmCount(userId));
+//			MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+//			String userId = loginUser.getUserId();
+//			session.setAttribute("result", proService.projectPmCount(userId));
 
 			int listCount = proService.selectProjectCount();
 			PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
@@ -279,13 +279,18 @@ public class ProjectController {
 	
 	// 일일작업 등록
 	@PostMapping("add.dai")
-	public String addDaily(DailyDto dai, HttpSession session) {
+	public String addDaily(DailyDto dai, HttpSession session, RedirectAttributes ra) {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		dai.setRegId(loginUser.getUserId());
 		dai.setModId(loginUser.getUserId());
-		proService.addDaily(dai);
-		
-		return "redirect:/project/list.dai";
+		int result = proService.dailyCheck(dai);
+		if(result > 0) {
+			ra.addFlashAttribute("alertMsg", "이미 당일 등록한 일일작업이 존재하는 프로젝트입니다.");
+			return "redirect:/project/addForm.dai";
+		}else {
+			proService.addDaily(dai);
+			return "redirect:/project/list.dai";
+		}
 	}
 	
 	// 일일작업 조회
@@ -349,4 +354,41 @@ public class ProjectController {
 		
 		return mv;
 	}
+	
+	// 직원별 일일작업 조회
+	@GetMapping("listLead.dai")
+	public ModelAndView listDailyLead(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage, String deptCode) {
+		int listCount = proService.listDailyLeadCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DailyDto> list = new ArrayList<>();
+		list = proService.listDailyLead(pi, deptCode);
+		
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("project/listDailyLead");
+		
+		return mv;
+	}
+	
+	// 일일작업 피드백
+	@GetMapping("ansModifyForm.dai")
+	public ModelAndView ansModifyForm(int no, ModelAndView mv) {
+		DailyDto dai = proService.detailDaily(no);
+		
+		mv.addObject("dai", dai)
+		  .setViewName("project/modifyDailyAnsForm");
+		
+		return mv;
+	}
+	
+	// 일일작업 조회(팀장)
+	@GetMapping("detailLead.dai")
+	public ModelAndView detailDailyLead(int no, ModelAndView mv) {
+		
+		mv.addObject("daily", proService.detailDaily(no))
+		  .setViewName("project/detailDailyLead");
+		
+		return mv;
+	}
+	
 }
