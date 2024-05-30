@@ -55,28 +55,6 @@
 	padding-top: 10px;
 }
 
-/* 체크박스 */
-input[type="checkbox"] {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	width: 25px;
-	height: 25px;
-	border-radius: 50%;
-	border: 2px solid #ccc;
-}
-
-.chex1:checked {
-	background-color: #29ce17;
-}
-
-.chex2:checked {
-	background-color: #f3d037;
-}
-
-.chex3:checked {
-	background-color: #f0674b;
-}
 </style>
 </head>
 <body>

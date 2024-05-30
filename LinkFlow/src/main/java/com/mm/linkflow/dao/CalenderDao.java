@@ -1,5 +1,6 @@
 package com.mm.linkflow.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
+import com.mm.linkflow.dto.ShaSchDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,10 +18,11 @@ import lombok.RequiredArgsConstructor;
 public class CalenderDao {
 	private final SqlSessionTemplate sqlSessionTemplate;
 
-	//캘린더 메인 - 일정 등록
-	public int insertSch(ScheduleDto schedule) {
-		return sqlSessionTemplate.insert("calendarMapper.insertSch", schedule);
-	}
+	
+	 //캘린더 메인 - 일정 등록 
+	 public int insertSch(ScheduleDto schedule) { return
+	 sqlSessionTemplate.insert("calendarMapper.insertSch", schedule); }
+	 
 	
 	//캘린더 메인 - 일정 전체조회
 	public List<ScheduleDto> selectSchList(Map<String, Object> sch) {
@@ -32,8 +35,8 @@ public class CalenderDao {
 	}
 
 	//캘린더 메인 - 일정 수정
-	public int updateSch(ScheduleDto schedule) {
-	    return sqlSessionTemplate.update("calendarMapper.updateSch", schedule);
+	public int updateSch(Map<String, Object> sch) {
+	    return sqlSessionTemplate.update("calendarMapper.updateSch", sch);
 
 	}
 	//캘린더 메인 - 일정 삭제(상태변경)
@@ -47,7 +50,7 @@ public class CalenderDao {
 
 	}
 	
-	//휴지통 -일정복구
+	//휴지통 -일정복구   
 	public int wasteSchRestore(String schNo) {
 		return sqlSessionTemplate.update("calendarMapper.wasteSchRestore", schNo);
 	}
@@ -55,7 +58,7 @@ public class CalenderDao {
 	//휴지통 -일정완전삭제(스케줄러)
 	public int wasteSchCompletely() {
 		return sqlSessionTemplate.delete("calendarMapper.wasteSchCompletely");
-	}
+	}   
 	
 	//휴지통 -일정완전삭제
 	public int wasteSchRemoval(String schNo) {
@@ -67,8 +70,17 @@ public class CalenderDao {
 		return sqlSessionTemplate.selectList("calendarMapper.selecteMemberList");
 	}
 
-	/*
-	 * public int updateSchCalSubCode(Map<String, Object> map) { return
-	 * sqlSessionTemplate.update("calendarMapper.updateCalendarSubCode", map); }
-	 */
+	public int insertSharedSch(Map<String, String> shaSchDto) {
+		return sqlSessionTemplate.insert("calendarMapper.insertSharedSch", shaSchDto);
+	}
+
+	public int insertSharedSch(String shareId, String userId) {
+		  Map<String, Object> map = new HashMap<>();
+		  map.put("shareId", shareId);
+		  map.put("userId", userId);
+		return sqlSessionTemplate.insert("calendarMapper.insertSharedSch", map);
+	}
+
+
+	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.mm.linkflow.dto.CalendarDto;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
+import com.mm.linkflow.dto.ShaSchDto;
 
 public interface CalendarService {
 	//캘린더 메인 - 일정 등록
@@ -18,7 +19,7 @@ public interface CalendarService {
 	ScheduleDto detailSch(String schNo);
 	
 	//캘린더 메인 - 일정 수정
-	int updateSch(ScheduleDto schedule);
+	int updateSch(Map<String, Object> sch);
 	/*
 	 * //수정 - 캘린더 CAL_SUB_CODE int updateSchCalSubCode(Map<String, Object> map);
 	 */
@@ -39,6 +40,9 @@ public interface CalendarService {
 
     //제이트리 조직도 멤버조회
 	List<DeptDto> selecteMemberList();
+
+	//공유일정
+	int insertSharedSch(String shareId, String userId);
 
 
 }

@@ -170,8 +170,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<BookingDto> selectRoomBooking() {
-		return bkDao.selectRoomBooking();
+	public List<BookingDto> selectRoomBooking(Map<String,String> rooms) {
+		return bkDao.selectRoomBooking(rooms);
 	}
 	
 	

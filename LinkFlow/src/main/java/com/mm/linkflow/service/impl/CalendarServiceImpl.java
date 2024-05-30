@@ -9,6 +9,7 @@ import com.mm.linkflow.controller.CalendarController;
 import com.mm.linkflow.dao.CalenderDao;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
+import com.mm.linkflow.dto.ShaSchDto;
 import com.mm.linkflow.service.service.CalendarService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class CalendarServiceImpl implements CalendarService {
 
 	//캘린더 메인 - 일정 등록
 	@Override
-	public int insertSch(ScheduleDto schedule) {
+	public int insertSch(ScheduleDto schedule){
 		return calendarDao.insertSch(schedule);
 	}
 
@@ -41,10 +42,8 @@ public class CalendarServiceImpl implements CalendarService {
 
 	//캘린더 메인 - 일정 수정
 	@Override
-	public int updateSch(ScheduleDto schedule) {
-		String schNo = schedule.getSchNo();
-	    log.debug("schNo: {}", schNo);	    
-	    return calendarDao.updateSch(schedule);
+	public int updateSch(Map<String, Object> sch) {
+	    return calendarDao.updateSch(sch);
 	}
 	
 	//캘린더 메인 - 일정삭제(상태변경)
@@ -83,6 +82,12 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public List<DeptDto> selecteMemberList() {
 		return calendarDao.selecteMemberList();	
+	}
+
+	//공유일정
+	@Override
+	public int insertSharedSch(String shareId, String userId) {
+		return calendarDao.insertSharedSch(shareId, userId);	
 	}
 
 	/*

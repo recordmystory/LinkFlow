@@ -1,5 +1,6 @@
 package com.mm.linkflow.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.ScheduleDto;
+import com.mm.linkflow.dto.ShaSchDto;
 import com.mm.linkflow.service.service.CalendarService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,52 +53,29 @@ public class CalendarController {
 	
 	//캘린더 메인 - 일정 등록
 	@ResponseBody
-	@PostMapping(value="/regist.do", produces="text/html; charset=utf-8")//
-	public String insertSch(ScheduleDto schedule, HttpSession session) {  
-		String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
-		schedule.setModId(userId);
-		log.debug(userId);
-		log.debug("schImport:{}",schedule.getSchImport());
-		log.debug("notifyYn:{}",schedule.getNotifyYn());
-		log.debug("notifyYn:{}",schedule.getSchCalSubCode());
+	@PostMapping(value="/regist.do", produces="text/html; charset=utf-8")
+	public String insertSch(ScheduleDto schedule, 
+	                        @RequestParam("shareIds") List<String> shareIds, 
+	                        HttpSession session) {  
+		 String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
+		    schedule.setModId(userId);
 
-		/*
-		 * String schCalSubCode = schedule.getCalSubCode();
-		 * 
-		 * Map<String, String> selectCalNo = new HashMap<>();
-		 * selectCalNo.put("schCalSubCode", schCalSubCode); selectCalNo.put("userId",
-		 * userId);
-		 * 
-		 * calendarService.getSelectCalNo(selectCalNo);
-		 */
-		
-	    int result = calendarService.insertSch(schedule);
-	    if (result == 1) {  
-	        return "success"; 
-	    } else {
-	        return "fail"; 
-	    }
-	}
-  
-	//캘린더 메인 - 일정 전체조회
-	/*
-	    @ResponseBody
-	    @RequestMapping("/schList.do")
-	    public Map<String, List<ScheduleDto>> selectScheduleList(@RequestParam("schCalSubCodes") List<String> schCalSubCodes) {
-		   Map<String, List<ScheduleDto>> result = new HashMap<>();
+		    // 일정 등록
+		    int result = calendarService.insertSch(schedule);
 
-	        for (String schCalSubCode : schCalSubCodes) {
-	            List<ScheduleDto> events = calendarService.selectSchList(schCalSubCode);
-	            result.put(schCalSubCode, events);
-	            for (ScheduleDto event : events) {
-	            	//색조회
-	            	log.debug("Event Title: {}, Color: {}", event.getSchTitle(), event.getCalColor());
-	            }
-	        }
+		    if (result > 0) {
+			    // 일정 공유
+		        for (String shareId : shareIds) {
+		        	log.debug(shareId);
+		        	calendarService.insertSharedSch(shareId, userId);
+		        }
 
-	        return result;
-	    }
-	    */
+		        return "success"; 
+		    } else {
+		        return "fail";
+		    }
+		}
+
 	//캘린더 메인 - 일정 전체 조회
 	@ResponseBody
     @RequestMapping("/schList.do")
@@ -115,8 +95,10 @@ public class CalendarController {
 	   @PostMapping(value="/updateSch.do", produces="application/json")
 	   public String updateSch(@RequestBody ScheduleDto schedule, HttpSession session) {
 		   String userId = ((MemberDto)session.getAttribute("loginUser")).getUserId();
-		   schedule.setModId(userId);
-	       int resultSch = calendarService.updateSch(schedule);
+		   Map<String, Object> sch = new HashMap<>();
+			sch.put("userId", userId);
+			sch.put("schedule", schedule);
+	       int resultSch = calendarService.updateSch(sch);
 	       
 			/*
 			 * Map<String, Object> map = new HashMap<>(); map.put("calNo",
