@@ -63,6 +63,10 @@ input[type="checkbox"] {
 	top: 0;
 	left: 0;
 }
+.fc-daygrid-day-frame {
+   position: relative;
+   min-height: 100px !important; /* 테이블의 최소 높이 설정 */
+}
 </style>
 </head>
 <body>
@@ -109,7 +113,7 @@ input[type="checkbox"] {
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 themeSystem: 'bootstrap',
                 dayMaxEvents: true,
@@ -132,7 +136,7 @@ input[type="checkbox"] {
                                         end: bk.bkStartDate + 'T' + bk.bkEndTime,
                                         backgroundColor: '',
                                         borderColor: '',
-                                        allDay: false
+                                        /* allDay: false */
                                     };
                                     if (bk.assetsName == "A") {
                                         event.title = '회의실A';
