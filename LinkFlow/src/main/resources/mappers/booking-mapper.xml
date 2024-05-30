@@ -361,7 +361,7 @@
 		  ,sub_name
 		  ,NVL(to_char(bk_start_dt,'YYYY/MM/DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_end_dt,'YYYY/MM/DD'), ' ') AS bk_end_date
-		  ,to_char(b.mod_date,'YYYY/MM/DD') AS enr_date
+		  ,to_char(b.mod_date,'YYYY/MM/DD hh24:mi:ss') AS enr_date
 	 from tb_booking b
 	 join tb_member m on (m.user_id = b.booking_id)
      join tb_dept d on (m.dept_code = d.dept_code)
@@ -372,7 +372,7 @@
 	  and a.sub_code = c.sub_code
 	  and b.del_yn = 'N'
 	  and a.del_yn = 'N'
-	order by b.mod_date desc
+	order by b.mod_date asc
 </select>
 
 <select id="selectSupStatusCount" resultType="_int">
