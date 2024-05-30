@@ -298,7 +298,7 @@
 	                    <div class="contentInElement">
 	                        <div class="btnArea">
                             <button type="submit" id="draftingBtn" class="btn btn-primary btn-sm">기안하기</button>
-                            <button class="btn btn-secondary btn-sm">임시저장</button>  
+                            <!-- <button class="btn btn-secondary btn-sm">임시저장</button> -->  
                           </div>
 
                           <!-- 기본 설정-->
