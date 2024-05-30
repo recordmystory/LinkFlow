@@ -20,8 +20,8 @@ public class CalenderDao {
 
 	
 	 //캘린더 메인 - 일정 등록 
-	 public int insertSch(ScheduleDto schedule) { return
-	 sqlSessionTemplate.insert("calendarMapper.insertSch", schedule); }
+	 public int insertSch(ScheduleDto schedule) { 
+		 return sqlSessionTemplate.insert("calendarMapper.insertSch", schedule); }
 	 
 	
 	//캘린더 메인 - 일정 전체조회
@@ -34,11 +34,7 @@ public class CalenderDao {
 		return sqlSessionTemplate.selectOne("calendarMapper.detailSch", schNo);
 	}
 
-	//캘린더 메인 - 일정 수정
-	public int updateSch(Map<String, Object> sch) {
-	    return sqlSessionTemplate.update("calendarMapper.updateSch", sch);
-
-	}
+	
 	//캘린더 메인 - 일정 삭제(상태변경)
 	public int deleteSch(String schNo) {
 		return sqlSessionTemplate.update("calendarMapper.deleteSch", schNo);
@@ -60,27 +56,50 @@ public class CalenderDao {
 		return sqlSessionTemplate.delete("calendarMapper.wasteSchCompletely");
 	}   
 	
-	//휴지통 -일정완전삭제
-	public int wasteSchRemoval(String schNo) {
-		return sqlSessionTemplate.delete("calendarMapper.deleteSchWaste", schNo);
-	}
+
 
 	//제이트리 조직도 멤버 조회
 	public List<DeptDto> selecteMemberList() {
 		return sqlSessionTemplate.selectList("calendarMapper.selecteMemberList");
 	}
 
-	public int insertSharedSch(Map<String, String> shaSchDto) {
-		return sqlSessionTemplate.insert("calendarMapper.insertSharedSch", shaSchDto);
+	//공유일정 삭제(상태변경)
+	public int deleteShareSch(String schNo) {
+		return sqlSessionTemplate.delete("calendarMapper.deleteShareSch", schNo);
 	}
 
+	//공유일정 등록
 	public int insertSharedSch(String shareId, String userId) {
-		  Map<String, Object> map = new HashMap<>();
-		  map.put("shareId", shareId);
-		  map.put("userId", userId);
-		return sqlSessionTemplate.insert("calendarMapper.insertSharedSch", map);
+		 Map<String, Object> sch = new HashMap<>();
+			sch.put("userId", userId);
+			sch.put("shareId", shareId);
+		return sqlSessionTemplate.insert("calendarMapper.insertSharedSch", sch);
 	}
 
+	//공유일정 복구
+	public int wasteShareRestore(String schNo) {
+		return sqlSessionTemplate.update("calendarMapper.wasteShareRestore", schNo);
+	}
+
+	//공유일정 삭제
+	public int wasteShareRemoval(String schNo) {
+        return sqlSessionTemplate.delete("calendarMapper.wasteShareRemoval", schNo);
+    }
+	
+	// 휴지통 -일정완전삭제
+    public int deleteSchWaste(String schNo) {
+        return sqlSessionTemplate.delete("calendarMapper.deleteSchWaste", schNo);
+    }
+
+    //캘린더 메인 - 수정
+	public int updateSch(Map<String, String> data) {
+		return sqlSessionTemplate.update("calendarMapper.updateSch", data);
+	}
+
+	 //공유일정 수정
+	public int updateSharedSch(Map<String, String> data) {
+		return sqlSessionTemplate.update("calendarMapper.updateSharedSch", data);
+	}
 
 	
 }

@@ -51,7 +51,6 @@
     .schDetailModal_content, .modal-content{
       display: flex;
       text-align: center;
-      margin: 0px 0px 20px 10px;
     }
 
     .modal-title{
@@ -86,14 +85,11 @@
 
     .dataTables_info{
       font-size: small;
-      justify-content: center;
-      text-align: center;
 
     }
     
     .pagination{
       margin-top: 10px;
-      justify-content: center;
       text-align: center;
       display: flex;
     }
@@ -466,6 +462,8 @@
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
                        <input type="hidden" name="calNo" id="calNo">                       
+		                	 <input type="hidden" name="shareIds" id="shareIds">
+		                
 		                </form>
 		            </div>
 		            <div class="modal-footer justify-content-center">                              
@@ -480,7 +478,7 @@
     
     <!--공유 일정 모달 start-->
     <div class="modal fade" id="schShareModal">
-      <div class="modal-dialog modal-xl">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content" style="min-width: 1400px;">
           <div class="modal-header">
             <h4 class="modal-title">일정 공유</h4>
@@ -492,7 +490,6 @@
             <div class="row" style="min-width: 1400px;">
               <div class="card-body">
 
-                  <form action="xxxxxxx" method="post">
                    <div class="searchUser">
 
                      <div class="col-md-3" style="margin-top: 15px;">
@@ -500,14 +497,11 @@
                          <div class="input-group" style="width: 800px;">
                              <input type="search" class="form-control" id="searchInput" placeholder="사원명이나 조직명으로 검색하세요" value="" name="useName">
                              <div class="input-group-append">
-                                 <button type="submit" class="btn  btn-primary">
-                                     <i class="fa fa-search"></i>
-                                 </button>
+                       
                              </div>
                          </div>
                        </div>
                      </div>
-                   </form>
 
                    </div><!--searchUser 끝-->
 
@@ -950,7 +944,7 @@
                              schImport: $('input[name="schImport"]').is(':checked') ? 'Y' : 'N',
                              schCalSubCode: schCalSubCode,
                              address: $('input[name="address"]').val(),
-                             notifyYn: $('input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
+                             //notifyYn: $('input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
                              schContent: $('textarea[name="schContent"]').val()
                          }
                      };

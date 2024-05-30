@@ -332,10 +332,11 @@
 		    
 		    //공유일정 수정하기 버튼 막기
 		     var userId = '${loginUser.userId}';
-		     var modId = $('#modId').text(extendedProps.modId);		  
+		     var modId = $('#modId').text(extendedProps.modId).text();		  
 		     console.log(modId);
-		     if (userId != modId ) {
-			        $('.schDetailModal_blueBtn').hide();
+
+		     if (userId != modId) {
+			     $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').hide();
 			    }  
 		    
 		    $('#schDetailModal').modal('show');
@@ -393,6 +394,8 @@
                 address: $('#schUpdateModal input[name="address"]').val(),
                 notifyYn: $('#schUpdateModal input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
                 schContent: $('#schUpdateModal textarea[name="schContent"]').val()
+                shareIds: $('#schUpdateModal input[name="shareIds"]').val();
+
             };
             
             if (data.schTitle === '') {
@@ -475,12 +478,15 @@
 		      function CheckboxReSelect(){
 		     	  var events = calendar.getEvents(); 
 		     	  var changeCheckboxVal = $(".calCheckbox").val();
-		        events.forEach(function(event) {
-		       	 event.extendedProps.schCalSubCode && event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
-
-
-		       });
+           if($(this).is(":checked")) {
+               //calendar.refetchEvents();
+           	addEventAndShow($(this).val());
+           }else{
+		     	  events.forEach(function(event) {
+		       		event.extendedProps.schCalSubCode && event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
+		     	 })
 		     }
+			  }
     // 일정 삭제 *******************************
     	//삭제모달 html text
         $('.schDetailModal_grayBtn').click(function() {

@@ -10,7 +10,7 @@ import com.mm.linkflow.dto.ShaSchDto;
 
 public interface CalendarService {
 	//캘린더 메인 - 일정 등록
-	int insertSch(ScheduleDto schedule);
+	int insertSch(ScheduleDto schedule, String userId, List<String> shareIds);
 	
 	//캘린더 메인 - 일정 전체조회
 	List<ScheduleDto> selectSchList(Map<String, Object> sch);
@@ -18,8 +18,6 @@ public interface CalendarService {
 	//휴지통 - 일정 상세
 	ScheduleDto detailSch(String schNo);
 	
-	//캘린더 메인 - 일정 수정
-	int updateSch(Map<String, Object> sch);
 	/*
 	 * //수정 - 캘린더 CAL_SUB_CODE int updateSchCalSubCode(Map<String, Object> map);
 	 */
@@ -40,9 +38,8 @@ public interface CalendarService {
 
     //제이트리 조직도 멤버조회
 	List<DeptDto> selecteMemberList();
-
-	//공유일정
-	int insertSharedSch(String shareId, String userId);
+	//공유 일정수정, 캘린더수정
+	int updateSch(Map<String, String> data, String[] shareIds);
 
 
 }

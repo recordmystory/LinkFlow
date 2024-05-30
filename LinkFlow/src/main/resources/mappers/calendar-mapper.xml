@@ -177,20 +177,34 @@
 	    WHERE SCH_NO = #{schNo}
 	</update>
 	
+	<!-- 공유일정수정 -->
+	<update id="updateSharedSch">
+	    UPDATE TB_SHA_SCH
+	    SET 
+	      SHARE_ID = #{shareId},
+	      SCH_NO = #{schNo},
+	      REG_DATE = SYSDATE,
+				MOD_DATE = SYSDATE,
+				REG_ID = #{userId},
+				MOD_ID = #{userId},
+				DEL_YN = "N"
+	    WHERE SCH_NO = #{schNo}
+	</update>
+	
 	<!-- 캘린더 메인 일정 삭제(상태 변경) -->
 	<update id="deleteSch">
 	 UPDATE TB_SCHEDULE
 	 SET DEL_YN = 'Y'
 	 WHERE SCH_NO = ${schNo}
 	</update>
+	
+	<!-- 공유 일정 삭제(상태 변경) -->
+	<update id="deleteShareSch">
+	 UPDATE TB_SHA_SCH
+	 SET DEL_YN = 'Y'
+	 WHERE SCH_NO = ${schNo}
+	</update>
 
-	<!--  캘린더 CAL_SUB_CODE 수정 
-    <update id="updateCalendarSubCode">
-        UPDATE TB_CALENDAR
-        SET CAL_SUB_CODE = #{schCalSubCode}
-        WHERE CAL_NO = #{calNo}
-    </update> -->
-    
  <!-- 휴지통 쿼리************************************* -->  
    <!-- 휴지통 리스트 조회 -->
    <select id="selectSchWasteList" resultMap="scheduleResult">
@@ -232,6 +246,14 @@
 	 AND DEL_YN = 'Y'
 	</delete>
 	
+	 <!-- 공유일정 일정삭제 -->
+	<delete id="wasteShareRemoval">
+	 DELETE 
+	 		FROM TB_SHA_SCH
+	 WHERE SCH_NO = ${schNo}
+	 AND DEL_YN = 'Y'
+	</delete>
+	
 	 <!-- 30일 뒤 휴지통 일정삭제(스케줄러) -->
 	<delete id="wasteSchCompletely">
     <![CDATA[ 
@@ -245,6 +267,13 @@
 	<!-- 휴지통 일정 복구(상태 변경) -->
 	<update id="wasteSchRestore">
 	 UPDATE TB_SCHEDULE
+	 SET DEL_YN = 'N'
+	 WHERE SCH_NO = ${schNo}
+	</update>
+	
+	<!-- 공유일정 복구(상태 변경) -->
+	<update id="wasteShareRestore">
+	 UPDATE TB_SHA_SCH
 	 SET DEL_YN = 'N'
 	 WHERE SCH_NO = ${schNo}
 	</update>
