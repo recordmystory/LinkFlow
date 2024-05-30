@@ -182,7 +182,7 @@
                         <div class="modal-content" style="min-width: 870px;">
                             <div class="modal-header">
                                 <h4 class="modal-title">게시판 권한설정</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetModal()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -202,7 +202,7 @@
                                                 <div class="col-md-3" style="margin-top: 15px;">
                                                     <div class="form-group">
                                                         <div class="input-group" style="width:300px">
-                                                            <input type="search" class="form-control" placeholder="사원명을 입력하세요" value="" name="useName">
+                                                            <input type="search" id="searchInput"  class="form-control" placeholder="사원명을 입력하세요" value="" name="useName">
                                                             <div class="input-group-append">
                                                                 <button type="submit" class="btn btn-primary">
                                                                     <i class="fa fa-search"></i>
@@ -272,7 +272,7 @@
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button type="button" class="btn btn-primary" id="saveData" data-dismiss="modal" onclick="executeScript()">확인</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModal()">취소</button>
                             </div>
                         </div>
                     </div>
@@ -312,18 +312,25 @@
 		        parentElement.remove();
 		    }
 			}
+	   
+	   function resetModal() {
+           $('.resultNameArea').empty();
+           $('#kt_docs_jstree_basic').jstree("close_all");
+       }
+	   
 	   function executeScript() {
 			  const tableBody = document.querySelector('#createTable tbody');
-			   
-		    while (tableBody.rows.length > initialRowCount) {
-		     tableBody.deleteRow(initialRowCount);
-			  }
-		    
 		    const nameAreas = document.querySelectorAll('.resultNameArea .NameArea');
 				
 		    if(nameAreas.length === 0) {
+		    	resetModal();
 		    	return;
 		    }else{
+		    	
+		    	while (tableBody.rows.length > initialRowCount) {
+				     tableBody.deleteRow(initialRowCount);
+					  }
+		    	
 		    	for (var i = 0; i < nameAreas.length; i++) {
 				    const hiddenInputs = nameAreas[i].querySelectorAll('input[type="hidden"]');
 			    	const newRow = document.createElement('tr');
@@ -342,6 +349,7 @@
 			    			
 			        
 			    		document.querySelector('#createTable tbody').appendChild(newRow);
+			    		resetModal();
 			    }
 		    }
 		}
@@ -367,7 +375,11 @@
 		                 "icon" : "fa-solid fa-person"
 		             }
 		         },
-		         "plugins": ["types"]
+		         "plugins": ["types", "search"],
+		         "search" : {
+		         	"show_only_matches" : true,
+		         	"show_only_matches_children" : true,
+		         }
 		     }).on('select_node.jstree', function (e, data) {
 		         var node = data.node;
 		         
@@ -390,6 +402,14 @@
 		         }
 		     });
 		 })
+		 var to = false;
+	   $('#searchInput').keyup(function () {
+	       if(to) { clearTimeout(to); }
+	       to = setTimeout(function () {
+	           var v = $('#searchInput').val();
+	           $('#kt_docs_jstree_basic').jstree(true).search(v);
+	       }, 250);
+	   });
    </script>
   </div>
  </div>

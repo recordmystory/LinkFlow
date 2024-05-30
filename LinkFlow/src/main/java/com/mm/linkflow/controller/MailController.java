@@ -28,11 +28,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mm.linkflow.dto.AttachDto;
 import com.mm.linkflow.dto.BoardDto;
+import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
 import com.mm.linkflow.dto.ReceiveMailDto;
 import com.mm.linkflow.dto.SendMailDto;
 import com.mm.linkflow.service.service.AttachService;
+import com.mm.linkflow.service.service.HrService;
 import com.mm.linkflow.service.service.MailService;
 import com.mm.linkflow.service.service.MemberService;
 import com.mm.linkflow.util.FileUtil;
@@ -52,6 +54,7 @@ public class MailController {
 	private final MailService mailService;
 	private final AttachService attachService;
 	private final MemberService memberService;
+	private final HrService hService;
 	private final PagingUtil pagingUtil;
 	private final FileUtil fileUtil;
 	
@@ -126,7 +129,9 @@ public class MailController {
 	public ModelAndView registForm(HttpSession session, ModelAndView mv) {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		List<DeptDto> apprList = hService.selectApprLine();
 		mv.addObject("countMap", countMap)
+		  .addObject("apprList", apprList)
 		  .setViewName("mail/registForm");
 		return mv;
 	}
@@ -178,8 +183,8 @@ public class MailController {
 			result2 = mailService.insertReceiveMail(receivceEmailId);			
 		}
 
-		if((attachList.isEmpty() && result1 * result2 == receivceEmailId.length) || 
-		  (!attachList.isEmpty() && result1 == attachList.size() && result2 == receivceEmailId.length)) {
+		if((attachList.isEmpty() && result1 * result2 > 0) || 
+		  (!attachList.isEmpty() && result1 == attachList.size() && result2 > 0)) {
 			redirectAttributes.addFlashAttribute("alertMsg", "메일 전송에 성공하였습니다.");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", " 메일 전송에 실패하였습니다.");
@@ -250,7 +255,9 @@ public class MailController {
 	public String tempSaveDetail(int no, Model model, HttpSession session) { // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 곧바로 호출)
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		Map<String, Integer> countMap = selectSidebarCount(loginUser);
+		List<DeptDto> apprList = hService.selectApprLine();
 		model.addAttribute("countMap", countMap);
+		model.addAttribute("apprList", apprList);
 		model.addAttribute("mail", mailService.selectMail(no));
 		return "mail/tempSaveRegist";
 	}
@@ -523,12 +530,12 @@ public class MailController {
             mailHelper.setTo(to);
             mailHelper.setSubject(subject);
             mailHelper.setText(content, true);
-            
-            if(!ObjectUtils.isEmpty(uploadFiles)) {
-            	for (MultipartFile file : uploadFiles) {
-            		mailHelper.addAttachment(file.getOriginalFilename(), file);
-            	}
-            }
+
+        	for (MultipartFile file : uploadFiles) {
+        		if(!file.getOriginalFilename().isEmpty()) {
+        			mailHelper.addAttachment(file.getOriginalFilename(), file);
+        		}
+        	}
             
             mailSender.send(mail);
             
