@@ -66,7 +66,7 @@
                                 	</div>
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                	<form action="${contextPath}/project/search.dis" method="get" id="searchForm">
+                                	<form action="${contextPath}/project/search.dis" method="post" id="searchForm">
                                 		<input name="page" type="hidden" value="1">
 		                                <div style="margin-bottom: 10px;">
 		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">

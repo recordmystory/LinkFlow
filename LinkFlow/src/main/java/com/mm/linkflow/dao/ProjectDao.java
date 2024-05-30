@@ -173,4 +173,34 @@ public class ProjectDao {
 	public List<DispatchDto> dailyProjectList(String userId){
 		return sql.selectList("projectMapper.dailyProjectList", userId);
 	}
+	
+	// 일일작업 조회
+	public DailyDto detailDaily(int daiNo) {
+		return sql.selectOne("projectMapper.detailDaily", daiNo);
+	}
+	
+	// 일일작업 수정
+	public void modifyDaily(DailyDto dai) {
+		sql.update("projectMapper.modifyDaily", dai);
+	}
+	
+	// 일일작업 삭제
+	public void deleteDaily(int daiNo) {
+		sql.update("projectMapper.deleteDaily", daiNo);
+	}
+	
+	// 일일작업 검색 조회
+	public List<DailyDto> searchDaily(Map<String, String> search, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.searchDaily", search, rowBounds);
+	}
+	
+	// 일일작업 검색 카운트
+	public int searchDailyCount(Map<String, String> search) {
+		return sql.selectOne("projectMapper.searchDailyCount", search);
+	}
 }

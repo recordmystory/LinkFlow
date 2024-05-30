@@ -85,4 +85,19 @@ public interface ProjectService {
 	
 	// 본인 프로젝트 조회(일일작업 용)
 	List<DispatchDto> dailyProjectList(String userId);
+	
+	// 일일작업 조회
+	DailyDto detailDaily(int daiNo);
+	
+	// 일일작업 수정
+	void modifyDaily(DailyDto dai);
+	
+	// 일일작업 삭제
+	void deleteDaily(int daiNo);
+	
+	// 일일작업 검색 조회
+	List<DailyDto> searchDaily(Map<String, String> search, PageInfoDto pi);
+	
+	// 일일작업 검색 카운트
+	int searchDailyCount(Map<String, String> search);
 }

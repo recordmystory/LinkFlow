@@ -360,7 +360,7 @@
 		  JOIN TB_MEMBER M USING (USER_ID)
           JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
 		 WHERE DIS_YN = 'N'
-		 <if test="startDate != null and startDate != ''">
+		<if test="startDate != null and startDate != ''">
            AND D.START_DATE <![CDATA[>=]]> #{startDate}
     	</if>
     	<if test="endDate != null and endDate != ''">
@@ -393,6 +393,8 @@
           JOIN TB_DEPT DE ON (M.DEPT_CODE = DE.DEPT_CODE)
 		 WHERE DIS_YN = 'N'
 		   AND USER_ID = #{userId}
+		 ORDER
+		    BY D.PRO_NO DESC
 	</select>
 	
 	<!-- 본인 프로젝트 개수 조회 -->
@@ -428,6 +430,8 @@
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
 		 WHERE D.DEL_YN = 'N'
 		   AND D.REG_ID = #{userId}
+		 ORDER
+		    BY DAI_NO DESC
 	</select>
 	
 	<!-- 일일작업 카운트 조회 -->
@@ -474,17 +478,83 @@
 	<select id="detailDaily" resultMap="daiResult">
 		SELECT
 		 	   DAI_NO
-		 	 , PRO_NO
+		 	 , D.PRO_NO
 		 	 , USER_NAME
 		 	 , PRO_TITLE
-		 	 , REG_DATE
+		 	 , D.REG_DATE
 		 	 , DAI_CONTENT
 		 	 , DAI_ANS
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (M.USER_ID = D.REG_ID)
-		 WHERE USER_ID = REG_ID
+		 WHERE M.USER_ID = D.REG_ID
 		   AND DAI_NO = #{daiNo}
 		   AND D.DEL_YN = 'N'
 	</select>
+	
+	<!-- 일일작업 수정 -->
+	<update id="modifyDaily">
+		UPDATE
+		       TB_DAILY
+		   SET DAI_CONTENT = #{daiContent}
+		     , MOD_ID = #{modId}
+		     , MOD_DATE = SYSDATE
+		 WHERE DAI_NO = #{daiNo}
+	</update>
+	
+	<!-- 일일작업 삭제 -->
+	<update id="deleteDaily">
+		UPDATE
+		  	   TB_DAILY
+		   SET DEL_YN = 'Y'
+		 WHERE DAI_NO = #{daiNo}
+	</update>
+	
+	<!-- 일일작업 검색 조회 -->
+	<select id="searchDaily" resultMap="daiResult">
+		SELECT
+		       DAI_NO
+		     , D.PRO_NO
+		     , DAI_CONTENT
+		     , DAI_ANS
+		     , D.REG_DATE
+		  	 , PRO_TITLE
+		  	 , USER_NAME
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
+		 WHERE D.DEL_YN = 'N'
+		   AND D.REG_ID = #{userId}
+		<if test="startDate != null and startDate != ''">
+           AND D.REG_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND D.REG_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="keyword != null and category != ''">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+		 ORDER
+		    BY DAI_NO DESC
+	</select>
+	
+	<!-- 일일작업 검색 카운트 -->
+	<select id="searchDailyCount" resultType="_int">
+		SELECT
+		 	   COUNT(*)
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P USING (PRO_NO)
+		 WHERE D.DEL_YN = 'N'
+		   AND D.REG_ID = #{userId} 
+		<if test="startDate != null and startDate != ''">
+           AND D.REG_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND D.REG_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="keyword != null and category != ''">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+	</select>
+	
 </mapper>
