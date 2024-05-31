@@ -9,7 +9,9 @@
 <title>Insert title here</title>
 
 <style>
-
+.fc-event-title{
+	color:black;
+}
 /* 체크박스 */
 input[type="checkbox"] {
 	-webkit-appearance: none;

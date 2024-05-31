@@ -574,7 +574,7 @@
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
 	 from tb_booking b
 	 join tb_assets a on (a.assets_no = b.assets_no)
-	where b.status = 'COM'
+	where b.status in ('COM','END')
 	  and b.del_yn = 'N'
 	  <choose>
 	  <when test='A == null and A == ""'>

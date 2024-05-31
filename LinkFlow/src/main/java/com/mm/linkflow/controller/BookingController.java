@@ -241,14 +241,22 @@ public class BookingController {
 		}
 		
 	}
+	
 	@PostMapping("/ass.mod") // 자산 수정 
 	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
 		String mainCode = assets.get("updateMainCode");
+		String subName;
+		if(mainCode.equals("002-")) {
+			subName = assets.get("roomSubName");
+		}else {
+			subName = assets.get("subName");
+		}
+			
 		AssetsDto ass = AssetsDto.builder()
 								   .assetsNo(assets.get("assetsNo"))
-								   .mainCode(assets.get("updateMainCode"))
+								   .mainCode(mainCode)
 								   .assetsName(assets.get("assetsName"))
-								   .subName(assets.get("subName"))
+								   .subName(subName)
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		Map<String, Object> mp = new HashMap<>();
@@ -258,7 +266,7 @@ public class BookingController {
 		int result = bkServiceImpl.modAssets(mp);
 		
 		if(result >0) {
-			return "redirect:/booking/ass.list";
+			return "redirect:/booking/ass.list?amod=true";
 		}else {
 			return "redirect:/booking/ass.list";
 		}
@@ -267,7 +275,13 @@ public class BookingController {
 	@ResponseBody // 자산 삭제
 	@GetMapping(value="/ass.del", produces="application/json; charset=utf-8")
 	public int deleteAssets(@RequestParam(value="assetsNo")String assetsNo) {
-		return bkServiceImpl.delAssets(assetsNo);
+		int result = bkServiceImpl.delAssets(assetsNo);
+		/*
+		 * if(result >0) { return "redirect:/booking/ass.list?adel=true"; }else { return
+		 * "redirect:/booking/ass.list"; }
+		 */
+		
+		return result;
 	}
 	
 	@GetMapping("/sup.mng") //비품관리페이지  

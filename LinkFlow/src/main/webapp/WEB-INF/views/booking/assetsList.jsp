@@ -147,20 +147,7 @@
 .ass-drop select {
 	text-align: center;
 }
-/* 체크박스 
-input[type="checkbox"] {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	border: 2px solid #ccc;
-}
 
-input[type="checkbox"]:checked {
-	background-color: #007bff;
-}*/
 </style>
 
 </head>
@@ -325,17 +312,17 @@ input[type="checkbox"]:checked {
 	<script>
 			
 		$(document).ready(function () {
-	      
-	        // URL에서 success 파라미터를 확인하고 알림 표시
-            const urlParams = new URLSearchParams(window.location.search);
-            const ain = urlParams.get('ain');
-            /* const amod = urlParams.get('amod'); */
-            if (ain === 'true') {
-                Swal.fire('성공', '추가되었습니다.', 'success');
-            }/*  else if(amod === 'true'){
-            	Swal.fire('성공', '수정되었습니다.', 'success');
-            } */
-	    });
+		    // URL에서 success 파라미터를 확인하고 알림 표시
+		    const urlParams = new URLSearchParams(window.location.search);
+		    const ain = urlParams.get('ain');
+		    const amod = urlParams.get('amod');
+		    if (ain === 'true') {
+		        Swal.fire('성공', '추가되었습니다.', 'success');
+		    } 
+		    if (amod && amod === 'true'){ 
+		        Swal.fire('성공', '수정되었습니다.', 'success');
+		    } 
+		});
 		
 		function searchAssets(num) { // 검색
 		    let mainName = document.getElementById('mainName').value;
@@ -376,12 +363,14 @@ input[type="checkbox"]:checked {
 		                       + "<td>" + list[i].subName + "</td>"
 		                       + "<td>" + list[i].assetsName + "</td>"
 		                       + "<td>"
-		                       + "<a data-toggle=\"modal\" data-target=\"#ass-update\" id=\"assModify\" onclick=\"modalType("
-		                       + list[i].assetsNo +","+ list[i].mainName+","+ list[i].subName+","+ list[i].assetsName+ ")\">수정</a>"
+		                       + "<a data-toggle=\"modal\" data-target=\"#ass-update\" id=\"assModify\" onclick=\"modalType('"
+		                       + list[i].assetsNo +"','"+ list[i].mainName+"','"+ list[i].subName+"','"+ list[i].assetsName+ "')\">수정</a>"
 		                       + " | "
-		                       + "<a onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</a>"
+		                       +  "<a data-assNo=\"" + list[i].assetsNo + "\" onclick='assDel(\"" + list[i].assetsNo + "\");'>삭제</a>"
 		                       + "</td></tr>";
+		                       console.log(list[i].assetsNo);
 		            }
+		            
 		            
 		            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchAssets(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
@@ -428,7 +417,7 @@ input[type="checkbox"]:checked {
 		        document.getElementById('updateAss').action = "${contextPath}/booking/ass.mod";
 
 		    } else {
-		        // assName 요소의 값을 비우기
+		        // assName 비우기
 		        document.getElementById('assName').value = '';
 		        // modalTitle 초기화
 		        document.getElementById('modalTitle').innerText = "자산 추가";
@@ -470,9 +459,19 @@ input[type="checkbox"]:checked {
 	                        assetsNo: assNo
 	                    },
 	                    success: function(result) {
-	                        if (result > 0) {
-	                            Swal.fire('성공', '삭제되었습니다.', 'success');
-	                            window.location.replace('${contextPath}/booking/ass.list');
+	                       
+                        	if (result > 0) {
+                                Swal.fire({
+                                    title: '성공',
+                                    text: '삭제되었습니다.',
+                                    icon: 'success',
+                                    confirmButtonText: '확인'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+	                       			 window.location.replace('${contextPath}/booking/ass.list');
+                                    }
+                                });
+	                           
 	                        }
 	                    }
 	            	})
