@@ -1,5 +1,6 @@
 package com.mm.linkflow.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,8 +171,13 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<BookingDto> selectRoomBooking(Map<String,String> rooms) {
+	public List<BookingDto> selectRoomBooking(Map<String,Object> rooms) {
 		return bkDao.selectRoomBooking(rooms);
+	}
+
+	@Override
+	public int autoRoomBkEnd() {
+		return bkDao.autoRoomBkEnd();
 	}
 	
 	

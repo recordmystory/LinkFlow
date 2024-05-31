@@ -404,7 +404,6 @@ input[type="checkbox"]:checked {
 		        var room = document.getElementById('roomSub');
 		        var supplies = document.getElementById('supSub');
 
-		        console.log(room);
 		        if (main === "비품") {
 		            document.getElementById('ass-inRoom').selected = false;
 		            document.getElementById('ass-inSup').selected = true;

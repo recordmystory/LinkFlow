@@ -1,5 +1,6 @@
 package com.mm.linkflow.service.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,5 +62,7 @@ public interface BookingService {
     
     int updateRoomBooking(Map<String,String> bk); // 시설예약 승인,반려
     
-    List<BookingDto> selectRoomBooking(Map<String,String> rooms);
+    List<BookingDto> selectRoomBooking(Map<String,Object> rooms); // 시설예약 조회 및 필터링조회
+    
+    int autoRoomBkEnd(); // 시설예약 관련 스케줄러
 }

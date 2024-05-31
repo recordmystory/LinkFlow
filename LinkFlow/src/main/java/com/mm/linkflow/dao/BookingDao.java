@@ -1,5 +1,6 @@
 package com.mm.linkflow.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -169,8 +170,13 @@ public class BookingDao {
 		return sql.update("bkMapper.updateRoomBooking",bk);
 	}
 
-	public List<BookingDto> selectRoomBooking(Map<String,String> rooms) {
+	public List<BookingDto> selectRoomBooking(Map<String,Object> rooms) {
 		return sql.selectList("bkMapper.selectRoomBooking",rooms);
+	}
+
+	public int autoRoomBkEnd() {
+		
+		return sql.update("bkMapper.autoRoomBkEnd");
 	}
 
 }

@@ -56,7 +56,6 @@ public class BookingController {
 	@GetMapping("/sup.search") // 비품검색 
 	public ModelAndView selectSupSearch(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
 		
-		log.debug("search:{}",search);
 		int listCount = bkServiceImpl.searchBkCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		
@@ -93,7 +92,6 @@ public class BookingController {
 		mv.addObject("pi",pi)
 		  .addObject("bkList",bkList)
 		  .setViewName("booking/myBookingList");
-		log.debug("mvvvvvvvvvvvv : {} ",mv);
 		return mv;
 	}
 	
@@ -177,7 +175,6 @@ public class BookingController {
 	@PostMapping("/cancle.bk") // 예약 취소
 	public String cancleBooking(BookingDto bk, Model model) {
 		int result = bkServiceImpl.cancleBooking(bk);
-		log.debug("result:{}",result);
 		
 		if (result > 0) {
 //			model.addAttribute("message", "삭제가 완료되었습니다.");
@@ -228,7 +225,6 @@ public class BookingController {
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		
-		log.debug("assssssss:{} ",ass);
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
@@ -256,7 +252,6 @@ public class BookingController {
 		mp.put("userId", userId);
 		
 		int result = bkServiceImpl.modAssets(mp);
-		log.debug("result dssadass :{}",result);
 		
 		if(result >0) {
 			return "redirect:/booking/ass.list";
@@ -287,7 +282,6 @@ public class BookingController {
 		mp.put("pi",pi);
 		mp.put("bkWaitList",bkWaitList);
 		
-		log.debug("컨트롤러까지 옴 :{}", bkWaitList);
 		return mp;
 		
 	}
@@ -383,7 +377,6 @@ public class BookingController {
 		bk.put("userId", userId);
 		int result = bkServiceImpl.updateRoomBooking(bk);
 
-		log.debug("bkkkkkkk:{}", bk);
 		if(result <= 0) {
 			redirect.addFlashAttribute("alertMsg","잘못된 요청입니다.");
 		}
@@ -398,8 +391,7 @@ public class BookingController {
 	
 	@ResponseBody // 시설예약캘린더 조회 
 	@GetMapping(value="/room.list", produces="application/json; charset=utf-8")
-	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,String> rooms){
-		log.debug("왜 안되나~? :{}", rooms);
+	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,Object> rooms){
 		return bkServiceImpl.selectRoomBooking(rooms);
 	}
 	

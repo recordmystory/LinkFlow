@@ -365,11 +365,6 @@
 		    $("#month").change(function(){
 				$("#day").empty();
 				var tempDate = new Date($("#year").val(), $(this).val(), 0);
-				console.log($(this).val());
-			    console.log(tempDate.getMonth());
-			    console.log(now.getMonth());
-			    console.log(detailDay);
-			    
 				if(tempDate.getMonth() != now.getMonth()){
 					for(var i=1; i<=tempDate.getDate(); i++){
 				 		$("#day").append("<option value='"+(i < 10 ? '0'+i : i )+"'>"+(i < 10 ? '0'+i : i )+"</option>");
