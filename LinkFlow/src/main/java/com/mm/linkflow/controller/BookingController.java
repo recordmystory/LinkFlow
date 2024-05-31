@@ -38,6 +38,10 @@ public class BookingController {
 	private final BookingServiceImpl bkServiceImpl;
 	private final PagingUtil paging;
 
+	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
+	public String bkRoomPage() {
+		return "booking/bookingRoom";
+	}
 	
 	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
@@ -95,8 +99,8 @@ public class BookingController {
 		return mv;
 	}
 	
-	@ResponseBody
-	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8") // 나의 예약리스트 검색
+	@ResponseBody // 나의 예약리스트 검색
+	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8") 
 	public Map<String,Object> myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, HttpSession session) {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
@@ -384,11 +388,6 @@ public class BookingController {
 		return "redirect:/booking/room.mng";
 	}
 
-	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
-	public String bkRoomPage() {
-		return "booking/bookingRoom";
-	}
-	
 	@ResponseBody // 시설예약캘린더 조회 
 	@GetMapping(value="/room.list", produces="application/json; charset=utf-8")
 	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,Object> rooms){
