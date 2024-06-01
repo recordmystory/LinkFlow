@@ -22,7 +22,7 @@
 <!-- fullCalendar -->
 <link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/plugins/fullcalendar/main.css">
 <!-- Theme style -->
-<link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/dist/css/adminlte.min.css">
+<%-- <link rel="stylesheet" href="${contextPath }/resources/htmlTemplate/dist/css/adminlte.min.css"> --%>
 
 <style>
 .LinkFlowSidebar {

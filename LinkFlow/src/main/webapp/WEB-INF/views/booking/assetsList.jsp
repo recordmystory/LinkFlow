@@ -23,7 +23,10 @@
 	min-height: 400px;
 	padding: 30px;
 }
-
+.wrapper{
+ min-height: 100%;
+ width: 100%;
+}
 /* 게시판 */
 .card-title, .card-tools {
 	padding: 10px;
