@@ -370,7 +370,7 @@ public class ProjectController {
 		return mv;
 	}
 	
-	// 일일작업 피드백
+	// 일일작업 피드백 폼
 	@GetMapping("ansModifyForm.dai")
 	public ModelAndView ansModifyForm(int no, ModelAndView mv) {
 		DailyDto dai = proService.detailDaily(no);
@@ -427,5 +427,14 @@ public class ProjectController {
 	    return mv;
 		
 	}
+	
+	// 직원별 일일작업 피드백
+	@PostMapping("modifyLead.dai")
+	public String modifyDailyLead(DailyDto dai) {
+		proService.modifyDaily(dai);
+		
+		return "redirect:/project/detailLead.dai?no=" + dai.getDaiNo();
+	}
+	
 	
 }

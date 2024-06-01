@@ -49,7 +49,7 @@
                 <section class="content-header">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">일일작업 상세 조회</h1>
+                            <h1 class="m-0">직원별 일일작업 상세 조회</h1>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
