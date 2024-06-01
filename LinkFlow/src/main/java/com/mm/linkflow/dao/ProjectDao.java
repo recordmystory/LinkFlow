@@ -225,4 +225,18 @@ public class ProjectDao {
 	public int listDailyLeadCount()	{
 		return sql.selectOne("projectMapper.listDailyLeadCount");
 	}
+	
+	// 직원별 일일작업 검색 조회
+	public List<DailyDto> searchDailyLead(Map<String, String> search, PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		
+		RowBounds rowBounds= new RowBounds( offset, limit );
+		
+		return sql.selectList("projectMapper.searchDailyLead", search, rowBounds);
+	}
+	// 직원별 일일작업 검색 카운트
+	public int searchDailyLeadCount(Map<String, String> search){
+		return sql.selectOne("projectMapper.searchDailyLeadCount", search);
+	}
 }

@@ -391,4 +391,41 @@ public class ProjectController {
 		return mv;
 	}
 	
+	// 직원별 일일작업 삭제
+	@GetMapping("deleteLead.dai")
+	public String deleteDailyLead(int no, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String deptCode = loginUser.getDeptCode();
+		proService.deleteDaily(no);
+		
+		return "redirect:/project/listLead.dai?deptCode=" + deptCode;
+	}
+	
+	// 직원별 일일작업 검색
+	@PostMapping("/searchLead.dai")
+	public ModelAndView searchDailyLead(String startDate, String endDate, String category, String keyword
+			                    , @RequestParam(value="page", defaultValue="1")int currentPage
+			                    , ModelAndView mv, String deptCode) {
+		Map<String, String> search = new HashMap<>();
+		
+		search.put("startDate", startDate);
+		search.put("endDate", endDate);
+		search.put("category", category);
+		search.put("keyword", keyword);
+		search.put("deptCode", deptCode);
+		
+		int listCount = proService.searchDailyLeadCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<DailyDto> list = new ArrayList<>();
+		list = proService.searchDailyLead(search, pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("search", search)
+		  .setViewName("project/listDailyLead");
+	    
+	    return mv;
+		
+	}
+	
 }

@@ -170,18 +170,23 @@
         </div>
 	</div>
 	<c:if test="${ not empty search }">
-	<script>
-		$(document).ready(function () {
-			
-	        $("#searchForm select").val("${search.category}");
-			
-	        $("#pagingArea a").on("click", function(){
-     			$("#searchForm input[name=page]").val($(this).text());
-     			$("#searchForm").submit();
-     			return false;
-	   		});
-		});
-	</script>
+		<script>
+			$(document).ready(function () {
+		        $("#searchForm select").val("${search.category}");
+				
+		        $("#pagingArea a").on("click", function(){
+		        	if($(this).text() == "«"){
+		     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
+		        	}else if($(this).text() == "»"){
+		     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
+		        	}else{
+		     			$("#searchForm input[name=page]").val($(this).text());
+		        	}
+	     			$("#searchForm").submit();
+	     			return false;
+		   		});
+			});
+		</script>
 	</c:if>
 	<script>
 
