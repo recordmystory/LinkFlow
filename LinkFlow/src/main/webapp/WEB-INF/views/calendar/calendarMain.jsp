@@ -160,7 +160,6 @@
             views: {
                 timeGrid: {
                      dayMaxEventRows: 5 //5개만 보이고 나머지는 more보이게
-                
                 }
             },
             displayEventTime: false,
@@ -180,7 +179,7 @@
 	                '02': 2, // 부서일정
 	                '03': 3  // 개인일정
 	            };
-           	 return order[a.extendedProps.schCalSubCode] - order[b.extendedProps.schCalSubCode]; //02 - 03 -1 - 음수 a가 위 //03 - 01 02 + b가 위  
+           	 return order[a.extendedProps.schCalSubCode] - order[b.extendedProps.schCalSubCode]; 
        		 },                 
             
           	
@@ -220,13 +219,7 @@
             ]
         });
         calendar.render();
-        
-      /*   $(".calCheckbox").each(function(index, checkboxEl){
-        	if($(checkboxEl).is(":checked")){
-        		addEventAndShow($(checkboxEl).val());
-        	}
-        }) */
-       
+
     });
     //풀캘린더 
     
@@ -253,19 +246,15 @@
                                schImport: calendarEvents[i].schImport,
                                schCalSubCode: calendarEvents[i].schCalSubCode,
                                address: calendarEvents[i].address,
-                               notifyYn: calendarEvents[i].notifyYn,
                                schContent: calendarEvents[i].schContent,
                                schNo: calendarEvents[i].schNo,
                                calNo: calendarEvents[i].calNo,
 															 modId: calendarEvents[i].modId
                            }
                    };
-                   //events.push(eventData);//addEvent로도 가능
                    calendar.addEvent(eventData);
                }
-              
-              //successCallback(events);
-              //calendar.refetchEvents();
+
           },
           error: function() {
           }
@@ -355,7 +344,6 @@
 		        $('#schUpdateModal input[name="address"]').val(extendedProps.address);
 		        $('#schUpdateModal textarea[name="schContent"]').val(extendedProps.schContent);
 		        $('#schUpdateModal input[name="schImport"]').prop('checked', extendedProps.schImport === 'Y');
-		        $('#schUpdateModal input[name="notifyYn"]').prop('checked', extendedProps.notifyYn === 'Y');
 		        $('#schUpdateModal select[name="schCalSubCode"]').val(extendedProps.schCalSubCode).change();
 		        $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
 		        $('#schUpdateModal input[name="calNo"]').val(extendedProps.calNo);
@@ -382,10 +370,10 @@
 			  
      // 일정 수정하기 모달에서 저장 버튼 클릭 시  ***************
         $('#schUpdateButton').click(function() {
-	        	var shareIds = $('#shareIds').val().split(',');
-	        	if (shareIds === '') {
-	        	    shareIds = null; 
-	        	}
+        	var shareIds = $('#shareIds').val().split(',');
+            if (shareIds.length === 1 && shareIds[0] === '') {
+                shareIds = null;
+            }
 	        	
             var data = {
                 calNo: $('#schUpdateModal input[name="calNo"]').val(),
@@ -396,7 +384,6 @@
                 startDate: $('#schUpdateModal input[name="startDate"]').val(),
                 endDate: $('#schUpdateModal input[name="endDate"]').val(),
                 address: $('#schUpdateModal input[name="address"]').val(),
-                notifyYn: $('#schUpdateModal input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
                 schContent: $('#schUpdateModal textarea[name="schContent"]').val(),
                 shareIds: shareIds
             };
@@ -421,48 +408,13 @@
                         alert("일정 수정 성공.");
                         $('#schUpdateModal').modal('hide');
                         $('#schDetailModal').modal('hide');
+                        $('.NameArea').val('');
 
-                       /*   // 수정된 일정의 기존 이벤트를 찾아 업데이트
-                        var eventData = {
-				                    title: data.schTitle,
-				                    start: data.startDate,
-				                    end: data.endDate,
-				                    color: $('input[name="calColor"]').val(),
-				                    extendedProps: {
-				                        schTitle: data.schTitle,
-				                        schImport: data.schImport,
-				                        schCalSubCode: data.schCalSubCode,
-				                        address: data.address,
-				                        notifyYn: data.notifyYn,
-				                        schContent: data.schContent
-				                        
-				                    }
+                    } 
+                    addEventAndShow(data.schCalSubCode);
+                    CheckboxReSelect();
+                    $('#schShareModal .referenceArea').empty();
 
-                        };    */
-                        //calendar.addEvent(eventData);
-                        //calendar.addEvent(eventData);
-                        addEventAndShow(data.schCalSubCode);
-                        
-                        CheckboxReSelect();
-                       
-                       /*  // 수정된 일정의 기존 이벤트를 찾아 업데이트
-                        var event = calendar.getEventById(data.schNo);
-
-                        // 일정 속성 업데이트
-                        if (event) {
-                            event.setProp('title', data.schTitle);
-                            event.setStart(data.startDate);
-                            event.setEnd(data.endDate);
-                            event.setExtendedProp('schImport', data.schImport);
-                            event.setExtendedProp('schCalSubCode', data.schCalSubCode);
-                            event.setExtendedProp('address', data.address);
-                            event.setExtendedProp('notifyYn', data.notifyYn);
-                            event.setExtendedProp('schContent', data.schContent);
-                            event.setExtendedProp('calNo', data.calNo);
-                        }
-
-                        CheckboxReSelect(); */
-                    }
                 },
                 error: function() {
                     console.log("일정 수정 실패.");
@@ -551,12 +503,6 @@
 
 	    });
 		  
-	    $('#notifyInsertBtn').click(function() {
-	        var notify = $(this).is(':checked') ? 'Y' : 'N';
-	        $('input[name="notifyYn"]').val(notify);
-	    });
-	    
-    
       //삭제모달에서 취소버튼 클릭시
       $('#schDeleteCancelBtn').click(function() {
           $('#detailBtn').modal('hide');
@@ -568,22 +514,18 @@
        	
        		var changeCheckboxVal = $(this).val();
            if($(this).is(":checked")) {
-               //calendar.refetchEvents();
            	addEventAndShow($(this).val());
            }else { // 체크해제일 경우
            	
                var events = calendar.getEvents(); // 현재보여지는 모든 일정을 다 가져오고 
                
                events.forEach(function(event) {
-               	//console.log(event.extendedProps);
-               	//console.log(event.extendedProps.schCalSubCode);
+  
                	event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
                });
                
-               //calendar.refetchEvents();
            }
        });
-
 
   	});
    
