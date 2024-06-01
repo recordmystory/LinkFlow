@@ -38,8 +38,9 @@ public interface CalendarService {
 
     //제이트리 조직도 멤버조회
 	List<DeptDto> selecteMemberList();
+
 	//공유 일정수정, 캘린더수정
-	int updateSch(Map<String, String> data, String[] shareIds);
+	int updateSchedule(ScheduleDto data, String userId, List<String> shareIds);
 
 
 }

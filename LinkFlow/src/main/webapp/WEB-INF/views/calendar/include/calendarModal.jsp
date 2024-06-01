@@ -462,7 +462,7 @@
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
                        <input type="hidden" name="calNo" id="calNo">                       
-		                	 <input type="hidden" name="shareIds" id="shareIds">
+		                   <input type="hidden" name="shareIds" id="shareIds">
 		                
 		                </form>
 		            </div>

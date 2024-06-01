@@ -172,22 +172,8 @@
 		            SELECT CAL_NO
 		            FROM TB_CALENDAR
 		            WHERE CAL_SUB_CODE = #{schCalSubCode}
-		            AND REG_ID = #{userId}
+		            AND REG_ID = #{modId}
 		        )
-	    WHERE SCH_NO = #{schNo}
-	</update>
-	
-	<!-- 공유일정수정 -->
-	<update id="updateSharedSch">
-	    UPDATE TB_SHA_SCH
-	    SET 
-	      SHARE_ID = #{shareId},
-	      SCH_NO = #{schNo},
-	      REG_DATE = SYSDATE,
-				MOD_DATE = SYSDATE,
-				REG_ID = #{userId},
-				MOD_ID = #{userId},
-				DEL_YN = "N"
 	    WHERE SCH_NO = #{schNo}
 	</update>
 	
@@ -242,7 +228,7 @@
 	<delete id="deleteSchWaste">
 	 DELETE 
 	 		FROM TB_SCHEDULE
-	 WHERE SCH_NO = ${schNo}
+	 WHERE SCH_NO = #{schNo}
 	 AND DEL_YN = 'Y'
 	</delete>
 	
@@ -250,10 +236,56 @@
 	<delete id="wasteShareRemoval">
 	 DELETE 
 	 		FROM TB_SHA_SCH
-	 WHERE SCH_NO = ${schNo}
-	 AND DEL_YN = 'Y'
+	 WHERE SCH_NO = #{schNo}
+	 	 AND DEL_YN = 'Y'
 	</delete>
 	
+		<!-- 공유일정수정 -->
+	<update id="updateSharedSch">
+	    UPDATE TB_SHA_SCH
+	    SET 
+	      SHARE_ID = #{shareId},
+	      SCH_NO = #{schNo},
+	      REG_DATE = SYSDATE,
+				MOD_DATE = SYSDATE,
+				REG_ID = #{userId},
+				MOD_ID = #{userId},
+				DEL_YN = "N"
+	    WHERE SCH_NO = #{schNo}
+	</update>
+	
+	<!-- 중복된 공유 일정 조회 -->
+ <select id="checkSharedSch" resultMap="ShaSchResult">
+    SELECT COUNT(*)
+    FROM TB_SHA_SCH
+    WHERE SCH_NO = #{schNo} AND SHARE_ID = #{shareId} AND DEL_YN = 'N'
+ </select>
+ 
+<!-- 공유일정 등록(수정용) -->
+	<insert id="insertShared">
+	
+	 INSERT INTO TB_SHA_SCH
+    (
+        SHARE_ID,
+        SCH_NO,
+        REG_DATE,
+        MOD_DATE,
+        REG_ID,
+        MOD_ID,
+        DEL_YN
+    )
+    VALUES
+    (
+        #{shareId},
+        #{schNo},
+        SYSDATE,
+        SYSDATE,
+        #{userId},
+        #{userId},
+        'N'
+    )
+	</insert>
+
 	 <!-- 30일 뒤 휴지통 일정삭제(스케줄러) -->
 	<delete id="wasteSchCompletely">
     <![CDATA[ 
@@ -268,14 +300,14 @@
 	<update id="wasteSchRestore">
 	 UPDATE TB_SCHEDULE
 	 SET DEL_YN = 'N'
-	 WHERE SCH_NO = ${schNo}
+	 WHERE SCH_NO = #{schNo}
 	</update>
 	
 	<!-- 공유일정 복구(상태 변경) -->
 	<update id="wasteShareRestore">
 	 UPDATE TB_SHA_SCH
 	 SET DEL_YN = 'N'
-	 WHERE SCH_NO = ${schNo}
+	 WHERE SCH_NO = #{schNo}
 	</update>
 	
 	<!-- 캘린더 insert *************************************** -->

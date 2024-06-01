@@ -49,24 +49,6 @@ public class CalendarServiceImpl implements CalendarService {
 	public ScheduleDto detailSch(String schNo) {
 		return calendarDao.detailSch(schNo);
 	}
-
-	//캘린더 메인 - 일정 수정, 공유일정 수정
-	@Override 
-	public int updateSch(Map<String, String> data, String[] shareIds) { 
-		int result1 = calendarDao.updateSch(data);
-	    int result2 = 1;
-	    if (shareIds != null) {
-	    	result2 = 0;
-		    // 일정 수정
-	        for (String shareId : shareIds) {
-	        	//공유캘린더 dto에 set으로 shareId넣어서 해보기
-	        	ShaSchDto shaDto = new ShaSchDto();
-	        	shaDto.setShareId(shareId);
-	        	result2 += calendarDao.updateSharedSch(data);
-	        }
-	    }
-	    return result1 * result2; 
-	}
 	 
 	
 	//캘린더 메인 - 일정삭제(상태변경)
@@ -116,16 +98,19 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public int wasteSchRemoval(String schNo) {
         
-        // 부모 
-        int result2 = calendarDao.deleteSchWaste(schNo);
-        //자식        
+        
+        //자식 
         int result1 = calendarDao.wasteShareRemoval(schNo);
 
-        if(result1 <= 0) {
+        if(result1 > 0) {
+        	// 부모 
+            int result2 = calendarDao.deleteSchWaste(schNo);       
+        	return result1 * result2;
+        } else {
         	result1 = 1;
+            int result2 = calendarDao.deleteSchWaste(schNo);       
         	return result1 * result2;
         }
-    	return result1 * result2;
 	}
 		
 
@@ -135,16 +120,27 @@ public class CalendarServiceImpl implements CalendarService {
 		return calendarDao.selecteMemberList();	
 	}
 
+	//캘린더 메인 - 일정 수정, 공유일정 수정
+	@Override
+	public int updateSchedule(ScheduleDto data, String userId, List<String> shareIds) {
+		int result1 = calendarDao.updateSch(data);
+	    String schNo = data.getSchNo();
 
-
-
-
-	/*
-	 * @Override public int updateSchCalSubCode(Map<String, Object> map) { return
-	 * calendarDao.updateSchCalSubCode(map); }
-	 */
-	
-
-
-	
+	    int result2 = 0;
+	    if (shareIds != null && !shareIds.isEmpty()) {
+	        for (String shareId : shareIds) {
+	            int sharedSch = calendarDao.checkSharedSch(schNo, shareId);
+	            if (sharedSch > 0) { // 이미 공유 받은 경우 수정
+	                result2 += calendarDao.updateSharedSch(userId, shareId, schNo); // 공유 일정 수정
+	            } else {
+	                result2 += calendarDao.insertShared(userId, shareId, schNo); // 공유 일정 생성
+	            }
+	        }
+	    }
+    	return result1 * result2;
+    		
+	 }
 }
+
+	
+

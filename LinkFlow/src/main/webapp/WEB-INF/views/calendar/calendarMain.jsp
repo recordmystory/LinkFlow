@@ -382,7 +382,11 @@
 			  
      // 일정 수정하기 모달에서 저장 버튼 클릭 시  ***************
         $('#schUpdateButton').click(function() {
-        	 
+	        	var shareIds = $('#shareIds').val().split(',');
+	        	if (shareIds === '') {
+	        	    shareIds = null; 
+	        	}
+	        	
             var data = {
                 calNo: $('#schUpdateModal input[name="calNo"]').val(),
                 schNo: $('#schUpdateModal input[name="schNo"]').val(),
@@ -393,10 +397,10 @@
                 endDate: $('#schUpdateModal input[name="endDate"]').val(),
                 address: $('#schUpdateModal input[name="address"]').val(),
                 notifyYn: $('#schUpdateModal input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
-                schContent: $('#schUpdateModal textarea[name="schContent"]').val()
-                shareIds: $('#schUpdateModal input[name="shareIds"]').val();
-
+                schContent: $('#schUpdateModal textarea[name="schContent"]').val(),
+                shareIds: shareIds
             };
+           
             
             if (data.schTitle === '') {
                 alert("제목을 입력하세요");
@@ -406,14 +410,12 @@
 	              alert("종료일이 시작일보다 같거나 작을 수 없습니다.");
 	              return; 
 	          }
-
-
+            
             $.ajax({
                 type: "POST",
                 url: "${contextPath}/calendar/updateSch.do",
                 data: JSON.stringify(data),
                 contentType: "application/json",
-                dataType: "text",
                 success: function(resultSch) {
                     if (resultSch === "success") {
                         alert("일정 수정 성공.");

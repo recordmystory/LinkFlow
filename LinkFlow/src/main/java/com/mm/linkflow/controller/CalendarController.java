@@ -1,6 +1,7 @@
 package com.mm.linkflow.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,20 +79,24 @@ public class CalendarController {
 		return calendarService.selectSchList(sch);
 	}
 
-	// 캘린더 메인 - 일정 수정
+	// 캘린더 메인 - 일정 수정,공유일정 수정
 	@ResponseBody
-	@PostMapping(value = "/updateSch.do", produces = "application/json")
-	public String updateSchedule(@RequestBody Map<String, String> data) {
-		String shareIds = data.get("shareIds");
-		return shareIds;
+	@PostMapping("/updateSch.do")
+	public String updateSchedule(@RequestBody ScheduleDto data, HttpSession session) {
+	    List<String> shareIds = data.getShareIds();
+	    
+		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
+		data.setModId(userId);
+		
+        int result = calendarService.updateSchedule(data, userId, shareIds);
+       
+        if ((shareIds != null && shareIds.size() == result) || (shareIds == null && result > 0)) {
+            return "success"; 
+        } else {
+            return "fail";
+        }
+    }
 
-		/*
-		 * int result = calendarService.updateSch(data, shareIds);
-		 * 
-		 * if ((shareIds != null && shareIds.size() == result ) || (shareIds == null &&
-		 * result > 0)) { return "success"; } else { return "fail"; }
-		 */
-	}
 
 	// 캘린더 메인 - 삭제(상태변경) , 공유일정 삭제
 	@ResponseBody

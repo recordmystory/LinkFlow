@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mm.linkflow.dto.DeptDto;
 import com.mm.linkflow.dto.ScheduleDto;
@@ -92,14 +93,42 @@ public class CalenderDao {
     }
 
     //캘린더 메인 - 수정
-	public int updateSch(Map<String, String> data) {
+    public int updateSch(ScheduleDto data) {
 		return sqlSessionTemplate.update("calendarMapper.updateSch", data);
 	}
 
 	 //공유일정 수정
-	public int updateSharedSch(Map<String, String> data) {
-		return sqlSessionTemplate.update("calendarMapper.updateSharedSch", data);
+	public int updateSharedSch(String schNo, String userId, String shareId) {
+		 Map<String, Object> sch = new HashMap<>();
+			sch.put("schNo", schNo);
+			sch.put("userId", userId);
+			sch.put("shareId", shareId);
+			
+		return sqlSessionTemplate.update("calendarMapper.updateSharedSch", sch);
 	}
 
-	
+	//공유일정 유무 판단
+	public int checkSharedSch(String shareId, String schNo) {
+		 Map<String, Object> sch = new HashMap<>();
+			sch.put("schNo", schNo);
+			sch.put("shareId", shareId);
+       return sqlSessionTemplate.delete("calendarMapper.checkSharedSch", sch);
+
+	}
+//공유일정 재추가(수정용)
+	public int insertShared(String userId, String shareId, String schNo) {
+		Map<String, Object> sch = new HashMap<>();
+		sch.put("schNo", schNo);
+		sch.put("shareId", shareId);
+		sch.put("userId", userId);
+	 return sqlSessionTemplate.insert("calendarMapper.insertShared", sch); 
+	}
 }
+
+
+
+
+
+
+	
+
