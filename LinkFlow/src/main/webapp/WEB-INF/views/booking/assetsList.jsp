@@ -23,7 +23,10 @@
 	min-height: 400px;
 	padding: 30px;
 }
-
+.wrapper{
+ min-height: 100%;
+ width: 100%;
+}
 /* 게시판 */
 .card-title, .card-tools {
 	padding: 10px;
@@ -63,6 +66,7 @@
 	padding-left: 25px;
 	font-size: small;
 	padding-top: 15px;
+	
 }
 
 .md-select {
@@ -137,6 +141,7 @@
 .ass-drop {
 	padding-top: 15px;
 	padding-bottom: 15px;
+	padding-left:45px;
 }
 
 .ass-drop p {
@@ -146,6 +151,9 @@
 
 .ass-drop select {
 	text-align: center;
+}
+#modalTitle{
+	padding-bottom:5px;
 }
 
 </style>
@@ -251,18 +259,18 @@
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="assMain" style="width: 80px;" name="updateMainCode" onchange="changeMod();">
+                             <select id="assMain" style="width: 80px;" name="updateMainCode" onchange="changeMod();" class="form-control">
                                  <option id="ass-inRoom" value="002-">시설</option>
                                  <option id="ass-inSup" value="003-">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
-                             <select id="roomSub" name="roomSubName" style="width: 100px;">
+                             <select id="roomSub" name="roomSubName" style="width: 100px;" class="form-control">
                                  <option id="회의실" value="회의실">회의실</option>
                                  <!-- 비품일때 -->
                              </select>
-                             <select id="supSub" name="subName" style="width: 100px; display:none;">
+                             <select id="supSub" name="subName" style="width: 100px; display:none;" class="form-control">
                                  <option id="노트북" value="노트북">노트북</option>
                                  <option id="차량" value="차량">차량</option>
                                  <option id="키보드" value="키보드">키보드</option>
@@ -271,7 +279,7 @@
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>상품명 </p>&nbsp;&nbsp;
-                             <input id="assName" type="text" name="assetsName">
+                             <input id="assName" type="text" name="assetsName" class="form-control" style="width: 190px;">
                          </div>
  
                          <div class="modal-footer justify-content-between">

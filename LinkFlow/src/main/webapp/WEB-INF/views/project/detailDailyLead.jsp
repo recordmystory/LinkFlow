@@ -49,7 +49,7 @@
                 <section class="content-header">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">일일작업 상세 조회</h1>
+                            <h1 class="m-0">직원별 일일작업 상세 조회</h1>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -64,13 +64,13 @@
 	                   				<c:when test="${daily.daiAns == null}">
 	                   					<div class="btnArea">
 	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변하기</a>
-	                               			<a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
+	                               			<a href="${contextPath}/project/deleteLead.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
 	                         			</div>
 	                   				</c:when>
 	                   				<c:otherwise>
 	                   					<div class="btnArea">
 	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변수정</a>
-	                               			<a href="${contextPath}/project/delete.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
+	                               			<a href="${contextPath}/project/deleteLead.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
 	                         			</div>
 	                   				</c:otherwise>
 	                   			</c:choose>

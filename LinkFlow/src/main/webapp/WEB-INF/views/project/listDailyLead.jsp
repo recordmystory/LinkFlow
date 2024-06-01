@@ -63,8 +63,9 @@
                                 <div class="btnArea">
                                 </div>
                                 <div class="form-inline" style="display: flex; flex-direction: column;">
-                                    <form action="${contextPath}/project/searchDailyLead.dai" method="post" id="searchForm">
+                                    <form action="${contextPath}/project/searchLead.dai" method="post" id="searchForm">
                                 		<input name="page" type="hidden" value="1">
+                                		<input name="deptCode" type="hidden" value="${loginUser.deptCode}">
 		                                <div style="margin-bottom: 10px;">
 		                                    <input class="form-control form-control-sidebar" name="startDate" type="date" style="width: 150px;" value="${search.startDate}">&nbsp;&nbsp; ~ &nbsp;&nbsp;<input class="form-control form-control-sidebar" name="endDate" type="date" value="${search.endDate}">
 		                                </div>
@@ -144,14 +145,24 @@
             </div>
 		</div>
 	</div>
-	<script>
+	<c:if test="${ not empty search }">
+		<script>
 		$(document).ready(function () {
+	        $("#searchForm select").val("${search.category}");
+			
 	        $("#pagingArea a").on("click", function(){
-     			$("#searchForm input[name=page]").val($(this).text());
+	        	if($(this).text() == "«"){
+	     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
+	        	}else if($(this).text() == "»"){
+	     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
+	        	}else{
+	     			$("#searchForm input[name=page]").val($(this).text());
+	        	}
      			$("#searchForm").submit();
      			return false;
 	   		});
 		});
-	</script>
+		</script>
+	</c:if>
 </body>
 </html>

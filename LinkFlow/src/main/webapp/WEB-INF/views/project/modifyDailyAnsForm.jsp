@@ -59,7 +59,7 @@
                 <section class="content">
                     <div class="container-fluid" style="display: flex; justify-content: center;">
                         <div class="contentArea">
-                        	<form action="${contextPath}/project/modify.dai" method="post">
+                        	<form action="${contextPath}/project/modifyLead.dai" method="post">
                         		<input type="hidden" name="daiNo" value="${dai.daiNo}">
                         		<input type="hidden" name="modId" value="${loginUser.userId}">
 	                            <div class="contentInElement">
@@ -79,7 +79,7 @@
 	                                    <tr>
 	                                        <td colspan="4">
 	                                            <div style="transform: translateX(-550px);"><h5 style="font-weight: bold;">작업내용</h5></div>
-	                                            <textarea name="daiContent" style="width: 1100px; height: 800px; margin-top: 20px; overflow: auto; resize: none;">${dai.daiContent}</textarea>
+	                                            <textarea name="daiContent" style="width: 1100px; height: 800px; margin-top: 20px; overflow: auto; resize: none;" readonly>${dai.daiContent}</textarea>
 	                                        </td>
 	                                    </tr>
 	                                    <tr>
