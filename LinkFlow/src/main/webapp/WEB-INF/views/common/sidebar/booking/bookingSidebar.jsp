@@ -80,6 +80,7 @@
 	padding-left: 25px;
 	font-size: small;
 	padding-top: 15px;
+	margin-bottom:0px;
 }
 
 .md-select {
