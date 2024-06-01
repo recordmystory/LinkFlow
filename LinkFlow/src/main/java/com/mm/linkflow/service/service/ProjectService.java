@@ -115,4 +115,7 @@ public interface ProjectService {
 	
 	// 직원별 일일작업 검색 카운트
 	int searchDailyLeadCount(Map<String, String> search);
+	
+	// 직원별 일일작업 피드백
+	void modifyDailyLead(DailyDto dai);
 }

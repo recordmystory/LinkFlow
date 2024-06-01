@@ -62,7 +62,7 @@
                                 <div class="contentInElement">
                                     <div class="btnArea">
                                         <button type="submit" class="btn btn-primary btn-sm">등록하기</button>
-                                        <button type="button" class="btn btn-danger btn-sm">등록취소</button>
+                                        <a href="${contextPath}/project/list.pj" class="btn btn-danger btn-sm">등록취소</a>
                                     </div>
                                 </div>
                                 <div style="display: flex;">

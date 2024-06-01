@@ -196,4 +196,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public int searchDailyLeadCount(Map<String, String> search) {
 		return proDao.searchDailyLeadCount(search);
 	}
+
+	@Override
+	public void modifyDailyLead(DailyDto dai) {
+		proDao.modifyDailyLead(dai);
+	}
 }

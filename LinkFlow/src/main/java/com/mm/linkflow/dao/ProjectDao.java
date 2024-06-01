@@ -239,4 +239,9 @@ public class ProjectDao {
 	public int searchDailyLeadCount(Map<String, String> search){
 		return sql.selectOne("projectMapper.searchDailyLeadCount", search);
 	}
+	
+	// 직원별 일일작업 피드백
+	public void modifyDailyLead(DailyDto dai) {
+		sql.update("projectMapper.modifyDailyLead", dai);
+	}
 }

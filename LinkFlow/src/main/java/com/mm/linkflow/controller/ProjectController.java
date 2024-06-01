@@ -431,7 +431,7 @@ public class ProjectController {
 	// 직원별 일일작업 피드백
 	@PostMapping("modifyLead.dai")
 	public String modifyDailyLead(DailyDto dai) {
-		proService.modifyDaily(dai);
+		proService.modifyDailyLead(dai);
 		
 		return "redirect:/project/detailLead.dai?no=" + dai.getDaiNo();
 	}
