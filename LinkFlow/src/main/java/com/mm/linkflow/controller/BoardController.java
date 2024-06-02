@@ -51,10 +51,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class BoardController {
 	
-
-	@Autowired
-	private JavaMailSender mailSender;
-	
 	private final BoardService boardService;
 	private final AttachService attachService;
 	private final HrService hService;
@@ -182,9 +178,12 @@ public class BoardController {
 	@GetMapping("/modifyForm.page")
 	public String modifyForm(int no, Model model, HttpSession session) {
 		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		List<BoardCategoryDto> writeList = boardService.selectWriteCategory(loginUser);
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("writeList", writeList);
 		model.addAttribute("board", boardService.selectBoard(no));
-		log.debug("list :{} ", boardService.selectBoard(no));
+
 		return "board/modify";
 	}
 	
@@ -321,8 +320,11 @@ public class BoardController {
 	
 	@GetMapping("/tempSaveDetail.page") 
 	public String tempSaveDetail(int no, Model model, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		List<BoardCategoryDto> categoryList = selectBoardCategory(session);
+		List<BoardCategoryDto> writeList = boardService.selectWriteCategory(loginUser);
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("writeList", writeList);
 		model.addAttribute("board", boardService.selectBoard(no));
 		return "board/tempSaveRegist";
 	}

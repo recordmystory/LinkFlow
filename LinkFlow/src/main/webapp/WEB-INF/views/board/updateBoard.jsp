@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 게시판</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <style>
 .wrapper{
@@ -86,11 +86,11 @@
         <div class="contentArea">
             <div class="contentInElement">
                 <div class="btnArea">
-                	<c:if test="${categoryMaster.userId == loginUser.userId }">
+ <%--                	<c:if test="${categoryMaster.userId == loginUser.userId }"> --%>
                     <button type="button" class="btn btn-danger btn-sm" style="margin-right: 6px;" onclick="sendRequest()">삭제</button>
-                   </c:if>
+<%--                    </c:if> --%>
                     <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="submitForm()">수정하기</button>
-                    <button type="button" class="btn btn-secondary btn-sm">취소</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="javascript:history.go(-1);">취소</button>
                 </div>
             </div>
             <div style="min-height: 500px; min-width: 100%;">

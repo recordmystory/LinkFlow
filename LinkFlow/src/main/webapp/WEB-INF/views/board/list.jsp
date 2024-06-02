@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판 리스트</title>
+<title>Linkflow 게시판</title>
 
 <style>
 .wrapper{
@@ -147,12 +147,12 @@
                                     <table class="table table-hover text-nowrap" style="text-align: center;">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>분류</th>
-                                                <th style="width: 450px;">제목</th>
-                                                <th>작성자</th>
-                                                <th>작성일</th>
-                                                <th>조회수</th>
+                                                <th width="150">No</th>
+                                                <th width="150">분류</th>
+                                                <th>제목</th>
+                                                <th width="200">작성자</th>
+                                                <th width="250">작성일</th>
+                                                <th width="150">조회수</th>
                                             </tr>
                                         </thead>
                                         <tbody>
