@@ -184,7 +184,10 @@
       margin-bottom: 30px;
     }
 	
-	.docContentArea{margin: 40px 0px 40px 20px !important;}
+	.docContentArea{ border: 2px solid lightgray; padding: 25px 10px 25px 10px; margin: 40px 0px 40px 20px !important;}
+	.docContentArea > .table { display: flex; flex-direction: column; align-items: center; }
+	.docContentArea > h1 { text-align: center !important; margin: 30px; } 
+	.ck-table-resized { min-width: 1500px; }
 	
     /* 인쇄  */
     @media print {
