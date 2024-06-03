@@ -57,6 +57,8 @@
         display: flex;
         align-items: center; /* 모든 요소를 수직으로 중앙 정렬합니다. */
     }
+    
+    tr > td { cursor: pointer; }
 </style>
 </head>
 <body>

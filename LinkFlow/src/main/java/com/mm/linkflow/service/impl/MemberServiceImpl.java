@@ -23,7 +23,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public int updateMember(MemberDto m) {
-		return mDao.updateMember(m);
+		
+		if(m.getProfileUrl() != null) {
+			return mDao.updateMember(m);
+		}else {
+			return mDao.updatInfoeMember(m);
+		}
 	}
 	
 	@Override

@@ -179,6 +179,11 @@ public class BookingServiceImpl implements BookingService {
 	public int autoRoomBkEnd() {
 		return bkDao.autoRoomBkEnd();
 	}
+
+	@Override
+	public int autoCarBkUse() {
+		return bkDao.autoCarBkUse();
+	}
 	
 	
 

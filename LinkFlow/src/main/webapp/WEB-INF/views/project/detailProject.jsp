@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 프로젝트상세조회</title>
 <!-- 네이버 지도 api -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wfsx6d3wj7&submodules=geocoder"></script>
 <style type="text/css">
@@ -257,13 +257,13 @@
 	                                <tr>
 	                                    <td>
 	                                        <h5>파견 시작일</h5>
-	                                        <input type="date" name="startDate" class="form-control" required>
+	                                        <input type="date" id="addStartDate" name="startDate" class="form-control" required>
 	                                    </td>
 	                                </tr>
 	                                <tr>
 	                                    <td>
 	                                        <h5>파견 종료일</h5>
-	                                        <input type="date" name="endDate" class="form-control">
+	                                        <input type="date" id="addEndDate" name="endDate" class="form-control">
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -291,7 +291,7 @@
                         </div>
                 
                         <!-- Modal body -->
-                        <form action="${contextPath}/project/modify.dis" method="post">
+                        <form id="modMemberForm" action="${contextPath}/project/modify.dis" method="post">
                         	<input type="hidden" name="proNo" value="${pro.proNo}">
 	                        <div class="modal-body" style="text-align: left;">
 	                            <table class="table">
@@ -410,6 +410,34 @@
 		</div>
 	</div>
 	<script>
+		$(function() {
+			$('#addMemberModal').on('shown.bs.modal', function () {
+		        // 폼 초기화
+		        $('#addMemberForm')[0].reset();
+		        
+		        // 추가로 readonly 필드 및 특정 필드 값도 초기화
+		        $('#chooseName1').val('');
+		        $('#chooseId1').val('');
+		        
+		        // 라디오 버튼 초기화
+		        $('input[name="role"][value="개발자"]').prop('checked', false);
+		        $('input[name="role"][value="PM"]').prop('checked', false);
+		        $('input[name="disYn"][value="N"]').prop('checked', true);
+		    });
+			
+			$('#modMemberForm').submit(function(event) {
+		        // startDate와 endDate 값을 가져옵니다.
+		        var startDate = new Date($('#modifyStartDate').val());
+		        var endDate = new Date($('#modifyEndDate').val());
+
+		        // startDate가 endDate보다 클 경우 폼 제출을 막습니다.
+		        if (startDate > endDate) {
+		            alert('파견 시작일이 파견 종료일보다 클 수 없습니다.');
+		            event.preventDefault(); // 폼 제출 막기
+		        }
+		    });
+		})
+	
         function chooseMember(element){
         	var userName = element.querySelector('p').textContent;
         	var userId = element.querySelector('input').value;
@@ -422,11 +450,18 @@
             var chooseMember = document.getElementById('chooseName1').value;
             var chooseMemberId = document.getElementById('chooseId1').value;
             var proNo = document.querySelector('input[name="proNo"]').value;
+            var startDate = new Date($('#addStartDate').val());
+	        var endDate = new Date($('#addEndDate').val());
             
             if (!chooseMember) {
                 alert('인원을 선택해주세요.');
                 return false;
             };
+            
+            if(startDate > endDate){
+            	alert('파견 시작일이 파견 종료일보다 클 수 없습니다.');
+	            return false;
+            }
             
             $.ajax({
             	url: "${contextPath}/project/checkMember.dis",

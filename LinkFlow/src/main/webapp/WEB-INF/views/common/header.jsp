@@ -124,8 +124,10 @@
             <span class="badge badge-warning navbar-badge">15</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">15 Notifications</span>
+          	<span class="dropdown-item dropdown-header">15 Notifications</span>
             <div class="dropdown-divider"></div>
+            
+            
             <a href="#" class="dropdown-item">
               <i class="fas fa-envelope mr-2"></i> 4 new messages
               <span class="float-right text-muted text-sm">3 mins</span>
@@ -140,6 +142,9 @@
               <i class="fas fa-file mr-2"></i> 3 new reports
               <span class="float-right text-muted text-sm">2 days</span>
             </a>
+            
+            
+            
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
           </div>
@@ -206,6 +211,34 @@
         
       </ul>
     </nav>
+    
+    <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+    <script>
+    $(document).ready(function(){
+    	/* const alarmSock = new SockJS("${contextPath}/alarm");
+    	alarmSock.onmessage = onAlarmMsg;
+    	alarmSock.onclose = function(){
+    		location.href = '${contextPath}';
+    	}*/
+    	
+    })
+    
+    function onAlarmMsg(ala){
+    	// const prpend할 영역 변수에 담기 
+    	
+    	let alarmArr = ala.data.split("/");
+    	let alarmNo = alarmArr[0];
+    	let alarmTitle = alarmArr[1];
+    	let alarmURL = alarmArr[2];
+    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL);
+    	
+    	
+    }
+    
+    function createItem(no,title,url){
+    	
+    }
+    </script>
 	</div>
 </body>
 </html>

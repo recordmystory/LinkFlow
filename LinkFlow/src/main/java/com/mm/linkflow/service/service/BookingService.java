@@ -65,4 +65,6 @@ public interface BookingService {
     List<BookingDto> selectRoomBooking(Map<String,Object> rooms); // 시설예약 조회 및 필터링조회
     
     int autoRoomBkEnd(); // 시설예약 관련 스케줄러
+    
+    int autoCarBkUse(); // 차량예약 관련 스케줄러
 }

@@ -155,13 +155,21 @@
       margin-bottom: 30px;
     }
 	
-	.docContentArea{margin: 40px 0px 40px 20px !important;}
+	.docContentArea{ padding: 25px 10px 25px 10px; border: 2px solid lightgray; margin: 40px 0px 40px 20px !important; }
+	.docContentArea > .table { display: flex; flex-direction: column; align-items: center; }
+	.docContentArea > h1 { margin: 30px; text-align: center !important; } 
+	.ck-table-resized { min-width: 1500px; }
+	
     /* 인쇄  */
     @media print {
       .LinkFlowSidebar, .btnArea, .draft-inquiry > h6, .document-header, .sign-img-area button, .security-level, .attachment-content > svg{
           display: none;
         }
     }
+    
+    .edHistCommentArea { margin-left: 10px; font-weight: bold; font-size: 19px;}
+    
+    .document-comment-content{ height: auto; }
 </style>
 </head>
 <body>
@@ -269,7 +277,14 @@
 			                   <c:choose>
 			                   	<c:when test="${edocHist.edHistSubCode == '01'}">
 			                   		<td class="sign-img-area">
-			                     		<img src="${contextPath}<c:out value='${edocHist.signUrl}'/>" style="width: 150px; height: 150px;">
+			                     		<c:choose>
+			                     			<c:when test="${edocHist.signUrl == null}">
+			                     				<img src="${contextPath}/resources/images/common/default_sign_approval.png" style="width: 150px; height: 150px;">
+			                     			</c:when>
+			                     			<c:otherwise>
+					                     		<img src="${contextPath}<c:out value='${edocHist.signUrl}'/>" style="width: 150px; height: 150px;">
+			                     			</c:otherwise>
+			                     		</c:choose>
 			                   		</td>
 			                   	</c:when>
 			                   	
@@ -442,8 +457,21 @@
                  	<c:if test="${edocHist.edHistSubCode != null}">
 		                 <div>
 		                   <span class="document-approval-user-name">${edocHist.userName}</span>
-		                   <span>결재</span>
-		                   <hr>
+		                   <c:choose>
+		                   	<c:when test="${edocHist.edHistSubCode == '01'}">
+		                   		<span>결재</span>
+		                   	</c:when>
+		                   	<c:otherwise>		                   	
+		                   		<span>반려</span>
+		                   	</c:otherwise>
+		                   </c:choose>
+		                   <c:choose>
+		                   	<c:when test="${edocHist.edHistComment != null}">
+		                   		<br><br>
+		                   		<span class="edHistCommentArea">의견 : ${edocHist.edHistComment}</span>
+		                   	</c:when>
+		                   </c:choose>
+			                 <hr>
 		                 </div>
 	                 </c:if>
                 </c:forEach>

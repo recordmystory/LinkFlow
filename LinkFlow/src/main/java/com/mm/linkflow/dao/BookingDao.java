@@ -179,4 +179,8 @@ public class BookingDao {
 		return sql.update("bkMapper.autoRoomBkEnd");
 	}
 
+	public int autoCarBkUse() {
+		return sql.update("bkMapper.autoCarBkUse");
+	}
+
 }

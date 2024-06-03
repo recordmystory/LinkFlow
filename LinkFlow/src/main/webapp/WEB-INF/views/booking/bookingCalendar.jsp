@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 시설/비품</title>
 
 <style>
 .fc-event-title{
@@ -42,6 +42,10 @@ input[type="checkbox"] {
 	font-weight: bolder;
 	margin-bottom: 5px;
 	pointer-events: none;
+}
+.holiday * {
+	color:#e63c09!important;
+
 }
 
 .fc-day-sun a {
@@ -165,7 +169,6 @@ input[type="checkbox"] {
                 eventSources: [{
 		                          googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
 		                          classNames: 'holiday',
-		                          textColor: '#e63c09',
 		                          constraint: 'availableForMeeting'
                       			
                 }] 

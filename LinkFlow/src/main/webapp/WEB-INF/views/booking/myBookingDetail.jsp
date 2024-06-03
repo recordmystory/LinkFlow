@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>my booking list</title>
+<title>Linkflow 시설/비품</title>
 
 <style>
 .LinkFlowMainSection {
@@ -93,6 +93,12 @@
 	margin: 10px;
 	font-size: 15px;
 	padding-top: 8px;
+}
+#bk-content{
+	width:100%;
+	min-height:80px;
+	padding:10px;
+	
 }
 </style>
 
@@ -225,14 +231,21 @@
 								<div style="margin: 40px;">
 									<h4>사유</h4>
 									<div class="coment" style="height: 150px;">
+									<c:choose>
+									<c:when test="${ bk.status eq '예약대기' }">
 										<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content"></div>
+									</c:when>
+									<c:otherwise>
+										<input type="text" id="bk-content" name="bkContent" value="${ bk.bkContent }" class="bk-content" disabled></div>
+									</c:otherwise>
+									</c:choose>
 								</div>
 								
 								<hr>
 								<c:if test="${ bk.status ne '예약대기' }">
 									<div style="margin: 40px;">
 										<h4>반려 사유</h4>
-										<div class="coment" style="height: 100px;" disabled>${ bk.rejContent }
+										<div class="coment" style="height: 100px;" disabled><p disabled>${ bk.rejContent }</p>
 										</div>
 									</div>
 								</c:if>

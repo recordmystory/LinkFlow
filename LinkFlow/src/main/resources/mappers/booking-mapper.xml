@@ -138,7 +138,7 @@
 		  ,sub_name
 		  ,assets_name
 		  ,bk_content
-		  ,NVL(rej_content,'') AS rejContent
+		  ,NVL(rej_content,'') AS rej_content
 	  from tb_booking b
 	  join tb_assets a using (assets_no)
    	  join tb_common c using (main_code)
@@ -353,6 +353,7 @@
 <select id="selectBkWaitList" resultMap="bkResult">
 	select 
 		   booking_no
+		  ,b.booking_id
 		  ,m.user_name
           ,d.dept_title
 		  ,b.assets_no
@@ -446,6 +447,9 @@
           <when test='rejContent != "" and rejContent != null'> 
           status = 'REJ' ,
           rej_content = #{rejContent}
+          </when>
+          <when test='subName == "차량"'>
+          status='COM'
           </when>
           <otherwise>
           status = 'USE' 
@@ -613,4 +617,18 @@
 	 ]]>
 </update>
 
+<update id="autoCarBkUse">
+<![CDATA[
+	update tb_booking
+	   set status = 'USE',
+	   	   status_date = sysdate
+	 where status = 'COM'
+	   and assets_no in (select assets_no
+	   					   from tb_assets a
+	   					   join tb_common c on (a.main_code = c.main_code)
+	   					  where c.sub_col = 'CAR'
+	   					 )
+	   and bk_start_dt <= sysdate
+	   ]]>
+</update>
 </mapper>
