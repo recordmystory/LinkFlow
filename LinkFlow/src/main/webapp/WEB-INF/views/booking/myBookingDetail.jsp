@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>my booking list</title>
+<title>Linkflow 시설/비품</title>
 
 <style>
 .LinkFlowMainSection {
