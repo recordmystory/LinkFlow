@@ -166,6 +166,10 @@
           display: none;
         }
     }
+    
+    .edHistCommentArea { margin-left: 10px; font-weight: bold; font-size: 19px;}
+    
+    .document-comment-content{ height: auto; }
 </style>
 </head>
 <body>
@@ -446,8 +450,21 @@
                  	<c:if test="${edocHist.edHistSubCode != null}">
 		                 <div>
 		                   <span class="document-approval-user-name">${edocHist.userName}</span>
-		                   <span>결재</span>
-		                   <hr>
+		                   <c:choose>
+		                   	<c:when test="${edocHist.edHistSubCode == '01'}">
+		                   		<span>결재</span>
+		                   	</c:when>
+		                   	<c:otherwise>		                   	
+		                   		<span>반려</span>
+		                   	</c:otherwise>
+		                   </c:choose>
+		                   <c:choose>
+		                   	<c:when test="${edocHist.edHistComment != null}">
+		                   		<br><br>
+		                   		<span class="edHistCommentArea">의견 : ${edocHist.edHistComment}</span>
+		                   	</c:when>
+		                   </c:choose>
+			                 <hr>
 		                 </div>
 	                 </c:if>
                 </c:forEach>
