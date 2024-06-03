@@ -100,7 +100,10 @@
     }
     
     /* 문서 영역 스타일 */
-    .drafting-content-document { border: 1px solid black; padding: 10px; }
+    .drafting-content-document { border: 2px solid lightgray; padding: 25px 10px 25px 10px; margin: 40px 0px 40px 20px !important; }
+		.drafting-content-document > h1 { text-align: center !important; margin: 30px; } 
+		.drafting-content-document > .table { display: flex; flex-direction: column; align-items: center; }
+	  .ck-table-resized { min-width: 1500px; }
 </style>
 </head>
 <body>
