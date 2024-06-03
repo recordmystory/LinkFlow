@@ -447,6 +447,9 @@
           status = 'REJ' ,
           rej_content = #{rejContent}
           </when>
+          <when test='subName == "차량"'>
+          status='COM'
+          </when>
           <otherwise>
           status = 'USE' 
 		  </otherwise>
@@ -613,4 +616,18 @@
 	 ]]>
 </update>
 
+<update id="autoCarBkUse">
+<![CDATA[
+	update tb_booking
+	   set status = 'USE',
+	   	   status_date = sysdate
+	 where status = 'COM'
+	   and assets_no in (select assets_no
+	   					   from tb_assets a
+	   					   join tb_common c on (a.main_code = c.main_code)
+	   					  where c.sub_col = 'CAR'
+	   					 )
+	   and bk_start_dt <= sysdate
+	   ]]>
+</update>
 </mapper>

@@ -17,7 +17,13 @@ public class BookingRoomScheduler {
 	
 	@Scheduled(cron="0 0,30 10-18 * * MON-FRI")
 	public void autoRoomBkEnd() {
-		log.debug("돌아가나요:{}");
+		log.debug("돌아가나요");
 		bkService.autoRoomBkEnd();
+	}
+	
+	@Scheduled(cron = "0 0 9 * * MON-FRI")
+	public void autoCarBkUse() {
+		log.debug("돌아가나요?");
+		bkService.autoCarBkUse();
 	}
 }

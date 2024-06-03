@@ -43,6 +43,10 @@ input[type="checkbox"] {
 	margin-bottom: 5px;
 	pointer-events: none;
 }
+.holiday * {
+	color:#e63c09!important;
+
+}
 
 .fc-day-sun a {
 	color: red !important;
@@ -165,7 +169,6 @@ input[type="checkbox"] {
                 eventSources: [{
 		                          googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
 		                          classNames: 'holiday',
-		                          textColor: '#e63c09',
 		                          constraint: 'availableForMeeting'
                       			
                 }] 
