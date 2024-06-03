@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>calendarMain</title>
+<title>Linkflow 캘린더</title>
 
 	<!-- fullcalendar CDN -->  
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>

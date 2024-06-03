@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>schWasteList</title>
+<title>Linkflow 캘린더</title>
 
 <style>
 
