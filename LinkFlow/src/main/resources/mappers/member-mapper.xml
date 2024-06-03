@@ -271,6 +271,7 @@
  		       COUNT(*)
  		  FROM TB_MEMBER
  		 WHERE TO_CHAR(RETIRE_DATE, 'YYYY-MM') = #{date}
+ 		   AND DEL_YN = 'Y'
  	</select>
  	<!-- 팀별 인원 조회용 - 황민우 -->
  	<select id="selectTeamMember" resultMap="memberResult">

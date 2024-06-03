@@ -88,12 +88,14 @@
 		                            </p>
 		                        </a>
 		                        <ul class="nav nav-treeview" style="padding-left: 20px;">
-		                            <li class="nav-item">
-		                                <a href="${contextPath}/project/list.dai" class="nav-link">
-		                                    <i class="far fa-circle nav-icon"></i>
-		                                    <p>일일작업 조회</p>
-		                                </a>
-		                            </li>
+		                        	<c:if test="${not empty loginUser and loginUser.position ne '팀장' and fn:contains(loginUser.deptName, '개발')}">
+			                            <li class="nav-item">
+			                                <a href="${contextPath}/project/list.dai" class="nav-link">
+			                                    <i class="far fa-circle nav-icon"></i>
+			                                    <p>일일작업 조회</p>
+			                                </a>
+			                            </li>
+		                            </c:if>
 		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발')}">
 			                            <li class="nav-item">
 			                                <a href="${contextPath}/project/listLead.dai?deptCode=${loginUser.deptCode}" class="nav-link">

@@ -138,7 +138,7 @@
 		  ,sub_name
 		  ,assets_name
 		  ,bk_content
-		  ,NVL(rej_content,'') AS rejContent
+		  ,NVL(rej_content,'') AS rej_content
 	  from tb_booking b
 	  join tb_assets a using (assets_no)
    	  join tb_common c using (main_code)
