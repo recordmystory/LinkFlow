@@ -374,7 +374,7 @@ public class BookingController {
 			redirect.addFlashAttribute("alertMsg","예약 내용을 다시 확인하세요.");
 		}
 		
-		return "redirect:/booking/room.bk";
+		return "redirect:/booking/mylist.bk";
 	}
 	
 	@GetMapping("/room.mng") // 시설예약관리 페이지 이동
