@@ -266,7 +266,7 @@
       padding: 0px 0px 0px 0px !important;
     }
 
-    
+    .card-body > .row { align-items: center; justify-content: center; }
 </style>
 
 
@@ -417,7 +417,7 @@
             <div class="row" style="min-width: 1400px;">
               <div class="card-body">
 
-                  <form action="xxxxxxx" method="post">
+                  <!-- <form action="xxxxxxx" method="post"> -->
                    <div class="searchUser">
 
                      <div class="col-md-3" style="margin-top: 15px;">
@@ -425,14 +425,14 @@
                          <div class="input-group" style="width: 800px;">
                              <input type="search" class="form-control" id="searchInput" placeholder="사원명이나 조직명으로 검색하세요" value="" name="useName">
                              <div class="input-group-append">
-                                 <button type="submit" class="btn  btn-primary">
+                                 <!-- <button type="submit" class="btn  btn-primary">
                                      <i class="fa fa-search"></i>
-                                 </button>
+                                 </button> -->
                              </div>
                          </div>
                        </div>
                      </div>
-                   </form>
+                   <!-- </form> -->
 
                    </div><!--searchUser 끝-->
 
