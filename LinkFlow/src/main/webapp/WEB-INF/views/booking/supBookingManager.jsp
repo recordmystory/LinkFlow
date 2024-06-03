@@ -312,7 +312,7 @@
 										<!-- 반려일때  -->
 										<div class="modal-body" id="de-rejDiv">
 											<h6>반려 사유</h6>
-											<input type="text" class="rej-coment" id="de-rejContent" placeholder="" disabled style="margin-bottom: 20px;" disabled>
+											<input type="text" class="rej-coment" id="de-rejContent" placeholder="" style="margin-bottom: 20px;" disabled>
 										</div>
 										
 										<!-- 반납일때 -->

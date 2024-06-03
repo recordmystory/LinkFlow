@@ -424,9 +424,10 @@
 		     , D.PRO_NO
 		     , DAI_CONTENT
 		     , DAI_ANS
-		     , D.REG_DATE
+		     , TO_CHAR(D.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
 		  	 , PRO_TITLE
 		  	 , USER_NAME
+		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
@@ -495,7 +496,7 @@
 		 	 , D.PRO_NO
 		 	 , USER_NAME
 		 	 , PRO_TITLE
-		 	 , D.REG_DATE
+		 	 , TO_CHAR(D.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
 		 	 , DAI_CONTENT
 		 	 , DAI_ANS
 		 	 , P.DEPT_CODE
@@ -512,7 +513,6 @@
 		UPDATE
 		       TB_DAILY
 		   SET DAI_CONTENT = #{daiContent}
-		     , DAI_ANS = #{daiAns}
 		     , MOD_ID = #{modId}
 		     , MOD_DATE = SYSDATE
 		 WHERE DAI_NO = #{daiNo}
@@ -533,9 +533,10 @@
 		     , D.PRO_NO
 		     , DAI_CONTENT
 		     , DAI_ANS
-		     , D.REG_DATE
+		     , TO_CHAR(D.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
 		  	 , PRO_TITLE
 		  	 , USER_NAME
+		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
@@ -580,9 +581,10 @@
 		     , D.PRO_NO
 		     , DAI_CONTENT
 		     , DAI_ANS
-		     , D.REG_DATE
+		     , TO_CHAR(D.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
 		  	 , PRO_TITLE
 		  	 , USER_NAME
+		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
@@ -596,8 +598,77 @@
 	<select id="listDailyLeadCount" resultType="_int">
 		SELECT
 			   COUNT(*)
-		  FROM TB_DAILY
-		 WHERE DEL_YN = 'N'
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P USING (PRO_NO)
+		 WHERE D.DEL_YN = 'N'
+		   AND DEPT_CODE = #{deptCode}
 	</select>
 	
+	<!-- 직원별 일일작업 검색 조회 -->
+	<select id="searchDailyLead" resultMap="daiResult">
+		SELECT
+		       DAI_NO
+		     , D.PRO_NO
+		     , DAI_CONTENT
+		     , DAI_ANS
+		     , TO_CHAR(D.REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+		  	 , PRO_TITLE
+		  	 , USER_NAME
+		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
+		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
+		 WHERE D.DEL_YN = 'N'
+		   AND P.DEPT_CODE = #{deptCode}
+	  	<if test="startDate != null and startDate != ''">
+           AND D.REG_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND D.REG_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'userName'">
+    	   AND USER_NAME LIKE '%' || #{keyword} || '%'
+    	</if>
+		 ORDER
+		    BY DAI_NO DESC
+	</select>
+	
+	<!-- 직원별 일일작업 검색 카운트 -->
+	<select id="searchDailyLeadCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM TB_DAILY D
+		  JOIN TB_PROJECT P USING (PRO_NO)
+		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
+		 WHERE D.DEL_YN = 'N'
+		   AND P.DEPT_CODE = #{deptCode}
+		<if test="startDate != null and startDate != ''">
+           AND D.REG_DATE <![CDATA[>=]]> #{startDate}
+    	</if>
+    	<if test="endDate != null and endDate != ''">
+       	   AND D.REG_DATE <![CDATA[<=]]> #{endDate}
+    	</if>
+    	<if test="category != null and category != '' and category == 'proName'">
+    	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
+    	</if>
+    	<if test="category != null and category != '' and category == 'userName'">
+    	   AND USER_NAME LIKE '%' || #{keyword} || '%'
+    	</if>
+	</select>
+	
+	<!-- 직원별 일일작업 피드백 -->
+	<update id="modifyDailyLead">
+		UPDATE
+		       TB_DAILY
+		   SET DAI_CONTENT = #{daiContent}
+		     , DAI_ANS = #{daiAns}
+		     , MOD_ID = #{modId}
+		     , MOD_DATE = SYSDATE
+		     , ANS_WRITER = #{modId}
+		     , ANS_DATE = SYSDATE
+		 WHERE DAI_NO = #{daiNo}
+	</update>
 </mapper>

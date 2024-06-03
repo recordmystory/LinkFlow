@@ -13,6 +13,7 @@
 		<result column="char_date" property="charDate" />
 		<result column="category_type" property="boardType" />
 		<result column="category_name" property="categoryName" />
+		<result column="user_name" property="userName" />
 		
 		
 		<collection resultMap="attachMapper.attachResult" property="attachList" />
@@ -142,11 +143,14 @@
 	    b.count,
 	    b.notice_yn,
 	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
-	    c.category_type
+	    c.category_type,
+	    user_name
 		FROM 
 		    tb_board b
 		JOIN 
 		    tb_category c ON b.board_category = c.board_category
+		JOIN
+				tb_member on b.reg_id = user_id    
 		WHERE 
 		    b.del_yn = 'N'
 		    and b.temp_save = '02'

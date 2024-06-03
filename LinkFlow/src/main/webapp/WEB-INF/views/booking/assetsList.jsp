@@ -23,7 +23,10 @@
 	min-height: 400px;
 	padding: 30px;
 }
-
+.wrapper{
+ min-height: 100%;
+ width: 100%;
+}
 /* 게시판 */
 .card-title, .card-tools {
 	padding: 10px;
@@ -63,6 +66,7 @@
 	padding-left: 25px;
 	font-size: small;
 	padding-top: 15px;
+	
 }
 
 .md-select {
@@ -137,6 +141,7 @@
 .ass-drop {
 	padding-top: 15px;
 	padding-bottom: 15px;
+	padding-left:45px;
 }
 
 .ass-drop p {
@@ -147,20 +152,10 @@
 .ass-drop select {
 	text-align: center;
 }
-/* 체크박스 
-input[type="checkbox"] {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	border: 2px solid #ccc;
+#modalTitle{
+	padding-bottom:5px;
 }
 
-input[type="checkbox"]:checked {
-	background-color: #007bff;
-}*/
 </style>
 
 </head>
@@ -264,18 +259,18 @@ input[type="checkbox"]:checked {
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>카테고리</p>&nbsp;&nbsp;
-                             <select id="assMain" style="width: 80px;" name="updateMainCode" onchange="changeMod();">
+                             <select id="assMain" style="width: 80px;" name="updateMainCode" onchange="changeMod();" class="form-control">
                                  <option id="ass-inRoom" value="002-">시설</option>
                                  <option id="ass-inSup" value="003-">비품</option>
                              </select>
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>자원 종류</p>&nbsp;&nbsp;
-                             <select id="roomSub" name="roomSubName" style="width: 100px;">
+                             <select id="roomSub" name="roomSubName" style="width: 100px;" class="form-control">
                                  <option id="회의실" value="회의실">회의실</option>
                                  <!-- 비품일때 -->
                              </select>
-                             <select id="supSub" name="subName" style="width: 100px; display:none;">
+                             <select id="supSub" name="subName" style="width: 100px; display:none;" class="form-control">
                                  <option id="노트북" value="노트북">노트북</option>
                                  <option id="차량" value="차량">차량</option>
                                  <option id="키보드" value="키보드">키보드</option>
@@ -284,7 +279,7 @@ input[type="checkbox"]:checked {
                          </div>
                          <div class="bk-modal ass-drop">
                              <p>상품명 </p>&nbsp;&nbsp;
-                             <input id="assName" type="text" name="assetsName">
+                             <input id="assName" type="text" name="assetsName" class="form-control" style="width: 190px;">
                          </div>
  
                          <div class="modal-footer justify-content-between">
@@ -325,17 +320,17 @@ input[type="checkbox"]:checked {
 	<script>
 			
 		$(document).ready(function () {
-	      
-	        // URL에서 success 파라미터를 확인하고 알림 표시
-            const urlParams = new URLSearchParams(window.location.search);
-            const ain = urlParams.get('ain');
-            /* const amod = urlParams.get('amod'); */
-            if (ain === 'true') {
-                Swal.fire('성공', '추가되었습니다.', 'success');
-            }/*  else if(amod === 'true'){
-            	Swal.fire('성공', '수정되었습니다.', 'success');
-            } */
-	    });
+		    // URL에서 success 파라미터를 확인하고 알림 표시
+		    const urlParams = new URLSearchParams(window.location.search);
+		    const ain = urlParams.get('ain');
+		    const amod = urlParams.get('amod');
+		    if (ain === 'true') {
+		        Swal.fire('성공', '추가되었습니다.', 'success');
+		    } 
+		    if (amod && amod === 'true'){ 
+		        Swal.fire('성공', '수정되었습니다.', 'success');
+		    } 
+		});
 		
 		function searchAssets(num) { // 검색
 		    let mainName = document.getElementById('mainName').value;
@@ -376,12 +371,14 @@ input[type="checkbox"]:checked {
 		                       + "<td>" + list[i].subName + "</td>"
 		                       + "<td>" + list[i].assetsName + "</td>"
 		                       + "<td>"
-		                       + "<a data-toggle=\"modal\" data-target=\"#ass-update\" id=\"assModify\" onclick=\"modalType("
-		                       + list[i].assetsNo +","+ list[i].mainName+","+ list[i].subName+","+ list[i].assetsName+ ")\">수정</a>"
+		                       + "<a data-toggle=\"modal\" data-target=\"#ass-update\" id=\"assModify\" onclick=\"modalType('"
+		                       + list[i].assetsNo +"','"+ list[i].mainName+"','"+ list[i].subName+"','"+ list[i].assetsName+ "')\">수정</a>"
 		                       + " | "
-		                       + "<a onclick=\"assDel(" + list[i].assetsNo + ");\">삭제</a>"
+		                       +  "<a data-assNo=\"" + list[i].assetsNo + "\" onclick='assDel(\"" + list[i].assetsNo + "\");'>삭제</a>"
 		                       + "</td></tr>";
+		                       console.log(list[i].assetsNo);
 		            }
+		            
 		            
 		            page += "<li class=\"page-item " + (pi.currentPage == 1 ? 'disabled' : '') + "\"><a class=\"page-link\" onclick=\"searchAssets(" + (pi.currentPage - 1) + ");\">&laquo;</a></li>";
 
@@ -404,7 +401,6 @@ input[type="checkbox"]:checked {
 		        var room = document.getElementById('roomSub');
 		        var supplies = document.getElementById('supSub');
 
-		        console.log(room);
 		        if (main === "비품") {
 		            document.getElementById('ass-inRoom').selected = false;
 		            document.getElementById('ass-inSup').selected = true;
@@ -429,7 +425,7 @@ input[type="checkbox"]:checked {
 		        document.getElementById('updateAss').action = "${contextPath}/booking/ass.mod";
 
 		    } else {
-		        // assName 요소의 값을 비우기
+		        // assName 비우기
 		        document.getElementById('assName').value = '';
 		        // modalTitle 초기화
 		        document.getElementById('modalTitle').innerText = "자산 추가";
@@ -471,9 +467,19 @@ input[type="checkbox"]:checked {
 	                        assetsNo: assNo
 	                    },
 	                    success: function(result) {
-	                        if (result > 0) {
-	                            Swal.fire('성공', '삭제되었습니다.', 'success');
-	                            window.location.replace('${contextPath}/booking/ass.list');
+	                       
+                        	if (result > 0) {
+                                Swal.fire({
+                                    title: '성공',
+                                    text: '삭제되었습니다.',
+                                    icon: 'success',
+                                    confirmButtonText: '확인'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+	                       			 window.location.replace('${contextPath}/booking/ass.list');
+                                    }
+                                });
+	                           
 	                        }
 	                    }
 	            	})

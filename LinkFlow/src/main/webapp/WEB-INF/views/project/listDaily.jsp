@@ -140,13 +140,19 @@
 		</div>
 	</div>
 	<script>
-		$(document).ready(function () {
-	        $("#pagingArea a").on("click", function(){
+	$(document).ready(function () {
+        $("#pagingArea a").on("click", function(){
+        	if($(this).text() == "«"){
+     			$("#searchForm input[name=page]").val(${pi.currentPage - 1});
+        	}else if($(this).text() == "»"){
+     			$("#searchForm input[name=page]").val(${pi.currentPage + 1});
+        	}else{
      			$("#searchForm input[name=page]").val($(this).text());
-     			$("#searchForm").submit();
-     			return false;
-	   		});
-		});
+        	}
+ 			$("#searchForm").submit();
+ 			return false;
+   		});
+	});
 	</script>
 </body>
 </html>

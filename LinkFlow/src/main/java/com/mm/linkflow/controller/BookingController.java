@@ -38,6 +38,10 @@ public class BookingController {
 	private final BookingServiceImpl bkServiceImpl;
 	private final PagingUtil paging;
 
+	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
+	public String bkRoomPage() {
+		return "booking/bookingRoom";
+	}
 	
 	@GetMapping("/supplies.bk") // 비품리스트조회
 	public ModelAndView bkSuppliesPage(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
@@ -56,7 +60,6 @@ public class BookingController {
 	@GetMapping("/sup.search") // 비품검색 
 	public ModelAndView selectSupSearch(@RequestParam Map<String,String> search,@RequestParam(value="page", defaultValue="1") int currentPage , ModelAndView mv) {
 		
-		log.debug("search:{}",search);
 		int listCount = bkServiceImpl.searchBkCount(search);
 		PageInfoDto pi = paging.getPageInfoDto(listCount, currentPage, 5, 10);
 		
@@ -93,12 +96,11 @@ public class BookingController {
 		mv.addObject("pi",pi)
 		  .addObject("bkList",bkList)
 		  .setViewName("booking/myBookingList");
-		log.debug("mvvvvvvvvvvvv : {} ",mv);
 		return mv;
 	}
 	
-	@ResponseBody
-	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8") // 나의 예약리스트 검색
+	@ResponseBody // 나의 예약리스트 검색
+	@GetMapping(value="/mylist.search", produces="application/json; charset=utf-8") 
 	public Map<String,Object> myListSearch(@RequestParam Map<String, String> search, @RequestParam(value = "page", defaultValue = "1") int currentPage, HttpSession session) {
 
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
@@ -177,7 +179,6 @@ public class BookingController {
 	@PostMapping("/cancle.bk") // 예약 취소
 	public String cancleBooking(BookingDto bk, Model model) {
 		int result = bkServiceImpl.cancleBooking(bk);
-		log.debug("result:{}",result);
 		
 		if (result > 0) {
 //			model.addAttribute("message", "삭제가 완료되었습니다.");
@@ -228,7 +229,6 @@ public class BookingController {
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		
-		log.debug("assssssss:{} ",ass);
 		Map<String, Object> mp = new HashMap<>();
 		mp.put("ass", ass);
 		mp.put("userId", userId);
@@ -241,14 +241,22 @@ public class BookingController {
 		}
 		
 	}
+	
 	@PostMapping("/ass.mod") // 자산 수정 
 	public String modAssets(@RequestParam Map<String,String> assets, HttpSession session) {
 		String mainCode = assets.get("updateMainCode");
+		String subName;
+		if(mainCode.equals("002-")) {
+			subName = assets.get("roomSubName");
+		}else {
+			subName = assets.get("subName");
+		}
+			
 		AssetsDto ass = AssetsDto.builder()
 								   .assetsNo(assets.get("assetsNo"))
-								   .mainCode(assets.get("updateMainCode"))
+								   .mainCode(mainCode)
 								   .assetsName(assets.get("assetsName"))
-								   .subName(assets.get("subName"))
+								   .subName(subName)
 								   .build();
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		Map<String, Object> mp = new HashMap<>();
@@ -256,10 +264,9 @@ public class BookingController {
 		mp.put("userId", userId);
 		
 		int result = bkServiceImpl.modAssets(mp);
-		log.debug("result dssadass :{}",result);
 		
 		if(result >0) {
-			return "redirect:/booking/ass.list";
+			return "redirect:/booking/ass.list?amod=true";
 		}else {
 			return "redirect:/booking/ass.list";
 		}
@@ -268,7 +275,13 @@ public class BookingController {
 	@ResponseBody // 자산 삭제
 	@GetMapping(value="/ass.del", produces="application/json; charset=utf-8")
 	public int deleteAssets(@RequestParam(value="assetsNo")String assetsNo) {
-		return bkServiceImpl.delAssets(assetsNo);
+		int result = bkServiceImpl.delAssets(assetsNo);
+		/*
+		 * if(result >0) { return "redirect:/booking/ass.list?adel=true"; }else { return
+		 * "redirect:/booking/ass.list"; }
+		 */
+		
+		return result;
 	}
 	
 	@GetMapping("/sup.mng") //비품관리페이지  
@@ -287,7 +300,6 @@ public class BookingController {
 		mp.put("pi",pi);
 		mp.put("bkWaitList",bkWaitList);
 		
-		log.debug("컨트롤러까지 옴 :{}", bkWaitList);
 		return mp;
 		
 	}
@@ -383,7 +395,6 @@ public class BookingController {
 		bk.put("userId", userId);
 		int result = bkServiceImpl.updateRoomBooking(bk);
 
-		log.debug("bkkkkkkk:{}", bk);
 		if(result <= 0) {
 			redirect.addFlashAttribute("alertMsg","잘못된 요청입니다.");
 		}
@@ -391,15 +402,9 @@ public class BookingController {
 		return "redirect:/booking/room.mng";
 	}
 
-	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
-	public String bkRoomPage() {
-		return "booking/bookingRoom";
-	}
-	
 	@ResponseBody // 시설예약캘린더 조회 
 	@GetMapping(value="/room.list", produces="application/json; charset=utf-8")
-	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,String> rooms){
-		log.debug("왜 안되나~? :{}", rooms);
+	public List<BookingDto> selectRoomBooking(@RequestParam Map<String,Object> rooms){
 		return bkServiceImpl.selectRoomBooking(rooms);
 	}
 	

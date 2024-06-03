@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class calendarScheduler {
+public class CalendarScheduler {
 	private final CalendarService calendarService;
 
 	//DEL_YN이 'Y'고 modDate에서 31일째 되는 날 0시에 일정 삭제, 자동실행 
@@ -19,5 +19,6 @@ public class calendarScheduler {
 	public void wasteSchCompletely() {
 		int result = calendarService.wasteSchCompletely();
 		log.debug("삭제 테스트:{}", result);
+
 	}
 }

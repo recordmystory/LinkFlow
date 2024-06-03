@@ -18,14 +18,11 @@ public interface CalendarService {
 	//휴지통 - 일정 상세
 	ScheduleDto detailSch(String schNo);
 	
-	/*
-	 * //수정 - 캘린더 CAL_SUB_CODE int updateSchCalSubCode(Map<String, Object> map);
-	 */
 	//캘린더 메인 - 일정삭제(상태변경)
 	int deleteSch(String schNo);
 
 	//휴지통 - 일정 전체조회
-	List<ScheduleDto> selectSchWasteList(String schCalSubCode);
+	List<ScheduleDto> selectSchWasteList(String schCalSubCode, String userId);
 
 	//휴지통 - 일정 복구 
 	int wasteSchRestore(String schNo);
@@ -38,8 +35,9 @@ public interface CalendarService {
 
     //제이트리 조직도 멤버조회
 	List<DeptDto> selecteMemberList();
+
 	//공유 일정수정, 캘린더수정
-	int updateSch(Map<String, String> data, String[] shareIds);
+	int updateSchedule(ScheduleDto data, String userId, List<String> shareIds);
 
 
 }

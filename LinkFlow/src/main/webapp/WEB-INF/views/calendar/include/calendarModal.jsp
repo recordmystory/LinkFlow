@@ -6,9 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>calendarModal</title>
-<!-- 지도 api -->
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dffz3x1msk&submodules=geocoder"></script>
+<title>Linkflow캘린더</title>
+
 	
 <style>
  .wrapper{
@@ -202,14 +201,7 @@
                        <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div> -->
                       </div>                          
                     </div>
-                    <!---->
-                    <!-- <div class="schDetailModal_content">
-                      <label for="recipient-name" class="col-form-label" >알림</label>
-                      <div>
-                       종료 30분 전 메일발송
-                        <input type="checkbox" class="weste-modal" id="notifyYn" style="pointer-events: none; "> 
-                      </div>
-                    </div> -->
+
                     <div class="schDetailModal_content">
                       <label for="message-text" class="col-form-label">내용</label>
                       <div id="schDetailModal_content_text">                            
@@ -225,6 +217,9 @@
         </div>
       </div>
   </div>
+  
+  
+  
     <!--일정 상세 정보 모달 schDetailModal end-->
 	
 	<!--상세 정보 모달_버튼 모달 detailBtn start-->
@@ -241,73 +236,7 @@
       </div>
     </div>
     <!--상세 정보 모달_버튼 모달 detailBtn end-->
-    
-    <!--
-    공유캘린더 더보기 클릭시 모달 shareCalMoreModal start
-    <div class="modal fade" id="shareCalMoreModal" style="color: #5f7ea6;" aria-hidden="true" aria-labelledby="shareCalMoreModalLabel" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header ml-4" style="color: rgba(21, 21, 22, 0.658); font-weight: bold; font-size: medium;">
-            <div>
-              공유 캘린더
-            </div>
-            <button type="button" class="btn btn-primary btn-sm shareCalModalBtn" style="border-radius: 15px;" data-bs-target="#shareCalModal" data-bs-toggle="modal">
-              <i class="fa-solid fa-plus fa-sm"></i>
-            </button>
-          </div>
-          <div class="modal-body" id="shareCalMoreModal-body" > 
-            <table id="example1" class="table table-bordered table-striped bin_list_table">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>색상</th>
-                  <th>공유자</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td style="width: 70px; padding: 15px 0px 0px 5px;">
-                    <input type="checkbox" id="shareCheckbox1" class="calCheckbox shareCheckbox1" checked>
-                    <label for="shareCheckbox1"></label>
-                  </td>
-                  <td>홍지우 팀장&lt;개발1팀&gt;</td>
-                  <td class="shareCalMoreModal_btn d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary btn-sm gray-button shareCalMoreModal_graybtn">삭제</button>
-                  </td>
-                </tr>
-               <tr>
-                <td>2</td>
-                <td style="width: 70px; padding: 15px 0px 0px 5px;">
-                  <input type="checkbox" id="shareCheckbox2" class="calCheckbox shareCheckbox1" checked>
-                  <label for="shareCheckbox2"></label>
-                </td>
-                <td>엄두강 사원&lt;개발2팀&gt;</td>
-                <td class="shareCalMoreModal_btn d-flex justify-content-center">
-                  <button type="button" class="btn btn-primary btn-sm gray-button shareCalMoreModal_graybtn" >삭제</button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td style="width: 70px; padding: 15px 0px 0px 5px;">
-                  <input type="checkbox" id="shareCheckbox3" class="calCheckbox shareCheckbox1" checked>
-                  <label for="shareCheckbox3"></label>
-                </td>
-                <td>조성모 사원&lt;인사1팀&gt;</td>
-                <td class="shareCalMoreModal_btn d-flex justify-content-center">
-                  <button type="button" class="btn btn-primary btn-sm gray-button shareCalMoreModal_graybtn" >삭제</button>
-                </td>
-              </tr>
-              <tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    공유캘린더 더보기 클릭시 모달 shareCalMoreModal end
-    -->
+
 	<!-- 일정 등록 모달 -->
 		<div class="modal fade" id="schInsertModal" tabindex="-1" aria-labelledby="schInsertModal" aria-hidden="true">
 		    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -362,14 +291,7 @@
    														 <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		             -->           
    												  </div>
 		                    </div>
-		                   <!--   알림 설정 
-		                    <div class="schDetailModal_content">
-		                        <label for="notifyYn" class="col-form-label" >알림</label> 
-		                        <div>
-		                           종료 30분 전 메일발송
-		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyInsertBtn">
-		                        </div>
-		                    </div> -->
+
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
@@ -444,14 +366,7 @@
    															<!-- <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>		                        -->
 		                    		</div>
 		                    </div>
-		                    <!-- 알림 설정 
-		                    <div class="schDetailModal_content">
-		                        <label for="notifyYn" class="col-form-label" >알림</label> 
-		                        <div>
-		                           종료 30분 전 메일발송
-		                            <input type="checkbox" class="weste-modal" name="notifyYn" id="notifyYN">
-		                        </div>
-		                    </div>-->
+		                 
 		                    <!-- 일정 내용 -->
 		                    <div class="schDetailModal_content">
 		                        <label for="schContent" class="col-form-label">내용</label>
@@ -462,7 +377,7 @@
                        </div>
                        <input type="hidden" name="schNo" id="schNo">
                        <input type="hidden" name="calNo" id="calNo">                       
-		                	 <input type="hidden" name="shareIds" id="shareIds">
+		                   <input type="hidden" name="shareIds" id="shareIds">
 		                
 		                </form>
 		            </div>
@@ -626,17 +541,9 @@
                           <label for="recipient-name" class="col-form-label">장소</label>
                          	<div class="search">
 		                        <div id="wasteAddress"></div>
-		                        <!--  <div id="map" style="width:300px; height:200px; margin-top:30px;"></div>-->
                       		</div>                                                   
-                        </div>
-                        <!---->
-                        <!-- <div class="schDetailModal_content">
-                          <label for="recipient-name" class="col-form-label">알림</label>
-                          <p>
-                            30분 전 메일발송
-                            <input type="checkbox" class="weste-modal" id="wasteNotifyYn" style="pointer-events: none; ">
-                          </p>
-                        </div> -->
+                        </div>  
+
                         <div class="schDetailModal_content">
                           <label for="message-text" class="col-form-label">내용</label>
                           <p id="schWasteDetail_content_text">    
@@ -826,16 +733,28 @@
 	        if (checkbox) {
 	            var userId = nameArea.getAttribute('data-userid');
 	            shareIds.push(userId);
+	            // 중복 확인 이미 있으면 못 넘어가게
+	            var duplicate = false;
+	            document.querySelectorAll('.referenceArea .referenceName').forEach(function(referenceName) {
+	              if (referenceName.getAttribute('data-userid') === userId) {
+	            	  duplicate = true;
+	              }
+	            });
 
-	            var nameValue = nameArea.innerHTML.trim();
-	            var referenceName = document.createElement('div');
-	            referenceName.className = 'referenceName';
-	            referenceName.innerHTML = nameValue;
-	            document.querySelector('.referenceArea').appendChild(referenceName);
-	            
-	            nameArea.remove();
-	        }
-	    });
+	            if (!duplicate) { // 중복 확인
+	              shareIds.push(userId);
+
+	              var nameValue = nameArea.innerHTML.trim();
+	              var referenceName = document.createElement('div');
+	              referenceName.className = 'referenceName';
+	              referenceName.setAttribute('data-userid', userId); // 추가된 부분
+	              referenceName.innerHTML = nameValue;
+	              document.querySelector('.referenceArea').appendChild(referenceName);
+
+	              nameArea.remove();
+	            }
+	          }
+	        });
 
 	    document.getElementById('shareIds').value = shareIds.join(',');
 	});
@@ -864,118 +783,6 @@
  
   //공유일정 조직도 script END***********************************************
 
- // 캘린더 등록하기 (schInsertModal)***********************************************
-      //캘린더 일정등록 ajax
-     			//일정등록 클릭시 모달 띄우기
-     			 // 로그인 확인
-    $(document).ready(function(){
-
-     	    var mod = '${loginUser.userId}'; 
-             $('input[name="modId"]').val(mod); 
-     	
-     	    // 일정 등록 버튼 클릭 시 모달 띄우기
-     	    if (mod === '') {
-     	            alert("일정을 등록하려면 로그인을 해 주세요.");
-     	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
-     	    } else {
-     	        $('.schInsertModalBtn').click(function() {
-     	            $('#schInsertModal').modal('show');
-     	            $('body').addClass('modal-open'); 
-     	        });
-     	    }
-
-     		  // 중요일정 체크박스 클릭 시 조건
-     	    $('#schImportInsertBtn').click(function() {
-     	        var important = $(this).is(':checked') ? 'Y' : 'N';
-     	        $('input[name="schImport"]').val(important);
-     	    });
-     		  
-     	    $('#notifyInsertBtn').click(function() {
-     	        var notify = $(this).is(':checked') ? 'Y' : 'N';
-     	        $('input[name="notifyYn"]').val(notify);
-     	    });
-     	    
-
-         	//등록 ajax
-        		 $('#schInsertButton').click(function() {
-        		  // 날짜 비교 시간까지 비교
-        		  var start = $('input[name="startDate"]').val();
-	            var end = $('input[name="endDate"]').val();
-	            var title = $('input[name="schTitle"]').val()
-	            
-	             if (title === '') {
-	                 alert("제목을 입력하세요");
-	                 event.preventDefault();
-	                 return; 
-	             } else if (start >= end) {
-	                 alert("종료일이 시작일보다 같거나 작을 수 없습니다.");
-	                 event.preventDefault();
-	                 return; 
-	             }
-	             
-             $.ajax({
-                 type: "POST",
-                 url: "${contextPath}/calendar/regist.do", 
-                 data: $('#scheduleForm').serialize(),
-                 success: function(result) {
-                 	if (result === "success") {
-                     // 성공-  모달 닫기
-                     console.log("일정 등록이 성공했습니다.");
-                     alert("일정 등록이 성공했습니다."); 
-                     $("#schInsertModal").modal("hide");
-                     
-                     var calColor;
-                     var schCalSubCode = $('select[name="schCalSubCode"]').val();
-                     if (schCalSubCode === '03') {
-                         calColor = '#358657c3';
-                     } else if (schCalSubCode === '02') {
-                         calColor = '#104fa1c3';
-                     } else if (schCalSubCode === '01') {
-                         calColor = '#a82626c3';
-                     }
-                     
-                     var eventData = {
-                         title: $('input[name="schTitle"]').val(),
-                         start: $('input[name="startDate"]').val(),
-                         end: $('input[name="endDate"]').val(),
-                         color: calColor,
-                         extendedProps: {
-                             schTitle: $('input[name="schTitle"]').val(),
-                             schImport: $('input[name="schImport"]').is(':checked') ? 'Y' : 'N',
-                             schCalSubCode: schCalSubCode,
-                             address: $('input[name="address"]').val(),
-                             //notifyYn: $('input[name="notifyYn"]').is(':checked') ? 'Y' : 'N',
-                             schContent: $('textarea[name="schContent"]').val()
-                         }
-                     };
-                     calendar.addEvent(eventData);
-                     calendar.render();
-
-                     $('#scheduleForm')[0].reset();
-                 	 } else {
-                         console.error("일정 등록에 실패했습니다. 서버 응답: ");
-                         alert("일정 등록에 실패했습니다.");
-                     }
-                 },
-                 error: function() {
-                	 console.error("일정 등록에 실패했습니다.");
-                   alert("일정 등록에 실패했습니다.");
-
-                 }
-             });
-         });
-      //캘린더 일정등록 ajax end **************************************
-
-   	    //schInsertModal 닫힐 때
-   	    $('#schInsertModal').on('hidden.bs.modal', function(e) {
-   	        $('body').removeClass('modal-open'); // 바디에서 modal-open 클래스 제거
-   	    }); 
-   	    
-   	  	//등록모달 -> 삭제버튼 클릭시
-   	    $('#cencelBtn').click(function() {
-          $('#schInsertModal').modal('hide');
-      	}); 
-    });
 
 </script>
     

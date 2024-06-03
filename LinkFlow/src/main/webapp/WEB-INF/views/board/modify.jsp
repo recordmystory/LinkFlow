@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 게시판</title>
 <script src="${ contextPath}/resources/ckeditor5/board/build/ckeditor.js"></script>
 <style>
 	.LinkFlowMainContent section{
@@ -96,17 +96,10 @@
                                             <select id="select" class="custom-select" name="boardCategory" style="width: 200px;">
                                                 <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y' }">
                                                     <option value="CATEGORY-8">사내공지</option>
-                                                <c:forEach var="c" items="${categoryList}">
-                                                	<c:choose>
-	                                                  <c:when test="${ board.boardCategory == c.boardCategory }">
-	                                                    <option value="${c.boardCategory }" selected="selected" >${c.categoryName }게시판</option>
-	                                                  </c:when>
-	                                                  <c:otherwise>
-	                                                  	<option value="${c.boardCategory }">${c.categoryName }게시판</option>
-	                                                  </c:otherwise>
-                                                  </c:choose>
+                                                </c:if>
+                                                <c:forEach var="w" items="${writeList}">
+                                                    <option value="${w.boardCategory }" <c:if test="${ board.boardCategory == w.boardCategory }">selected="selected"</c:if> >${w.categoryName }게시판</option>
                                                 </c:forEach>
-                                               </c:if>
                                             </select>
                                         </td>
                                     </tr>

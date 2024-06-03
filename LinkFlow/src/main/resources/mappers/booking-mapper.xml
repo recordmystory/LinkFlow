@@ -574,7 +574,7 @@
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time
 	 from tb_booking b
 	 join tb_assets a on (a.assets_no = b.assets_no)
-	where b.status = 'COM'
+	where b.status in ('COM','END')
 	  and b.del_yn = 'N'
 	  <choose>
 	  <when test='A == null and A == ""'>
@@ -602,4 +602,15 @@
 	  </otherwise>
 	  </choose>
 </select>
+
+<update id="autoRoomBkEnd">
+<![CDATA[
+	update tb_booking
+	   set status = 'END',
+	   	   status_date = sysdate
+	 where status = 'COM'
+	   and bk_end_dt <= sysdate
+	 ]]>
+</update>
+
 </mapper>

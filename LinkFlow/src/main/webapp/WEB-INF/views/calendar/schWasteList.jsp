@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>schWasteList</title>
+<title>Linkflow 캘린더</title>
 
 <style>
 
@@ -250,34 +250,41 @@ $(document).ready(function() {
  
     	//복구 버튼 클릭시 
      function wasteSchRestore(schNo) {
-        $('#schRestore').click(function() {
-           $.ajax({
-               url: "${contextPath}/calendar/wasteSchRestore.do",
-               type: "get",
-               data: {
-                   schNo: schNo
-               },
-               success: function(result) {
-                   console.log("success:", result);
+    	  $('#schRestore').off('click').on('click', function() { //off('click') - 이전에 바인딩된 클릭 이벤트 핸들러 제거
+    	       
+    	        $(this).prop('disabled', true);
 
-                   if (result === "success") {
-                       alert("일정 복구 성공");
-                       $('#wasteDetailBtn').modal('hide');
-                       subCodeSubmit();
-                   }
-               },
-               error: function(result) {
-               	if (result === "fail") {
-               	 		alert("일정 복구 실패.");
-                  	$('#wasteDetailBtn').modal('hide');
-                   } 
-               }
-           });
-       });
+    	        $.ajax({
+    	            url: "${contextPath}/calendar/wasteSchRestore.do",
+    	            type: "get",
+    	            data: {
+    	                schNo: schNo
+    	            },
+    	            success: function(result) {
+    	                console.log("success:", result);
+
+    	                if (result === "success") {
+    	                    alert("일정 복구 성공");
+    	                    $('#wasteDetailBtn').modal('hide');
+    	                    subCodeSubmit();
+    	                }
+    	            },
+    	            error: function(result) {
+    	                if (result === "fail") {
+    	                    alert("일정 복구 실패.");
+    	                    $('#wasteDetailBtn').modal('hide');
+    	                }
+    	            },
+    	            complete: function() {
+    	                $('#schRestore').prop('disabled', false); //요청이 끝나고 다시 활성화해서 중복방지
+    	            }
+    	        });
+    	    });
+    	}
         	
-    	
+
     
-   	 }
+   	 
     //일정 삭제 ************************************
     	//삭제 버튼 클릭시 삭제 모달 
 		    $(document).on('click', '#removalBtn', function() {

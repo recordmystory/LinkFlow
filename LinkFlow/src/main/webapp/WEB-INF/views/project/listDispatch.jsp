@@ -150,8 +150,6 @@
 		
 			
 			$(document).ready(function () {
-				
-				// 검색 페이징 처리
 		        $("#searchForm select").val("${search.category}");
 				
 		        $("#pagingArea a").on("click", function(){
@@ -165,7 +163,6 @@
 	     			$("#searchForm").submit();
 	     			return false;
 		   		});
-		    	// 검색 페이징 처리
 			});
 	
 		</script>

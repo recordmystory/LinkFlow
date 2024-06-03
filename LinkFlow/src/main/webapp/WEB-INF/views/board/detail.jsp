@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 게시판</title>
 <style>
 .wrapper{
  min-height: 100%;
@@ -64,7 +64,7 @@ i {
                     </div>
                 </div>
                 <div style="text-align:right; padding-right:24px;">
-                	<button class="btn btn-primary">목록으로</button>
+                	<button class="btn btn-primary" onclick="javascript:history.go(-1);">목록으로</button>
                 </div>
                 <!-- /.container-fluid -->
             </section>
@@ -76,7 +76,6 @@ i {
                    	 <div style="min-height: 500px; min-width: 100%; background-color:white; border : 1px solid rgb(163, 161, 161); border-radius : 10px; padding : 40px">
                         <div class="contentInElement">
                             <div class="btnArea">
-                            	<a href="javascript:history.back()" style="padding-right: 20px;">목록</a>
                               	<c:if test="${ board.regId == loginUser.userId or loginUser.superRight == 'Y' or loginUser.boardRight == 'Y'}">
                                   <a href="${ contextPath }/board/modifyForm.page?no=${board.boardNo}" style="padding-right: 20px;">수정</a>
                                   <a href="#" onclick="confirmDelete('${contextPath}/board/delete.do?no=${board.boardNo}&type=${ board.boardCategory}')">삭제</a>
