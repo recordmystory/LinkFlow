@@ -63,7 +63,7 @@
                                 <div class="contentInElement">
                                     <div class="btnArea">
                                         <button type="submit" class="btn btn-primary btn-sm">수정하기</button>
-                                        <button type="button" class="btn btn-danger btn-sm">수정취소</button>
+                                        <a href="${contextPath}/project/detail.pj?no=${pro.proNo}" class="btn btn-danger btn-sm">수정취소</a>
                                     </div>
                                 </div>
                                 <div style="display: flex;">
