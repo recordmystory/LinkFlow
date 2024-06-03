@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="alarmMapper">
+
+<resultMap id="alaResult" type="AlarmDto" extends="commonMapper.commonResult">
+	<id column="alarm_no" property="alarmNo"/>
+	<result column="user_id" property="userId"/>
+	<result column="alarm_code" property="alarmCode"/>
+	<result column="alarm_title" property="alarmTitle"/>
+	<result column="check_yn" property="checkYN"/>
+	<result column="alarm_url" property="alarmURL"/>
+	<result column="booking_no" property="bookingNo"/>
+</resultMap>
+
+<insert id="insertAlarm">
+	insert into tb_alarm
+	      (
+	       alarm_no
+	      ,user_id
+	      ,alarm_code
+	      ,alarm_title
+	      ,alarm_url
+	      )
+	values(
+		   seq_alno.nextval
+		  ,#{userId}
+		  ,'booking'
+		  ,#{alarmTitle}
+		  ,#{alarmURL}
+		  )
+</insert>
+
+<update id="readAlarm">
+	update tb_alarm
+	  set checkYN = 'Y'
+	where alarm_no = #{alarmNo}
+</update>
+
+<update id="delAlarm">
+	update tb_alarm
+	  set del_yn = 'Y'
+	where alarm_no=#{alarmNo}
+</update>
+
+<select id="selectAlarmList" resultMap="alaResult">
+	select 
+		   alarm_no
+	      ,user_id
+	      ,check_yn
+	      ,alarm_code
+	      ,alarm_title
+	      ,alarm_url
+	 from tb_alarm
+	where user_id = #{userId}
+	  and del_yn = 'N'
+</select>
+
+<select id="selectAlarmNo" resultType="_int">
+	select alarm_no
+	 from tb_alarm
+	where booking_no = #{bkNo}
+</select>
+
+</mapper>

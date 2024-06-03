@@ -353,6 +353,7 @@
 <select id="selectBkWaitList" resultMap="bkResult">
 	select 
 		   booking_no
+		  ,b.booking_id
 		  ,m.user_name
           ,d.dept_title
 		  ,b.assets_no

@@ -1,8 +1,7 @@
 package com.mm.linkflow.controller;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import com.mm.linkflow.dto.AlarmDto;
 import com.mm.linkflow.dto.AssetsDto;
 import com.mm.linkflow.dto.BookingDto;
 import com.mm.linkflow.dto.MemberDto;
 import com.mm.linkflow.dto.PageInfoDto;
+import com.mm.linkflow.handler.AlarmEchoHandler;
+import com.mm.linkflow.service.impl.AlarmServiceImpl;
 import com.mm.linkflow.service.impl.BookingServiceImpl;
 import com.mm.linkflow.util.PagingUtil;
 
@@ -37,6 +41,8 @@ public class BookingController {
 	
 	private final BookingServiceImpl bkServiceImpl;
 	private final PagingUtil paging;
+	private final AlarmEchoHandler alarmHandler;
+	private final AlarmServiceImpl alarmService;
 
 	@GetMapping("/room.bk") // 시설예약조회 페이지 이동 
 	public String bkRoomPage() {
@@ -324,8 +330,36 @@ public class BookingController {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
 		int result = bkServiceImpl.updateSupBkConfirm(bk);
-		
-		return "redirect:/booking/sup.mng";
+		String rejContent = bk.get("rejContent") != null || !bk.get("rejContent").equals("") ? "승인된 예약이 있습니다." : "반려된 예약이 있습니다.";
+		if(result >0 ) {
+			List<WebSocketSession> sessionList = alarmHandler.getSessionList();
+			AlarmDto alarm = AlarmDto.builder()
+									 .userId(bk.get("bookingId"))
+									 .alarmTitle(rejContent)
+									 .alarmURL("/booking/mylist.bk")
+									 .bookingNo(bk.get("bookingNo"))
+									 .build();
+			int alarmResult = alarmService.insertAlarm(alarm);
+			if(alarmResult > 0) {
+				for(WebSocketSession web : sessionList) {
+					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
+						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
+						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL();
+						
+						try {
+							web.sendMessage(new TextMessage(msg));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}else {
+			}
+			return "redirect:/booking/sup.mng";
+		}else {
+			
+			return "redirect:/booking/sup.mng";
+		}
 	}
 	
 	@PostMapping("/supEnd.bk") // 비품예약 반납 

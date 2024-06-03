@@ -490,7 +490,7 @@
 		$("#con-bkNo").val(bk.bookingNo);
 		
 		$("#con-supUser").empty();
-		$("#con-supUser").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><p>" + bk.userName + "(" + bk.deptName + ")</p>");
+		$("#con-supUser").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p> <input type='hidden' name='bookingId' value='"+ bk[i].bookingId +"'><p>" + bk.userName + "(" + bk.deptName + ")</p>");
 
 		$("#con-sub-ass").empty();
 		$("#con-sub-ass").append("<p>예약비품 :</p> &nbsp; <input type='hidden' name='subName' value='"+ bk.subName +"'> <p>"+ bk.subName + " / " + bk.assetsName + "</p>");

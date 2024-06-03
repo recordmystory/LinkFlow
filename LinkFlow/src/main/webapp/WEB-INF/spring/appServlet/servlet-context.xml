@@ -38,16 +38,16 @@
 	</interceptors>
 	
 	<!-- * websocket 할때 쓸거 -->
-	<!-- 
-	<beans:bean class="com.mm.linkflow.handler.ChatEchoHandler" id="chatEchoHandler" />
+	
+	<beans:bean class="com.mm.linkflow.handler.AlarmEchoHandler" id="alarmEchoHandler" />
 	<websocket:handlers>
-		<websocket:mapping handler="chatEchoHandler" path="/chat"/>
+		<websocket:mapping handler="alarmEchoHandler" path="/alarm"/>
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
 		</websocket:handshake-interceptors>
 		<websocket:sockjs/>
 	</websocket:handlers> 
-	-->
+
 	
 	<!-- @Scheduled 허용 -->
 	<task:annotation-driven/>
