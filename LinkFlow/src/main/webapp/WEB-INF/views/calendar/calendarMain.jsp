@@ -195,7 +195,6 @@
 	 						
             	if(event.url === ''){ //공휴일만 url 값이 있음. 공휴일 눌렀을 시 상세일정 실행 막기
 	            //상세일정   
-	            $('body').addClass('overflow-hidden'); 
 	            schDetail(event);
             	}
 	            // 일정 수정 폼 상세일정의 내용 끌어오기
@@ -343,7 +342,7 @@
 	     	    // 일정 등록 버튼 클릭 시 모달 띄우기
 	     	    if (mod === '') {
 	     	            alert("일정을 등록하려면 로그인을 해 주세요.");
-	     	            window.location.href = "${contextPath }/member/loginout.me"; // 로그인 페이지 경로로 이동
+	     	            window.location.href = "${contextPath}/member/loginout.me"; // 로그인 페이지 경로로 이동
 	     	    } else {
 	     	        $('.schInsertModalBtn').click(function() {
 	     	            $('#schInsertModal').modal('show');
@@ -410,20 +409,24 @@
 	                             schContent: $('textarea[name="schContent"]').val()
 	                         }
 	                     };
-	                     
-
 			                // 추가된 일정 바로 추가 + 다른 모달에 영향끼지치않도록 재조회
-			                 if ($(".calCheckbox[value='" + schCalSubCode + "']").is(":checked")) {
-			                  addEventAndShow(eventData.extendedProps.schCalSubCode);
-			                  calendar.getEvents().forEach(function(event) {
-			                    if (event.extendedProps.schCalSubCode && event.remove()) {
-			                        event.remove();
-			                    }
-			                 });
-			                }
-	                    
+					     	 /*  var changeCheckboxVal = $(".calCheckbox").val();
+					     	  var events = calendar.getEvents(); 
+
+			           if($(this).is(":checked")) {
+			               //calendar.refetchEvents();
+			           	addEventAndShow($(this).val());
+			           
+					     	  events.forEach(function(event) {
+					       		event.extendedProps.schCalSubCode && event.extendedProps.schCalSubCode == changeCheckboxVal && event.remove();
+					     	 })
+			                 */
+					           	addEventAndShow(eventData.schCalSubCode);
+
 	                     $('#schShareModal .referenceArea').empty();
 	                     }
+	                     checkboxReSelect;
+
 	                 },
 	                 error: function() {
 	                	 console.error("일정 등록에 실패했습니다.");
@@ -518,7 +521,7 @@
 
                     } 
                     addEventAndShow(data.schCalSubCode);
-                    CheckboxReSelect();
+                    checkboxReSelect();
                     $('#schShareModal .referenceArea').empty();
 
                 },
@@ -535,7 +538,7 @@
 			  });
 			  
 			  //캘린더 재조회 수정에서 
-		      function CheckboxReSelect(){
+		      function checkboxReSelect(){
 		     	  var events = calendar.getEvents(); 
 		     	  var changeCheckboxVal = $(".calCheckbox").val();
            if($(this).is(":checked")) {
