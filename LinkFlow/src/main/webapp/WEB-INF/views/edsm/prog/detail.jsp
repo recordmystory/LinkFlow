@@ -277,7 +277,14 @@
 			                   <c:choose>
 			                   	<c:when test="${edocHist.edHistSubCode == '01'}">
 			                   		<td class="sign-img-area">
-			                     		<img src="${contextPath}<c:out value='${edocHist.signUrl}'/>" style="width: 150px; height: 150px;">
+			                     		<c:choose>
+			                     			<c:when test="${edocHist.signUrl == null}">
+			                     				<img src="${contextPath}/resources/images/common/default_sign_approval.png" style="width: 150px; height: 150px;">
+			                     			</c:when>
+			                     			<c:otherwise>
+					                     		<img src="${contextPath}<c:out value='${edocHist.signUrl}'/>" style="width: 150px; height: 150px;">
+			                     			</c:otherwise>
+			                     		</c:choose>
 			                   		</td>
 			                   	</c:when>
 			                   	
