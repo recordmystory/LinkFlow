@@ -410,6 +410,22 @@
 		</div>
 	</div>
 	<script>
+		$(function() {
+			$('#addMemberModal').on('shown.bs.modal', function () {
+		        // 폼 초기화
+		        $('#addMemberForm')[0].reset();
+		        
+		        // 추가로 readonly 필드 및 특정 필드 값도 초기화
+		        $('#chooseName1').val('');
+		        $('#chooseId1').val('');
+		        
+		        // 라디오 버튼 초기화
+		        $('input[name="role"][value="개발자"]').prop('checked', false);
+		        $('input[name="role"][value="PM"]').prop('checked', false);
+		        $('input[name="disYn"][value="N"]').prop('checked', true);
+		    });
+		})
+	
         function chooseMember(element){
         	var userName = element.querySelector('p').textContent;
         	var userId = element.querySelector('input').value;
