@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 프로젝트상세조회</title>
 <!-- 네이버 지도 api -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wfsx6d3wj7&submodules=geocoder"></script>
 <style type="text/css">

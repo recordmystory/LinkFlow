@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Linkflow 직원별일일작업상세조회</title>
 <style>
 .wrapper{
  min-height: 100%;
