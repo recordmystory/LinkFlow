@@ -79,7 +79,7 @@
 	                                    <tr>
 	                                        <td colspan="4">
 	                                            <div style="transform: translateX(-550px);"><h5 style="font-weight: bold;">작업내용</h5></div>
-	                                            <textarea name="daiContent" style="width: 1100px; height: 800px; margin-top: 20px; overflow: auto; resize: none;">${dai.daiContent}</textarea>
+	                                            <textarea name="daiContent" style="width: 1100px; height: 400px; margin-top: 20px; overflow: auto; resize: none;">${dai.daiContent}</textarea>
 	                                        </td>
 	                                    </tr>
 	                                </table>
