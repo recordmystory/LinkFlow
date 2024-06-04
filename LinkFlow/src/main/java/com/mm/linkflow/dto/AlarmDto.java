@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-public class AlarmDto {
+public class AlarmDto extends CommonDto{
 
 	private int alarmNo;
 	private String userId;
@@ -22,4 +22,5 @@ public class AlarmDto {
 	private String alarmTitle;
 	private String alarmURL;
 	private String bookingNo;
+	private String alarmDate;
 }

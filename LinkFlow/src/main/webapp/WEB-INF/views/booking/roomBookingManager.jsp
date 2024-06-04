@@ -314,7 +314,7 @@
 			$("#rommName").append("<p>예약 시설 :</p> &nbsp; <p> 회의실 " + bk.assetsName + "</p>");
 
 			$("#bkId").empty();
-			$("#bkId").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><p>" + bk.userName + "(" + bk.deptName + ")</p>");
+			$("#bkId").append("<p>요청자 &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;</p><input type='hidden' name='bookingId' value='"+ bk.bookingId + "'><p>" + bk.userName + "(" + bk.deptName + ")</p>");
 			
 			$("#room-time").empty();
 			$("#room-time").append("<p>예약 시간</p> <p>" + bk.bkStartDate + " " + bk.bkStartTime + " ~ " + bk.bkEndTime + "</p>");

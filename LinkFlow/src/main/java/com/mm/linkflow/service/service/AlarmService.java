@@ -15,4 +15,6 @@ public interface AlarmService {
 	int delAlarm(int alarmNo);
 	
 	int selectAlarmNo(String bkNo);
+	
+	int allReadAlarm(String userId);
 }

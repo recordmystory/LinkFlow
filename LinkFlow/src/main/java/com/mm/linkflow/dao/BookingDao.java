@@ -155,7 +155,7 @@ public class BookingDao {
 	}
 
 	public List<AssetsDto> modalSetDtoList() {
-		return sql.selectList("bkMapper.selectAssetsList");
+		return sql.selectList("bkMapper.modalSetDtoList");
 	}
 
 	public int insertBooking(Map<String, String> bk) {

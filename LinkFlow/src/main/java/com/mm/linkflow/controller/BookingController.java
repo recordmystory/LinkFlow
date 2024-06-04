@@ -330,7 +330,7 @@ public class BookingController {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
 		int result = bkServiceImpl.updateSupBkConfirm(bk);
-		String rejContent = bk.get("rejContent") != null || !bk.get("rejContent").equals("") ? "승인된 예약이 있습니다." : "반려된 예약이 있습니다.";
+		String rejContent = bk.get("rejContent") == null || bk.get("rejContent").equals("") ? "승인된 예약이 있습니다." : "반려된 예약이 있습니다.";
 		if(result >0 ) {
 			List<WebSocketSession> sessionList = alarmHandler.getSessionList();
 			AlarmDto alarm = AlarmDto.builder()
@@ -353,7 +353,6 @@ public class BookingController {
 						}
 					}
 				}
-			}else {
 			}
 			return "redirect:/booking/sup.mng";
 		}else {
@@ -428,12 +427,35 @@ public class BookingController {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
 		int result = bkServiceImpl.updateRoomBooking(bk);
-
-		if(result <= 0) {
+		String rejContent = bk.get("rejContent") == null || bk.get("rejContent").equals("") ? "승인된 예약이 있습니다." : "반려된 예약이 있습니다.";
+		if(result > 0 ) {
+			List<WebSocketSession> sessionList = alarmHandler.getSessionList();
+			AlarmDto alarm = AlarmDto.builder()
+									 .userId(bk.get("bookingId"))
+									 .alarmTitle(rejContent)
+									 .alarmURL("/booking/mylist.bk")
+									 .bookingNo(bk.get("bookingNo"))
+									 .build();
+			int alarmResult = alarmService.insertAlarm(alarm);
+			if(alarmResult > 0) {
+				for(WebSocketSession web : sessionList) {
+					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
+						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
+						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL();
+						
+						try {
+							web.sendMessage(new TextMessage(msg));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}else{
 			redirect.addFlashAttribute("alertMsg","잘못된 요청입니다.");
 		}
-		
 		return "redirect:/booking/room.mng";
+		
 	}
 
 	@ResponseBody // 시설예약캘린더 조회 

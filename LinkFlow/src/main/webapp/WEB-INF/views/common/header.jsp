@@ -21,6 +21,37 @@
 <!-- AdminLTE App -->
 <script src="${contextPath }/resources/js/htmlTemp/adminlte.min.js"></script>
 <link rel="stylesheet" href="${contextPath}/resources/css/common.css">
+
+<style>
+.alarmItems{
+	background-color: #f0441013;
+	border-bottom: 1px solid gray;
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.alarmDropSet{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.delAlarm{
+	cursor: pointer;
+}
+.readAlarm{
+	background-color: #a0a0a027; 
+}
+.alarmSet{
+	display:flex;
+	flex-direction: column;
+}
+.alarmDate{
+	text-align:end;
+}
+.alarmCount{
+	font-size:12px;
+}
+</style>
 </head>
 <body>
 	<script>
@@ -121,14 +152,14 @@
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="far fa-bell"></i><!--알람 아이콘-->
-            <span class="badge badge-warning navbar-badge">15</span>
+            <span class="badge badge-warning navbar-badge alarmCount">15</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          	<span class="dropdown-item dropdown-header">15 Notifications</span>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right alarmDrop">
+          
             <div class="dropdown-divider"></div>
             
             
-            <a href="#" class="dropdown-item">
+            <!-- <a href="#" class="dropdown-item">
               <i class="fas fa-envelope mr-2"></i> 4 new messages
               <span class="float-right text-muted text-sm">3 mins</span>
             </a>
@@ -141,34 +172,33 @@
             <a href="#" class="dropdown-item">
               <i class="fas fa-file mr-2"></i> 3 new reports
               <span class="float-right text-muted text-sm">2 days</span>
-            </a>
+            </a> -->
             
             
             
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+            
           </div>
         </li>
         <!-- 푸쉬 알람 영역끝 -->
 
        <c:if test="${loginUser.superRight == 'Y' || loginUser.hrRight == 'Y'}">
-				  <li class="nav-item dropdown">
-				    <a class="nav-link" data-toggle="dropdown" href="#">
-				      <i class="fas fa-th-large"></i>
-				    </a>
-				    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-				      <span class="dropdown-item dropdown-header">페이지 이동하기</span>
-				      <div class="dropdown-divider"></div>
-				      <a href="${contextPath}/main" class="dropdown-item">
-				        <i class="fa-solid fa-briefcase mr-2"></i> Office
-				      </a>
-				      <div class="dropdown-divider"></div>
-				      <a href="${contextPath}/hr/hrPage" class="dropdown-item">
-				        <i class="fas fa-users mr-2"></i> HR 
-				      </a>
-				    </div>
-				  </li>
-				</c:if>
+		  <li class="nav-item dropdown">
+		    <a class="nav-link" data-toggle="dropdown" href="#">
+		      <i class="fas fa-th-large"></i>
+		    </a>
+		    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+		      <span class="dropdown-item dropdown-header">페이지 이동하기</span>
+		      <div class="dropdown-divider"></div>
+		      <a href="${contextPath}/main" class="dropdown-item">
+		        <i class="fa-solid fa-briefcase mr-2"></i> Office
+		      </a>
+		      <div class="dropdown-divider"></div>
+		      <a href="${contextPath}/hr/hrPage" class="dropdown-item">
+		        <i class="fas fa-users mr-2"></i> HR 
+		      </a>
+		    </div>
+		  </li>
+		</c:if>
         
         
          
@@ -215,29 +245,108 @@
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script>
     $(document).ready(function(){
-    	/* const alarmSock = new SockJS("${contextPath}/alarm");
+    	alarmList();
+    	const alarmSock = new SockJS('${contextPath}/alarm');
     	alarmSock.onmessage = onAlarmMsg;
     	alarmSock.onclose = function(){
     		location.href = '${contextPath}';
-    	}*/
+    	}
     	
     })
     
+   	const alarmDrop = $(".alarmDrop");
     function onAlarmMsg(ala){
-    	// const prpend할 영역 변수에 담기 
+    	
+    	let currentDate = new Date();
+    	let date = currentDate.toISOString().split('T')[0];
     	
     	let alarmArr = ala.data.split("/");
     	let alarmNo = alarmArr[0];
     	let alarmTitle = alarmArr[1];
     	let alarmURL = alarmArr[2];
-    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL);
+    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL, date);
     	
-    	
+    	alarmDrop.prepend(alarmItem);
+    	alarmCount();
     }
     
-    function createItem(no,title,url){
-    	
+    function alarmCount(){
+    	let totalCount = $(".alarmItems").length;
+    	let readCount = $(".readAlarm").length;
+    	let notReadCount = totalCount - readCount ;
+    	console.log(totalCount , readCount, notReadCount);
+    	$(".alarmCount").empty();
+    	$(".alarmCount").html(notReadCount);
     }
+    
+    function createItem(no,title,url,date){
+    	
+    	let newAlarm = "<div class='alarmDropSet'><a href='${contextPath}/"+ url +"' class='dropdown-item alarmItems' onclick=\"readAlarm('"+ no +"');\"><i class='fas fa-clock mr-2'></i>"
+    				 +"&nbsp;<div class='alarmSet'><p>"+title + "</p><span class='float-right text-muted text-sm alarmDate'>"+ date + "</span>"
+    				 +"</div> </a>&nbsp;&nbsp; <div class='delAlarm'><i class='fas fa-trash mr-2' onclick=\"delAlarm('"+ no +"')\"></div></div>";
+    	let alarmItem = $(newAlarm);
+    	
+    	return alarmItem; 
+    }
+    
+    function alarmList(){
+    	alarmDrop.empty();
+    	$.ajax({
+    		url : '${contextPath}/alarm/ala.list',
+    		type: 'get',
+    		success: function(alList){
+    			for(let i=0; i<alList.length; i++){
+    				let selectItem = createItem(alList[i].alarmNo, alList[i].alarmTitle, alList[i].alarmURL, alList[i].alarmDate);
+    				if(alList[i].checkYN === 'Y'){
+    					 selectItem.find('.alarmItems').addClass('readAlarm');
+    				}
+    				alarmDrop.append(selectItem);
+    			}
+    			alarmDrop.append("<p class='dropdown-item dropdown-footer' onclick='allRead()'>See All Notifications</p>");
+    			alarmCount();
+    		}
+    	})
+    }
+    
+    function readAlarm(no){
+    	
+    	$.ajax({
+    		url: '${contextPath}/alarm/ala.read',
+    		type:'get',
+    		data: {no:no},
+    		success:function(result){
+    			if(result > 0){
+    				alarmList();
+    			}
+    		}
+    	})
+    }
+    
+    function delAlarm(no){
+    	$.ajax({
+    		url: '${contextPath}/alarm/ala.del',
+    		type:'get',
+    		data: {no:no},
+    		success:function(result){
+    			if(result > 0){
+    				alarmList();
+    			}
+    		}
+    	})
+    }
+    
+    function allRead(){
+    	$.ajax({
+    		url: '${contextPath}/alarm/ala.all',
+    		type:'get',
+    		success:function(result){
+    			if(result > 0){
+    				alarmList();
+    			}
+    		}
+    	})
+    }
+    
     </script>
 	</div>
 </body>

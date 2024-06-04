@@ -24,15 +24,19 @@ public class AlarmDao {
 	}
 
 	public int readAlarm(int alarmNo) {
-		return sql.insert("alarmMapper.readAlarm",alarmNo);
+		return sql.update("alarmMapper.readAlarm",alarmNo);
 	}
 
 	public int delAlarm(int alarmNo) {
-		return sql.insert("alarmMapper.delAlarm",alarmNo);
+		return sql.update("alarmMapper.delAlarm",alarmNo);
 	}
 
 	public int selectAlarmNo(String bkNo) {
 		return sql.selectOne("alarmMapper.selectAlarmNo",bkNo);
+	}
+
+	public int allReadAlarm(String userId) {
+		return sql.update("alarmMapper.allReadAlarm",userId);
 	}
 	
 	

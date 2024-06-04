@@ -9,6 +9,7 @@
 	<result column="alarm_title" property="alarmTitle"/>
 	<result column="check_yn" property="checkYN"/>
 	<result column="alarm_url" property="alarmURL"/>
+	<result column="alarm_date" property="alarmDate"/>
 	<result column="booking_no" property="bookingNo"/>
 </resultMap>
 
@@ -20,6 +21,7 @@
 	      ,alarm_code
 	      ,alarm_title
 	      ,alarm_url
+	      ,booking_no
 	      )
 	values(
 		   seq_alno.nextval
@@ -27,18 +29,21 @@
 		  ,'booking'
 		  ,#{alarmTitle}
 		  ,#{alarmURL}
+		  ,#{bookingNo}
 		  )
 </insert>
 
 <update id="readAlarm">
 	update tb_alarm
-	  set checkYN = 'Y'
+	  set check_yn = 'Y',
+	  	  mod_date = sysdate
 	where alarm_no = #{alarmNo}
 </update>
 
 <update id="delAlarm">
 	update tb_alarm
-	  set del_yn = 'Y'
+	  set del_yn = 'Y',
+	  	  mod_date = sysdate
 	where alarm_no=#{alarmNo}
 </update>
 
@@ -50,9 +55,12 @@
 	      ,alarm_code
 	      ,alarm_title
 	      ,alarm_url
+	      ,booking_no
+	      ,to_char(reg_date,'YYYY-MM-DD') AS alarm_date
 	 from tb_alarm
 	where user_id = #{userId}
 	  and del_yn = 'N'
+	order by reg_date desc
 </select>
 
 <select id="selectAlarmNo" resultType="_int">
@@ -60,5 +68,13 @@
 	 from tb_alarm
 	where booking_no = #{bkNo}
 </select>
+
+<update id="allReadAlarm">
+	update tb_alarm
+	  set check_yn = 'Y',
+	  	  mod_date = sysdate
+	where user_id = #{userId}
+	  and del_yn = 'N'
+</update>
 
 </mapper>

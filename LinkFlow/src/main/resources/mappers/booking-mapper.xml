@@ -353,7 +353,7 @@
 <select id="selectBkWaitList" resultMap="bkResult">
 	select 
 		   booking_no
-		  ,b.booking_id
+		  ,booking_id
 		  ,m.user_name
           ,d.dept_title
 		  ,b.assets_no
@@ -526,7 +526,7 @@
 	 join tb_common c on a.main_code = c.main_code
 	where a.del_yn ='N'
 	  and a.sub_code = c.sub_code
-	  and use_yn = 'Y'
+	  and a.use_yn = 'Y'
 	order by a.assets_no desc
 </select>
 
@@ -573,6 +573,7 @@
 	select 
 		   assets_name
 		  ,booking_no
+		  ,booking_id
 		  ,NVL(to_char(bk_start_dt,'YYYY-MM-DD'), '-') AS bk_start_date
 		  ,NVL(to_char(bk_start_dt,'hh24:mi'), ' ') AS bk_start_time
 		  ,NVL(to_char(bk_end_dt,'hh24:mi'), ' ') AS bk_end_time

@@ -41,4 +41,9 @@ public class AlarmServiceImpl implements AlarmService {
 		return alarmDao.selectAlarmNo(bkNo);
 	}
 
+	@Override
+	public int allReadAlarm(String userId) {
+		return alarmDao.allReadAlarm(userId);
+	}
+
 }
