@@ -24,7 +24,24 @@
       font-size: 14px;
 
     }
+    .fc-event.holiday {
+    z-index: 10; /* 공휴일 이벤트가 다른 이벤트보다 상위 레이어에 표시되도록 설정 */
+}
 
+		  .fc-col-header-cell-cushion, .fc-daygrid-day-number{
+		  color:rgba(55, 55, 56, 0.85) !important; 
+		 
+		 }
+		 
+		 .fc-scrollgrid-section.fc-scrollgrid-section-header {
+		 	 background-color: rgba(150, 150, 150, 0.15) !important; 
+		 }
+		 
+		 .fc-col-header-cell.fc-day.fc-day-sun,.fc-col-header-cell.fc-day.fc-day-sat{
+		 		background-color: rgba(150, 150, 150, 0) !important; 
+		 
+		 }
+		 
     .nav{
       font-weight: bold;
     }
@@ -34,13 +51,15 @@
       font-size: large;
     }
 
-    .fc-day.fc-day-sat.fc-day-past.fc-daygrid-day,
-    .fc-day.fc-day-sun.fc-day-past.fc-daygrid-day{
-     background-color: rgba(236, 224, 232, 0.515);
-
+    .fc-day.fc-day-sat,
+    .fc-day.fc-day-sun{
+      background-color: rgba(30, 100, 1000, 0.1);
     }    
 
-
+		.fc-day-other{
+		     background-color: rgb(244, 246, 249) !important;
+		
+		}
     /*공휴일 스타일*/
     .holiday{
       background-color: transparent;
@@ -163,7 +182,7 @@
                 }
             },
             displayEventTime: false,
-            //중요일정, 전사 부서 개인 일정 순으로 정렬 //다시보기!
+            //중요일정, 전사 부서 개인 일정 순으로 정렬 //정렬
             eventOrder: function(a, b) {
             	 
             	//중요일정일 때 a를 위로 //양수면 앞뒤 자리가 바뀌고 음수면 그대로 sort참고 
@@ -180,9 +199,8 @@
 	                '03': 3  // 개인일정
 	            };
            	 return order[a.extendedProps.schCalSubCode] - order[b.extendedProps.schCalSubCode]; 
-       		 },                 
+            },
             
-          	
 						//중요일정 클릭시 클래스명 추가
       			eventDidMount: function(info) {
               if (info.event.extendedProps.schImport === 'Y') {
@@ -212,8 +230,9 @@
                     //backgroundColor: 'red', // 휴일 이벤트의 배경색을 빨간색으로 지정
                     //borderColor: 'black'
                     classNames: 'holiday',
-                    textColor: 'rgba(190, 0, 50, 0.5)',
-                    constraint: 'availableForMeeting' //일정 옮기지 못하게 제약조건 걸 때 필요
+                    textColor: 'rgba(160, 50, 0, 0.45)',
+                    constraint: 'holidayConstraint', //일정 옮기지 못하게 제약조건 걸 때 필요
+               
                 }
             ]
         });
@@ -326,10 +345,14 @@
 		     if (userId != modId) {
 			     $('.schDetailModal_blueBtn, .schDetailModal_grayBtn').hide();
 			    }  
-		    
+	       $('body').addClass('overflow-hidden'); 
+
 		    $('#schDetailModal').modal('show');
 		}
-		    
+					 $('#schDetailModal').on('hidden.bs.modal', function(e) {
+	            $('body').removeClass('modal-open'); 
+	            $('body').removeClass('overflow-hidden');
+	        });
     
 		 // 캘린더 등록하기 (schInsertModal)***********************************************
 	      //캘린더 일정등록 ajax
@@ -431,7 +454,9 @@
 	      var extendedProps = event.extendedProps;
 
 		    $('.schDetailModal_blueBtn').click(function() {
-		        $('#schUpdateModal').modal('show');
+ 	            $('body').addClass('modal-open'); 
+
+		    	$('#schUpdateModal').modal('show');
 
 		        $('#schUpdateModal input[name="schTitle"]').val(event.title);
 		        $('#schUpdateModal input[name="address"]').val(extendedProps.address);
@@ -448,8 +473,8 @@
 		        console.log("schNo:", extendedProps.schNo);
 		    });
 		}
-		
-		//중복제거 및 재조회(insert, update용)
+	
+		//중복제거 및 재조회(insert용)
 		function checkboxReSelect() {
 		    // 추가된 일정 바로 추가 + 다른 모달에 영향끼지치않도록 재조회
 		    var calSubCode = $('select[name="schCalSubCode"]').val();
@@ -468,9 +493,6 @@
 		            // 체크박스가 선택된 경우
 		            if (event.extendedProps.schCalSubCode === calSubCode) {
 		                event.remove(); // 중복되는 일정 제거
-		            } else {
-		                // 다른 서브 코드에 해당하는 일정은 그대로 유지
-		            
 		            }
 		        }
 		    });
@@ -493,6 +515,8 @@
         	    });
 	  	  });
 			  
+     
+    
      // 일정 수정하기 모달에서 저장 버튼 클릭 시  ***************
         $('#schUpdateButton').click(function() {
         	var shareIds = $('#shareIds').val().split(',');
@@ -531,13 +555,15 @@
                 success: function(resultSch) {
                     if (resultSch === "success") {
                         alert("일정 수정 성공.");
+
                         $('#schUpdateModal').modal('hide');
                         $('#schDetailModal').modal('hide');
                         $('.NameArea').val('');
 
                     } 
-                  
                     checkboxReSelect();
+
+
                 },
                 error: function() {
                     console.log("일정 수정 실패.");
@@ -545,7 +571,8 @@
             });
         });
 
-     
+
+  
     		//수정모달에서 취소 클릭시
 			  $('#schUpdateCancelBtn').click(function() {
            $('#schUpdateModal').modal('hide');
@@ -555,6 +582,7 @@
     // 일정 삭제 *******************************
     	//삭제모달 html text
         $('.schDetailModal_grayBtn').click(function() {
+        	
           $('#detailBtn-modal-body').html('<div>일정을 삭제하시겠습니까?<p style="color:red; font-size:small; padding-top:10px;">삭제된 일정은 휴지통에서 복구 가능합니다.</p></div>');
         });
     
@@ -590,6 +618,7 @@
                 error: function(result) {
                 	if (result === "fail") {
                         $('#schDetailModal').modal('hide');
+                        
                     } 
                 }
             });
@@ -617,6 +646,7 @@
       //삭제모달에서 취소버튼 클릭시
       $('#schDeleteCancelBtn').click(function() {
           $('#detailBtn').modal('hide');
+          $('body').removeClass('overflow-hidden');
 
       });
 
