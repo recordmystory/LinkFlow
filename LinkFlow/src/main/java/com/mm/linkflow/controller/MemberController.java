@@ -70,39 +70,40 @@ public class MemberController {
 	
 	//마이페이지 정보 수정 
 	@PostMapping("/updateInfo.do")
-	public String update(MemberDto m, MultipartFile uploadFile,HttpSession session,RedirectAttributes redirectAttributes) {
-		
-		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-		String originName = loginUser.getProfileUrl();
-		
-		if(originName == null) {
-			Map<String,String> map = fileUtil.fileUpload(uploadFile, "profile");
-			
-			String newProfileUrl = map.get("filePath") + "/" + map.get("filesystemName");
-			loginUser.setProfileUrl(newProfileUrl);
-			m.setProfileUrl(newProfileUrl);
-			int result = mService.updateMember(m); 
-			
-			if(result > 0) {
-				redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
-				session.setAttribute("loginUser", mService.loginMember(m));
-			}else {
-				redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
-			}
-			
-		}else {
-			int result = mService.updatInfoeMember(m); 
-			
-			if(result > 0) {
-				redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
-				session.setAttribute("loginUser", mService.loginMember(m));
-			}else {
-				redirectAttributes.addFlashAttribute("alertMsg", " 정보수정에 실패하였습니다.");
-			}
-		}
-		
-		return "redirect:/member/myinfo.page";
-		
+	public String update(MemberDto m, MultipartFile uploadFile, HttpSession session, RedirectAttributes redirectAttributes) {
+
+	    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+	    String originName = loginUser.getProfileUrl();
+
+	    if (uploadFile != null && !uploadFile.isEmpty()) {
+	      
+	        Map<String, String> map = fileUtil.fileUpload(uploadFile, "profile");
+	        String newProfileUrl = map.get("filePath") + "/" + map.get("filesystemName");
+	        m.setProfileUrl(newProfileUrl);
+
+	        int result = mService.updateMember(m);
+
+	        if (result > 0) {
+	            redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
+	            session.setAttribute("loginUser", mService.loginMember(m));
+	        } else {
+	            redirectAttributes.addFlashAttribute("alertMsg", "정보수정에 실패하였습니다.");
+	        }
+	    } else {
+	       
+	        m.setProfileUrl(originName);  
+
+	        int result = mService.updatInfoeMember(m);
+
+	        if (result > 0) {
+	            redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보수정 되었습니다.");
+	            session.setAttribute("loginUser", mService.loginMember(m));
+	        } else {
+	            redirectAttributes.addFlashAttribute("alertMsg", "정보수정에 실패하였습니다.");
+	        }
+	    }
+
+	    return "redirect:/member/myinfo.page";
 	}
 	
 	//프로필 삭제 AJAX 
