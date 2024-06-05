@@ -211,7 +211,7 @@
 		WHERE ED.DEL_YN = 'N'
             AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
             AND ED.STATUS = '04'
-    ORDER BY ED.REG_DATE
+    ORDER BY SUBSTR(ED_NO, INSTR(ED_NO, '-', -1) + 1) DESC
 	</select>
 	
 	<select id="selectAllListCnt" resultType="_int">
@@ -233,7 +233,7 @@
 						WHERE ED.DEL_YN = 'N'
 				            AND (ED.REG_ID = #{userId} OR EH.USER_ID = #{userId} OR ER.USER_ID = #{userId})
 				            AND ED.STATUS = '04'
-				    ORDER BY ED.REG_DATE
+				    ORDER BY SUBSTR(ED_NO, INSTR(ED_NO, '-', -1) + 1) DESC
 		) COUNT
 	</select>
 	
@@ -259,7 +259,7 @@
 	     		AND ED.STATUS = #{condition}
        		AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
        		AND ED.STATUS = '04'
-		    ORDER BY ED.REG_DATE 
+		    ORDER BY SUBSTR(ED_NO, INSTR(ED_NO, '-', -1) + 1) DESC
 		) COUNT
 	</select>
 	
@@ -282,7 +282,7 @@
 	     AND ED.STATUS = #{condition}
 	     AND ED.ED_TITLE LIKE '%' || #{keyword} || '%'
 	     AND ED.STATUS = '04'
-    ORDER BY ED.REG_DATE 
+    ORDER BY SUBSTR(ED_NO, INSTR(ED_NO, '-', -1) + 1) DESC
 	</select>
 	
 	<!-- 진행중인 문서 상세 조회 -->
@@ -364,6 +364,7 @@
 				ED_HIST_COMMENT = #{edHistComment},
 				MOD_DATE = SYSDATE
 		WHERE USER_ID = #{userId}
+			AND ED_NO = #{edNo}
 	</update>
 	
 	<!-- 결재 count -->

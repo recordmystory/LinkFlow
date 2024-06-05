@@ -56,6 +56,10 @@
     }
     
     tr > td { cursor: pointer; }
+    
+    .content-header { margin-bottom: 50px; }
+    
+   	#pagingArea{ margin-top: 30px; }
 </style>
 </head>
 <body>
