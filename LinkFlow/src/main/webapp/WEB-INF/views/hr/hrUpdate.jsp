@@ -107,7 +107,7 @@
                                                     <input type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" >   
                                                     </div>   
                                                 </div>
-
+																								
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>입사일</label>

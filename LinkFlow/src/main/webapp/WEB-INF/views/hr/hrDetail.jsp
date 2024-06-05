@@ -102,10 +102,38 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>연락처</label>
-                                                    <input type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" value="${m.phone}">   
+                                                    <input id="phone" type="text"  name="phone" class="form-control" required placeholder="연락처를 입력하세요" value="${m.phone}">   
+                                                    <span style="font-size: 15px; color: red;" id="alretArea"></span>
                                                     </div>   
                                                 </div>
+																								<script>
+																								$(document).ready(function(){
+																					        	    $("#phone").on("input", function(e){
+																					        	        let phoneVal = $("#phone").val().trim().replace(/-/g, ''); 
+																					        	        let phonelength = phoneVal.length;
+																					        	        console.log(phonelength);
 
+																					        	        if(!/^[0-9]+$/.test(phoneVal)){
+																					        	            $("#alretArea").text("숫자만 입력해주세요.");
+																					        	        } else {
+																					        	          
+																					        	            if (phonelength >= 4 && phonelength <= 7) {
+																					        	                phoneVal = phoneVal.substring(0, 3) + '-' + phoneVal.substring(3);
+																					        	            } else if (phonelength > 7) {
+																					        	                phoneVal = phoneVal.substring(0, 3) + '-' + phoneVal.substring(3, 7) + '-' + phoneVal.substring(7);
+																					        	            }
+																					        	            $("#phone").val(phoneVal);
+
+																					        	            if (phonelength != 11){
+																					        	                $("#alretArea").text("올바른 번호를 입력해주세요.");
+																					        	            } else if(phonelength == 11) {
+																					        	                $("#alretArea").text("");
+																					        	            }
+																					        	        }
+																					        	    });
+																					        	});
+																								
+																								</script>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label>입사일</label>
