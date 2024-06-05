@@ -459,7 +459,7 @@
 	                    }
 	                },
 	                data: ['${sixMonthMember - sixMonthRetire}', '${fiveMonthMember - fiveMonthRetire}', '${fourMonthMember - fourMonthRetire}', 
-	                	   '${threeMonthMember - fourMonthRetire}', '${twoMonthMember - twoMonthRetire}', '${oneMonthMember - oneMonthRetire}']
+	                	   '${threeMonthMember - threeMonthRetire}', '${twoMonthMember - twoMonthRetire}', '${oneMonthMember - oneMonthRetire}']
 	                },
 	                {
 	                name: '입사자',

@@ -38,6 +38,7 @@
 		<result column="PRO_TITLE" property="proTitle"/>
 		<result column="USER_NAME" property="userName"/>
 		<result column="DEPT_CODE" property="deptCode"/>
+		<result column="CLIENT" property="client"/>
 	</resultMap>
 	
 	<!-- 프로젝트 등록 -->
@@ -154,7 +155,8 @@
     	<if test="category != null and category != '' and category == 'proName'">
     	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
     	</if>
-    	<if test="category != null and category != '' and category == 'client'">
+    	<if test="category != null and ca
+    	tegory != '' and category == 'client'">
     	   AND CLIENT LIKE '%' || #{keyword} || '%'
     	</if>
     	 ORDER
@@ -451,6 +453,7 @@
 		SELECT 
 			   D.PRO_NO
 			 , PRO_TITLE
+			 , CLIENT
 		  FROM TB_DISPATCH D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		 WHERE USER_ID = #{userId}
@@ -500,6 +503,7 @@
 		 	 , DAI_CONTENT
 		 	 , DAI_ANS
 		 	 , P.DEPT_CODE
+		 	 , CLIENT
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (M.USER_ID = D.REG_ID)
