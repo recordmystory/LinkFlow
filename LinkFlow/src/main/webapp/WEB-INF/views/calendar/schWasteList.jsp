@@ -147,7 +147,7 @@ $(document).ready(function() {
                     var listTr = '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td><a href="#" class="wasteTitle" data-sch-no="' + schedule.schNo + '">' + schedule.schTitle + '</a></td>' +
-                        '<td>' + new Date(schedule.modDate).toISOString().slice(0, 10) + '</td>' +
+                        '<td>' + new Date(schedule.modDate).toLocaleDateString().slice(0, 10) + '</td>' +
                         '<td>' + wasteSubCode + '</td>' +
                         '<td>' +
                         '<button type="button" class="btn btn-primary btn-sm restoreBtn" id="restoreBtn" data-sch-no="' + schedule.schNo + '">복구</button>&nbsp' +

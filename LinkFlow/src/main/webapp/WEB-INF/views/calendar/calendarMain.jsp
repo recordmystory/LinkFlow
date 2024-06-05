@@ -24,9 +24,6 @@
       font-size: 14px;
 
     }
-    .fc-event.holiday {
-    z-index: 10; /* 공휴일 이벤트가 다른 이벤트보다 상위 레이어에 표시되도록 설정 */
-}
 
 		  .fc-col-header-cell-cushion, .fc-daygrid-day-number{
 		  color:rgba(55, 55, 56, 0.85) !important; 
@@ -184,13 +181,19 @@
             displayEventTime: false,
             //중요일정, 전사 부서 개인 일정 순으로 정렬 //정렬
             eventOrder: function(a, b) {
+            	
+            	if(b.extendedProps.schCalSubCode == null){ 
+            		return 1;
+            	}else{
+            		//중요일정일 때 a를 위로 //양수면 앞뒤 자리가 바뀌고 음수면 그대로 sort참고 
+   	            if (a.extendedProps.schImport === 'Y' && b.extendedProps.schImport !== 'Y') {
+   	                return -1; //a와 b를 비교해서 a>b이면 1이면 위치 그대로, a<b -1이면 a는 뒤로 넘어가서 자리가 바뀜
+   	            } else if (a.extendedProps.schImport !== 'Y' && b.extendedProps.schImport === 'Y') {
+   	                return 1;
+   	            }
+            	}
             	 
-            	//중요일정일 때 a를 위로 //양수면 앞뒤 자리가 바뀌고 음수면 그대로 sort참고 
-	            if (a.extendedProps.schImport === 'Y' && b.extendedProps.schImport !== 'Y') {
-	                return -1; //반환값이 음수면 첫 뻔 째 일정이 두 번째 보다 우선, 양수면 두 번째 일정이 우선
-	            } else if (a.extendedProps.schImport !== 'Y' && b.extendedProps.schImport === 'Y') {
-	                return 1;
-	            }
+            	
 	
             	//중요일정 없을 때
 	            var order = {
@@ -231,7 +234,7 @@
                     //borderColor: 'black'
                     classNames: 'holiday',
                     textColor: 'rgba(160, 50, 0, 0.45)',
-                    constraint: 'holidayConstraint', //일정 옮기지 못하게 제약조건 걸 때 필요
+                    constraint: 'holidayConstraint' //일정 옮기지 못하게 제약조건 걸 때 필요
                
                 }
             ]
@@ -290,12 +293,14 @@
 			
 		    //날짜 텍스트로 형식 맞춰넣기 위한 처리
 		    var startDateChange = new Date(event.start);
-		    var startDate = startDateChange.toLocaleString('ko-KR', {
+		    var startDate = startDateChange.toLocaleDataString('ko-KR', {
 		        year: 'numeric',
 		        month: '2-digit',
 		        day: '2-digit',
 		        hour: '2-digit',
-		        minute: '2-digit'
+		        minute: '2-digit',
+		        timeZone: 'Asia/Seoul'  
+
 		    });
 		    $('#startDate').text(startDate);
 		
@@ -305,8 +310,11 @@
 		        month: '2-digit',
 		        day: '2-digit',
 		        hour: '2-digit',
-		        minute: '2-digit'
+		        minute: '2-digit',
+		        timeZone: 'Asia/Seoul'  
+
 		    });
+		    
 		    $('#endDate').text(endDate === startDate ? '' : '~  ' + endDate);
 		
 		    $('#address').text(extendedProps.address);
