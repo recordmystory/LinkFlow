@@ -366,35 +366,31 @@
               }).open();
           }
           $(document).ready(function(){
-              
-              
+        	    $("#phone").on("input", function(e){
+        	        let phoneVal = $("#phone").val().trim().replace(/-/g, ''); 
+        	        let phonelength = phoneVal.length;
+        	        console.log(phonelength);
 
-             $("#phone").on("keyup",function(){
-              let RegExp = /^[0-9\-]+$/;
-              let phonelenth = $("#phone").val().trim().length;
-              console.log(phonelenth);
+        	        if(!/^[0-9]+$/.test(phoneVal)){
+        	            $("#alretArea").text("숫자만 입력해주세요.");
+        	        } else {
+        	          
+        	            if (phonelength >= 4 && phonelength <= 7) {
+        	                phoneVal = phoneVal.substring(0, 3) + '-' + phoneVal.substring(3);
+        	            } else if (phonelength > 7) {
+        	                phoneVal = phoneVal.substring(0, 3) + '-' + phoneVal.substring(3, 7) + '-' + phoneVal.substring(7);
+        	            }
+        	            $("#phone").val(phoneVal);
 
-              if(!RegExp.test($("#phone").val())){
-                  $("#alretArea").text("숫자만 입력해주세요.");
+        	            if (phonelength != 11){
+        	                $("#alretArea").text("올바른 번호를 입력해주세요.");
+        	            } else if(phonelength == 11) {
+        	                $("#alretArea").text("");
+        	            }
+        	        }
+        	    });
+        	});
 
-              }else{
-                  if(phonelenth == 3){
-                   $("#phone").val($("#phone").val() + "-");
-                  }
-                  if(phonelenth == 8){
-                      $("#phone").val($("#phone").val() + "-");
-                  }
-
-
-                  if(phonelenth != 13){
-                      $("#alretArea").text("올바른 번호를 입력해주세요.");
-                  }else{
-                      $("#alretArea").text("");
-                  }
-              }
-             }) 
-              
-          })
       </script>
   		<script>
 		    $(document).ready(function() {
