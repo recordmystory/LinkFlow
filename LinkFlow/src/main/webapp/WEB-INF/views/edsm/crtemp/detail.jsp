@@ -100,7 +100,16 @@
     }
     
     /* 문서 영역 스타일 */
-    .drafting-content-document { border: 2px solid lightgray; padding: 25px 10px 25px 10px; margin: 40px 0px 40px 20px !important; }
+    .drafting-content-document 
+    { 
+	    border: 2px solid lightgray; 
+	    padding: 25px 10px 25px 10px; 
+	    margin: 40px 0px 0px 0px !important; 
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center; 
+    }
 		.drafting-content-document > h1 { text-align: center !important; margin: 30px; } 
 		.drafting-content-document > .table { display: flex; flex-direction: column; align-items: center; }
 	  .ck-table-resized { min-width: 1500px; }
