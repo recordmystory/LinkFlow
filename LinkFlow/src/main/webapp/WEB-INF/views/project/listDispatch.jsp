@@ -173,7 +173,6 @@
 		var userId = '${loginUser.userId}'
 		
     	function myList(page) {
-    		console.log(page);
 			$.ajax({
             	url: '${contextPath}/project/myList.dis',
                	type: 'GET',
@@ -191,7 +190,6 @@
 		// 테이블 페이징 새로 처리
 		function updateTableAndPaging(data) {
 			
-     		console.log(data.pi);
 			var tableBody = $('#dispatchList tbody');
 		    var pagingArea = $('#pagingArea');
 

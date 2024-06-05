@@ -81,7 +81,7 @@
                                         <td><b>성명</b></td>
                                         <td>${daily.userName}</td>
                                         <td><b>프로젝트명</b></td>
-                                        <td>${daily.proTitle}</td>
+                                        <td>${daily.proTitle}(${daily.client})</td>
                                     </tr>
                                     <tr>
                                         <td><b>일자</b></td>

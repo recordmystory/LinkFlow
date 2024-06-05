@@ -74,7 +74,7 @@
 	                                        <td><b>성명</b></td>
 	                                        <td>${dai.userName}</td>
 	                                        <td><b>프로젝트명</b></td>
-	                                        <td>${dai.proTitle}</td>
+	                                        <td>${dai.proTitle}(${dai.client})</td>
                                     	</tr>
 	                                    <tr>
 	                                        <td colspan="4">

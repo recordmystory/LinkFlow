@@ -75,7 +75,7 @@
 	                                        <td>
 	                                            <select name="proNo" class="form-control">
 	                                            	<c:forEach var="d" items="${list}"> 
-	                                                	<option value="${d.proNo}">${d.proTitle}</option>
+	                                                	<option value="${d.proNo}">${d.proTitle}(${d.client})</option>
 	                                                </c:forEach>
 	                                            </select>
 	                                        </td>
