@@ -67,8 +67,8 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int updateMailRead(int no) {
-		return mailDao.updateMailRead(no);
+	public int updateMailRead(Map<String, Object> map) {
+		return mailDao.updateMailRead(map);
 	}
 
 	@Override

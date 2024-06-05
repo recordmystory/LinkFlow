@@ -26,7 +26,7 @@ public interface MailService {
 
 	SendMailDto selectMail(int no);
 
-	int updateMailRead(int no);
+	int updateMailRead(Map<String, Object> map);
 
 	int insertSendMail(SendMailDto sendMail);
 

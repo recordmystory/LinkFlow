@@ -122,6 +122,7 @@
 			 set
 			     read_yn = 'Y'
 		 where mail_no = #{no}
+		 	 and user_id = #{userId}
 		 	 and type = 'R'
 	</update>
 	

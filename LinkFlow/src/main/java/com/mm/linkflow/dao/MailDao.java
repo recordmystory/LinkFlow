@@ -59,8 +59,8 @@ public class MailDao {
 		return sqlSession.selectOne("mailMapper.selectMail", no);
 	}
 
-	public int updateMailRead(int no) {
-		return sqlSession.update("mailMapper.updateMailRead", no);
+	public int updateMailRead(Map<String, Object> map) {
+		return sqlSession.update("mailMapper.updateMailRead", map);
 	}
 
 	public int insertSendMail(SendMailDto sendMail) {

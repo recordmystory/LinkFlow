@@ -120,8 +120,12 @@ public class MailController {
 	}
 	
 	@GetMapping("/readMail.do")
-	public String updateMailRead(int no) {
-		mailService.updateMailRead(no);	
+	public String updateMailRead(int no, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("userId", loginUser.getUserId());
+		mailService.updateMailRead(map);
 		return "redirect:/mail/detail.page?no=" + no;
 	}
 	
@@ -151,10 +155,12 @@ public class MailController {
 		Map<String, String[]> map = parseEmails(receiveUser);
 		String[] receivceEmailId = null;
 		String[] externalEmail = null;
-		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+		log.debug("receivceEmailId : {}", receivceEmailId);
+		log.debug("externalEmail : {}", externalEmail);
+		if(!ObjectUtils.isEmpty(map.get("userNameList"))) {
 			receivceEmailId = map.get("userNameList");
 		}
-		if(!ObjectUtils.isEmpty(externalEmail)) {
+		if(!ObjectUtils.isEmpty(map.get("externalEmail"))) {
 			externalEmail = map.get("externalEmail");
 		}
 		
