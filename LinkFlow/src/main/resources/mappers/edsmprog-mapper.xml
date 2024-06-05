@@ -364,6 +364,7 @@
 				ED_HIST_COMMENT = #{edHistComment},
 				MOD_DATE = SYSDATE
 		WHERE USER_ID = #{userId}
+			AND ED_NO = #{edNo}
 	</update>
 	
 	<!-- 결재 count -->
