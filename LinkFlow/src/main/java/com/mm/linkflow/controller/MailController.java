@@ -149,8 +149,14 @@ public class MailController {
 		sendMail.setReceiver(receiveUser);
 		sendMail.setTempSave("02");
 		Map<String, String[]> map = parseEmails(receiveUser);
-		String[] receivceEmailId = map.get("userNameList");
-		String[] externalEmail = map.get("externalEmail");
+		String[] receivceEmailId = null;
+		String[] externalEmail = null;
+		if(!ObjectUtils.isEmpty(receivceEmailId)) {
+			receivceEmailId = map.get("userNameList");
+		}
+		if(!ObjectUtils.isEmpty(externalEmail)) {
+			externalEmail = map.get("externalEmail");
+		}
 		
 		int count = 0;
 		if(ObjectUtils.isEmpty(receivceEmailId) && ObjectUtils.isEmpty(externalEmail)) {
