@@ -296,15 +296,15 @@
 
 		<div class="pagination" id="pageArea" style="display: flex; justify-content: center;">
 			<ul class="pagination">
-				<li class="page-item" ${pi.currentPage ==1 ? 'disabled' : '' }>
+				<li class="page-item ${pi.currentPage ==1 ? 'disabled' : '' }">
 					<a class="page-link" href="${contextPath }/booking/ass.list?page=${pi.currentPage -1}">&laquo;</a>
 				</li>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-					<li class="page-item" ${ pi.currentPage == p ? 'disabled' : '' }>
+					<li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
 						<a class="page-link" href="${contextPath }/booking/ass.list?page=${p}">${p }</a>
 					</li>
 				</c:forEach>
-				<li class="page-item" ${pi.currentPage == pi.maxPage ? 'disabled' : '' }>
+				<li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }">
 					<a class="page-link" href="${contextPath }/booking/ass.list?page=${pi.currentPage +1}">&raquo;</a>
 				</li>
 			</ul>

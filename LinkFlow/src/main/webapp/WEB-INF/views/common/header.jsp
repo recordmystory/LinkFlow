@@ -295,15 +295,19 @@
     		url : '${contextPath}/alarm/ala.list',
     		type: 'get',
     		success: function(alList){
-    			for(let i=0; i<alList.length; i++){
-    				let selectItem = createItem(alList[i].alarmNo, alList[i].alarmTitle, alList[i].alarmURL, alList[i].alarmDate);
-    				if(alList[i].checkYN === 'Y'){
-    					 selectItem.find('.alarmItems').addClass('readAlarm');
-    				}
-    				alarmDrop.append(selectItem);
+    			if(!alList || alList.length === 0){
+    				alarmDrop.append("<p class='dropdown-item dropdown-footer'> 알림 내역이 없습니다. </p>");
+    			}else{
+	    			for(let i=0; i<alList.length; i++){
+	    				let selectItem = createItem(alList[i].alarmNo, alList[i].alarmTitle, alList[i].alarmURL, alList[i].alarmDate);
+	    				if(alList[i].checkYN === 'Y'){
+	    					 selectItem.find('.alarmItems').addClass('readAlarm');
+	    				}
+	    				alarmDrop.append(selectItem);
+	    			}
+	    			alarmDrop.append("<p class='dropdown-item dropdown-footer' onclick='allRead()'>Check See All</p>");
     			}
-    			alarmDrop.append("<p class='dropdown-item dropdown-footer' onclick='allRead()'>See All Notifications</p>");
-    			alarmCount();
+	    			alarmCount();
     		}
     	})
     }
