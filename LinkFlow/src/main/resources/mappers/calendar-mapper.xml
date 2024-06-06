@@ -257,8 +257,8 @@
         SELECT 
             S.SCH_NO,
             S.SCH_CONTENT,
-            TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH24:MI') AS START_DATE,
-            TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH24:MI') AS END_DATE,
+            TO_CHAR(S.START_DATE, 'YYYY-MM-DD"T"HH:MI') AS START_DATE,
+            TO_CHAR(S.END_DATE, 'YYYY-MM-DD"T"HH:MI') AS END_DATE,
             S.ADDRESS,
             S.SCH_IMPORT,
             S.SCH_TITLE,

@@ -165,8 +165,8 @@
             moreLinkClick: "popover",
             //구글api로 공휴일 가져오기
             googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
-            timeZone: 'Asia/Seoul', //시간대 
-            //locale : 'ko',
+            //timeZone: 'Asia/Seoul', //시간대 
+           // locale : 'ko',
             dayMaxEvents: true, //5
             initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동
@@ -299,21 +299,24 @@
 		        day: '2-digit',
 		        hour: '2-digit',
 		        minute: '2-digit',
-		        timeZone: 'Asia/Seoul'  
 
 		    });
 		    $('#startDate').text(startDate);
 		
-		    var endDateChange = new Date(event.end);
-		    var endDate = endDateChange.toLocaleString('ko-KR', {
+		    
+		    var endDateChange = event.end ? new Date(event.end) : null;
+		    var endDate = endDateChange ? endDateChange.toLocaleString('ko-KR', {
 		        year: 'numeric',
 		        month: '2-digit',
 		        day: '2-digit',
 		        hour: '2-digit',
 		        minute: '2-digit',
-		        timeZone: 'Asia/Seoul'  
+		    }) : '';
 
-		    });
+		    // 같은 날짜인 경우 endDate를 표시하지 않음
+		    $('#endDate').text(endDate && endDate !== startDate ? '~  ' + endDate : '');
+
+		    
 		    
 		    $('#endDate').text(endDate === startDate ? '' : '~  ' + endDate);
 		
@@ -456,6 +459,18 @@
 	   	    $('#cencelBtn').click(function() {
 	          $('#schInsertModal').modal('hide');
 	      	}); 
+	   	  	
+	   	// 캘린더 일정등록하기 모달이 닫힐 때
+	   	 $('#schInsertModal').on('hidden.bs.modal', function (e) {
+	   	     // 폼의 입력 필드 초기화
+	   	     $('#scheduleForm')[0].reset();
+	   	 });
+
+	   	 // 캘린더 일정수정하기 모달이 닫힐 때
+	   	 $('#schUpdateModal').on('hidden.bs.modal', function (e) {
+	   	     // 폼의 입력 필드 초기화
+	   	     $('#updateScheduleForm')[0].reset();
+	   	 });
 
 		// 일정 수정 폼 ******************
 		function schUpdateForm(event) {
