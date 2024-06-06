@@ -569,9 +569,28 @@
                         $('.NameArea').val('');
 
                     } 
-                    checkboxReSelect();
+                    var events = calendar.getEvents();
+                    events.forEach(function(event) {
+                        if (event.extendedProps.schNo == data.schNo) {
+                            event.setProp('title', data.schTitle);
+                            event.setStart(data.startDate);
+                            event.setEnd(data.endDate);
+                            event.setExtendedProp('address', data.address);
+                            event.setExtendedProp('schContent', data.schContent);
+                            event.setExtendedProp('schImport', data.schImport);
+                            event.setExtendedProp('schCalSubCode', data.schCalSubCode);
 
-
+                            var calColor;
+                            if (data.schCalSubCode === '03') {
+                                calColor = '#358657c3';
+                            } else if (data.schCalSubCode === '02') {
+                                calColor = '#104fa1c3';
+                            } else if (data.schCalSubCode === '01') {
+                                calColor = '#a82626c3';
+                            }
+                            event.setProp('color', calColor);
+                        }
+                    });
                 },
                 error: function() {
                     console.log("일정 수정 실패.");
