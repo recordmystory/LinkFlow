@@ -163,9 +163,6 @@
       font-size:120%;
     }
 
- 		.modal-content {
- 			text-align: initial !important;
- 		}
 </style>
 </head>
 <body>
@@ -396,7 +393,7 @@
     <!--공유 일정 모달 start-->
     <div class="modal fade" id="schShareModal">
       <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content" style="min-width: 1400px;">
+        <div class="modal-content" style="min-width: 1400px; text-align: initial !important;">
           <div class="modal-header">
             <h4 class="modal-title">일정 공유</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
