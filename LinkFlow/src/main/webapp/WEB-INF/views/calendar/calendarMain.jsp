@@ -293,7 +293,7 @@
 			
 		    //날짜 텍스트로 형식 맞춰넣기 위한 처리
 		    var startDateChange = new Date(event.start);
-		    var startDate = startDateChange.toLocaleDataString('ko-KR', {
+		    var startDate = startDateChange.toLocaleString('ko-KR', {
 		        year: 'numeric',
 		        month: '2-digit',
 		        day: '2-digit',
