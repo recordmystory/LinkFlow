@@ -163,7 +163,9 @@
       font-size:120%;
     }
 
- 
+ 		.modal-content {
+ 			text-align: initial !important;
+ 		}
 </style>
 </head>
 <body>
