@@ -199,7 +199,11 @@ input[type="checkbox"]:checked {
 							table +="<td>"+ list[i].subName +"</td>";
 							table +="<td>"+ list[i].assetsName+"</td>";
 							table +="<td>"+ list[i].bkStartDate +"</td>";
-							table +="<td>"+ list[i].bkStartTime +" ~ "+ list[i].bkEndTime +"</td>";
+							if(list[i].subName === '차량'){
+								table += "<td> ~ </td>";
+							}else{
+								table +="<td>"+ list[i].bkStartTime +" ~ "+ list[i].bkEndTime +"</td>";
+							}
 							table +="<td>"+ list[i].status +"</th></tr>";
 						}
 					  	

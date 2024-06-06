@@ -274,7 +274,6 @@
     	let totalCount = $(".alarmItems").length;
     	let readCount = $(".readAlarm").length;
     	let notReadCount = totalCount - readCount ;
-    	console.log(totalCount , readCount, notReadCount);
     	$(".alarmCount").empty();
     	$(".alarmCount").html(notReadCount);
     }

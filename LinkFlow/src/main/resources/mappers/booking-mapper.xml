@@ -113,7 +113,7 @@
     where booking_id = #{userId}
       and a.sub_code= c.sub_code
       and b.del_yn = 'N'
-	order by b.mod_date desc
+	order by booking_no desc
 </select>
 
 <select id="selectDetailAssList" resultMap="assResult">
@@ -125,6 +125,7 @@
        and c.sub_name = #{subName}
        and c.del_yn = 'N'
        and a.use_yn = 'Y'
+       and a.del_yn = 'N'
 </select>
 
 <select id="selectDetailMyBk" resultMap="bkResult">
@@ -145,6 +146,7 @@
 	 where booking_no = #{ bkNo }
 	   and a.sub_code= c.sub_code
        and b.del_yn = 'N'
+       
 </select>
 
 <update id="modifyBk">
@@ -192,6 +194,7 @@
 	   and c.main_code = '003-'
 	   </when>
 	   </choose>
+	   order by booking_no desc
 	   
 </select>
 
@@ -225,6 +228,7 @@
 	   and c.main_code = '003-'
 	   </when>
 	   </choose>
+	   order by booking_no desc
 </select>
 
 <select id="selectAssCount" resultType="_int">
@@ -398,6 +402,7 @@
 	  and user_name like '%'|| #{keyword} || '%'
 	  </when>
 	  </choose>
+	  order by booking_no desc
 </select>
 
 <select id="selectSupStatusList" resultMap="bkResult">

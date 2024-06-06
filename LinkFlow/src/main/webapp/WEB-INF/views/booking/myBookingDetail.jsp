@@ -242,7 +242,7 @@
 								</div>
 								
 								<hr>
-								<c:if test="${ bk.status ne '예약대기' }">
+								<c:if test="${ bk.status eq '반려' }">
 									<div style="margin: 40px;">
 										<h4>반려 사유</h4>
 										<div class="coment" style="height: 100px;" disabled><p disabled>${ bk.rejContent }</p>
@@ -362,7 +362,7 @@
 		 	
 		 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
 		 		if( i != detailDay){
-		 			$("#day").append("<option value='"+i+"'>"+i+"</option>");
+		 			$("#day").append("<option value='"+(i < 10 ? '0'+i : i )+"'>"+(i < 10 ? '0'+i : i )+"</option>");
 		 		}
 		 	}
 		 	/***************************** 날짜 초기화 ***********************************/
@@ -383,8 +383,8 @@
 				 		$("#day").append("<option value='"+(i < 10 ? '0'+i : i )+"'>"+(i < 10 ? '0'+i : i )+"</option>");
 				 	}
 				}else{
-					$("#day").append("<option value='"+(now.getDate() < 10 ? '0'+(Number(now.getDate())+1) : now.getDate())+"'>"
-													  +(now.getDate() < 10 ? '0'+(Number(now.getDate())+1) : now.getDate())+"</option>");
+					$("#day").append("<option value='"+(now.getDate() < 10 ? '0'+(now.getDate()) : now.getDate())+"'>"
+													  +(now.getDate() < 10 ? '0'+(now.getDate()) : now.getDate())+"</option>");
 				 	
 				 	for(var i=now.getDate(); i<=detailDate.getDate(); i++){
 				 		if( i != detailDay){

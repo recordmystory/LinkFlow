@@ -60,7 +60,6 @@ input[type="checkbox"] {
 
 .fc-daygrid-day-frame {
 	position: relative;
-	width:
 }
 
 .fc-daygrid-day-frame>div:nth-child(1), .fc-daygrid-day-frame>div:nth-child(2) {
