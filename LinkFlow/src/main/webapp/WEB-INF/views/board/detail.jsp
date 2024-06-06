@@ -101,7 +101,7 @@ i {
                                 </tr>
                                 <tr>
                                     <th>작성자</th>
-                                    <td width="800">${board.regId }</td>
+                                    <td width="800">${board.userName } ${board.position }</td>
                                     <th width="150" style="text-align: center;">작성일</th>
                                     <td width="150" style="text-align: center;">${board.charDate }</td>
                                 </tr>

@@ -18,6 +18,7 @@ public class ReceiveMailDto {
 	private int mailNo;
 	private String delYN;
 	private String readYN;
+	private String type;
 	
 	private String transTime;
 	private String userName;

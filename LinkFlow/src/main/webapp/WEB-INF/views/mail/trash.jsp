@@ -115,7 +115,7 @@ input[type="checkbox"] {
                                         		<c:otherwise>
                                         		<c:forEach var="m" items="${trashList}">
                                         			<c:choose>
-                                        				<c:when test="${m.readYN == 'N' }">
+                                        				<c:when test="${m.readYN == 'N' and m.type == 'R' }">
                                         					<tr>
 			                                                <th><input name="no" value="${ m.mailNo }"  type="checkbox" class="checkBox" onclick="event.stopPropagation();"></th>
 			                                                <th><i class="fa-solid fa-envelope fa-xl"></i></th>
@@ -143,13 +143,13 @@ input[type="checkbox"] {
                                     <hr style="margin-top: 0px;">
                                     <div class="pagination" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
-                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${pi.currentPage -1}">&laquo;</a></li>
+                                        		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/trash.page?page=${pi.currentPage -1}">&laquo;</a></li>
                     
 														                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${p}">${p}</a></li>
+														                	<li class="page-item ${pi.currentPage == p ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/trash.page?page=${p}">${p}</a></li>
 														                </c:forEach>
 														                
-														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/receiveList.do?page=${pi.currentPage +1}">&raquo;</a></li>
+														                <li class="page-item ${pi.currentPage == pi.maxPage ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/mail/trash.page?page=${pi.currentPage +1}">&raquo;</a></li>
 
                                         </ul>
                                     </div>

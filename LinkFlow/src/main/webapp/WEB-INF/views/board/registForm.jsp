@@ -106,13 +106,13 @@
                                 <div class="btnArea">
                                     <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 6px;" id="enrollForm-submit">작성하기</button>
                                     <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="tempSave();">임시저장</button>
-                                    <button class="btn btn-primary btn-sm" onclick="javascript:history.go(-1);">취소</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="javascript:history.go(-1);">취소</button>
                                 </div>
                             </div>
                             <div style="min-height: 500px; min-width: 100%;">
                                 <table align="center">
                                     <tr>
-                                        <th style="text-align: center;">게시판</th>
+                                        <th style="text-align: center;" width=111>게시판</th>
                                         <td>
                                             <select id="select" class="custom-select" name="boardCategory" style="width: 200px;">
                                                 <c:if test="${loginUser.superRight == 'Y' or loginUser.boardRight == 'Y' }">

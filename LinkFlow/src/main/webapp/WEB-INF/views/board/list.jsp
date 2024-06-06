@@ -121,7 +121,7 @@
                             <div class="form-inline">
                             	<form id="searchForm" action="${contextPath }/board/search.do" method="get" align="center">
                                 <div class="input-group">
-                                    <input type="hidden" name="page" value="">
+                                    <input type="hidden" name="page" value="1">
                                     <input type="hidden" name="type" value="${search.boardType == null ? map.currentType : search.boardType  }">
                                     <div class="select" style="margin-right: 15px;">
                                         <select name="condition" id="bottom-menu" class="form-control bottom-menu" style="width: 120px;">
@@ -161,7 +161,7 @@
                                               	<th>${n.boardNo }</th>
                                                 <th>공지</th>
                                                 <th>${n.boardTitle}</th>
-                                                <th>${n.regId }</th>
+                                                <th>${n.userName } ${n.position }</th>
                                                 <th>${n.modDate }</th>
                                                 <th>${n.count }</th>
                                             	</tr>
@@ -180,7 +180,7 @@
 			                                              	<td>${b.boardNo }</td>
 			                                                <td>일반</td>
 			                                                <td>${b.boardTitle}</td>
-			                                                <td>${b.regId }</td>
+			                                                <td>${b.userName } ${b.position }</td>
 			                                                <td>${b.modDate }</td>
 			                                                <td>${b.count }</td>
 			                                            	</tr>
@@ -190,7 +190,7 @@
 			                                              	<th>${b.boardNo }</th>
 			                                                <th>공지</th>
 			                                                <th>${b.boardTitle}</th>
-			                                                <th>${b.regId }</th>
+			                                                <th>${b.userName } ${b.position }</th>
 			                                                <th>${b.modDate }</th>
 			                                                <th>${b.count }</th>
 			                                            	</tr>
@@ -203,7 +203,7 @@
                                         </tbody>
                                     </table>
                                     <hr style="margin-top: 0px;">
-                                    <div class="pagination" style="display: flex; justify-content: center;">
+                                    <div class="pagingArea" id="pagingArea" style="display: flex; justify-content: center;">
                                         <ul class="pagination">
                                         		<li class="page-item ${pi.currentPage == 1 ? 'disabled' : '' }"><a class="page-link" href="${contextPath}/board/list.do?type=${map.currentType}&page=${pi.currentPage -1}">&laquo;</a></li>
                     
@@ -229,12 +229,11 @@
   	$(document).ready(function(){
   		$("#searchForm select").val("${search.condition}");
   		
-  		// 검색후 페이지일 경우 페이징바의 페이지 클릭시
   		$("#pagingArea a").on("click", function(){
+  			console.log()
   			$("#searchForm input[name=page]").val($(this).text());
   			$("#searchForm").submit();
-  			//
-  			return false; // 기본이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
+  			return false;
   		})
   	})
   </script>

@@ -64,7 +64,7 @@ i {
                     </div>
                 </div>
                 <div style="text-align:right; padding-right:24px;">
-                	<button class="btn btn-primary">목록으로</button>
+                	<button class="btn btn-primary" onclick="javascript:history.go(-1);">목록으로</button>
                 </div>
                 <!-- /.container-fluid -->
             </section>

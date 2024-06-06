@@ -107,7 +107,7 @@
                                 <div class="btnArea">
                                     <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 6px;" id="enrollForm-submit">작성하기</button>
                                     <button type="button" class="btn btn-primary btn-sm" style="margin-right: 6px;" onclick="tempUpdate();">임시저장</button>
-                                    <button class="btn btn-primary btn-sm" onclick="javascript:history.go(-1);">취소</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="javascript:history.go(-1);">취소</button>
                                 </div>
                             </div>
                             <div style="min-height: 500px; min-width: 100%;">

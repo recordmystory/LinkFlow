@@ -23,6 +23,8 @@
 		<result column="user_name" property="userName" />
 		<result column="mail_Title" property="mailTitle" />
 		<result column="trans_time" property="transTime" />
+		<result column="type" property="type" />
+		
 	</resultMap>
 	
 	<select id="selectReceiveMailListCount" resultType="_int">
@@ -261,6 +263,7 @@
 				, m.user_name
 				, s.mail_title
 				, to_char(s.trans_time, 'MM-DD HH24:MI') as trans_time
+				, r.type
 			from re_mail r
 			join tb_mail s on (r.mail_no = s.mail_no)			
       join tb_member m on ( m.user_id = s.reg_id)

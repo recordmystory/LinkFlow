@@ -14,6 +14,7 @@
 		<result column="category_type" property="boardType" />
 		<result column="category_name" property="categoryName" />
 		<result column="user_name" property="userName" />
+		<result column="sub_name" property="position" />
 		
 		
 		<collection resultMap="attachMapper.attachResult" property="attachList" />
@@ -79,6 +80,7 @@
 		    		and notice_yn = 'N'
 	    	</if>
   	  and board_category = #{boardType}
+  	  and temp_save = '02'
   </select>
   
   <select id="selectWriteCategory" resultMap="categoryResult">
@@ -144,16 +146,20 @@
 	    b.notice_yn,
 	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
 	    c.category_type,
-	    user_name
+	    m.user_name,
+  		c.sub_name
 		FROM 
 		    tb_board b
 		JOIN 
 		    tb_category c ON b.board_category = c.board_category
 		JOIN
-				tb_member on b.reg_id = user_id    
+				tb_member m on b.reg_id = user_id
+		JOIN 
+				tb_common c on (c.sub_code = m.rank_scode)
 		WHERE 
 		    b.del_yn = 'N'
 		    and b.temp_save = '02'
+		    and c.main_code = '007-'
 		    and b.board_category = #{boardType}
 		    	<if test='boardCategory != "CATEGORY-8"'>
 		    		and b.notice_yn = 'N'
@@ -171,16 +177,21 @@
 	    b.count,
 	    b.notice_yn,
 	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
-	    c.category_type
+	    c.category_type,
+	    m.user_name,
+  		c.sub_name
 		FROM 
 		    tb_board b
 		JOIN 
 		    tb_category c ON b.board_category = c.board_category
-		join 
-				tb_member m on (b.reg_id = user_id)
+		JOIN
+				tb_member m on b.reg_id = user_id
+		JOIN 
+				tb_common c on (c.sub_code = m.rank_scode)
 		WHERE 
 		    b.del_yn = 'N'
 		    and b.temp_save = '02'
+		    and c.main_code = '007-'
 		    and ${condition} like '%' || #{keyword} || '%'
 		    and b.board_category = #{boardType}
 		    	<if test='boardType != "CATEGORY-8"'>
@@ -199,13 +210,20 @@
 	    b.count,
 	    b.notice_yn,
 	    TO_CHAR(b.mod_date, 'YYYY-MM-DD') AS mod_date,
-	    c.category_type
+	    c.category_type,
+	    m.user_name,
+  		c.sub_name
 		FROM 
 		    tb_board b
 		JOIN 
 		    tb_category c ON b.board_category = c.board_category
+		JOIN
+				tb_member m on b.reg_id = user_id
+		JOIN 
+				tb_common c on (c.sub_code = m.rank_scode)
 		WHERE 
 		    b.del_yn = 'N'
+		    and c.main_code = '007-'
 		    and b.notice_yn = 'Y'
 		    and b.temp_save = '02'
 		    and b.board_category = #{boardType}
@@ -253,6 +271,8 @@
       , b.reg_id
       , board_content
       , board_category
+      , user_name
+      , sub_name
       , notice_yn
       , to_char(b.mod_date, 'YYYY-MM-DD') char_date
       , file_no
@@ -261,8 +281,11 @@
       , origin_name
 	  from tb_board b
 	  left join tb_attachment on (ref_category ='B' and ref_no = board_no)
+	  join tb_member m on(b.reg_id = user_id)
+    join tb_common c on (c.sub_code = m.rank_scode)
 	 where b.del_yn ='N'
 	   and board_no = #{no}
+	   and c.main_code = '007-'
   </select>
   
   <update id="updateBoard">
