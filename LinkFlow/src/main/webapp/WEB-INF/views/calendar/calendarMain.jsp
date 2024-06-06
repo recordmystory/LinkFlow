@@ -166,7 +166,7 @@
             //구글api로 공휴일 가져오기
             googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
             //timeZone: 'Asia/Seoul', //시간대 
-           // locale : 'ko',
+           locale : 'ko',
             dayMaxEvents: true, //5
             initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동
@@ -298,7 +298,8 @@
 		        month: '2-digit',
 		        day: '2-digit',
 		        hour: '2-digit',
-		        minute: '2-digit',
+		        minute: '2-digit'
+		        
 
 		    });
 		    $('#startDate').text(startDate);
@@ -310,7 +311,7 @@
 		        month: '2-digit',
 		        day: '2-digit',
 		        hour: '2-digit',
-		        minute: '2-digit',
+		        minute: '2-digit'
 		    }) : '';
 
 		    // 같은 날짜인 경우 endDate를 표시하지 않음
@@ -488,8 +489,8 @@
 		        $('#schUpdateModal select[name="schCalSubCode"]').val(extendedProps.schCalSubCode).change();
 		        $('#schUpdateModal input[name="schNo"]').val(extendedProps.schNo);
 		        $('#schUpdateModal input[name="calNo"]').val(extendedProps.calNo);
-		        var startDate = new Date(event.start).toISOString().slice(0, 16);
-		        var endDate = event.end ? new Date(event.end).toISOString().slice(0, 16) : startDate;
+		      //  var startDate = new Date(event.start).toISOString().slice(0, 16);
+		        //var endDate = event.end ? new Date(event.end).toISOString().slice(0, 16) : startDate;
 
 		        $('#schUpdateModal input[name="startDate"]').val(startDate);
 		        $('#schUpdateModal input[name="endDate"]').val(endDate);
