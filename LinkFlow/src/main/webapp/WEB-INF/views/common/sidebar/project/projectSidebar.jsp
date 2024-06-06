@@ -96,7 +96,7 @@
 			                                </a>
 			                            </li>
 		                            </c:if>
-		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발')}">
+		                            <c:if test="${not empty loginUser and loginUser.position eq '팀장' and fn:contains(loginUser.deptName, '개발') or loginUser.userName eq '조미연'}">
 			                            <li class="nav-item">
 			                                <a href="${contextPath}/project/listLead.dai?deptCode=${loginUser.deptCode}" class="nav-link">
 			                                    <i class="far fa-circle nav-icon"></i>

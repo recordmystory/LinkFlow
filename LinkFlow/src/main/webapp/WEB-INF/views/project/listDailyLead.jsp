@@ -105,7 +105,7 @@
 	                                                <tr>
 	                                                    <td>${d.daiNo}</td>
 	                                                    <td>
-	                                                        <a href="${contextPath}/project/detailLead.dai?no=${d.daiNo}">${d.proTitle}</a>
+	                                                        <a href="${contextPath}/project/detailLead.dai?no=${d.daiNo}">${d.proTitle}(${d.client})</a>
 	                                                    </td>
 	                                                    <td>${d.userName}</td>
 	                                                    <td>${d.regDate}</td>

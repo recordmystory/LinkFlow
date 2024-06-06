@@ -357,11 +357,18 @@ public class ProjectController {
 	
 	// 직원별 일일작업 조회
 	@GetMapping("listLead.dai")
-	public ModelAndView listDailyLead(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage, String deptCode) {
-		int listCount = proService.listDailyLeadCount();
+	public ModelAndView listDailyLead(ModelAndView mv, @RequestParam(value="page", defaultValue="1")int currentPage, String deptCode
+			                        , HttpSession session) {
+		
+		Map<String, String> map = new HashMap<>();
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
+		int listCount = proService.listDailyLeadCount(map);
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		map.put("deptCode", deptCode);
+		map.put("userId", userId);
 		List<DailyDto> list = new ArrayList<>();
-		list = proService.listDailyLead(pi, deptCode);
+		list = proService.listDailyLead(pi, map);
 		
 		mv.addObject("list", list)
 		  .addObject("pi", pi)
@@ -405,14 +412,18 @@ public class ProjectController {
 	@PostMapping("/searchLead.dai")
 	public ModelAndView searchDailyLead(String startDate, String endDate, String category, String keyword
 			                    , @RequestParam(value="page", defaultValue="1")int currentPage
-			                    , ModelAndView mv, String deptCode) {
+			                    , ModelAndView mv, String deptCode
+			                    , HttpSession session) {
 		Map<String, String> search = new HashMap<>();
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
 		
 		search.put("startDate", startDate);
 		search.put("endDate", endDate);
 		search.put("category", category);
 		search.put("keyword", keyword);
 		search.put("deptCode", deptCode);
+		search.put("userId", userId);
 		
 		int listCount = proService.searchDailyLeadCount(search);
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);

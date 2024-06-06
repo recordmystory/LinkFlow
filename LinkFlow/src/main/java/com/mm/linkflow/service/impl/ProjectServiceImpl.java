@@ -178,13 +178,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode) {
-		return proDao.listDailyLead(pi, deptCode);
+	public List<DailyDto> listDailyLead(PageInfoDto pi, Map<String, String> map) {
+		return proDao.listDailyLead(pi, map);
 	}
 
 	@Override
-	public int listDailyLeadCount() {
-		return proDao.listDailyLeadCount();
+	public int listDailyLeadCount(Map<String, String> map) {
+		return proDao.listDailyLeadCount(map);
 	}
 
 	@Override

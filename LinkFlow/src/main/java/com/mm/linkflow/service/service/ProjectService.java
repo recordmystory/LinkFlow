@@ -105,10 +105,10 @@ public interface ProjectService {
 	int searchDailyCount(Map<String, String> search);
 	
 	// 직원별 일일작업 조회
-	List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode);
+	List<DailyDto> listDailyLead(PageInfoDto pi, Map<String, String> map);
 	
 	// 직원별 일일작업 카운트
-	int listDailyLeadCount();
+	int listDailyLeadCount(Map<String, String> map);
 	
 	// 직원별 일일작업 검색 조회
 	List<DailyDto> searchDailyLead(Map<String, String> search, PageInfoDto pi);

@@ -63,13 +63,13 @@
 	                   			<c:choose>
 	                   				<c:when test="${daily.daiAns == null}">
 	                   					<div class="btnArea">
-	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변하기</a>
+	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">피드백등록</a>
 	                               			<a href="${contextPath}/project/deleteLead.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
 	                         			</div>
 	                   				</c:when>
 	                   				<c:otherwise>
 	                   					<div class="btnArea">
-	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">답변수정</a>
+	                               			<a href="${contextPath}/project/ansModifyForm.dai?no=${daily.daiNo}" class="btn btn-primary btn-sm">피드백수정</a>
 	                               			<a href="${contextPath}/project/deleteLead.dai?no=${daily.daiNo}" class="btn btn-danger btn-sm">삭제</a>
 	                         			</div>
 	                   				</c:otherwise>

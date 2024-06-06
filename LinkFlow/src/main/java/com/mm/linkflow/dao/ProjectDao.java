@@ -212,18 +212,18 @@ public class ProjectDao {
 	}
 	
 	// 직원별 일일작업 조회
-	public List<DailyDto> listDailyLead(PageInfoDto pi, String deptCode){
+	public List<DailyDto> listDailyLead(PageInfoDto pi, Map<String, String> map){
 		int limit = pi.getBoardLimit();
 		int offset = (pi.getCurrentPage()-1) * limit;
 		
 		RowBounds rowBounds= new RowBounds( offset, limit );
 		
-		return sql.selectList("projectMapper.listDailyLead", deptCode, rowBounds);
+		return sql.selectList("projectMapper.listDailyLead", map, rowBounds);
 	}
 	
 	// 직원별 일일작업 카운트
-	public int listDailyLeadCount()	{
-		return sql.selectOne("projectMapper.listDailyLeadCount");
+	public int listDailyLeadCount(Map<String, String> map)	{
+		return sql.selectOne("projectMapper.listDailyLeadCount", map);
 	}
 	
 	// 직원별 일일작업 검색 조회

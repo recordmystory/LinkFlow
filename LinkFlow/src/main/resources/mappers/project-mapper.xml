@@ -155,8 +155,7 @@
     	<if test="category != null and category != '' and category == 'proName'">
     	   AND PRO_TITLE LIKE '%' || #{keyword} || '%'
     	</if>
-    	<if test="category != null and ca
-    	tegory != '' and category == 'client'">
+    	<if test="category != null and category != '' and category == 'client'">
     	   AND CLIENT LIKE '%' || #{keyword} || '%'
     	</if>
     	 ORDER
@@ -430,6 +429,7 @@
 		  	 , PRO_TITLE
 		  	 , USER_NAME
 		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
+		  	 , CLIENT
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
@@ -541,6 +541,7 @@
 		  	 , PRO_TITLE
 		  	 , USER_NAME
 		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
+		  	 , CLIENT
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
@@ -589,11 +590,13 @@
 		  	 , PRO_TITLE
 		  	 , USER_NAME
 		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
+		  	 , CLIENT
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
 		 WHERE D.DEL_YN = 'N'
 		   AND P.DEPT_CODE = #{deptCode}
+		   AND D.REG_ID != #{userId}
 		 ORDER
 		    BY DAI_NO DESC
 	</select>
@@ -606,6 +609,7 @@
 		  JOIN TB_PROJECT P USING (PRO_NO)
 		 WHERE D.DEL_YN = 'N'
 		   AND DEPT_CODE = #{deptCode}
+		   AND D.REG_ID != #{userId}
 	</select>
 	
 	<!-- 직원별 일일작업 검색 조회 -->
@@ -619,11 +623,13 @@
 		  	 , PRO_TITLE
 		  	 , USER_NAME
 		  	 , TO_CHAR(ANS_DATE, 'YYYY-MM-DD') AS ANS_DATE
+		  	 , CLIENT
 		  FROM TB_DAILY D
 		  JOIN TB_PROJECT P ON (D.PRO_NO = P.PRO_NO)
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
 		 WHERE D.DEL_YN = 'N'
 		   AND P.DEPT_CODE = #{deptCode}
+		   AND D.REG_ID != #{userId}
 	  	<if test="startDate != null and startDate != ''">
            AND D.REG_DATE <![CDATA[>=]]> #{startDate}
     	</if>
@@ -649,6 +655,7 @@
 		  JOIN TB_MEMBER M ON (D.REG_ID = USER_ID)
 		 WHERE D.DEL_YN = 'N'
 		   AND P.DEPT_CODE = #{deptCode}
+		   AND D.REG_ID != #{userId}
 		<if test="startDate != null and startDate != ''">
            AND D.REG_DATE <![CDATA[>=]]> #{startDate}
     	</if>
