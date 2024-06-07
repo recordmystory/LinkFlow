@@ -337,7 +337,7 @@ public class BookingController {
 			AlarmDto alarm = AlarmDto.builder()
 									 .userId(bk.get("bookingId"))
 									 .alarmTitle(rejContent)
-									 .alarmURL("/booking/detail.bk?no=")
+									 .alarmURL("/booking/detail.bk")
 									 .bookingNo(bk.get("bookingNo"))
 									 .supName(bk.get("subName"))
 									 .build();
@@ -346,8 +346,8 @@ public class BookingController {
 				for(WebSocketSession web : sessionList) {
 					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
 						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
-						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL() 
-									 +"/"+ alarm.getBookingNo()+"/"+ alarm.getSupName();
+						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL()
+									+"/" + alarm.getBookingNo() +"/"+ alarm.getSupName();
 						
 						try {
 							web.sendMessage(new TextMessage(msg));
@@ -436,7 +436,7 @@ public class BookingController {
 			AlarmDto alarm = AlarmDto.builder()
 									 .userId(bk.get("bookingId"))
 									 .alarmTitle(rejContent)
-									 .alarmURL("/booking/detail.bk?no=")
+									 .alarmURL("/booking/detail.bk")
 									 .bookingNo(bk.get("bookingNo"))
 									 .supName("회의실")
 									 .build();
@@ -446,7 +446,7 @@ public class BookingController {
 					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
 						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
 						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL()
-									 +"/"+ alarm.getBookingNo()+"/"+ alarm.getSupName();
+									 +"/" + alarm.getBookingNo() +"/"+ alarm.getSupName();
 						
 						try {
 							web.sendMessage(new TextMessage(msg));

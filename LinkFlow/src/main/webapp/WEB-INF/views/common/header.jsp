@@ -247,7 +247,7 @@
     	let alarmURL = alarmArr[2];
     	let bookingNo = alarmArr[3];
     	let supName = alarmArr[4];
-    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL, date, bkNo, supName);
+    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL, date ,bookingNo, supName );
     	
     	alarmDrop.prepend(alarmItem);
     	alarmCount();
@@ -261,13 +261,12 @@
     	$(".alarmCount").html(notReadCount);
     }
     
-    function createItem(no,title,url,date,bkNo,sup){
-    	console.log( url + bkNo);
+    function createItem(alNo,title,url,date,bkNo,sup ){
     	
-    	let newAlarm = "<div class='alarmDropSet'><a href='${contextPath}/"+ url + bkNo + "&sup= "+ sup +"' class='dropdown-item alarmItems'"
-    				 + " onclick=\"readAlarm('"+ no +"');\"><i class='fas fa-clock mr-2'></i>"
+    	let newAlarm = "<div class='alarmDropSet'><a href='${contextPath}"+ url +"?no="+ bkNo + "&sup= "+ sup  +"' class='dropdown-item alarmItems'"
+    				 + " onclick=\"readAlarm('"+ alNo +"');\"><i class='fas fa-clock mr-2'></i>"
     				 +"&nbsp;<div class='alarmSet'><p>"+title + "</p><span class='float-right text-muted text-sm alarmDate'>"+ date + "</span>"
-    				 +"</div> </a>&nbsp;&nbsp; <div class='delAlarm'><i class='fas fa-trash mr-2' onclick=\"delAlarm('"+ no +"')\"></div></div>";
+    				 +"</div> </a>&nbsp;&nbsp; <div class='delAlarm'><i class='fas fa-trash mr-2' onclick=\"delAlarm('"+ alNo +"')\"></div></div>";
     	let alarmItem = $(newAlarm);
     	return alarmItem; 
     }
@@ -283,7 +282,7 @@
     			}else{
 	    			for(let i=0; i<alList.length; i++){
 	    				let list = alList[i];
-	    				let selectItem = createItem(list.alarmNo,list.alarmTitle, list.alarmURL, list.alarmDate, list.bookingNo);
+	    				let selectItem = createItem(list.alarmNo,list.alarmTitle, list.alarmURL, list.alarmDate, list.bookingNo, list.supName );
 	    				if(list.checkYN === 'Y'){
 	    					 selectItem.find('.alarmItems').addClass('readAlarm');
 	    				}
