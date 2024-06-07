@@ -263,9 +263,9 @@ i {
          								 + resData[i].modCharDate
          								 + '</td><td width="150"><i class="fa-solid fa-xmark fa-xl" onclick="confirmReplyDelete(' + resData[i].replyNo +')"></i></td>';
          							}else{
-         								tr += '<td colspan="2" width="200" style="text-align: center;">'
+         								tr += '<td width="100" style="text-align: center;">'
             								 + resData[i].modCharDate
-            								 + '</td>';
+            								 + '</td>' + '<td width="150"></td>';
          							}
            						tr += "</tr>";	
             				}
