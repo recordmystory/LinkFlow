@@ -166,7 +166,7 @@
             //구글api로 공휴일 가져오기
             googleCalendarApiKey: 'AIzaSyABRUUYRcpsMexmdUBwypBZLh9Ft-8PgrA',
             //timeZone: 'Asia/Seoul', //시간대 
-           locale : 'ko',
+            //locale : 'ko',
             dayMaxEvents: true, //5
             initialDate:  new Date(), //기준일
             navLinks: true, // 주/주말 이름을 클릭하여 뷰를 이동
