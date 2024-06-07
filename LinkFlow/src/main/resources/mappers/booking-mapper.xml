@@ -538,6 +538,7 @@
 <select id="selectRoomWaitList" resultMap="bkResult">
 	select 
 		   booking_no
+		  ,booking_id
 		  ,user_name
 		  ,dept_title
 		  ,to_char(bk_start_dt, 'yyyy/mm/dd') as bk_start_date
