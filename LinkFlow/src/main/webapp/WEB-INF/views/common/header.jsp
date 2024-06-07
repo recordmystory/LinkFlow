@@ -158,25 +158,6 @@
           
             <div class="dropdown-divider"></div>
             
-            
-            <!-- <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i> 4 new messages
-              <span class="float-right text-muted text-sm">3 mins</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-users mr-2"></i> 8 friend requests
-              <span class="float-right text-muted text-sm">12 hours</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-file mr-2"></i> 3 new reports
-              <span class="float-right text-muted text-sm">2 days</span>
-            </a> -->
-            
-            
-            
-            
           </div>
         </li>
         <!-- 푸쉬 알람 영역끝 -->
@@ -264,7 +245,9 @@
     	let alarmNo = alarmArr[0];
     	let alarmTitle = alarmArr[1];
     	let alarmURL = alarmArr[2];
-    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL, date);
+    	let bookingNo = alarmArr[3];
+    	let supName = alarmArr[4];
+    	let alarmItem = createItem(alarmNo, alarmTitle, alarmURL, date, bkNo, supName);
     	
     	alarmDrop.prepend(alarmItem);
     	alarmCount();
@@ -278,13 +261,14 @@
     	$(".alarmCount").html(notReadCount);
     }
     
-    function createItem(no,title,url,date){
+    function createItem(no,title,url,date,bkNo,sup){
+    	console.log( url + bkNo);
     	
-    	let newAlarm = "<div class='alarmDropSet'><a href='${contextPath}/"+ url +"' class='dropdown-item alarmItems' onclick=\"readAlarm('"+ no +"');\"><i class='fas fa-clock mr-2'></i>"
+    	let newAlarm = "<div class='alarmDropSet'><a href='${contextPath}/"+ url + bkNo + "&sup= "+ sup +"' class='dropdown-item alarmItems'"
+    				 + " onclick=\"readAlarm('"+ no +"');\"><i class='fas fa-clock mr-2'></i>"
     				 +"&nbsp;<div class='alarmSet'><p>"+title + "</p><span class='float-right text-muted text-sm alarmDate'>"+ date + "</span>"
     				 +"</div> </a>&nbsp;&nbsp; <div class='delAlarm'><i class='fas fa-trash mr-2' onclick=\"delAlarm('"+ no +"')\"></div></div>";
     	let alarmItem = $(newAlarm);
-    	
     	return alarmItem; 
     }
     
@@ -298,8 +282,9 @@
     				alarmDrop.append("<p class='dropdown-item dropdown-footer'> 알림 내역이 없습니다. </p>");
     			}else{
 	    			for(let i=0; i<alList.length; i++){
-	    				let selectItem = createItem(alList[i].alarmNo, alList[i].alarmTitle, alList[i].alarmURL, alList[i].alarmDate);
-	    				if(alList[i].checkYN === 'Y'){
+	    				let list = alList[i];
+	    				let selectItem = createItem(list.alarmNo,list.alarmTitle, list.alarmURL, list.alarmDate, list.bookingNo);
+	    				if(list.checkYN === 'Y'){
 	    					 selectItem.find('.alarmItems').addClass('readAlarm');
 	    				}
 	    				alarmDrop.append(selectItem);

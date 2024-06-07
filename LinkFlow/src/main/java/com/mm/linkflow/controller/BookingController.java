@@ -329,6 +329,7 @@ public class BookingController {
 	public String updateSupBkConfirm(@RequestParam Map<String,String> bk, HttpSession session) {
 		String userId = ((MemberDto) session.getAttribute("loginUser")).getUserId();
 		bk.put("userId", userId);
+		
 		int result = bkServiceImpl.updateSupBkConfirm(bk);
 		String rejContent = bk.get("rejContent") == null || bk.get("rejContent").equals("") ? "승인된 예약이 있습니다." : "반려된 예약이 있습니다.";
 		if(result >0 ) {
@@ -336,15 +337,17 @@ public class BookingController {
 			AlarmDto alarm = AlarmDto.builder()
 									 .userId(bk.get("bookingId"))
 									 .alarmTitle(rejContent)
-									 .alarmURL("/booking/mylist.bk")
+									 .alarmURL("/booking/detail.bk?no=")
 									 .bookingNo(bk.get("bookingNo"))
+									 .supName(bk.get("subName"))
 									 .build();
 			int alarmResult = alarmService.insertAlarm(alarm);
 			if(alarmResult > 0) {
 				for(WebSocketSession web : sessionList) {
 					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
 						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
-						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL();
+						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL() 
+									 +"/"+ alarm.getBookingNo()+"/"+ alarm.getSupName();
 						
 						try {
 							web.sendMessage(new TextMessage(msg));
@@ -433,15 +436,17 @@ public class BookingController {
 			AlarmDto alarm = AlarmDto.builder()
 									 .userId(bk.get("bookingId"))
 									 .alarmTitle(rejContent)
-									 .alarmURL("/booking/mylist.bk")
+									 .alarmURL("/booking/detail.bk?no=")
 									 .bookingNo(bk.get("bookingNo"))
+									 .supName("회의실")
 									 .build();
 			int alarmResult = alarmService.insertAlarm(alarm);
 			if(alarmResult > 0) {
 				for(WebSocketSession web : sessionList) {
 					if(((MemberDto)web.getAttributes().get("loginUser")).getUserId().equals(bk.get("bookingId"))) {
 						int alarmNo = alarmService.selectAlarmNo(bk.get("bookingNo"));
-						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL();
+						String msg = alarmNo + "/" + alarm.getAlarmTitle() +"/" + alarm.getAlarmURL()
+									 +"/"+ alarm.getBookingNo()+"/"+ alarm.getSupName();
 						
 						try {
 							web.sendMessage(new TextMessage(msg));

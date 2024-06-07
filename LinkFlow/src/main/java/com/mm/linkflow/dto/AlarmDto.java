@@ -23,4 +23,5 @@ public class AlarmDto extends CommonDto{
 	private String alarmURL;
 	private String bookingNo;
 	private String alarmDate;
+	private String supName;
 }
