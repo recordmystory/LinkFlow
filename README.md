@@ -13,7 +13,7 @@
 
 - 서버 : Tomcat 9
 
-- 라이브러리 및 기술 : Spring, jQuery,  JSTL, FullCalendar, CKEditor5, Canvas API, Oracle Scheduler, Apache ECharts, Bootstrap 5
+- 라이브러리 및 기술 : MyBatis, Spring, jQuery, JSTL, FullCalendar, CKEditor5, Canvas API, Oracle Scheduler, Apache ECharts, Bootstrap 5
 
 - DB : Oracle
 
