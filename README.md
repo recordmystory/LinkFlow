@@ -1,4 +1,6 @@
-# 인트라넷 구현
+# Linkflow (SI 기업의 인트라넷)
+
+보고서 : [포트폴리오 링크](https://glossy-frigate-cb5.notion.site/Linkflow-4a7b6154618e4bd491fa3c2db36179b8?pvs=4)
 
 개발 기간 : 2024.05 ~ 2024. 06
 
